@@ -1,15 +1,16 @@
-// import {
-//   shouldIs
-// } from './shouldIs'
 import {
   View
 } from './View'
 import {
   InstancesMap
 } from './InstancesMap'
+import {
+  HotBalloonApplicationContext
+} from './HotBalloonApplicationContext'
 
-class ViewContainer {
-  constructor() {
+class ViewContainer extends HotBalloonApplicationContext {
+  constructor(hotBallonApplication) {
+    super(hotBallonApplication)
     this.storesName = []
     this._viewContainers = new InstancesMap(ViewContainer)
     this._views = new InstancesMap(View)
@@ -49,21 +50,15 @@ class ViewContainer {
   }
 
   _renderContainer(parentNode) {
-    // for (let container in this.viewContainers.get()) {
-    //   this.viewContainers.get(container).render(parentNode)
-    // }
-    this._viewContainers.foreach((key, value) => {
-      value.render(parentNode)
+    this._viewContainers.foreach((key, container) => {
+      container.render(parentNode)
     })
   }
 
   _renderViews(parentNode) {
-    this._views.foreach((key, value) => {
-      value.render(parentNode)
+    this._views.foreach((key, view) => {
+      view.render(parentNode)
     })
-    // for (let view in this.views.get()) {
-    //   this.views.get(view).render(parentNode)
-    // }
   }
 
   render(parentNode) {
@@ -73,6 +68,15 @@ class ViewContainer {
     this._renderContainer(parentNode)
     this._renderViews(parentNode)
     this._rendered = true
+  }
+  createAction(actionName, typAction, payload) {
+    const action = this.APP().getAction(actionName)
+    if (action) {
+      action.newAction(typAction, payload)
+    }
+  }
+  newViewAction(actionName, clb, ...args) {
+    this.createAction(actionName, clb, ...args)
   }
 }
 
