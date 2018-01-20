@@ -5,8 +5,8 @@ import {
   Store
 } from '../src/Store'
 import {
-  EventEmitter
-} from '../src/EventEmitter'
+  EventHandler
+} from '../src/EventHandler'
 import {
   Action
 } from '../src/Action'
@@ -20,8 +20,11 @@ import {
   VDom as DomHandler
 } from '../src/DomHandler'
 import {
-  HotBallonApplication
-} from '../src/HotBallonApplication'
+  HotBalloonApplication
+} from '../src/HotBalloonApplication'
+import {
+  HotBalloonApplicationContext
+} from '../src/HotBalloonApplicationContext'
 import {
   Component
 } from '../src/Component'
@@ -31,13 +34,14 @@ import {
 import * as helpers from '../src/helpers'
 
 export {
-  HotBallonApplication,
+  HotBalloonApplication,
+  HotBalloonApplicationContext,
   View,
   ViewContainer,
   DomHandler,
   Action,
   Dispatcher,
-  EventEmitter,
+  EventHandler,
   Store,
   Component,
   shouldIs,

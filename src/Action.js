@@ -19,8 +19,11 @@ class Action {
     return {}
   }
 
-  static getTypes(key) {
-    return (key) ? this.types()[key] : this.types()
+  static getTypes() {
+    return this.types()
+  }
+  static type(key) {
+    return this.getTypes()[key]
   }
 
   setDispatcher(dispatcher) {
@@ -30,6 +33,8 @@ class Action {
       throw new CoreException('Action:setDispatcher "dispatcher" is not instanceof Dispatcher')
     }
   }
+
+  newAction(type, payload) {}
 
   dispatch(payload) {
     this._dispatcher.dispatch(payload)

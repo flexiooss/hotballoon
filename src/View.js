@@ -2,10 +2,6 @@ import {
   ViewContainer
 } from './ViewContainer'
 import {
-  CoreException
-} from './CoreException'
-
-import {
   render as DomRender
 } from './helpers/domHelpers/domHelpers'
 
@@ -17,26 +13,24 @@ import {
 } from './shouldIs'
 
 class View {
-  constructor(container, props) {
+  constructor(viewContainer, props) {
+    this._setViewContainer(viewContainer)
     this.props = props
     this._node = null
-
-    try {
-      this._setContainer(container)
-    } catch (e) {
-      console.log(e.toString())
-    }
   }
 
-  _setContainer(container) {
-    if (container instanceof ViewContainer) {
-      this._container = container
-    } else {
-      throw new CoreException('View:_setContainer:container argument should be instance of hotballoon/Container', 'BAD_INHERIT_CLASS')
-    }
+  _setViewContainer(viewContainer) {
+    shouldIs(!this._viewContainer,
+      'View:_setContainer:viewContainer property already set'
+    )
+    shouldIs(
+      viewContainer instanceof ViewContainer,
+      'View:_setContainer:viewContainer argument should be instance of hotballoon/ViewContainer'
+    )
+    this._viewContainer = viewContainer
   }
-  getContainer() {
-    return this._container
+  getViewContainer() {
+    return this._viewContainer
   }
 
   setProps(props) {
@@ -131,6 +125,10 @@ class View {
   }
 
   view() {}
+
+  newAction(actionName, actionType, payload) {
+    this.getViewContainer().newViewAction(actionName, actionType, payload)
+  }
 }
 
 export {
