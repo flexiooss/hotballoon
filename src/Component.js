@@ -5,14 +5,7 @@ import {
 class Component extends ApplicationContext {
   constructor(hotBallonApplication) {
     super(hotBallonApplication)
-    this._dispatchToken = this.APP().getDispatcher().register((payload) => {
-      this._invokeOnDispatch(payload)
-    })
-  }
-
-  _invokeOnDispatch(payload) {
-    console.log('_invokeOnDispatch')
-    console.log(payload)
+    this._dispatchToken = {}
   }
 }
 export {

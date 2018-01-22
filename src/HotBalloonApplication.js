@@ -85,14 +85,9 @@ class HotBalloonApplication {
 
   render(parentNode) {
     let t = this._appViewContainer.render(parentNode)
-    console.log('t : ' + t)
     return t
   }
 }
-
-// const APP = new HotBallonApplication()
-// // Object.freeze(APP)
-// Object.seal(APP)
 
 export {
   HotBalloonApplication

@@ -13,6 +13,7 @@ import {
 
 class Store {
   constructor() {
+    this._model = {}
     var eventHandler = Object.seal(new EventHandler())
     Object.defineProperty(this, '_EventHandler', {
       enumerable: false,
@@ -30,6 +31,7 @@ class Store {
         shouldIs(newStoreState instanceof StoreState,
           'hotballoon:Store:update: _state property should be an instance of hotballoon/StoreState ')
         storeState = newStoreState
+        console.log(storeState)
         this._updated()
       }
     })
@@ -49,11 +51,14 @@ class Store {
     return this._state.get(key)
   }
 
-  subscribe(type, callback, scope) {
-    this._EventHandler.addEventListener.apply(this._EventHandler, arguments)
+  subscribe(type, callback, scope, priority) {
+    this._EventHandler.addEventListener(type, callback, scope, priority)
   }
 
   update(state) {
+    this._state = this._state.update(this._fillState(state))
+  }
+  save(state) {
     this._state = this._state.update(this._fillState(state))
   }
 

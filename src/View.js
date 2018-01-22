@@ -10,7 +10,7 @@ import {
 class View {
   constructor(viewContainer, props) {
     this.props = props || {}
-    this.rendered = false
+    this._isrendered = false
 
     var _viewContainer = null
     Object.defineProperty(this, '_viewContainer', {
@@ -81,7 +81,7 @@ class View {
   _beforeUpdate() {
     return true
   }
-  _afterUpdate() {
+  _stopUpdate() {
     return true
   }
 
@@ -95,7 +95,7 @@ class View {
 
     this.update()
 
-    if (!this._afterUpdate()) {
+    if (!this._stopUpdate()) {
       return false
     }
   }
@@ -106,14 +106,11 @@ class View {
   _beforeRender() {
     return true
   }
-  _afterRender() {
+  _stopRender() {
     return true
   }
 
   _render(parentNode) {
-    console.log('_render')
-    console.log(this.getNode())
-    console.log(this)
     DomRender(parentNode, this.getNode())
   }
 
@@ -132,7 +129,7 @@ class View {
 
     this._render(parentNode)
 
-    if (!this._afterRender()) {
+    if (!this._stopRender()) {
       return false
     }
   }

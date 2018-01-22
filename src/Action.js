@@ -3,8 +3,8 @@ import {
 } from './Dispatcher'
 
 import {
-  CoreException
-} from './CoreException'
+  shouldIs
+} from './shouldIs'
 
 class Action {
   constructor(dispatcher, ...props) {
@@ -27,17 +27,16 @@ class Action {
   }
 
   setDispatcher(dispatcher) {
-    if (dispatcher instanceof Dispatcher) {
-      this._dispatcher = dispatcher
-    } else {
-      throw new CoreException('Action:setDispatcher "dispatcher" is not instanceof Dispatcher')
-    }
+    shouldIs(dispatcher instanceof Dispatcher,
+      'hotballoon:Action:setDispatcher "dispatcher" argument should be an instance of Dispatcher'
+    )
+    this._dispatcher = dispatcher
   }
 
   newAction(type, payload) {}
 
-  dispatch(payload) {
-    this._dispatcher.dispatch(payload)
+  dispatch(type, payload) {
+    this._dispatcher.dispatch(type, payload)
   }
 }
 
