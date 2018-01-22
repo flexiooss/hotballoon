@@ -13,8 +13,12 @@ import {
 
 class Store {
   constructor() {
-    /** @private */
-    this._EventHandler = new EventHandler()
+    var eventHandler = Object.seal(new EventHandler())
+    Object.defineProperty(this, '_EventHandler', {
+      enumerable: false,
+      configurable: false,
+      value: eventHandler
+    })
 
     var storeState = new StoreState()
 
@@ -46,7 +50,7 @@ class Store {
   }
 
   subscribe(type, callback, scope) {
-    this._EventHandler.subscribe(type, callback, scope)
+    this._EventHandler.addEventListener.apply(this._EventHandler, arguments)
   }
 
   update(state) {

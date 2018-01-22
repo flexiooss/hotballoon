@@ -1,11 +1,11 @@
 import {
-  HotBalloonApplication
-} from './HotBalloonApplication'
-import {
   shouldIs
 } from './shouldIs'
+import {
+  hasParentPrototypeName
+} from './helpers'
 
-class HotBalloonApplicationContext {
+class ApplicationContext {
   constructor(hotBallonApplication) {
     this._setAPP(hotBallonApplication)
   }
@@ -13,10 +13,10 @@ class HotBalloonApplicationContext {
     shouldIs(!this._APP,
       'hotballoon:ViewContainer:_setAPP APP already defined'
     )
-    shouldIs(hotBallonApplication instanceof HotBalloonApplication,
-      'hotballoon:ViewContainer:_setAPP require an argument instance of ̀ %s`',
-      HotBalloonApplication.constructor.name
+    shouldIs(hasParentPrototypeName(hotBallonApplication, 'HotBalloonApplication'),
+      'hotballoon:ViewContainer:_setAPP require an argument instance of ̀ hotballoon/HotBalloonApplication`'
     )
+
     this._APP = hotBallonApplication
   }
   APP() {
@@ -24,5 +24,5 @@ class HotBalloonApplicationContext {
   }
 }
 export {
-  HotBalloonApplicationContext
+  ApplicationContext
 }

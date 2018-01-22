@@ -1,3 +1,3 @@
 export * from './helpers/isHelpers/isHelpers'
 export * from './helpers/domHelpers/domHelpers'
-export * from './helpers/utils'
+export * from './helpers/classHelpers'

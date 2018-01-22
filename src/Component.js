@@ -1,8 +1,8 @@
 import {
-  HotBalloonApplicationContext
-} from './HotBalloonApplicationContext'
+  ApplicationContext
+} from './ApplicationContext'
 
-class Component extends HotBalloonApplicationContext {
+class Component extends ApplicationContext {
   constructor(hotBallonApplication) {
     super(hotBallonApplication)
     this._dispatchToken = this.APP().getDispatcher().register((payload) => {

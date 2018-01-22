@@ -1,25 +1,37 @@
 // https://github.com/facebook/emitter/blob/master/src/BaseEventEmitter.js
 
+import {
+  shouldIs
+} from './shouldIs'
+import {
+  isFunction,
+  isObject
+} from './helpers'
+
 class EventHandler {
   constructor() {
     this._listeners = {}
+    Object.seal(this)
+    Object.freeze(this)
   }
 
-  dispatch(type, target) {
+  dispatch(type, payload) {
     const event = {
       type: type,
-      target: target
+      payload: payload
     }
+
     var args = []
     var numOfArgs = arguments.length
     for (var i = 0; i < numOfArgs; i++) {
       args.push(arguments[i])
     };
+
     args = args.length > 2 ? args.splice(2, args.length - 1) : []
     args = [event].concat(args)
 
     if (type in this._listeners) {
-      var listeners = this.listeners[type].slice()
+      var listeners = this._listeners[type].slice()
       let countOfCallbacks = listeners.length
       for (let i = 0; i < countOfCallbacks; i++) {
         var listener = listeners[i]
@@ -31,13 +43,16 @@ class EventHandler {
     }
   }
 
-  addEventListener(type, callback, scope) {
-    var args = []
-    var numOfArgs = arguments.length
-    for (var i = 0; i < numOfArgs; i++) {
-      args.push(arguments[i])
-    }
-    args = args.length > 3 ? args.splice(3, args.length - 1) : []
+  addEventListener(type, callback, scope, ...args) {
+    shouldIs(!!type,
+      'hotballoon:EventHandler:addEventListener: ̀`type` argument should not be empty'
+    )
+    shouldIs(isFunction(callback),
+      'hotballoon:EventHandler:addEventListener: ̀`callback` argument should be callable'
+    )
+    shouldIs(isObject(scope),
+      'hotballoon:EventHandler:addEventListener: ̀`scope` argument should be a scope'
+    )
 
     if (!(type in this._listeners)) {
       this._listeners[type] = []
@@ -51,8 +66,8 @@ class EventHandler {
   }
 
   removeEventListener(type, callback, scope) {
-    if (type in this.listeners) {
-      let countOfCallbacks = this.listeners[type].length
+    if (type in this._listeners) {
+      let countOfCallbacks = this._listeners[type].length
       var newArrayOfCallbacks = []
       for (let i = 0; i < countOfCallbacks; i++) {
         let listener = this._listeners[type][i]

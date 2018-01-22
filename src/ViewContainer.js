@@ -5,10 +5,11 @@ import {
   InstancesMap
 } from './InstancesMap'
 import {
-  HotBalloonApplicationContext
-} from './HotBalloonApplicationContext'
+  ApplicationContext
+} from './ApplicationContext'
 
-class ViewContainer extends HotBalloonApplicationContext {
+// class ViewContainer {
+class ViewContainer extends ApplicationContext {
   constructor(hotBallonApplication) {
     super(hotBallonApplication)
     this.storesName = []

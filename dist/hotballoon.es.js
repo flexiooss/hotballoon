@@ -17,14 +17,12 @@ import {
   ViewContainer
 } from '../src/ViewContainer'
 import {
-  VDom as DomHandler
-} from '../src/DomHandler'
-import {
   HotBalloonApplication
 } from '../src/HotBalloonApplication'
 import {
-  HotBalloonApplicationContext
-} from '../src/HotBalloonApplicationContext'
+  ApplicationContext
+} from '../src/ApplicationContext'
+
 import {
   Component
 } from '../src/Component'
@@ -34,11 +32,10 @@ import {
 import * as helpers from '../src/helpers'
 
 export {
+  ApplicationContext,
   HotBalloonApplication,
-  HotBalloonApplicationContext,
   View,
   ViewContainer,
-  DomHandler,
   Action,
   Dispatcher,
   EventHandler,

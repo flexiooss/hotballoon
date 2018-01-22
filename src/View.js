@@ -1,12 +1,7 @@
 import {
-  ViewContainer
-} from './ViewContainer'
-import {
+  isNode,
+  hasParentPrototypeName,
   render as DomRender
-} from './helpers/domHelpers/domHelpers'
-
-import {
-  isNode
 } from './helpers'
 import {
   shouldIs
@@ -14,21 +9,46 @@ import {
 
 class View {
   constructor(viewContainer, props) {
-    this._setViewContainer(viewContainer)
-    this.props = props
-    this._node = null
-  }
+    this.props = props || {}
+    this.rendered = false
 
-  _setViewContainer(viewContainer) {
-    shouldIs(!this._viewContainer,
-      'View:_setContainer:viewContainer property already set'
-    )
-    shouldIs(
-      viewContainer instanceof ViewContainer,
-      'View:_setContainer:viewContainer argument should be instance of hotballoon/ViewContainer'
-    )
+    var _viewContainer = null
+    Object.defineProperty(this, '_viewContainer', {
+      enumerable: false,
+      configurable: false,
+      get: () => _viewContainer,
+      set: (newViewContainer) => {
+        shouldIs(!this._viewContainer,
+          'View:_setContainer:viewContainer property already set'
+        )
+        shouldIs(hasParentPrototypeName(newViewContainer, 'ViewContainer'),
+          'View:_setContainer:viewContainer argument should be instance of hotballoon/ViewContainer'
+        )
+        _viewContainer = newViewContainer
+      }
+    })
+
+    var _node = null
+    Object.defineProperty(this, '_node', {
+      enumerable: false,
+      configurable: false,
+      get: () => {
+        if (_node === null) {
+          _node = this.view()
+        }
+        return _node
+      },
+      set: (node) => {
+        shouldIs(isNode(node),
+          'View:_node:set: `node` argument should be a Node'
+        )
+        _node = node
+      }
+    })
+
     this._viewContainer = viewContainer
   }
+
   getViewContainer() {
     return this._viewContainer
   }
@@ -42,13 +62,6 @@ class View {
   }
 
   getNode() {
-    return this._createNode()
-  }
-
-  _createNode() {
-    if (this._node === null) {
-      this._node = this.view()
-    }
     return this._node
   }
 
@@ -127,7 +140,7 @@ class View {
   view() {}
 
   newAction(actionName, actionType, payload) {
-    this.getViewContainer().newViewAction(actionName, actionType, payload)
+    this._viewContainer.newViewAction(actionName, actionType, payload)
   }
 }
 

@@ -1,7 +1,4 @@
 import {
-  shouldIs
-} from './shouldIs'
-import {
   InstancesMap
 } from './InstancesMap'
 import {
@@ -82,20 +79,8 @@ class HotBalloonApplication {
     return this._viewContainers.get(viewContainerName)
   }
 
-  /**
-     *
-     * @param {string} viewContainerName
-     * @returns {void}
-     */
-  initContainer(viewContainerName) {
-    shouldIs(
-      viewContainerName in this.getViewContainers(),
-      'hotballoon:HotBallonApplication:initContainer `%s` is not registered in property viewContainers : array <ViewContainer>',
-      viewContainerName
-    )
-    let ViewContainerClass = this.getViewContainer(viewContainerName)
-    this._appViewContainer = new ViewContainerClass(this)
-    this._appViewContainer.init(this.getStores())
+  setAppViewContainer(viewContainerName) {
+    this._appViewContainer = viewContainerName
   }
 
   render(parentNode) {
