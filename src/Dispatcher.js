@@ -5,13 +5,12 @@ import {
 
 class Dispatcher extends EventHandlerBase {
   waitFor(type, ids) {
-    var countOfIds = ids.length
+    let countOfIds = ids.length
     for (let i = 0; i < countOfIds; i++) {
-      var id = ids[i]
-      if (this._isPending[id]) {
-        continue
+      let id = ids[i]
+      if (!this._isPending.has(id)) {
+        this._invokeCallback(type, id)
       }
-      this._invokeCallback(type, id)
     }
   }
 }

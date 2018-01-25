@@ -6,15 +6,14 @@ import {
 import {
   isFunction,
   isBoolean
-
 } from './helpers'
 
 class EventHandlerBase {
   constructor() {
-    this._listeners = {}
-    this._pendingPayload = {}
-    this._isHandled = {}
-    this._isPending = {}
+    this._listeners = new Map()
+    this._pendingPayload = new Map()
+    this._isHandled = new Set()
+    this._isPending = new Set()
     this._lastID = 0
 
     var _isDispatching = false
@@ -37,26 +36,38 @@ class EventHandlerBase {
   }
 
   dispatch(type, payload) {
+    console.group('dispatch')
+    console.log('type')
+    console.log(type)
+
     this._beforeDispatching(type, payload)
 
-    if (type in this._listeners) {
+    console.log('_listeners')
+    console.log(this._listeners)
+    console.log(this._listeners.has(type))
+    if (this._listeners.has(type)) {
+      console.log('ici')
       try {
-        for (let id in this._listeners[type]) {
-          if (this._isPending[id]) {
+        for (let id in this._listeners.get(type)) {
+          if (this._isPending.has(id)) {
             continue
           }
+          console.log('_invokeCallback')
           this._invokeCallback(type, id)
         }
       } finally {
         this._stopDispatching()
       }
     }
+    console.groupEnd()
   }
 
   _invokeCallback(type, id) {
-    this._isPending[id] = true
-    this._listeners[type][id].callback(this._pendingPayload[type])
-    this._isHandled[id] = true
+    console.log('type')
+    console.log(type)
+    this._isPending.add(id)
+    this._isHandled.add(id)
+    this._listeners.get(type)[id].callback(this._pendingPayload.get(type), type)
   }
 
   addEventListener(type, callback) {
@@ -67,12 +78,12 @@ class EventHandlerBase {
       'hotballoon:EventHandler:addEventListener: ̀`callback` argument should be Callable'
     )
 
-    if (!(type in this._listeners)) {
-      this._listeners[type] = {}
+    if (!(this._listeners.has(type))) {
+      this._listeners.set(type, {})
     }
     let id = this._getNextId()
 
-    this._listeners[type][id] = {
+    this._listeners.get(type)[id] = {
       callback: callback
     }
 
@@ -80,30 +91,30 @@ class EventHandlerBase {
   }
 
   removeEventListener(type, id) {
-    if (type in this._listeners) {
-      shouldIs(id in this._listeners[type],
+    if (this._listeners.has(type)) {
+      shouldIs(id in this._listenersget(type),
         'hotballoon:EventHandlerBase:removeEventListener: ̀`id` argument not in _listeners : `%s`',
         type
       )
-      delete this._listeners[type][id]
+      delete this._listeners.get(type)[id]
     }
   }
 
   hasEventListener(type, id) {
-    return (type in this._listeners) && (id in this._listeners[type])
+    return (this._listeners.has(type)) && (id in this._listeners.get(type))
   }
 
   _beforeDispatching(type, payload) {
-    for (var id in this._listeners) {
-      this._isPending[id] = false
-      this._isHandled[id] = false
+    for (let id in this._listeners.get(type)) {
+      this._isPending.delete(id)
+      this._isHandled.delete(id)
     }
-    this._pendingPayload[type] = payload
+    this._pendingPayload.set(type, payload)
     this._isDispatching = true
   }
 
   _stopDispatching(type) {
-    delete this._pendingPayload[type]
+    this._pendingPayload.delete(type)
     this._isDispatching = false
   }
 

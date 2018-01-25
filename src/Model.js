@@ -2,15 +2,22 @@ import {
   shouldIs
 } from './shouldIs'
 class Model {
-  constructor(attributes) {
-    this.setAttibutes(attributes)
+  constructor() {
+    this._schema = new Map()
   }
-  setAttibutes(attributes) {
+  get() {
+    return this._schema
+  }
+
+  addSchemaProp(schemaProperty) {
     shouldIs(
-      this._attributes,
-      'hotballoon:Model:setAttibutes: _attributes property already set'
+      ('id' in schemaProperty) && ('name' in schemaProperty) && ('type' in schemaProperty),
+      'hotballoon:Model:setSchemaProp: `schemaProperty` argument should be an Object : {id:id, name:name, type:type}'
     )
-    this._attributes = attributes
+    this._schema.set(schemaProperty.id, {
+      name: schemaProperty.name,
+      type: schemaProperty.type
+    })
   }
 }
 export {

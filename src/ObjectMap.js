@@ -1,8 +1,13 @@
+import {
+  shouldIs
+} from './shouldIs'
 class ObjectMap {
   constructor() {
     this._collection = {}
   }
-  add(key, item) {
+  add(item, key) {
+    shouldIs(key !== undefined,
+      'hotballoon:ObjectMap:add: `key` argument should not be undefined')
     this._collection[key] = item
   }
   get(key) {

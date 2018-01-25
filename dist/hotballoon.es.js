@@ -5,8 +5,14 @@ import {
   Store
 } from '../src/Store'
 import {
+  StoreCollection
+} from '../src/StoreCollection'
+import {
   EventHandler
 } from '../src/EventHandler'
+import {
+  EventOrderedHandler
+} from '../src/EventOrderedHandler'
 import {
   Action
 } from '../src/Action'
@@ -39,7 +45,9 @@ export {
   Action,
   Dispatcher,
   EventHandler,
+  EventOrderedHandler,
   Store,
+  StoreCollection,
   Component,
   shouldIs,
   helpers

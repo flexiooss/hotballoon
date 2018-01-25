@@ -1,6 +1,6 @@
 import {
-  EventHandler
-} from './EventHandler'
+  staticClassName
+} from './helpers'
 import {
   StoreState
 } from './StoreState'
@@ -8,21 +8,14 @@ import {
   shouldIs
 } from './shouldIs'
 import {
-  staticClassName
-} from './helpers'
+  StoreBase
+} from './StoreBase'
 
-class Store {
+class Store extends StoreBase {
   constructor() {
-    this._model = {}
-    var eventHandler = Object.seal(new EventHandler())
-    Object.defineProperty(this, '_EventHandler', {
-      enumerable: false,
-      configurable: false,
-      value: eventHandler
-    })
+    super()
 
-    var storeState = new StoreState()
-
+    var storeState = StoreState.create()
     Object.defineProperty(this, '_state', {
       enumerable: false,
       configurable: false,
@@ -31,49 +24,22 @@ class Store {
         shouldIs(newStoreState instanceof StoreState,
           'hotballoon:Store:update: _state property should be an instance of hotballoon/StoreState ')
         storeState = newStoreState
-        console.log(storeState)
         this._updated()
       }
     })
-
     this._dispatch('INIT')
   }
 
-  static eventType() {
+  static eventTypes() {
     const name = staticClassName(this).toUpperCase()
     return {
-      INIT: name + ':INIT',
-      CHANGED: name + ':CHANGED'
+      INIT: name + '_INIT',
+      CHANGED: name + '_CHANGED'
     }
-  }
-
-  state(key) {
-    return this._state.get(key)
-  }
-
-  subscribe(type, callback, scope, priority) {
-    this._EventHandler.addEventListener(type, callback, scope, priority)
-  }
-
-  update(state) {
-    this._state = this._state.update(this._fillState(state))
-  }
-  save(state) {
-    this._state = this._state.update(this._fillState(state))
   }
 
   _updated() {
     this._dispatch('CHANGED')
-  }
-
-  _dispatch(eventType) {
-    if (eventType in this.constructor.eventType()) {
-      this._EventHandler.dispatch(this.constructor.eventType()[eventType], this.state())
-    }
-  }
-
-  _fillState(state) {
-    return state
   }
 }
 

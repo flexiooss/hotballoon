@@ -10,7 +10,8 @@
   },
   "author": "Thomas Chatelain (https://github.com/TomAchT)",
   "repository": "https://github.com/flexiooss/hotballoon.git",
-  "devDependencies": {
-    "eslint": "^4.16.0"
+  "devDependencies": {},
+  "dependencies": {
+    "lodash": "^4.17.4"
   }
 }

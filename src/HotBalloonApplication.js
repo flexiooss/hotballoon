@@ -11,15 +11,15 @@ import {
   Component
 } from './Component'
 import {
-  Store
-} from './Store'
+  StoreBase
+} from './StoreBase'
 
 class HotBalloonApplication {
   constructor() {
     this._dispatcher = null
     this._actions = new InstancesMap(Action)
     this._components = new InstancesMap(Component)
-    this._stores = new InstancesMap(Store)
+    this._stores = new InstancesMap(StoreBase)
     this._viewContainers = new ObjectMap()
     this._appViewContainer = null
   }
@@ -33,7 +33,7 @@ class HotBalloonApplication {
   setActions(actions) {
     this._actions.set(actions)
   }
-  addAction(action) {
+  addAction(action, key) {
     this._actions.add(action)
   }
   getActions() {
@@ -69,8 +69,8 @@ class HotBalloonApplication {
   setViewContainers(viewContainers) {
     this._viewContainers.set(viewContainers)
   }
-  addViewContainer(viewContainer) {
-    this._viewContainers.add(viewContainer)
+  addViewContainer(viewContainer, key) {
+    this._viewContainers.add(viewContainer, key)
   }
   getViewContainers() {
     return this._viewContainers.get()
