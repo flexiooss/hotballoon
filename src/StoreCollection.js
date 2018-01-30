@@ -1,8 +1,4 @@
 import {
-  isObject,
-  staticClassName
-} from './helpers'
-import {
   cloneDeep,
   merge
 } from 'lodash'
@@ -10,17 +6,18 @@ import {
   StoreStateCollection
 } from './StoreStateCollection'
 import {
-  shouldIs
-} from './shouldIs'
+  should,
+  filterObject
+} from './helpers'
 import {
   StoreBase
-} from './StoreBase'
+} from './bases/StoreBase'
 
 class StoreCollection extends StoreBase {
-  constructor() {
-    super()
+  constructor(id) {
+    super(id)
 
-    this._keyId = 'id'
+    this._keyId = '__ID__'
     this._addIdToItemCollection = false
 
     var storeStateCollection = StoreStateCollection.create()
@@ -29,23 +26,13 @@ class StoreCollection extends StoreBase {
       configurable: false,
       get: () => storeStateCollection,
       set: (newStoreStateCollection) => {
-        shouldIs(newStoreStateCollection instanceof StoreStateCollection,
+        should(newStoreStateCollection instanceof StoreStateCollection,
           'hotballoon:Store:update: _state property should be an instance of hotballoon/StoreStateCollection ')
         storeStateCollection = newStoreStateCollection
         this._updated()
       }
     })
     this._dispatch('INIT')
-  }
-
-  static eventTypes() {
-    const name = staticClassName(this).toUpperCase()
-    return {
-      INIT: name + '_INIT',
-      CHANGED: name + '_CHANGED',
-      ITEM_ADDED: name + '_ITEM_ADDED',
-      ITEM_REMOVED: name + '_ITEM_REMOVED'
-    }
   }
 
   _getNewId() {
@@ -58,11 +45,11 @@ class StoreCollection extends StoreBase {
      * @param {array} items array of items to add to StoreCollection
      */
   add(items) {
-    shouldIs(
+    should(
       Array.isArray(items),
       'hotballoon:StoreCollection:add: `items` argument should be an instance of Array'
     )
-    let currentState = cloneDeep(this.state())
+    let currentState = cloneDeep(this.store())
     let collection = currentState.collection
     let length = currentState.length
     let added = []
@@ -79,7 +66,7 @@ class StoreCollection extends StoreBase {
       length++
     }
     this._state = this._state.update(collection, length, added, [])
-    this._dispatch('ITEM_ADDED', this.state())
+    // this._dispatch('ITEM_ADDED', this.state())
   }
 
   /**
@@ -87,7 +74,7 @@ class StoreCollection extends StoreBase {
      * @param {array} items array of items to remove to StoreCollection
      */
   delete(items) {
-    shouldIs(
+    should(
       Array.isArray(items),
       'hotballoon:StoreCollection:delete: `items` argument should be an instance of Array'
     )
@@ -100,7 +87,7 @@ class StoreCollection extends StoreBase {
       currentState.length--
     }
     this._state = this._state.update(currentState.collection, currentState.length, [], removed)
-    this._dispatch('ITEM_REMOVED', this.state())
+    // this._dispatch('ITEM_REMOVED', this.state())
   }
 
   update(state) {
@@ -113,7 +100,7 @@ class StoreCollection extends StoreBase {
   }
 
   _updated() {
-    this._dispatch('CHANGED', this.state())
+    this._dispatch('CHANGED', this.store())
   }
 
   _fillState(state) {
@@ -125,6 +112,14 @@ class StoreCollection extends StoreBase {
 
   _shouldAddIdToItemCollection() {
     return !!this._addIdToItemCollection
+  }
+  _inModel(object) {
+    if (this.hasModel) {
+      filterObject(object, (value, key, scope) => {
+        return (key === this._keyId) || this._model.get().has(key)
+      })
+    }
+    return object
   }
 }
 

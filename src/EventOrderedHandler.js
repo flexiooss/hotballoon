@@ -1,8 +1,8 @@
 'use strict'
 
 import {
-  shouldIs
-} from './shouldIs'
+  should
+} from './helpers/should'
 import {
   isFunction,
   isObject,
@@ -11,20 +11,20 @@ import {
 } from './helpers'
 import {
   EventHandlerBase
-} from './EventHandlerBase'
+} from './bases/EventHandlerBase'
 
 class EventOrderedHandler extends EventHandlerBase {
   addEventListener(type, callback, scope, priority) {
-    shouldIs(!!type,
+    should(!!type,
       'hotballoon:EventHandler:addEventListener: ̀`type` argument should not be empty'
     )
-    shouldIs(isFunction(callback),
+    should(isFunction(callback),
       'hotballoon:EventHandler:addEventListener: ̀`callback` argument should be Callable'
     )
-    shouldIs(isObject(scope),
+    should(isObject(scope),
       'hotballoon:EventHandler:addEventListener: ̀`scope` argument should be a scope'
     )
-    shouldIs(isNumber(priority),
+    should(isNumber(priority),
       'hotballoon:EventHandler:addEventListener: ̀`priority` argument should be a Number'
     )
 

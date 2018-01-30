@@ -1,4 +1,4 @@
-export const shouldIs = function(condition, format, ...formatArgs) {
+export const should = function(condition, format, ...formatArgs) {
   if (format === undefined) {
     throw new Error('`shouldIs` function require an error format argument')
   }

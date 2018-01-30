@@ -26,29 +26,34 @@ import {
   HotBalloonApplication
 } from '../src/HotBalloonApplication'
 import {
-  ApplicationContext
-} from '../src/ApplicationContext'
+  ApplicationContextMixin
+} from '../src/mixins/ApplicationContextMixin'
+import {
+  ComponentContextMixin
+} from '../src/mixins/ComponentContextMixin'
+import {
+  PrivateStateMixin
+} from '../src/mixins/PrivateStateMixin'
 
 import {
   Component
 } from '../src/Component'
-import {
-  shouldIs
-} from '../src/shouldIs'
+
 import * as helpers from '../src/helpers'
 
 export {
-  ApplicationContext,
   HotBalloonApplication,
-  View,
-  ViewContainer,
-  Action,
   Dispatcher,
-  EventHandler,
-  EventOrderedHandler,
+  Component,
   Store,
   StoreCollection,
-  Component,
-  shouldIs,
+  Action,
+  ViewContainer,
+  View,
+  PrivateStateMixin,
+  ApplicationContextMixin,
+  ComponentContextMixin,
+  EventHandler,
+  EventOrderedHandler,
   helpers
 }

@@ -2,26 +2,30 @@ import {
   View
 } from './View'
 import {
-  InstancesMap
-} from './InstancesMap'
-import {
-  ApplicationContext
-} from './ApplicationContext'
+  MapOfInstance
+} from './mapExtended/MapOfInstance'
 import {
   EventOrderedHandler
 } from './EventOrderedHandler'
 import {
   StoreBase
-} from './StoreBase'
+} from './bases/StoreBase'
 import {
-  shouldIs
-} from './shouldIs'
-import {
-  isNode
+  isNode,
+  should
 } from './helpers'
 import {
-  ArrayMap
-} from './ArrayMap'
+  MapOfArray
+} from './mapExtended/MapOfArray'
+import {
+  ComponentContextMixin
+} from './mixins/ComponentContextMixin'
+import {
+  RequireIDMixin
+} from './mixins/RequireIDMixin'
+import {
+  PrivateStateMixin
+} from './mixins/PrivateStateMixin'
 
 const eventCallbackPrefix = 'on'
 const viewSuscribeToEvents = 'StoreChanged'
@@ -30,11 +34,13 @@ const viewSuscribeToEvents = 'StoreChanged'
  * @class
  * ViewContainer is a Views container who can suscribe to Stores to dispatch state to Views
  */
-class ViewContainer extends ApplicationContext {
-  constructor(hotBallonApplication) {
-    super(hotBallonApplication)
-
-    this._views = new InstancesMap(View)
+class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateStateMixin(class {}))) {
+  constructor(component, id) {
+    super()
+    this.ComponentContextMixinInit(component)
+    this.RequireIDMixinInit(id)
+    this.PrivateStateMixinInit()
+    this._views = new MapOfInstance(View)
     this._mounted = false
     this._rendered = false
 
@@ -44,7 +50,7 @@ class ViewContainer extends ApplicationContext {
       configurable: false,
       value: eventHandler
     })
-    this._tokenEvent = new ArrayMap()
+    this._tokenEvent = new MapOfArray()
   }
 
   init() {
@@ -75,7 +81,7 @@ class ViewContainer extends ApplicationContext {
   }
 
   dispatch(eventType, payload) {
-    console.log('dispatch')
+    console.log('ViewContainer:dispatch')
     this._EventHandler.dispatch(eventType, payload)
   }
 
@@ -87,13 +93,19 @@ class ViewContainer extends ApplicationContext {
      */
 
   subscribeToStore(storeKey, event) {
-    let store = this.APP().getStore(storeKey)
+    let store = this.Store(storeKey)
 
-    shouldIs(store instanceof StoreBase,
+    console.log('subscribeToStore')
+    console.log(store)
+    console.log(storeKey)
+    console.log(event)
+    should(store instanceof StoreBase,
       'hoballoon:ViewContainer:subscribeToStore: `store` argument should be an instance of StoreBase ')
 
     store.subscribe(event,
       (payload, type) => {
+        console.log('dispatch')
+
         this.dispatch(this._formatStoreEventName(storeKey, type), payload)
       },
       this, 100)
@@ -105,7 +117,7 @@ class ViewContainer extends ApplicationContext {
 
   _registerStores() {
     let stores = this.subscribeToStores()
-    shouldIs(Array.isArray(stores),
+    should(Array.isArray(stores),
       'hoballoon:ViewContainer:_registerStores: `subscribeToStores()` methode should return Array, %s given',
       typeof stores)
 
@@ -129,9 +141,9 @@ class ViewContainer extends ApplicationContext {
      * @param {array} events , array of event types
      */
   addView(key, view, storeKey, storeEvent) {
-    shouldIs(key,
+    should(key,
       'hoballoon:ViewContainer:addView: `key` argument should not be undefined')
-    this._views.add(view, key)
+    this._views.add(key, view)
     if (storeKey && storeEvent) {
       this._suscribeToEvent(key, storeKey, storeEvent, view)
     }
@@ -140,6 +152,8 @@ class ViewContainer extends ApplicationContext {
 
   _suscribeToEvent(key, storeKey, storeEvent, view) {
     var eventName = this._formatStoreEventName(storeKey, storeEvent)
+    console.log('eventName')
+    console.log(eventName)
 
     let token = this.subscribe(
       eventName,
@@ -155,6 +169,9 @@ class ViewContainer extends ApplicationContext {
         // }
       },
       view, 0)
+    console.log('this._tokenEvent.add(key, token)')
+    console.log(key)
+    console.log(token)
 
     this._tokenEvent.add(key, token)
   }
@@ -163,11 +180,10 @@ class ViewContainer extends ApplicationContext {
     this._views.replace(view, key)
   }
 
-  getView(key) {
+  view(key) {
     return this._views.get(key)
   }
 
-  registerViews() {}
   /**
      *
      * --------------------------------------------------------------
@@ -175,18 +191,18 @@ class ViewContainer extends ApplicationContext {
      * --------------------------------------------------------------
      */
   mount() {
-    this.registerViews()
+    // this.registerViews()
     this._mounted = true
   }
 
   _renderViews(parentNode) {
-    this._views.foreach((key, view) => {
+    this._views.forEach((view, key, map) => {
       view.render(parentNode)
     })
   }
 
   render(parentNode) {
-    shouldIs(isNode(parentNode),
+    should(isNode(parentNode),
       'hotballoon:ViewContainer:render: `parentNode` arguement should be a NodeElement, %s given',
       typeof parentNode)
     if (!this._mounted) {
@@ -202,11 +218,8 @@ class ViewContainer extends ApplicationContext {
      * Actions
      * --------------------------------------------------------------
      */
-  createAction(actionName, typAction, payload) {
-    const action = this.APP().getAction(actionName)
-    if (action) {
-      action.newAction(typAction, payload)
-    }
+  createAction(action, typAction, payload) {
+    action.newAction(typAction, payload)
   }
 
   newViewAction(actionName, clb, ...args) {

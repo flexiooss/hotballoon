@@ -1,6 +1,6 @@
 import {
-  InstancesMap
-} from './InstancesMap'
+  MapExtended
+} from './MapExtended'
 // import {
 //   isObject
 // } from './helpers'
@@ -11,7 +11,7 @@ import {
   without
 } from 'lodash'
 
-class InstancesOrderedMap extends InstancesMap {
+class MapOrderd extends MapExtended {
   constructor(classType) {
     super()
     this._order = []
@@ -55,5 +55,5 @@ class InstancesOrderedMap extends InstancesMap {
   }
 }
 export {
-  InstancesOrderedMap
+  MapOrderd
 }

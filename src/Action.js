@@ -3,34 +3,33 @@ import {
 } from './Dispatcher'
 
 import {
-  shouldIs
-} from './shouldIs'
+  should
+} from './helpers'
 
 class Action {
-  constructor(dispatcher, ...props) {
-    try {
-      this.setDispatcher(dispatcher)
-    } catch (e) {
-      console.log(e.message, e.name)
-    }
+  constructor(dispatcher, componentId) {
+    this._setDispatcher(dispatcher)
+    this._setComponentId(componentId)
   }
-
-  static types() {
-    return {}
-  }
-
-  static getTypes() {
-    return this.types()
-  }
-  static type(key) {
-    return this.getTypes()[key]
-  }
-
-  setDispatcher(dispatcher) {
-    shouldIs(dispatcher instanceof Dispatcher,
+  _setDispatcher(dispatcher) {
+    should(dispatcher instanceof Dispatcher,
       'hotballoon:Action:setDispatcher "dispatcher" argument should be an instance of Dispatcher'
     )
     this._dispatcher = dispatcher
+  }
+  _setComponentId(componentId) {
+    should(!!componentId,
+      'hotballoon:Action:_setComponentId "componentId" argument should not be empty'
+    )
+    this._componentId = componentId
+  }
+
+  types() {
+    return {}
+  }
+
+  type(key) {
+    return this._componentId + '_' + this.types()[key]
   }
 
   newAction(type, payload) {}

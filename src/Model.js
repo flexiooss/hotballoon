@@ -1,6 +1,6 @@
 import {
-  shouldIs
-} from './shouldIs'
+  should
+} from './helpers/should'
 class Model {
   constructor() {
     this._schema = new Map()
@@ -10,7 +10,7 @@ class Model {
   }
 
   addSchemaProp(schemaProperty) {
-    shouldIs(
+    should(
       ('id' in schemaProperty) && ('name' in schemaProperty) && ('type' in schemaProperty),
       'hotballoon:Model:setSchemaProp: `schemaProperty` argument should be an Object : {id:id, name:name, type:type}'
     )

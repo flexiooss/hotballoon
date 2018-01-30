@@ -1,7 +1,7 @@
 'use strict'
 import {
   EventHandlerBase
-} from './EventHandlerBase'
+} from './bases/EventHandlerBase'
 
 class Dispatcher extends EventHandlerBase {
   waitFor(type, ids) {

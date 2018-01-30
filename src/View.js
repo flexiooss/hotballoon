@@ -1,28 +1,34 @@
 import {
   isNode,
   isFunction,
-  hasParentPrototypeName,
   camelCase,
+  should,
   render as DomRender
 } from './helpers'
-import {
-  shouldIs
-} from './shouldIs'
 import {
   EventHandler
 } from './EventHandler'
 import {
-  InstancesMap
-} from './InstancesMap'
+  MapOfInstance
+} from './mapExtended/MapOfInstance'
 import {
-  ArrayMap
-} from './ArrayMap'
-
+  MapOfArray
+} from './mapExtended/MapOfArray'
+import {
+  PrivateStateMixin
+} from './mixins/PrivateStateMixin'
+import {
+  ViewContainerContextMixin
+} from './mixins/ViewContainerContextMixin'
 const eventCallbackPrefix = 'on'
 const StoreChangedEvent = 'StoreChanged'
 
-class View {
+class View extends ViewContainerContextMixin(PrivateStateMixin(class {})) {
   constructor(viewContainer, props) {
+    super()
+    this.ViewContainerContextMixinInit(viewContainer)
+    this.PrivateStateMixinInit()
+
     this.props = props || {}
     this.privateState = {}
     this._isRendered = false
@@ -43,7 +49,7 @@ class View {
          */
     this._EnventHandler = new EventHandler()
     this._initListeners()
-    this._tokenEvent = new ArrayMap()
+    this._tokenEvent = new MapOfArray()
 
     this._shouldInit = true
     this._shouldUpdate = true
@@ -51,24 +57,8 @@ class View {
     this._shouldChangeProps = true
     this._shouldChangeState = true
 
-    this._parts = new InstancesMap(View)
+    this._parts = new MapOfInstance(View)
     this._partsNode = new Map()
-
-    var _viewContainer = viewContainer
-    Object.defineProperty(this, '_viewContainer', {
-      enumerable: false,
-      configurable: false,
-      get: () => _viewContainer,
-      set: (newViewContainer) => {
-        shouldIs(!this._viewContainer,
-          'View:_setContainer:viewContainer property already set'
-        )
-        shouldIs(hasParentPrototypeName(newViewContainer, 'ViewContainer'),
-          'View:_setContainer:viewContainer argument should be instance of hotballoon/ViewContainer'
-        )
-        _viewContainer = newViewContainer
-      }
-    })
 
     var _node = this.view()
     Object.defineProperty(this, '_node', {
@@ -78,7 +68,7 @@ class View {
         return _node
       },
       set: (node) => {
-        shouldIs(isNode(node),
+        should(isNode(node),
           'View:_node:set: `node` argument should be a Node'
         )
         _node = node
@@ -86,6 +76,11 @@ class View {
     })
 
     this.onStoreChanged = (payload, type) => {
+      console.group('onStoreChanged')
+      console.log(type)
+      console.log(payload)
+      console.groupEnd()
+
       this.setProps(payload)
       this._dispatchStoreChanged(payload)
     }
@@ -168,8 +163,19 @@ class View {
     return this._parts.get(key)
   }
 
+  getPartNode(key) {
+    return this._getPartNode(key)
+  }
+
+  addPartReference(key, node) {
+    return this._addPartNode(key, node)
+  }
+
+  replacePartReference(key, node) {
+    return this._setPartNode(key, node)
+  }
   _addPart(key, view) {
-    shouldIs(key,
+    should(key,
       'hoballoon:ViewContainer:addView: `key` argument should not be undefined')
     this._parts.add(view, key)
     this._suscribeToEvent(view, key)
@@ -177,18 +183,20 @@ class View {
   }
 
   _addPartNode(key, node) {
-    this._partsNode.set(key, node)
+    if (!this._partsNode.has(key)) {
+      this._setPartNode(key, node)
+      return node
+    } else {
+      return this._partsNode.get(key)
+    }
   }
+  _setPartNode(key, node) {
+    this._partsNode.set(key, node)
+    return node
+  }
+
   _getPartNode(key) {
     return this._partsNode.get(key)
-  }
-
-  getPartNode(key) {
-    return this._getPartNode(key)
-  }
-
-  addPartReference(key, node) {
-    this._addPartNode(key, node)
   }
 
   /**
@@ -197,11 +205,9 @@ class View {
      * ViewContainer
      * --------------------------------------------------------------
      */
-  ViewContainer() {
-    return this._viewContainer
-  }
+
   newAction(actionName, actionType, payload) {
-    this._viewContainer.newViewAction(actionName, actionType, payload)
+    this.ViewContainer().newViewAction(actionName, actionType, payload)
     return this
   }
 
@@ -226,27 +232,13 @@ class View {
     return (key in this.props) ? this.props[key] : ''
   }
 
-  setPrivateState(privateState) {
-    this._EnventHandler.dispatch(View.eventTypes()['STATE_CHANGE'], privateState)
-    if (this._shouldChangeState) {
-      this.privateState = privateState
-      this._EnventHandler.dispatch(View.eventTypes()['STATE_CHANGED'], privateState)
-      // this.updateNode()
-    }
-    this._shouldChangeProps = true
-  }
-
-  getPrivateState(key) {
-    return (key in this.privateState) ? this.privateState[key] : ''
-  }
-
   /**
      *
      * --------------------------------------------------------------
      * Node
      * --------------------------------------------------------------
      */
-  getNode() {
+  node() {
     return this._node
   }
 
@@ -261,7 +253,9 @@ class View {
      * Rendering
      * --------------------------------------------------------------
      */
-  update() {}
+  update() {
+    this.view()
+  }
 
   updateNode() {
     this._EnventHandler.dispatch(View.eventTypes()['UPDATE'], {})
@@ -275,11 +269,11 @@ class View {
   }
 
   _render(parentNode) {
-    DomRender(parentNode, this.getNode())
+    DomRender(parentNode, this.node())
   }
 
   render(parentNode) {
-    shouldIs(isNode(parentNode),
+    should(isNode(parentNode),
       'hotballoon:View:render require a Node argument'
     )
 

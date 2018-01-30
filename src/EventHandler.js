@@ -1,4 +1,4 @@
 export {
   EventHandlerBase as EventHandler
 }
-  from './EventHandlerBase'
+  from './bases/EventHandlerBase'

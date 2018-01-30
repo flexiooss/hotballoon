@@ -1,12 +1,10 @@
 'use strict'
 
 import {
-  shouldIs
-} from './shouldIs'
-import {
   isFunction,
-  isBoolean
-} from './helpers'
+  isBoolean,
+  should
+} from '../helpers'
 
 class EventHandlerBase {
   constructor() {
@@ -22,7 +20,7 @@ class EventHandlerBase {
       configurable: false,
       get: () => _isDispatching,
       set: (newIsDispatching) => {
-        shouldIs(isBoolean(newIsDispatching),
+        should(isBoolean(newIsDispatching),
           'hotballoonView:Dispatcher: `newIsDispatching` argument should be a Boolean'
         )
         _isDispatching = newIsDispatching
@@ -36,7 +34,7 @@ class EventHandlerBase {
   }
 
   dispatch(type, payload) {
-    console.group('dispatch')
+    console.groupCollapsed('dispatch')
     console.log('type')
     console.log(type)
 
@@ -71,10 +69,10 @@ class EventHandlerBase {
   }
 
   addEventListener(type, callback) {
-    shouldIs(!!type,
+    should(!!type,
       'hotballoon:EventHandler:addEventListener: ̀`type` argument should not be empty'
     )
-    shouldIs(isFunction(callback),
+    should(isFunction(callback),
       'hotballoon:EventHandler:addEventListener: ̀`callback` argument should be Callable'
     )
 
@@ -92,7 +90,7 @@ class EventHandlerBase {
 
   removeEventListener(type, id) {
     if (this._listeners.has(type)) {
-      shouldIs(id in this._listenersget(type),
+      should(id in this._listenersget(type),
         'hotballoon:EventHandlerBase:removeEventListener: ̀`id` argument not in _listeners : `%s`',
         type
       )

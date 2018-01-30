@@ -1,20 +1,26 @@
 import {
   EventOrderedHandler
-} from './EventOrderedHandler'
+} from '../EventOrderedHandler'
 
 import {
   filterObject
-} from './helpers'
+} from '../helpers'
 import {
   merge,
   cloneDeep
 } from 'lodash'
 import {
   Model
-} from './Model'
+} from '../Model'
+import {
+  RequireIDMixin
+} from '../mixins/RequireIDMixin'
+class StoreBase extends RequireIDMixin(class {}) {
+  constructor(id) {
+    super()
+    this.RequireIDMixinInit(id)
 
-class StoreBase {
-  constructor() {
+    this.hasModel = true
     this._model = new Model()
     var eventHandler = Object.seal(new EventOrderedHandler())
     Object.defineProperty(this, '_EventHandler', {
@@ -24,15 +30,19 @@ class StoreBase {
     })
   }
 
-  static eventTypes() {
-    return {}
+  static eventTypes(key) {
+    const types = {
+      INIT: 'INIT',
+      CHANGED: 'CHANGED'
+    }
+    return (key in types) ? types[key] : types
   }
 
   addSchemaProp(schemaProperty) {
     this._model.addSchemaProp(schemaProperty)
   }
 
-  state(key) {
+  store(key) {
     var state = this._state.get(key)
     return (state) || {}
   }
@@ -44,7 +54,7 @@ class StoreBase {
   update(state) {
     this._state = this._state.update(
       merge(
-        cloneDeep(this.state()),
+        cloneDeep(this.store()),
         this._fillState(state)
       )
     )
@@ -58,7 +68,9 @@ class StoreBase {
 
   _dispatch(eventType, payload) {
     if (eventType in this.constructor.eventTypes()) {
-      this._EventHandler.dispatch(this.constructor.eventTypes()[eventType], payload || this.state())
+      console.log('Store:_dispatch')
+
+      this._EventHandler.dispatch(this.constructor.eventTypes()[eventType], payload || this.store())
     }
   }
 
@@ -67,9 +79,11 @@ class StoreBase {
   }
 
   _inModel(object) {
-    filterObject(object, (value, key, scope) => {
-      return this._model.get().has(key)
-    })
+    if (this.hasModel) {
+      filterObject(object, (value, key, scope) => {
+        return this._model.get().has(key)
+      })
+    }
     return object
   }
 }
