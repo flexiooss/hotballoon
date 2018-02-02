@@ -4,7 +4,7 @@ import {
 
 import {
   filterObject
-} from '../helpers'
+} from 'flexio-jshelpers'
 import {
   merge,
   cloneDeep
@@ -42,7 +42,7 @@ class StoreBase extends RequireIDMixin(class {}) {
     this._model.addSchemaProp(schemaProperty)
   }
 
-  store(key) {
+  state(key) {
     var state = this._state.get(key)
     return (state) || {}
   }
@@ -54,7 +54,7 @@ class StoreBase extends RequireIDMixin(class {}) {
   update(state) {
     this._state = this._state.update(
       merge(
-        cloneDeep(this.store()),
+        cloneDeep(this.state()),
         this._fillState(state)
       )
     )
@@ -70,7 +70,7 @@ class StoreBase extends RequireIDMixin(class {}) {
     if (eventType in this.constructor.eventTypes()) {
       console.log('Store:_dispatch')
 
-      this._EventHandler.dispatch(this.constructor.eventTypes()[eventType], payload || this.store())
+      this._EventHandler.dispatch(this.constructor.eventTypes()[eventType], payload || this.state())
     }
   }
 

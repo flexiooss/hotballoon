@@ -1,7 +1,7 @@
 import {
   hasParentPrototypeName,
   should
-} from '../helpers'
+} from 'flexio-jshelpers'
 export const ViewContainerContextMixin = (Base) => class extends Base {
   ViewContainerContextMixinInit(viewContainer) {
     this._setViewContainer(viewContainer)
@@ -25,12 +25,15 @@ export const ViewContainerContextMixin = (Base) => class extends Base {
     return this.ViewContainer().Component()
   }
   Action(action) {
-    return this.ViewContainer().Component().Action(action)
+    return this.Component().Action(action)
   }
   Store(action) {
-    return this.ViewContainer().Component().Store(action)
+    return this.Component().Store(action)
   }
   APP() {
-    return this.ViewContainer().Component().APP()
+    return this.Component().APP()
+  }
+  Service(key) {
+    return this.APP().Service(key)
   }
 }

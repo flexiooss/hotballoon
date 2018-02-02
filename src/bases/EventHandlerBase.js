@@ -4,7 +4,7 @@ import {
   isFunction,
   isBoolean,
   should
-} from '../helpers'
+} from 'flexio-jshelpers'
 
 class EventHandlerBase {
   constructor() {
@@ -34,35 +34,35 @@ class EventHandlerBase {
   }
 
   dispatch(type, payload) {
-    console.groupCollapsed('dispatch')
-    console.log('type')
-    console.log(type)
+    // console.groupCollapsed('dispatch')
+    // console.log('type')
+    // console.log(type)
 
     this._beforeDispatching(type, payload)
 
-    console.log('_listeners')
-    console.log(this._listeners)
-    console.log(this._listeners.has(type))
+    // console.log('_listeners')
+    // console.log(this._listeners)
+    // console.log(this._listeners.has(type))
     if (this._listeners.has(type)) {
-      console.log('ici')
+      // console.log('ici')
       try {
         for (let id in this._listeners.get(type)) {
           if (this._isPending.has(id)) {
             continue
           }
-          console.log('_invokeCallback')
+          // console.log('_invokeCallback')
           this._invokeCallback(type, id)
         }
       } finally {
         this._stopDispatching()
       }
     }
-    console.groupEnd()
+    // console.groupEnd()
   }
 
   _invokeCallback(type, id) {
-    console.log('type')
-    console.log(type)
+    // console.log('type')
+    // console.log(type)
     this._isPending.add(id)
     this._isHandled.add(id)
     this._listeners.get(type)[id].callback(this._pendingPayload.get(type), type)

@@ -12,6 +12,7 @@
   "repository": "https://github.com/flexiooss/hotballoon.git",
   "devDependencies": {},
   "dependencies": {
+    "flexio-jshelpers": "https://github.com/flexiooss/flexio-jshelpers.git",
     "lodash": "^4.17.4"
   }
 }

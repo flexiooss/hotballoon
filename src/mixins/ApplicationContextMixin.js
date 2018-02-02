@@ -1,7 +1,7 @@
 import {
   hasParentPrototypeName,
   should
-} from '../helpers'
+} from 'flexio-jshelpers'
 
 export const ApplicationContextMixin = (Base) => class extends Base {
   ApplicationContextMixinInit(hotBallonApplication) {
@@ -22,5 +22,8 @@ export const ApplicationContextMixin = (Base) => class extends Base {
   }
   Dispatcher() {
     return this.APP().Dispatcher()
+  }
+  Service(key) {
+    return this.APP().Service(key)
   }
 }

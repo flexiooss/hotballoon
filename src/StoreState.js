@@ -3,7 +3,7 @@ import {
 } from 'lodash'
 import {
   deepFreezeSeal
-} from './helpers'
+} from 'flexio-jshelpers'
 
 class StoreState {
   static create(state) {

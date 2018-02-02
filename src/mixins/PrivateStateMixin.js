@@ -1,9 +1,6 @@
-// import {
-//   should
-// } from '../helpers'
 import {
   MapExtended
-} from '../mapExtended/MapExtended'
+} from 'flexio-jshelpers'
 
 export const PrivateStateMixin = (Base) => class extends Base {
   PrivateStateMixinInit() {

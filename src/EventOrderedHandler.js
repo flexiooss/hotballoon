@@ -1,14 +1,12 @@
 'use strict'
 
 import {
-  should
-} from './helpers/should'
-import {
+  should,
   isFunction,
   isObject,
   isNumber,
   sortObject
-} from './helpers'
+} from 'flexio-jshelpers'
 import {
   EventHandlerBase
 } from './bases/EventHandlerBase'

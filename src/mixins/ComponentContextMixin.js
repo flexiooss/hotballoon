@@ -1,7 +1,7 @@
 import {
   hasParentPrototypeName,
   should
-} from '../helpers'
+} from 'flexio-jshelpers'
 export const ComponentContextMixin = (Base) => class extends Base {
   ComponentContextMixinInit(component) {
     this._setComponent(component)
@@ -23,7 +23,10 @@ export const ComponentContextMixin = (Base) => class extends Base {
     return this.Component().APP()
   }
   Dispatcher() {
-    return this.Component().APP().Dispatcher()
+    return this.APP().Dispatcher()
+  }
+  Service(key) {
+    return this.APP().Service(key)
   }
   Action(action) {
     return this.Component().Action(action)

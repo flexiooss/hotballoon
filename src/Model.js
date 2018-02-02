@@ -1,6 +1,6 @@
 import {
   should
-} from './helpers/should'
+} from 'flexio-jshelpers'
 class Model {
   constructor() {
     this._schema = new Map()

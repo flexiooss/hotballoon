@@ -39,8 +39,6 @@ import {
   Component
 } from '../src/Component'
 
-import * as helpers from '../src/helpers'
-
 export {
   HotBalloonApplication,
   Dispatcher,
@@ -54,6 +52,5 @@ export {
   ApplicationContextMixin,
   ComponentContextMixin,
   EventHandler,
-  EventOrderedHandler,
-  helpers
+  EventOrderedHandler
 }

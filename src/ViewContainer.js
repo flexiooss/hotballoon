@@ -2,21 +2,17 @@ import {
   View
 } from './View'
 import {
-  MapOfInstance
-} from './mapExtended/MapOfInstance'
-import {
   EventOrderedHandler
 } from './EventOrderedHandler'
 import {
   StoreBase
 } from './bases/StoreBase'
 import {
+  MapOfInstance,
+  MapOfArray,
   isNode,
   should
-} from './helpers'
-import {
-  MapOfArray
-} from './mapExtended/MapOfArray'
+} from 'flexio-jshelpers'
 import {
   ComponentContextMixin
 } from './mixins/ComponentContextMixin'
@@ -35,11 +31,17 @@ const viewSuscribeToEvents = 'StoreChanged'
  * ViewContainer is a Views container who can suscribe to Stores to dispatch state to Views
  */
 class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateStateMixin(class {}))) {
-  constructor(component, id) {
+  constructor(component, id, storesKey) {
     super()
     this.ComponentContextMixinInit(component)
     this.RequireIDMixinInit(id)
     this.PrivateStateMixinInit()
+
+    should(storesKey instanceof Map,
+      'hoballoon:ViewContainer:subscribeToStore: `storesKey` argument should be an instance of Map ')
+    this.storesKey = storesKey
+    this._registerStores()
+
     this._views = new MapOfInstance(View)
     this._mounted = false
     this._rendered = false
@@ -51,10 +53,10 @@ class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateStateMix
       value: eventHandler
     })
     this._tokenEvent = new MapOfArray()
+    this.registerViews()
   }
 
   init() {
-    this._registerStores()
     this.mount()
   }
 
@@ -65,11 +67,13 @@ class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateStateMix
      * --------------------------------------------------------------
      */
 
-  static eventTypes() {
-    return {
+  static eventTypes(key) {
+    const types = {
       INIT: 'INIT',
-      STORE_CHANGE: 'STORE_CHANGE'
+      STORE_CHANGE: 'STORE_CHANGE',
+      WILL_REMOVE: 'WILL_REMOVE'
     }
+    return (key) ? types[key] : types
   }
 
   _formatStoreEventName(storeKey, type) {
@@ -111,20 +115,23 @@ class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateStateMix
       this, 100)
   }
 
-  subscribeToStores() {
-    return []
-  }
-
   _registerStores() {
-    let stores = this.subscribeToStores()
-    should(Array.isArray(stores),
-      'hoballoon:ViewContainer:_registerStores: `subscribeToStores()` methode should return Array, %s given',
-      typeof stores)
+    // let stores = this.storeKey()
+    // should(Array.isArray(stores),
+    //   'hoballoon:ViewContainer:_registerStores: `subscribeToStores()` methode should return Array, %s given',
+    //   typeof stores)
 
-    let countOfStores = stores.length
-    for (let i = 0; i < countOfStores; i++) {
-      this.subscribeToStore(stores[i].storeKey, stores[i].event)
-    }
+    // let countOfStores = stores.length
+    // for (let i = 0; i < countOfStores; i++) {
+    //   this.subscribeToStore(stores[i].storeKey, stores[i].event)
+    // }
+    console.log('_registerStores')
+    console.log(this.storesKey)
+
+    this.storesKey.forEach((value, key, map) => {
+      console.log(value)
+      this.subscribeToStore(value, StoreBase.eventTypes('CHANGED'))
+    })
   }
 
   /**

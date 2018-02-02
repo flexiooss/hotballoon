@@ -5,10 +5,7 @@ import {
   deepFreeze,
   deepFreezeSeal,
   deepKeyResolver
-} from './helpers'
-// import {
-//   cloneDeep
-// } from 'lodash'
+} from 'flexio-jshelpers'
 
 class StoreStateCollection extends StoreState {
   static create(collection, length, added, removed) {

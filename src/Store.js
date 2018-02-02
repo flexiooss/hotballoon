@@ -3,7 +3,7 @@ import {
 } from './StoreState'
 import {
   should
-} from './helpers'
+} from 'flexio-jshelpers'
 import {
   StoreBase
 } from './bases/StoreBase'

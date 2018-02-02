@@ -1,10 +1,4 @@
 import {
-  MapOfInstance
-} from './mapExtended/MapOfInstance'
-import {
-  MapOfArray
-} from './mapExtended/MapOfArray'
-import {
   Action
 } from './Action'
 import {
@@ -13,10 +7,10 @@ import {
 import {
   ViewContainer
 } from './ViewContainer'
-
 import {
+  MapOfInstance,
   Sequence
-} from './helpers/Sequence'
+} from 'flexio-jshelpers'
 import {
   RequireIDMixin
 } from './mixins/RequireIDMixin'
@@ -36,15 +30,19 @@ class Component extends ApplicationContextMixin(RequireIDMixin(PrivateStateMixin
 
     this._sequenceId = new Sequence(this._ID + '_')
 
-    this._dispatchToken = {}
-    this._dispatchToken = new MapOfArray()
+    // this._dispatchToken = new MapOfArray()
 
+    this.dispatcherListenerTokens = new Map()
     this._viewContainers = new MapOfInstance(ViewContainer)
+    this.viewContainersKey = new Map()
     this._stores = new MapOfInstance(StoreBase)
+    this.storesKey = new Map()
     this._actions = new MapOfInstance(Action)
+    this.actionssKey = new Map()
 
     this._initActions()
     this._initStores()
+    this._initDispatcherListeners()
     this._initViewContainers()
   }
 
@@ -58,6 +56,14 @@ class Component extends ApplicationContextMixin(RequireIDMixin(PrivateStateMixin
   _initActions() {}
   _initStores() {}
   _initViewContainers() {}
+  /**
+     *
+     * --------------------------------------------------------------
+     * Remove by Application
+     * --------------------------------------------------------------
+     */
+
+  willRemove() {}
 
   /**
      *
@@ -90,11 +96,17 @@ class Component extends ApplicationContextMixin(RequireIDMixin(PrivateStateMixin
      * ViewContainers
      * --------------------------------------------------------------
      */
-  addViewContainer(ViewContainerConstructor, ...args) {
+  addViewContainer(ViewContainerConstructor, storesMap, ...args) {
     let key = 'viewContainer_' + this._sequenceId.getNewId()
-    return this._viewContainers.add(key, new ViewContainerConstructor(this, key, ...args))
+    return this._viewContainers.add(key, new ViewContainerConstructor(this, key, storesMap, ...args))
   }
-  viewContainer(key) {
+  removeViewContainer(viewContainerID) {
+    if (this._viewContainers.has(viewContainerID)) {
+      this.ViewContainer(viewContainerID).dispatch(ViewContainer.eventTypes('WILL_REMOVE'), {})
+      this._viewContainers.delete(viewContainerID)
+    }
+  }
+  ViewContainer(key) {
     return this._viewContainers.get(key)
   }
 }

@@ -7,8 +7,9 @@ import {
 } from './StoreStateCollection'
 import {
   should,
-  filterObject
-} from './helpers'
+  filterObject,
+  Sequence
+} from 'flexio-jshelpers'
 import {
   StoreBase
 } from './bases/StoreBase'
@@ -19,6 +20,7 @@ class StoreCollection extends StoreBase {
 
     this._keyId = '__ID__'
     this._addIdToItemCollection = false
+    this._collectionLastID = new Sequence()
 
     var storeStateCollection = StoreStateCollection.create()
     Object.defineProperty(this, '_state', {
@@ -36,8 +38,11 @@ class StoreCollection extends StoreBase {
   }
 
   _getNewId() {
-    this._lastID = ('_lastID' in this) ? this._lastID + 1 : 0
-    return this._lastID
+    let id = this._collectionLastID.getNewId()
+    if (id in this.state().collection) {
+      return this._getNewId()
+    }
+    return id
   }
 
   /**
@@ -49,15 +54,20 @@ class StoreCollection extends StoreBase {
       Array.isArray(items),
       'hotballoon:StoreCollection:add: `items` argument should be an instance of Array'
     )
-    let currentState = cloneDeep(this.store())
+    let currentState = cloneDeep(this.state())
     let collection = currentState.collection
     let length = currentState.length
     let added = []
     let countOfItems = items.length
     for (let i = 0; i < countOfItems; i++) {
-      let id = this._getNewId()
-      if (this._shouldAddIdToItemCollection()) {
-        items[i][this._keyId] = id
+      var id
+      if (!(this._keyId in items[i])) {
+        id = this._getNewId()
+        if (this._shouldAddIdToItemCollection()) {
+          items[i][this._keyId] = id
+        }
+      } else {
+        id = items[i][this._keyId]
       }
       let item = this._inModel(items[i])
 
@@ -100,7 +110,7 @@ class StoreCollection extends StoreBase {
   }
 
   _updated() {
-    this._dispatch('CHANGED', this.store())
+    this._dispatch('CHANGED', this.state())
   }
 
   _fillState(state) {

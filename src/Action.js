@@ -4,7 +4,7 @@ import {
 
 import {
   should
-} from './helpers'
+} from 'flexio-jshelpers'
 
 class Action {
   constructor(dispatcher, componentId) {

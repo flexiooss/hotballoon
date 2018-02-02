@@ -1,6 +1,6 @@
 import {
   should
-} from '../helpers'
+} from 'flexio-jshelpers'
 
 export const RequireIDMixin = (Base) => class extends Base {
   RequireIDMixinInit(id) {

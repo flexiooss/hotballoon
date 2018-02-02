@@ -3,17 +3,13 @@ import {
   isFunction,
   camelCase,
   should,
+  MapOfInstance,
+  MapOfArray,
   render as DomRender
-} from './helpers'
+} from 'flexio-jshelpers'
 import {
   EventHandler
 } from './EventHandler'
-import {
-  MapOfInstance
-} from './mapExtended/MapOfInstance'
-import {
-  MapOfArray
-} from './mapExtended/MapOfArray'
 import {
   PrivateStateMixin
 } from './mixins/PrivateStateMixin'
@@ -95,8 +91,8 @@ class View extends ViewContainerContextMixin(PrivateStateMixin(class {})) {
      * --------------------------------------------------------------
      */
 
-  static eventTypes() {
-    return {
+  static eventTypes(key) {
+    const types = {
       INIT: 'INIT',
       UPDATE: 'UPDATE',
       UPDATED: 'UPDATED',
@@ -107,6 +103,7 @@ class View extends ViewContainerContextMixin(PrivateStateMixin(class {})) {
       STATE_CHANGE: 'STATE_CHANGE',
       STATE_CHANGED: 'STATE_CHANGED'
     }
+    return (key) ? types[key] : types
   }
 
   _suscribeToEvent(part, key) {
