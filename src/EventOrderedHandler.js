@@ -43,6 +43,13 @@ class EventOrderedHandler extends EventHandlerBase {
 
     return id
   }
+
+  _invokeCallback(type, id) {
+    this._isPending.add(id)
+    this._isHandled.add(id)
+    let listener = this._listeners.get(type)[id]
+    listener.callback.call(listener.scope, this._pendingPayload.get(type), type)
+  }
 }
 
 export {

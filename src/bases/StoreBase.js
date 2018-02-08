@@ -68,7 +68,7 @@ class StoreBase extends RequireIDMixin(class {}) {
 
   _dispatch(eventType, payload) {
     if (eventType in this.constructor.eventTypes()) {
-      console.log('Store:_dispatch')
+      // console.log('Store:_dispatch')
 
       this._EventHandler.dispatch(this.constructor.eventTypes()[eventType], payload || this.state())
     }

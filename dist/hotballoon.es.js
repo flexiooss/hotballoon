@@ -39,6 +39,22 @@ import {
   Component
 } from '../src/Component'
 
+import {
+  CreateHotBalloonElement,
+  html
+} from '../src/HotballoonElement/CreateHotBalloonElement'
+import {
+  HotBalloonAttributeHandler,
+  handleHBAttribute
+} from '../src/HotballoonElement/HotBalloonAttributeHandler'
+
+const hotballoonElement = {
+  CreateHotBalloonElement,
+  html,
+  HotBalloonAttributeHandler,
+  handleHBAttribute
+}
+
 export {
   HotBalloonApplication,
   Dispatcher,
@@ -52,5 +68,6 @@ export {
   ApplicationContextMixin,
   ComponentContextMixin,
   EventHandler,
-  EventOrderedHandler
+  EventOrderedHandler,
+  hotballoonElement
 }

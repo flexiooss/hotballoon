@@ -99,10 +99,10 @@ class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateStateMix
   subscribeToStore(storeKey, event) {
     let store = this.Store(storeKey)
 
-    console.log('subscribeToStore')
-    console.log(store)
-    console.log(storeKey)
-    console.log(event)
+    // console.log('subscribeToStore')
+    // console.log(store)
+    // console.log(storeKey)
+    // console.log(event)
     should(store instanceof StoreBase,
       'hoballoon:ViewContainer:subscribeToStore: `store` argument should be an instance of StoreBase ')
 
@@ -125,11 +125,11 @@ class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateStateMix
     // for (let i = 0; i < countOfStores; i++) {
     //   this.subscribeToStore(stores[i].storeKey, stores[i].event)
     // }
-    console.log('_registerStores')
-    console.log(this.storesKey)
+    // console.log('_registerStores')
+    // console.log(this.storesKey)
 
     this.storesKey.forEach((value, key, map) => {
-      console.log(value)
+      // console.log(value)
       this.subscribeToStore(value, StoreBase.eventTypes('CHANGED'))
     })
   }
@@ -147,28 +147,26 @@ class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateStateMix
      * @param {*} key
      * @param {array} events , array of event types
      */
-  addView(key, view, storeKey, storeEvent) {
-    should(key,
-      'hoballoon:ViewContainer:addView: `key` argument should not be undefined')
-    this._views.add(key, view)
+  addView(view, storeKey, storeEvent) {
+    this._views.add(view._ID, view)
     if (storeKey && storeEvent) {
-      this._suscribeToEvent(key, storeKey, storeEvent, view)
+      this._suscribeToEvent(view._ID, storeKey, storeEvent, view)
     }
     return view
   }
 
   _suscribeToEvent(key, storeKey, storeEvent, view) {
     var eventName = this._formatStoreEventName(storeKey, storeEvent)
-    console.log('eventName')
-    console.log(eventName)
+    // console.log('eventName')
+    // console.log(eventName)
 
     let token = this.subscribe(
       eventName,
       (payload, type) => {
-        console.log('__ICI________________________________________________________________________')
-        console.log(this)
-        console.log(viewSuscribeToEvents)
-        console.log(view)
+        // console.log('__ICI________________________________________________________________________')
+        // console.log(this)
+        // console.log(viewSuscribeToEvents)
+        // console.log(view)
         view[eventCallbackPrefix + viewSuscribeToEvents](payload, type)
 
         // if (view.hasOwnProperty('on' + eventName) && view['on' + eventName]) {
@@ -176,9 +174,9 @@ class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateStateMix
         // }
       },
       view, 0)
-    console.log('this._tokenEvent.add(key, token)')
-    console.log(key)
-    console.log(token)
+    // console.log('this._tokenEvent.add(key, token)')
+    // console.log(key)
+    // console.log(token)
 
     this._tokenEvent.add(key, token)
   }
@@ -197,26 +195,20 @@ class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateStateMix
      * Rendering
      * --------------------------------------------------------------
      */
-  mount() {
-    // this.registerViews()
-    this._mounted = true
-  }
 
   _renderViews(parentNode) {
     this._views.forEach((view, key, map) => {
-      view.render(parentNode)
+      view.renderAndMount(parentNode)
     })
   }
 
   render(parentNode) {
     should(isNode(parentNode),
-      'hotballoon:ViewContainer:render: `parentNode` arguement should be a NodeElement, %s given',
+      'hotballoon:ViewContainer:mount: `parentNode` arguement should be a NodeElement, %s given',
       typeof parentNode)
-    if (!this._mounted) {
-      this.mount()
-    }
     this._renderViews(parentNode)
     this._rendered = true
+    return parentNode
   }
 
   /**
