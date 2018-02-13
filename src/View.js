@@ -84,11 +84,6 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
          * @param {String} type
          */
     this.onStoreChanged = (payload, type) => {
-      // console.group('onStoreChanged')
-      // console.log(type)
-      // console.log(payload)
-      // console.groupEnd()
-
       this.setProps(payload)
       this._dispatchStoreChanged(payload)
     }
@@ -121,19 +116,10 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
   }
 
   _suscribeToEvent(part, key) {
-    // console.log('events[i]')
-    // console.log(events[i])
     let token = this.subscribe(
       EVENT_STORE_CHANGED,
       (payload, type) => {
-        // console.log('__ICI________________________________________________________________________')
-        // console.log(this)
-        // console.log(view)
-
-        // if (view.hasOwnProperty('on' + events[i]) && view['on' + events[i]]) {
-        // console.log('__LA________________________________________________________________________')
         part[EVENT_CALLBACK_PREFIX + EVENT_STORE_CHANGED](payload, type)
-        // }
       },
       part, 100)
 
@@ -142,14 +128,10 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
 
   _initListeners() {
     for (let eventType in View.eventTypes()) {
-      // console.log(View.eventTypes(eventType))
-
       this._EnventHandler.addEventListener(View.eventTypes(eventType), (payload, type) => {
         var propName = EVENT_CALLBACK_PREFIX + camelCase(type)
-        // console.log(propName)
 
         if (this.hasOwnProperty(propName) && isFunction(this[propName])) {
-          // console.log(propName)
           this[propName](payload)
         }
       })
@@ -211,7 +193,11 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
     this._EnventHandler.dispatch(View.eventTypes('UPDATE'), {})
 
     if (this._shouldUpdate) {
+      // console.time('updateNode')
+
       this._update()
+      // console.timeEnd('updateNode')
+
       this._EnventHandler.dispatch(View.eventTypes('UPDATED'), {})
     }
 
@@ -220,7 +206,7 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
 
   _render() {
     this._replaceNode()
-    this._setViewRef()
+    this._setNodeViewRef()
   }
 
   render() {
@@ -241,6 +227,7 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
   _mount() {
     this.parentNode.appendChild(this.node())
   }
+
   mount(parentNode) {
     should(isNode(parentNode),
       'hotballoon:View:render require a Node argument'

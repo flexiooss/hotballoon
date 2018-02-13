@@ -40,19 +40,16 @@ import {
 } from '../src/Component'
 
 import {
-  CreateHotBalloonElement,
   html
 } from '../src/HotballoonElement/CreateHotBalloonElement'
 import {
   HotBalloonAttributeHandler,
-  handleHBAttribute
+  select as selectAttributeHandler
 } from '../src/HotballoonElement/HotBalloonAttributeHandler'
 
 const hotballoonElement = {
-  CreateHotBalloonElement,
   html,
-  HotBalloonAttributeHandler,
-  handleHBAttribute
+  HotBalloonAttributeHandler
 }
 
 export {
@@ -69,5 +66,7 @@ export {
   ComponentContextMixin,
   EventHandler,
   EventOrderedHandler,
-  hotballoonElement
+  hotballoonElement,
+  html,
+  selectAttributeHandler
 }

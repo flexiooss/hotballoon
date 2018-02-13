@@ -9,6 +9,10 @@ import {
 } from 'flexio-jshelpers'
 
 import {
+  select as $$
+} from './HotBalloonAttributeHandler'
+
+import {
   KEY
 } from './constantes'
 import {
@@ -20,6 +24,9 @@ class CreateHotBalloonElement extends HyperFlex {
     super(querySelector, ...args)
     this.scope = scope
   }
+  static html(scope, querySelector, ...args) {
+    return new CreateHotBalloonElement(scope, querySelector, ...args)._createElement()
+  }
   /**
      *
      * @param {NodeElement} element
@@ -27,6 +34,8 @@ class CreateHotBalloonElement extends HyperFlex {
      * @returns {NodeElement} element
      */
   _parseArguments(element, ...args) {
+    // console.log('_parseArguments')
+
     should(isNode(element),
       'flexio-jshelpers:parseArguments: `element` argument should be a NodeElement `%s` given',
       typeof element
@@ -67,16 +76,32 @@ class CreateHotBalloonElement extends HyperFlex {
       if (key === 'style') {
         this._setStyles(element, attribut)
       } else if (key === KEY.NODE_REF) {
-        this.scope.addNodeRef(element, attribut)
-      } else if (key === KEY_RECONCILIATE_RULES) {
         this._setNodeRef(element, attribut)
+      } else if (key === KEY_RECONCILIATE_RULES) {
+        this._setReconciliationRule(element, attribut)
       } else {
         element.setAttribute(key, attribut)
       }
     }
   }
+
+  /**
+     * @private
+     * @param {NodeElement} node
+     * @param {String} key
+     * @description alias of hotballoon/View:addNodeRef
+     */
+  _setNodeRef(node, key) {
+    this.scope.addNodeRef(key, node)
+  }
+  /**
+     *
+     * @param {NodeElement} element
+     * @param {Array} rules
+     */
+  _setReconciliationRule(element, rules) {
+    $$(element).addReconcileRules(rules)
+  }
 }
-export {
-  CreateHotBalloonElement
-}
+
 export const html = CreateHotBalloonElement.html

@@ -1,11 +1,10 @@
 import {
-  //   hasParentPrototypeName,
   isNode,
   should,
   MapOfInstance
 } from 'flexio-jshelpers'
 import {
-  handleHBAttribute as ha
+  select as $$
 } from '../HotballoonElement/HotBalloonAttributeHandler'
 
 export const NodesHandlerMixin = (Base) => class extends Base {
@@ -64,7 +63,10 @@ export const NodesHandlerMixin = (Base) => class extends Base {
 
   registerSubView(key, view) {
     this._addSubView(key, view)
-    // this._addPartNode(key, view)
+  }
+  addNodeSubView(key, view) {
+    this._setNodeViewRef()
+    this._addSubView(key, view)
   }
 
   subView(key) {
@@ -72,16 +74,17 @@ export const NodesHandlerMixin = (Base) => class extends Base {
   }
 
   nodeRef(key) {
-    return this._nodeRef.get(key)
+    return this._nodeRefs.get(key)
   }
 
   addNodeRef(key, node) {
-    return this._addNodeRef(key, node)
+    return this._setNodeRef(key, node)
   }
 
   replaceNodeRef(key, node) {
     return this._setNodeRef(key, node)
   }
+
   _addSubView(key, view) {
     should(key,
       'hoballoon:View:_addSubView: `key` argument should not be undefined')
@@ -90,18 +93,14 @@ export const NodesHandlerMixin = (Base) => class extends Base {
     return view
   }
 
-  _addNodeRef(key, node) {
-    should(!this._nodeRefs.has(key),
-      'hoballoon:View:_addNodeRef: `key` : `%s` argument already exist',
-      key
-    )
-    this._setNodeRef(key, node)
-    return node
-  }
   _setNodeRef(key, node) {
-    ha(node).setNodeRef(key)
+    $$(node).setNodeRef(key)
     this._nodeRefs.set(key, node)
     return node
+  }
+
+  _setNodeViewRef() {
+    $$(this.node()).setViewRef(this._ID)
   }
 
   /**
@@ -117,8 +116,5 @@ export const NodesHandlerMixin = (Base) => class extends Base {
   _replaceNode() {
     this._node = this.view()
     return this._node
-  }
-  _setViewRef() {
-    ha(this.node()).setViewRef(this._ID)
   }
 }
