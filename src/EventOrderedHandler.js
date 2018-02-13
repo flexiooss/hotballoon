@@ -1,7 +1,7 @@
 'use strict'
 
 import {
-  should,
+  assert,
   isFunction,
   isObject,
   isNumber,
@@ -13,17 +13,17 @@ import {
 
 class EventOrderedHandler extends EventHandlerBase {
   addEventListener(type, callback, scope, priority) {
-    should(!!type,
-      'hotballoon:EventHandler:addEventListener: ̀`type` argument should not be empty'
+    assert(!!type,
+      'hotballoon:EventHandler:addEventListener: ̀`type` argument assert not be empty'
     )
-    should(isFunction(callback),
-      'hotballoon:EventHandler:addEventListener: ̀`callback` argument should be Callable'
+    assert(isFunction(callback),
+      'hotballoon:EventHandler:addEventListener: ̀`callback` argument assert be Callable'
     )
-    should(isObject(scope),
-      'hotballoon:EventHandler:addEventListener: ̀`scope` argument should be a scope'
+    assert(isObject(scope),
+      'hotballoon:EventHandler:addEventListener: ̀`scope` argument assert be a scope'
     )
-    should(isNumber(priority),
-      'hotballoon:EventHandler:addEventListener: ̀`priority` argument should be a Number'
+    assert(isNumber(priority),
+      'hotballoon:EventHandler:addEventListener: ̀`priority` argument assert be a Number'
     )
 
     if (!(this._listeners.has(type))) {

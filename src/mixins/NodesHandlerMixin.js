@@ -1,8 +1,11 @@
 import {
   isNode,
-  should,
+  assert,
   MapOfInstance
 } from 'flexio-jshelpers'
+import {
+  html
+} from '../HotballoonElement/CreateHotBalloonElement'
 import {
   select as $$
 } from '../HotballoonElement/HotBalloonAttributeHandler'
@@ -43,8 +46,8 @@ export const NodesHandlerMixin = (Base) => class extends Base {
           return _node
         },
         set: (node) => {
-          should(isNode(node),
-            'View:_node:set: `node` argument should be a Node, `%s` given',
+          assert(isNode(node),
+            'View:_node:set: `node` argument assert be a Node, `%s` given',
             typeof node
           )
           _node = node
@@ -52,7 +55,9 @@ export const NodesHandlerMixin = (Base) => class extends Base {
       }
     )
 
-    // this._createElement = CreateHotBalloonElement
+    this.html = (querySelector, ...args) => {
+      return html(this, querySelector, ...args)
+    }
   }
   /**
      *
@@ -86,8 +91,8 @@ export const NodesHandlerMixin = (Base) => class extends Base {
   }
 
   _addSubView(key, view) {
-    should(key,
-      'hoballoon:View:_addSubView: `key` argument should not be undefined')
+    assert(key,
+      'hoballoon:View:_addSubView: `key` argument assert not be undefined')
     this._subViews.add(view, key)
     this._suscribeToEvent(view, key)
     return view

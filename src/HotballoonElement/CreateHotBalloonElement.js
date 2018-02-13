@@ -1,5 +1,5 @@
 import {
-  should,
+  assert,
   HyperFlex,
   isString,
   isNumber,
@@ -36,8 +36,8 @@ class CreateHotBalloonElement extends HyperFlex {
   _parseArguments(element, ...args) {
     // console.log('_parseArguments')
 
-    should(isNode(element),
-      'flexio-jshelpers:parseArguments: `element` argument should be a NodeElement `%s` given',
+    assert(isNode(element),
+      'flexio-jshelpers:parseArguments: `element` argument assert be a NodeElement `%s` given',
       typeof element
     )
     let countOfArgs = args.length
@@ -63,12 +63,12 @@ class CreateHotBalloonElement extends HyperFlex {
      * @returns {void}
      */
   _setAttributes(element, attributes) {
-    should(isNode(element),
-      'flexio-jshelpers:setAttributes: `element` argument should be a NodeElement `%s` given',
+    assert(isNode(element),
+      'flexio-jshelpers:setAttributes: `element` argument assert be a NodeElement `%s` given',
       typeof element
     )
-    should(isObject(attributes),
-      'flexio-jshelpers:setAttributes: `attributes` argument should be an Object `%s` given',
+    assert(isObject(attributes),
+      'flexio-jshelpers:setAttributes: `attributes` argument assert be an Object `%s` given',
       typeof attributes
     )
     for (let key in attributes) {

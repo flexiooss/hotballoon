@@ -3,7 +3,7 @@ import {
 } from './Dispatcher'
 
 import {
-  should
+  assert
 } from 'flexio-jshelpers'
 
 class Action {
@@ -12,14 +12,14 @@ class Action {
     this._setComponentId(componentId)
   }
   _setDispatcher(dispatcher) {
-    should(dispatcher instanceof Dispatcher,
-      'hotballoon:Action:setDispatcher "dispatcher" argument should be an instance of Dispatcher'
+    assert(dispatcher instanceof Dispatcher,
+      'hotballoon:Action:setDispatcher "dispatcher" argument assert be an instance of Dispatcher'
     )
     this._dispatcher = dispatcher
   }
   _setComponentId(componentId) {
-    should(!!componentId,
-      'hotballoon:Action:_setComponentId "componentId" argument should not be empty'
+    assert(!!componentId,
+      'hotballoon:Action:_setComponentId "componentId" argument assert not be empty'
     )
     this._componentId = componentId
   }

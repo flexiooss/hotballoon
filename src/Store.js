@@ -2,7 +2,7 @@ import {
   StoreState
 } from './StoreState'
 import {
-  should
+  assert
 } from 'flexio-jshelpers'
 import {
   StoreBase
@@ -18,8 +18,8 @@ class Store extends StoreBase {
       configurable: false,
       get: () => storeState,
       set: (newStoreState) => {
-        should(newStoreState instanceof StoreState,
-          'hotballoon:Store:update: _state property should be an instance of hotballoon/StoreState ')
+        assert(newStoreState instanceof StoreState,
+          'hotballoon:Store:update: _state property assert be an instance of hotballoon/StoreState ')
         storeState = newStoreState
         this._updated()
       }

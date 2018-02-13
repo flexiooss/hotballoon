@@ -3,7 +3,7 @@
 import {
   isFunction,
   isBoolean,
-  should
+  assert
 } from 'flexio-jshelpers'
 
 class EventHandlerBase {
@@ -20,8 +20,8 @@ class EventHandlerBase {
       configurable: false,
       get: () => _isDispatching,
       set: (newIsDispatching) => {
-        should(isBoolean(newIsDispatching),
-          'hotballoonView:Dispatcher: `newIsDispatching` argument should be a Boolean'
+        assert(isBoolean(newIsDispatching),
+          'hotballoonView:Dispatcher: `newIsDispatching` argument assert be a Boolean'
         )
         _isDispatching = newIsDispatching
       }
@@ -56,11 +56,11 @@ class EventHandlerBase {
   }
 
   addEventListener(type, callback) {
-    should(!!type,
-      'hotballoon:EventHandler:addEventListener: ̀`type` argument should not be empty'
+    assert(!!type,
+      'hotballoon:EventHandler:addEventListener: ̀`type` argument assert not be empty'
     )
-    should(isFunction(callback),
-      'hotballoon:EventHandler:addEventListener: ̀`callback` argument should be Callable'
+    assert(isFunction(callback),
+      'hotballoon:EventHandler:addEventListener: ̀`callback` argument assert be Callable'
     )
 
     if (!(this._listeners.has(type))) {
@@ -77,7 +77,7 @@ class EventHandlerBase {
 
   removeEventListener(type, id) {
     if (this._listeners.has(type)) {
-      should(id in this._listenersget(type),
+      assert(id in this._listenersget(type),
         'hotballoon:EventHandlerBase:removeEventListener: ̀`id` argument not in _listeners : `%s`',
         type
       )

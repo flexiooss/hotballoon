@@ -5,8 +5,8 @@ import {
 //   isObject
 // } from './helpers'
 // import {
-//   shouldIs
-// } from './shouldIs'
+//   assertIs
+// } from './assertIs'
 import {
   without
 } from 'lodash'

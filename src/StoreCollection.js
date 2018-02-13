@@ -6,7 +6,7 @@ import {
   StoreStateCollection
 } from './StoreStateCollection'
 import {
-  should,
+  assert,
   filterObject,
   Sequence
 } from 'flexio-jshelpers'
@@ -28,8 +28,8 @@ class StoreCollection extends StoreBase {
       configurable: false,
       get: () => storeStateCollection,
       set: (newStoreStateCollection) => {
-        should(newStoreStateCollection instanceof StoreStateCollection,
-          'hotballoon:Store:update: _state property should be an instance of hotballoon/StoreStateCollection ')
+        assert(newStoreStateCollection instanceof StoreStateCollection,
+          'hotballoon:Store:update: _state property assert be an instance of hotballoon/StoreStateCollection ')
         storeStateCollection = newStoreStateCollection
         this._updated()
       }
@@ -50,9 +50,9 @@ class StoreCollection extends StoreBase {
      * @param {array} items array of items to add to StoreCollection
      */
   add(items) {
-    should(
+    assert(
       Array.isArray(items),
-      'hotballoon:StoreCollection:add: `items` argument should be an instance of Array'
+      'hotballoon:StoreCollection:add: `items` argument assert be an instance of Array'
     )
     let currentState = cloneDeep(this.state())
     let collection = currentState.collection
@@ -63,7 +63,7 @@ class StoreCollection extends StoreBase {
       var id
       if (!(this._keyId in items[i])) {
         id = this._getNewId()
-        if (this._shouldAddIdToItemCollection()) {
+        if (this._assertAddIdToItemCollection()) {
           items[i][this._keyId] = id
         }
       } else {
@@ -84,9 +84,9 @@ class StoreCollection extends StoreBase {
      * @param {array} items array of items to remove to StoreCollection
      */
   delete(items) {
-    should(
+    assert(
       Array.isArray(items),
-      'hotballoon:StoreCollection:delete: `items` argument should be an instance of Array'
+      'hotballoon:StoreCollection:delete: `items` argument assert be an instance of Array'
     )
     let currentState = cloneDeep(this.state())
     let removed = []
@@ -120,7 +120,7 @@ class StoreCollection extends StoreBase {
     return state
   }
 
-  _shouldAddIdToItemCollection() {
+  _assertAddIdToItemCollection() {
     return !!this._addIdToItemCollection
   }
   _inModel(object) {

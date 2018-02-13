@@ -2,7 +2,7 @@ import {
   MapExtended,
   MapOfInstance,
   Sequence,
-  should
+  assert
 } from 'flexio-jshelpers'
 
 import {
@@ -61,7 +61,7 @@ class HotBalloonApplication {
      * --------------------------------------------------------------
      */
   addService(serviceName, service) {
-    should(!this._services.has(serviceName),
+    assert(!this._services.has(serviceName),
       'hotballoon:HotBalloonApplication:addService: `serviceName` : `%s` is already set',
       serviceName
     )

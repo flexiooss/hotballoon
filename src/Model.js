@@ -1,5 +1,5 @@
 import {
-  should
+  assert
 } from 'flexio-jshelpers'
 class Model {
   constructor() {
@@ -10,9 +10,9 @@ class Model {
   }
 
   addSchemaProp(schemaProperty) {
-    should(
+    assert(
       ('id' in schemaProperty) && ('name' in schemaProperty) && ('type' in schemaProperty),
-      'hotballoon:Model:setSchemaProp: `schemaProperty` argument should be an Object : {id:id, name:name, type:type}'
+      'hotballoon:Model:setSchemaProp: `schemaProperty` argument assert be an Object : {id:id, name:name, type:type}'
     )
     this._schema.set(schemaProperty.id, {
       name: schemaProperty.name,

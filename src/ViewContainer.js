@@ -11,7 +11,7 @@ import {
   MapOfInstance,
   MapOfArray,
   isNode,
-  should
+  assert
 } from 'flexio-jshelpers'
 import {
   ComponentContextMixin
@@ -37,8 +37,8 @@ class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateStateMix
     this.RequireIDMixinInit(id)
     this.PrivateStateMixinInit()
 
-    should(storesKey instanceof Map,
-      'hoballoon:ViewContainer:subscribeToStore: `storesKey` argument should be an instance of Map ')
+    assert(storesKey instanceof Map,
+      'hoballoon:ViewContainer:subscribeToStore: `storesKey` argument assert be an instance of Map ')
     this.storesKey = storesKey
     this._registerStores()
 
@@ -103,8 +103,8 @@ class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateStateMix
     // console.log(store)
     // console.log(storeKey)
     // console.log(event)
-    should(store instanceof StoreBase,
-      'hoballoon:ViewContainer:subscribeToStore: `store` argument should be an instance of StoreBase ')
+    assert(store instanceof StoreBase,
+      'hoballoon:ViewContainer:subscribeToStore: `store` argument assert be an instance of StoreBase ')
 
     store.subscribe(event,
       (payload, type) => {
@@ -117,8 +117,8 @@ class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateStateMix
 
   _registerStores() {
     // let stores = this.storeKey()
-    // should(Array.isArray(stores),
-    //   'hoballoon:ViewContainer:_registerStores: `subscribeToStores()` methode should return Array, %s given',
+    // assert(Array.isArray(stores),
+    //   'hoballoon:ViewContainer:_registerStores: `subscribeToStores()` methode assert return Array, %s given',
     //   typeof stores)
 
     // let countOfStores = stores.length
@@ -203,8 +203,8 @@ class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateStateMix
   }
 
   render(parentNode) {
-    should(isNode(parentNode),
-      'hotballoon:ViewContainer:mount: `parentNode` arguement should be a NodeElement, %s given',
+    assert(isNode(parentNode),
+      'hotballoon:ViewContainer:mount: `parentNode` arguement assert be a NodeElement, %s given',
       typeof parentNode)
     this._renderViews(parentNode)
     this._rendered = true

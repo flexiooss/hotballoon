@@ -1,13 +1,13 @@
 import {
   hasParentPrototypeName,
-  should
+  assert
 } from 'flexio-jshelpers'
 export const ViewContainerContextMixin = (Base) => class extends Base {
   ViewContainerContextMixinInit(viewContainer) {
     this._setViewContainer(viewContainer)
   }
   _setViewContainer(viewContainer) {
-    should(hasParentPrototypeName(viewContainer, 'ViewContainer'),
+    assert(hasParentPrototypeName(viewContainer, 'ViewContainer'),
       'hotballoon:ViewContainerContextMixin:_setViewContainer require an argument instance of ̀ hotballoon/ViewContainer`'
     )
 

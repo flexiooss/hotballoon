@@ -2,7 +2,7 @@ import {
   isNode,
   isFunction,
   camelCase,
-  should,
+  assert,
   MapOfArray
 } from 'flexio-jshelpers'
 import {
@@ -72,11 +72,11 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
     this._initListeners()
     this._tokenEvent = new MapOfArray()
 
-    this._shouldInit = true
-    this._shouldUpdate = true
-    this._shouldRender = true
-    this._shouldChangeProps = true
-    this._shouldChangeState = true
+    this._assertInit = true
+    this._assertUpdate = true
+    this._assertRender = true
+    this._assertChangeProps = true
+    this._assertChangeState = true
 
     /**
          * @description dispatch new props to subViews in _subViewsNode property
@@ -166,12 +166,12 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
 
   setProps(props) {
     this._EnventHandler.dispatch(View.eventTypes('PROPS_CHANGE'), props)
-    if (this._shouldChangeProps) {
+    if (this._assertChangeProps) {
       this.props = props
       this._EnventHandler.dispatch(View.eventTypes('PROPS_CHANGED'), props)
       this.updateNode()
     }
-    this._shouldChangeProps = true
+    this._assertChangeProps = true
   }
 
   getProp(key) {
@@ -192,7 +192,7 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
   updateNode() {
     this._EnventHandler.dispatch(View.eventTypes('UPDATE'), {})
 
-    if (this._shouldUpdate) {
+    if (this._assertUpdate) {
       // console.time('updateNode')
 
       this._update()
@@ -201,7 +201,7 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
       this._EnventHandler.dispatch(View.eventTypes('UPDATED'), {})
     }
 
-    this._shouldUpdate = true
+    this._assertUpdate = true
   }
 
   _render() {
@@ -212,13 +212,13 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
   render() {
     this._EnventHandler.dispatch(View.eventTypes('RENDER'), {})
 
-    if (this._shouldRender) {
+    if (this._assertRender) {
       this._render()
       this._isRendered = true
       this._EnventHandler.dispatch(View.eventTypes('RENDERED'), {})
     }
 
-    this._shouldRender = true
+    this._assertRender = true
     // console.dir(this.node())
     // console.dir(this)
     return this.node()
@@ -229,20 +229,20 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
   }
 
   mount(parentNode) {
-    should(isNode(parentNode),
+    assert(isNode(parentNode),
       'hotballoon:View:render require a Node argument'
     )
     this.parentNode = parentNode
 
     this._EnventHandler.dispatch(View.eventTypes('MOUNT'), {})
 
-    if (this._shouldRender) {
+    if (this._assertRender) {
       this._mount()
       this._isRendered = true
       this._EnventHandler.dispatch(View.eventTypes('MOUNTED'), {})
     }
 
-    this._shouldRender = true
+    this._assertRender = true
   }
 
   renderAndMount(parentNode) {

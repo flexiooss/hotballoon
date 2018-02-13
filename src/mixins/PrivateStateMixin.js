@@ -5,8 +5,8 @@ import {
 export const PrivateStateMixin = (Base) => class extends Base {
   PrivateStateMixinInit() {
     this._privateState = new MapExtended()
-    // should(!!id,
-    //   'hotballoon:RequireIDMixin:RequireIDMixinInit: `id` argument should not be empty')
+    // assert(!!id,
+    //   'hotballoon:RequireIDMixin:RequireIDMixinInit: `id` argument assert not be empty')
     // Object.defineProperty(this, '_ID', {
     //   enumerable: true,
     //   configurable: false,

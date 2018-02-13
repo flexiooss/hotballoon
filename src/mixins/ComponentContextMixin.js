@@ -1,16 +1,16 @@
 import {
   hasParentPrototypeName,
-  should
+  assert
 } from 'flexio-jshelpers'
 export const ComponentContextMixin = (Base) => class extends Base {
   ComponentContextMixinInit(component) {
     this._setComponent(component)
   }
   _setComponent(component) {
-    should(!this._component,
+    assert(!this._component,
       'hotballoon:ComponentContextMixin:_setComponent `_component` property already defined'
     )
-    should(hasParentPrototypeName(component, 'Component'),
+    assert(hasParentPrototypeName(component, 'Component'),
       'hotballoon:ComponentContextMixin:_setComponent require an argument instance of ̀ hotballoon/Component`'
     )
 
