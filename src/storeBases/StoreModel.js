@@ -1,7 +1,8 @@
 import {
-  assert
+  assert,
+  filterObject
 } from 'flexio-jshelpers'
-class Model {
+class StoreModel {
   constructor() {
     this._schema = new Map()
   }
@@ -9,6 +10,11 @@ class Model {
     return this._schema
   }
 
+  /**
+     *
+     * @param {Object} schemaProperty
+     * { id: <string>,name: <string>, type: <string> text|number|...  }
+     */
   addSchemaProp(schemaProperty) {
     assert(
       ('id' in schemaProperty) && ('name' in schemaProperty) && ('type' in schemaProperty),
@@ -19,7 +25,20 @@ class Model {
       type: schemaProperty.type
     })
   }
+
+  fillState(state) {
+    return this._inModel(state)
+  }
+
+  _inModel(object) {
+    if (this.hasModel) {
+      filterObject(object, (value, key, scope) => {
+        return this.get().has(key)
+      })
+    }
+    return object
+  }
 }
 export {
-  Model
+  StoreModel
 }

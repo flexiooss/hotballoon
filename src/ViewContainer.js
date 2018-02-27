@@ -5,8 +5,8 @@ import {
   EventOrderedHandler
 } from './EventOrderedHandler'
 import {
-  StoreBase
-} from './bases/StoreBase'
+  Store
+} from './storeBases/Store'
 import {
   MapOfInstance,
   MapOfArray,
@@ -26,6 +26,8 @@ import {
 const eventCallbackPrefix = 'on'
 const viewSuscribeToEvents = 'StoreChanged'
 
+const EVENT_HANDLER = Object.seal(new EventOrderedHandler())
+
 /**
  * @class
  * ViewContainer is a Views container who can suscribe to Stores to dispatch state to Views
@@ -33,12 +35,16 @@ const viewSuscribeToEvents = 'StoreChanged'
 class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateStateMixin(class {}))) {
   constructor(component, id, storesKey) {
     super()
+    /**
+         * MixinInit
+         */
     this.ComponentContextMixinInit(component)
     this.RequireIDMixinInit(id)
     this.PrivateStateMixinInit()
 
     assert(storesKey instanceof Map,
       'hoballoon:ViewContainer:subscribeToStore: `storesKey` argument assert be an instance of Map ')
+
     this.storesKey = storesKey
     this._registerStores()
 
@@ -46,11 +52,10 @@ class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateStateMix
     this._mounted = false
     this._rendered = false
 
-    var eventHandler = Object.seal(new EventOrderedHandler())
     Object.defineProperty(this, '_EventHandler', {
       enumerable: false,
       configurable: false,
-      value: eventHandler
+      value: EVENT_HANDLER
     })
     this._tokenEvent = new MapOfArray()
     this.registerViews()
@@ -103,7 +108,7 @@ class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateStateMix
     // console.log(store)
     // console.log(storeKey)
     // console.log(event)
-    assert(store instanceof StoreBase,
+    assert(store instanceof Store,
       'hoballoon:ViewContainer:subscribeToStore: `store` argument assert be an instance of StoreBase ')
 
     store.subscribe(event,
@@ -130,7 +135,7 @@ class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateStateMix
 
     this.storesKey.forEach((value, key, map) => {
       // console.log(value)
-      this.subscribeToStore(value, StoreBase.eventTypes('CHANGED'))
+      this.subscribeToStore(value, Store.eventType('CHANGED'))
     })
   }
 

@@ -29,6 +29,7 @@ class EventOrderedHandler extends EventHandlerBase {
     if (!(this._listeners.has(type))) {
       this._listeners.set(type, {})
     }
+
     let id = this._getNextId()
 
     this._listeners.get(type)[id] = {
@@ -37,9 +38,11 @@ class EventOrderedHandler extends EventHandlerBase {
       priority: priority
     }
 
-    this._listeners.set(type, sortObject(this._listeners.get(type), (a, b) => {
-      return a.priority - b.priority
-    }))
+    this._listeners.set(type,
+      sortObject(this._listeners.get(type),
+        (a, b) => {
+          return a.priority - b.priority
+        }))
 
     return id
   }

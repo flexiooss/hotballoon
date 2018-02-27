@@ -2,8 +2,8 @@ import {
   Action
 } from './Action'
 import {
-  StoreBase
-} from './bases/StoreBase'
+  Store
+} from './storeBases/Store'
 import {
   ViewContainer
 } from './ViewContainer'
@@ -35,7 +35,7 @@ class Component extends ApplicationContextMixin(RequireIDMixin(PrivateStateMixin
     this.dispatcherListenerTokens = new Map()
     this._viewContainers = new MapOfInstance(ViewContainer)
     this.viewContainersKey = new Map()
-    this._stores = new MapOfInstance(StoreBase)
+    this._stores = new MapOfInstance(Store)
     this.storesKey = new Map()
     this._actions = new MapOfInstance(Action)
     this.actionssKey = new Map()

@@ -5,34 +5,33 @@ import {
   deepFreezeSeal
 } from 'flexio-jshelpers'
 
-class StoreState {
+export class BlockStorage {
+  constructor() {
+    Object.defineProperty(this, '_state', {
+      enumerable: false,
+      writable: false,
+      configurable: false,
+      value: state
+    })
+  }
   static create(state) {
     state = cloneDeep(state) || {}
     // console.log('StoreState:create')
     // console.log(state)
 
     const storeState = new StoreState()
-    Object.defineProperty(storeState, '_state', {
-      enumerable: false,
-      writable: false,
-      configurable: false,
-      value: state
-    })
     // return Object.freeze(storeState)
     return deepFreezeSeal(storeState)
   }
 
-  update(state) {
-    return StoreState.create(state)
+  set(state) {
+    this._set(state)
   }
   get(key) {
-    return (key && (key in this._state)) ? this._getState()[key] : this._getState()
+    return this._get(key)
   }
 
   _getState() {
     return deepFreezeSeal(this._state || {})
   }
-}
-export {
-  StoreState
 }

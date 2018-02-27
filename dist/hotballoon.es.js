@@ -3,10 +3,8 @@ import {
 } from '../src/Dispatcher'
 import {
   Store
-} from '../src/Store'
-import {
-  StoreCollection
-} from '../src/StoreCollection'
+} from '../src/storeBases/Store'
+
 import {
   EventHandler
 } from '../src/EventHandler'
@@ -39,6 +37,9 @@ import {
   Component
 } from '../src/Component'
 
+/**
+ * hotballoonElement
+ */
 import {
   html
 } from '../src/HotballoonElement/CreateHotBalloonElement'
@@ -47,9 +48,25 @@ import {
   select as selectAttributeHandler
 } from '../src/HotballoonElement/HotBalloonAttributeHandler'
 
-const hotballoonElement = {
+/**
+ * storeBases
+ */
+
+import {
+  Storage
+} from '../src/storeBases/Storage'
+import {
+  StoreModel
+} from '../src/storeBases/StoreModel'
+
+export const hotballoonElement = {
   html,
   HotBalloonAttributeHandler
+}
+
+export const storeBases = {
+  Storage,
+  StoreModel
 }
 
 export {
@@ -57,7 +74,6 @@ export {
   Dispatcher,
   Component,
   Store,
-  StoreCollection,
   Action,
   ViewContainer,
   View,
@@ -66,7 +82,6 @@ export {
   ComponentContextMixin,
   EventHandler,
   EventOrderedHandler,
-  hotballoonElement,
   html,
   selectAttributeHandler
 }
