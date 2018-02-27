@@ -3,41 +3,39 @@ import {
 } from './Dispatcher'
 
 import {
-  CoreException
-} from './CoreException'
+  assert
+} from 'flexio-jshelpers'
 
 class Action {
-  constructor(dispatcher, ...props) {
-    try {
-      this.setDispatcher(dispatcher)
-    } catch (e) {
-      console.log(e.message, e.name)
-    }
+  constructor(dispatcher, componentId) {
+    this._setDispatcher(dispatcher)
+    this._setComponentId(componentId)
+  }
+  _setDispatcher(dispatcher) {
+    assert(dispatcher instanceof Dispatcher,
+      'hotballoon:Action:setDispatcher "dispatcher" argument assert be an instance of Dispatcher'
+    )
+    this._dispatcher = dispatcher
+  }
+  _setComponentId(componentId) {
+    assert(!!componentId,
+      'hotballoon:Action:_setComponentId "componentId" argument assert not be empty'
+    )
+    this._componentId = componentId
   }
 
-  static types() {
+  types() {
     return {}
   }
 
-  static getTypes() {
-    return this.types()
-  }
-  static type(key) {
-    return this.getTypes()[key]
-  }
-
-  setDispatcher(dispatcher) {
-    if (dispatcher instanceof Dispatcher) {
-      this._dispatcher = dispatcher
-    } else {
-      throw new CoreException('Action:setDispatcher "dispatcher" is not instanceof Dispatcher')
-    }
+  type(key) {
+    return this._componentId + '_' + this.types()[key]
   }
 
   newAction(type, payload) {}
 
-  dispatch(payload) {
-    this._dispatcher.dispatch(payload)
+  dispatch(type, payload) {
+    this._dispatcher.dispatch(type, payload)
   }
 }
 

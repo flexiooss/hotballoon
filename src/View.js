@@ -1,133 +1,253 @@
 import {
-  ViewContainer
-} from './ViewContainer'
+  isNode,
+  isFunction,
+  camelCase,
+  assert,
+  MapOfArray
+} from 'flexio-jshelpers'
 import {
-  render as DomRender
-} from './helpers/domHelpers/domHelpers'
-
+  EventHandler
+} from './EventHandler'
 import {
-  isNode
-} from './helpers'
+  PrivateStateMixin
+} from './mixins/PrivateStateMixin'
 import {
-  shouldIs
-} from './shouldIs'
+  ViewContainerContextMixin
+} from './mixins/ViewContainerContextMixin'
+import {
+  NodesHandlerMixin
+} from './mixins/NodesHandlerMixin'
+import {
+  RequireIDMixin
+} from './mixins/RequireIDMixin'
+import {
+  reconcile
+} from 'flexio-nodes-reconciliation'
 
-class View {
-  constructor(viewContainer, props) {
-    this._setViewContainer(viewContainer)
-    this.props = props
-    this._node = null
-  }
+const EVENT_CALLBACK_PREFIX = 'on'
+const EVENT_STORE_CHANGED = 'StoreChanged'
 
-  _setViewContainer(viewContainer) {
-    shouldIs(!this._viewContainer,
-      'View:_setContainer:viewContainer property already set'
-    )
-    shouldIs(
-      viewContainer instanceof ViewContainer,
-      'View:_setContainer:viewContainer argument should be instance of hotballoon/ViewContainer'
-    )
-    this._viewContainer = viewContainer
-  }
-  getViewContainer() {
-    return this._viewContainer
-  }
+/**
+ * @class View
+ * @extends ViewContainerContextMixin
+ * @extends PrivateStateMixin
+ * @description
+ * @param {ViewContainer} viewContainer
+ * @param {Object} props : properties from his registered Store
+ *
+ *
+ */
 
-  setProps(props) {
-    this.props = props
-  }
+class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin(RequireIDMixin(class {})))) {
+  constructor(id, viewContainer, props) {
+    super()
+    this.RequireIDMixinInit(id)
+    this.ViewContainerContextMixinInit(viewContainer)
+    this.PrivateStateMixinInit()
+    this.NodesHandlerMixinInit(View)
 
-  setState(props) {
-    this.setProps = props
-  }
+    this.props = props || {}
+    this.parentNode = null
+    this._isRendered = false
 
-  getNode() {
-    return this._createNode()
-  }
+    /**
+         * @private
+         * @prop EventHandler
+         * @description Internal event property with callable value
+         *
+         * onInit
+         * onUpdtate
+         * onUpdtated
+         * onRender
+         * onRendered
+         * onMount
+         * onMounted
+         * onPropsChange
+         * onPropsChanged
+         * onStateChange
+         * onStateChanged
+         *
+         */
+    this._EnventHandler = new EventHandler()
+    this._initListeners()
+    this._tokenEvent = new MapOfArray()
 
-  _createNode() {
-    if (this._node === null) {
-      this._node = this.view()
-    }
-    return this._node
-  }
+    this._assertInit = true
+    this._assertUpdate = true
+    this._assertRender = true
+    this._assertChangeProps = true
+    this._assertChangeState = true
 
-  replaceNode() {
-    this._node = this.view()
-    return this._node
-  }
-
-  update() {}
-  /**
-     * Define if the view
-     * @private
-     */
-  _shouldUpdate() {
-    return true
-  }
-  _beforeUpdate() {
-    return true
-  }
-  _afterUpdate() {
-    return true
-  }
-
-  updateNode() {
-    if (!this._shouldUpdate()) {
-      return false
-    }
-    if (!this._beforeUpdate()) {
-      return false
-    }
-
-    this.update()
-
-    if (!this._afterUpdate()) {
-      return false
-    }
-  }
-
-  _shouldRender() {
-    return true
-  }
-  _beforeRender() {
-    return true
-  }
-  _afterRender() {
-    return true
-  }
-
-  _render(parentNode) {
-    console.log('_render')
-    console.log(this.getNode())
-    console.log(this)
-    DomRender(parentNode, this.getNode())
-  }
-
-  render(parentNode) {
-    shouldIs(isNode(parentNode),
-      'hotballoon:View:render require a Node argument'
-    )
-
-    if (!this._shouldRender()) {
-      return false
-    }
-
-    if (!this._beforeRender()) {
-      return false
-    }
-
-    this._render(parentNode)
-
-    if (!this._afterRender()) {
-      return false
+    /**
+         * @description dispatch new props to subViews in _subViewsNode property
+         * @param {Object} payload
+         * @param {String} type
+         */
+    this.onStoreChanged = (payload, type) => {
+      this.setProps(payload)
+      this._dispatchStoreChanged(payload)
     }
   }
 
   view() {}
+  registerListeners() {}
+
+  /*
+     * --------------------------------------------------------------
+     * EventHandler
+     * --------------------------------------------------------------
+     */
+
+  static eventTypes(key) {
+    const types = {
+      INIT: 'INIT',
+      UPDATE: 'UPDATE',
+      UPDATED: 'UPDATED',
+      RENDER: 'RENDER',
+      RENDERED: 'RENDERED',
+      MOUNT: 'MOUNT',
+      MOUNTED: 'MOUNTED',
+      PROPS_CHANGE: 'PROPS_CHANGE',
+      PROPS_CHANGED: 'PROPS_CHANGED',
+      STATE_CHANGE: 'STATE_CHANGE',
+      STATE_CHANGED: 'STATE_CHANGED'
+    }
+    return (key) ? types[key] : types
+  }
+
+  _suscribeToEvent(part, key) {
+    let token = this.subscribe(
+      EVENT_STORE_CHANGED,
+      (payload, type) => {
+        part[EVENT_CALLBACK_PREFIX + EVENT_STORE_CHANGED](payload, type)
+      },
+      part, 100)
+
+    this._tokenEvent.add(key, token)
+  }
+
+  _initListeners() {
+    for (let eventType in View.eventTypes()) {
+      this._EnventHandler.addEventListener(View.eventTypes(eventType), (payload, type) => {
+        var propName = EVENT_CALLBACK_PREFIX + camelCase(type)
+
+        if (this.hasOwnProperty(propName) && isFunction(this[propName])) {
+          this[propName](payload)
+        }
+      })
+    }
+  }
+
+  _dispatchStoreChanged(payload) {
+    let countOfParts = this._subViews.length
+    for (let i = 0; i < countOfParts; i++) {
+      this._subViews[i].dispatch(EVENT_STORE_CHANGED, payload)
+    }
+  }
+
+  /**
+     *
+     * --------------------------------------------------------------
+     * ViewContainer
+     * --------------------------------------------------------------
+     */
 
   newAction(actionName, actionType, payload) {
-    this.getViewContainer().newViewAction(actionName, actionType, payload)
+    this.ViewContainer().newViewAction(actionName, actionType, payload)
+    return this
+  }
+
+  /**
+     *
+     * --------------------------------------------------------------
+     * Prop & State
+     * --------------------------------------------------------------
+     */
+
+  setProps(props) {
+    this._EnventHandler.dispatch(View.eventTypes('PROPS_CHANGE'), props)
+    if (this._assertChangeProps) {
+      this.props = props
+      this._EnventHandler.dispatch(View.eventTypes('PROPS_CHANGED'), props)
+      this.updateNode()
+    }
+    this._assertChangeProps = true
+  }
+
+  getProp(key) {
+    return (key in this.props) ? this.props[key] : ''
+  }
+
+  /**
+     *
+     * --------------------------------------------------------------
+     * Rendering
+     * --------------------------------------------------------------
+     */
+
+  _update() {
+    reconcile(this._node, this.view(), this.parentNode)
+  }
+
+  updateNode() {
+    this._EnventHandler.dispatch(View.eventTypes('UPDATE'), {})
+
+    if (this._assertUpdate) {
+      // console.time('updateNode')
+
+      this._update()
+      // console.timeEnd('updateNode')
+
+      this._EnventHandler.dispatch(View.eventTypes('UPDATED'), {})
+    }
+
+    this._assertUpdate = true
+  }
+
+  _render() {
+    this._replaceNode()
+    this._setNodeViewRef()
+  }
+
+  render() {
+    this._EnventHandler.dispatch(View.eventTypes('RENDER'), {})
+
+    if (this._assertRender) {
+      this._render()
+      this._isRendered = true
+      this._EnventHandler.dispatch(View.eventTypes('RENDERED'), {})
+    }
+
+    this._assertRender = true
+    // console.dir(this.node())
+    // console.dir(this)
+    return this.node()
+  }
+
+  _mount() {
+    this.parentNode.appendChild(this.node())
+  }
+
+  mount(parentNode) {
+    assert(isNode(parentNode),
+      'hotballoon:View:render require a Node argument'
+    )
+    this.parentNode = parentNode
+
+    this._EnventHandler.dispatch(View.eventTypes('MOUNT'), {})
+
+    if (this._assertRender) {
+      this._mount()
+      this._isRendered = true
+      this._EnventHandler.dispatch(View.eventTypes('MOUNTED'), {})
+    }
+
+    this._assertRender = true
+  }
+
+  renderAndMount(parentNode) {
+    this.render()
+    this.mount(parentNode)
   }
 }
 

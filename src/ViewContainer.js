@@ -2,79 +2,230 @@ import {
   View
 } from './View'
 import {
-  InstancesMap
-} from './InstancesMap'
+  EventOrderedHandler
+} from './EventOrderedHandler'
 import {
-  HotBalloonApplicationContext
-} from './HotBalloonApplicationContext'
+  Store
+} from './storeBases/Store'
+import {
+  MapOfInstance,
+  MapOfArray,
+  isNode,
+  assert
+} from 'flexio-jshelpers'
+import {
+  ComponentContextMixin
+} from './mixins/ComponentContextMixin'
+import {
+  RequireIDMixin
+} from './mixins/RequireIDMixin'
+import {
+  PrivateStateMixin
+} from './mixins/PrivateStateMixin'
 
-class ViewContainer extends HotBalloonApplicationContext {
-  constructor(hotBallonApplication) {
-    super(hotBallonApplication)
-    this.storesName = []
-    this._viewContainers = new InstancesMap(ViewContainer)
-    this._views = new InstancesMap(View)
+const eventCallbackPrefix = 'on'
+const viewSuscribeToEvents = 'StoreChanged'
+
+const EVENT_HANDLER = Object.seal(new EventOrderedHandler())
+
+/**
+ * @class
+ * ViewContainer is a Views container who can suscribe to Stores to dispatch state to Views
+ */
+class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateStateMixin(class {}))) {
+  constructor(component, id, storesKey) {
+    super()
+    /**
+         * MixinInit
+         */
+    this.ComponentContextMixinInit(component)
+    this.RequireIDMixinInit(id)
+    this.PrivateStateMixinInit()
+
+    assert(storesKey instanceof Map,
+      'hoballoon:ViewContainer:subscribeToStore: `storesKey` argument assert be an instance of Map ')
+
+    this.storesKey = storesKey
+    this._registerStores()
+
+    this._views = new MapOfInstance(View)
     this._mounted = false
     this._rendered = false
+
+    Object.defineProperty(this, '_EventHandler', {
+      enumerable: false,
+      configurable: false,
+      value: EVENT_HANDLER
+    })
+    this._tokenEvent = new MapOfArray()
+    this.registerViews()
   }
 
-  subscribeToStores(stores) {}
-
-  init(stores) {
-    let myStores = Object.keys(stores)
-      .filter(key => this.storesName.includes(key))
-      .reduce((obj, key) => {
-        obj[key] = stores[key]
-        return obj
-      }, {})
-
-    this.subscribeToStores(myStores)
+  init() {
     this.mount()
   }
 
-  addViewContainer(viewContainer) {
-    this._viewContainers.add(viewContainer)
+  /**
+     *
+     * --------------------------------------------------------------
+     * EventHandler
+     * --------------------------------------------------------------
+     */
+
+  static eventTypes(key) {
+    const types = {
+      INIT: 'INIT',
+      STORE_CHANGE: 'STORE_CHANGE',
+      WILL_REMOVE: 'WILL_REMOVE'
+    }
+    return (key) ? types[key] : types
   }
-  addView(view) {
-    this._views.add(view)
+
+  _formatStoreEventName(storeKey, type) {
+    return storeKey + '_' + type
   }
 
-  registerContainers() {}
-
-  registerViews() {}
-
-  mount() {
-    this.registerContainers()
-    this.registerViews()
-    this._mounted = true
+  subscribe(type, callback, scope, priority) {
+    return this._EventHandler.addEventListener(type, callback, scope, priority)
   }
 
-  _renderContainer(parentNode) {
-    this._viewContainers.foreach((key, container) => {
-      container.render(parentNode)
+  dispatch(eventType, payload) {
+    console.log('ViewContainer:dispatch')
+    this._EventHandler.dispatch(eventType, payload)
+  }
+
+  /**
+     *
+     * --------------------------------------------------------------
+     * Stores
+     * --------------------------------------------------------------
+     */
+
+  subscribeToStore(storeKey, event) {
+    let store = this.Store(storeKey)
+
+    // console.log('subscribeToStore')
+    // console.log(store)
+    // console.log(storeKey)
+    // console.log(event)
+    assert(store instanceof Store,
+      'hoballoon:ViewContainer:subscribeToStore: `store` argument assert be an instance of StoreBase ')
+
+    store.subscribe(event,
+      (payload, type) => {
+        console.log('dispatch')
+
+        this.dispatch(this._formatStoreEventName(storeKey, type), payload)
+      },
+      this, 100)
+  }
+
+  _registerStores() {
+    // let stores = this.storeKey()
+    // assert(Array.isArray(stores),
+    //   'hoballoon:ViewContainer:_registerStores: `subscribeToStores()` methode assert return Array, %s given',
+    //   typeof stores)
+
+    // let countOfStores = stores.length
+    // for (let i = 0; i < countOfStores; i++) {
+    //   this.subscribeToStore(stores[i].storeKey, stores[i].event)
+    // }
+    // console.log('_registerStores')
+    // console.log(this.storesKey)
+
+    this.storesKey.forEach((value, key, map) => {
+      // console.log(value)
+      this.subscribeToStore(value, Store.eventType('CHANGED'))
     })
   }
 
+  /**
+     *
+     * --------------------------------------------------------------
+     * Views
+     * --------------------------------------------------------------
+     */
+
+  /**
+     *
+     * @param {*} view
+     * @param {*} key
+     * @param {array} events , array of event types
+     */
+  addView(view, storeKey, storeEvent) {
+    this._views.add(view._ID, view)
+    if (storeKey && storeEvent) {
+      this._suscribeToEvent(view._ID, storeKey, storeEvent, view)
+    }
+    return view
+  }
+
+  _suscribeToEvent(key, storeKey, storeEvent, view) {
+    var eventName = this._formatStoreEventName(storeKey, storeEvent)
+    // console.log('eventName')
+    // console.log(eventName)
+
+    let token = this.subscribe(
+      eventName,
+      (payload, type) => {
+        // console.log('__ICI________________________________________________________________________')
+        // console.log(this)
+        // console.log(viewSuscribeToEvents)
+        // console.log(view)
+        view[eventCallbackPrefix + viewSuscribeToEvents](payload, type)
+
+        // if (view.hasOwnProperty('on' + eventName) && view['on' + eventName]) {
+        // console.log('__LA________________________________________________________________________')
+        // }
+      },
+      view, 0)
+    // console.log('this._tokenEvent.add(key, token)')
+    // console.log(key)
+    // console.log(token)
+
+    this._tokenEvent.add(key, token)
+  }
+
+  replaceView(view, key) {
+    this._views.replace(view, key)
+  }
+
+  view(key) {
+    return this._views.get(key)
+  }
+
+  /**
+     *
+     * --------------------------------------------------------------
+     * Rendering
+     * --------------------------------------------------------------
+     */
+
   _renderViews(parentNode) {
-    this._views.foreach((key, view) => {
-      view.render(parentNode)
+    this._views.forEach((view, key, map) => {
+      view.renderAndMount(parentNode)
     })
   }
 
   render(parentNode) {
-    if (!this._mounted) {
-      this.mount()
-    }
-    this._renderContainer(parentNode)
+    assert(isNode(parentNode),
+      'hotballoon:ViewContainer:mount: `parentNode` arguement assert be a NodeElement, %s given',
+      typeof parentNode)
     this._renderViews(parentNode)
     this._rendered = true
+    return parentNode
   }
-  createAction(actionName, typAction, payload) {
-    const action = this.APP().getAction(actionName)
-    if (action) {
-      action.newAction(typAction, payload)
-    }
+
+  /**
+     *
+     * --------------------------------------------------------------
+     * Actions
+     * --------------------------------------------------------------
+     */
+  createAction(action, typAction, payload) {
+    action.newAction(typAction, payload)
   }
+
   newViewAction(actionName, clb, ...args) {
     this.createAction(actionName, clb, ...args)
   }

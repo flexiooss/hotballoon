@@ -3,17 +3,15 @@
     "description": "Small JavaScript library for building interfaces by Flexio",
     "main": "dist/hotballoon.js",
     "module": "dist/hotballoon.es.js",
-    "version": "1.0.0",
-    "license": "Apache License 2.0",
+    "version": "1.0.1",
+    "license": "Apache-2.0",
     "bugs": {
         "url": "https://github.com/flexiooss/hotballoon/issues"
     },
-    "author": {
-        "name": "Thomas Chatelain",
-        "url": "https://github.com/TomAchT"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/flexiooss/hotballoon.git"
+    "author": "Thomas Chatelain (https://github.com/TomAchT)",
+    "repository": "https://github.com/flexiooss/hotballoon.git",
+    "devDependencies": {},
+    "dependencies": {
+        "flexio-jshelpers": "https://github.com/flexiooss/flexio-jshelpers.git"
     }
 }

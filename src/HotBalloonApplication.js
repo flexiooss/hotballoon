@@ -1,113 +1,89 @@
 import {
-  shouldIs
-} from './shouldIs'
-import {
-  InstancesMap
-} from './InstancesMap'
-import {
-  ObjectMap
-} from './ObjectMap'
-import {
-  Action
-} from './Action'
+  MapExtended,
+  MapOfInstance,
+  Sequence,
+  assert
+} from 'flexio-jshelpers'
+
 import {
   Component
 } from './Component'
-import {
-  Store
-} from './Store'
 
 class HotBalloonApplication {
   constructor() {
     this._dispatcher = null
-    this._actions = new InstancesMap(Action)
-    this._components = new InstancesMap(Component)
-    this._stores = new InstancesMap(Store)
-    this._viewContainers = new ObjectMap()
-    this._appViewContainer = null
-  }
-
-  setDispatcher(dispatcher) {
-    this._dispatcher = dispatcher
-  }
-  getDispatcher() {
-    return this._dispatcher
-  }
-  setActions(actions) {
-    this._actions.set(actions)
-  }
-  addAction(action) {
-    this._actions.add(action)
-  }
-  getActions() {
-    return this._actions.get()
-  }
-  getAction(action) {
-    return this._actions.get(action)
-  }
-  setComponents(components) {
-    this._components.set(components)
-  }
-  addComponent(component) {
-    this._components.add(component)
-  }
-  getComponents() {
-    return this._components.get()
-  }
-  getComponent(component) {
-    return this._components.get(component)
-  }
-  setStores(stores) {
-    this._stores.set(stores)
-  }
-  addStore(store) {
-    this._stores.add(store)
-  }
-  getStores() {
-    return this._stores.get()
-  }
-  getStore(store) {
-    return this._stores.get(store)
-  }
-  setViewContainers(viewContainers) {
-    this._viewContainers.set(viewContainers)
-  }
-  addViewContainer(viewContainer) {
-    this._viewContainers.add(viewContainer)
-  }
-  getViewContainers() {
-    return this._viewContainers.get()
-  }
-  getViewContainer(viewContainerName) {
-    return this._viewContainers.get(viewContainerName)
+    this._components = new MapOfInstance(Component)
+    this._services = new MapExtended()
+    this._sequenceComponentId = new Sequence('component_')
   }
 
   /**
      *
-     * @param {string} viewContainerName
-     * @returns {void}
+     * --------------------------------------------------------------
+     * Dispatcher
+     * --------------------------------------------------------------
      */
-  initContainer(viewContainerName) {
-    shouldIs(
-      viewContainerName in this.getViewContainers(),
-      'hotballoon:HotBallonApplication:initContainer `%s` is not registered in property viewContainers : array <ViewContainer>',
-      viewContainerName
+
+  setDispatcher(dispatcher) {
+    this._dispatcher = dispatcher
+  }
+  Dispatcher() {
+    return this._dispatcher
+  }
+
+  /**
+     *
+     * --------------------------------------------------------------
+     * Component
+     * --------------------------------------------------------------
+     */
+
+  addComponent(Component, ...args) {
+    let componentId = this._sequenceComponentId.getNewId()
+    // console.log(componentId)
+
+    return this._components.add(componentId, new Component(this, componentId, ...args))
+  }
+  removeComponent(componentID) {
+    if (this._components.has(componentID)) {
+      this.Component(componentID).willRemove()
+      this._components.delete(componentID)
+    }
+  }
+  Component(key) {
+    return this._components.get(key)
+  }
+
+  /**
+     *
+     * --------------------------------------------------------------
+     * Services
+     * --------------------------------------------------------------
+     */
+  addService(serviceName, service) {
+    assert(!this._services.has(serviceName),
+      'hotballoon:HotBalloonApplication:addService: `serviceName` : `%s` is already set',
+      serviceName
     )
-    let ViewContainerClass = this.getViewContainer(viewContainerName)
-    this._appViewContainer = new ViewContainerClass(this)
-    this._appViewContainer.init(this.getStores())
+    return this._services.add(serviceName, service)
   }
-
-  render(parentNode) {
-    let t = this._appViewContainer.render(parentNode)
-    console.log('t : ' + t)
-    return t
+  removeService(serviceName) {
+    if (this._services.has(serviceName)) {
+      let service = this.Service(serviceName)
+      if ('willRemove' in service) {
+        service.willRemove()
+      }
+      this._services.delete(serviceName)
+    }
   }
+  Service(key) {
+    return this._services.get(key)
+  }
+  // render(parentNode) {
+  //   let t = this._appViewContainer.render(parentNode)
+  //   return t
+  // }
 }
-
-// const APP = new HotBallonApplication()
-// // Object.freeze(APP)
-// Object.seal(APP)
 
 export {
   HotBalloonApplication
