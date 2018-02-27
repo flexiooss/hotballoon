@@ -3,7 +3,7 @@
     "description": "Small JavaScript library for building interfaces by Flexio",
     "main": "dist/hotballoon.js",
     "module": "dist/hotballoon.es.js",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "license": "Apache-2.0",
     "bugs": {
         "url": "https://github.com/flexiooss/hotballoon/issues"
