@@ -40,7 +40,6 @@ class HotBalloonApplication {
 
   addComponent(Component, ...args) {
     let componentId = this._sequenceComponentId.getNewId()
-    // console.log(componentId)
 
     return this._components.add(componentId, new Component(this, componentId, ...args))
   }

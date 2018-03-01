@@ -23,9 +23,6 @@ import {
   PrivateStateMixin
 } from './mixins/PrivateStateMixin'
 
-const eventCallbackPrefix = 'on'
-const viewSuscribeToEvents = 'StoreChanged'
-
 const EVENT_HANDLER = Object.seal(new EventOrderedHandler())
 
 /**
@@ -72,7 +69,7 @@ class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateStateMix
      * --------------------------------------------------------------
      */
 
-  static eventTypes(key) {
+  static eventType(key) {
     const types = {
       INIT: 'INIT',
       STORE_CHANGE: 'STORE_CHANGE',
@@ -113,28 +110,13 @@ class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateStateMix
 
     store.subscribe(event,
       (payload, type) => {
-        console.log('dispatch')
-
         this.dispatch(this._formatStoreEventName(storeKey, type), payload)
       },
       this, 100)
   }
 
   _registerStores() {
-    // let stores = this.storeKey()
-    // assert(Array.isArray(stores),
-    //   'hoballoon:ViewContainer:_registerStores: `subscribeToStores()` methode assert return Array, %s given',
-    //   typeof stores)
-
-    // let countOfStores = stores.length
-    // for (let i = 0; i < countOfStores; i++) {
-    //   this.subscribeToStore(stores[i].storeKey, stores[i].event)
-    // }
-    // console.log('_registerStores')
-    // console.log(this.storesKey)
-
     this.storesKey.forEach((value, key, map) => {
-      // console.log(value)
       this.subscribeToStore(value, Store.eventType('CHANGED'))
     })
   }
@@ -162,27 +144,13 @@ class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateStateMix
 
   _suscribeToEvent(key, storeKey, storeEvent, view) {
     var eventName = this._formatStoreEventName(storeKey, storeEvent)
-    // console.log('eventName')
-    // console.log(eventName)
 
     let token = this.subscribe(
       eventName,
       (payload, type) => {
-        // console.log('__ICI________________________________________________________________________')
-        // console.log(this)
-        // console.log(viewSuscribeToEvents)
-        // console.log(view)
-        view[eventCallbackPrefix + viewSuscribeToEvents](payload, type)
-
-        // if (view.hasOwnProperty('on' + eventName) && view['on' + eventName]) {
-        // console.log('__LA________________________________________________________________________')
-        // }
+        view.dispatch(View.eventType('STORE_CHANGED'), payload)
       },
       view, 0)
-    // console.log('this._tokenEvent.add(key, token)')
-    // console.log(key)
-    // console.log(token)
-
     this._tokenEvent.add(key, token)
   }
 

@@ -6,30 +6,39 @@ import {
   assert
 } from 'flexio-jshelpers'
 
+const TYPES = {}
+
 class Action {
   constructor(dispatcher, componentId) {
-    this._setDispatcher(dispatcher)
-    this._setComponentId(componentId)
-  }
-  _setDispatcher(dispatcher) {
     assert(dispatcher instanceof Dispatcher,
       'hotballoon:Action:setDispatcher "dispatcher" argument assert be an instance of Dispatcher'
     )
-    this._dispatcher = dispatcher
-  }
-  _setComponentId(componentId) {
     assert(!!componentId,
       'hotballoon:Action:_setComponentId "componentId" argument assert not be empty'
     )
-    this._componentId = componentId
-  }
+    Object.defineProperties(this, {
+      _dispatcher: {
+        configurable: false,
+        enumerable: false,
+        value: dispatcher
+      },
+      _componentId: {
+        configurable: false,
+        enumerable: false,
+        writable: false,
+        value: componentId
+      }
 
-  types() {
-    return {}
+    })
+
+    this._types = TYPES
   }
 
   type(key) {
-    return this._componentId + '_' + this.types()[key]
+    assert(key in this._types,
+      'hotballoon:Action:' + this.constructor.name + ':type: `key` argument not defined in `_types` property'
+    )
+    return this._componentId + '_' + this._types[key]
   }
 
   newAction(type, payload) {}
