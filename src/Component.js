@@ -30,8 +30,6 @@ class Component extends ApplicationContextMixin(RequireIDMixin(PrivateStateMixin
 
     this._sequenceId = new Sequence(this._ID + '_')
 
-    // this._dispatchToken = new MapOfArray()
-
     this.dispatcherListenerTokens = new Map()
     this._viewContainers = new MapOfInstance(ViewContainer)
     this.viewContainersKey = new Map()

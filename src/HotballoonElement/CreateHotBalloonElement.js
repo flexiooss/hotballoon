@@ -41,14 +41,13 @@ class CreateHotBalloonElement extends HyperFlex {
       typeof element
     )
     let countOfArgs = args.length
+
     for (let i = 0; i < countOfArgs; i++) {
       const arg = args[i]
       if (isNode(arg)) {
         element.appendChild(arg)
       } else if (isString(arg) || isNumber(arg)) {
         element.appendChild(document.createTextNode(arg))
-      } else if (hasParentPrototypeName(arg, 'View')) {
-        this._setAttributes(element, arg)
       } else if (isObject(arg)) {
         this._setAttributes(element, arg)
       }

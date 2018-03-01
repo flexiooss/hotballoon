@@ -25,7 +25,7 @@ import {
 } from 'flexio-nodes-reconciliation'
 
 const EVENT_CALLBACK_PREFIX = 'on'
-const EVENT_STORE_CHANGED = 'StoreChanged'
+// const EVENT_STORE_CHANGED = 'StoreChanged'
 
 /**
  * @class View
@@ -66,17 +66,18 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
          * onPropsChanged
          * onStateChange
          * onStateChanged
+         * onStoreChanged
          *
          */
     this._EnventHandler = new EventHandler()
     this._initListeners()
     this._tokenEvent = new MapOfArray()
 
-    this._assertInit = true
-    this._assertUpdate = true
-    this._assertRender = true
-    this._assertChangeProps = true
-    this._assertChangeState = true
+    this._shouldInit = true
+    this._shouldUpdate = true
+    this._shouldRender = true
+    this._shouldChangeProps = true
+    this._shouldChangeState = true
 
     /**
          * @description dispatch new props to subViews in _subViewsNode property
@@ -85,7 +86,6 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
          */
     this.onStoreChanged = (payload, type) => {
       this.setProps(payload)
-      this._dispatchStoreChanged(payload)
     }
   }
 
@@ -98,7 +98,7 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
      * --------------------------------------------------------------
      */
 
-  static eventTypes(key) {
+  static eventType(key) {
     const types = {
       INIT: 'INIT',
       UPDATE: 'UPDATE',
@@ -110,25 +110,29 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
       PROPS_CHANGE: 'PROPS_CHANGE',
       PROPS_CHANGED: 'PROPS_CHANGED',
       STATE_CHANGE: 'STATE_CHANGE',
-      STATE_CHANGED: 'STATE_CHANGED'
+      STATE_CHANGED: 'STATE_CHANGED',
+      STORE_CHANGED: 'STORE_CHANGED'
     }
     return (key) ? types[key] : types
   }
 
-  _suscribeToEvent(part, key) {
-    let token = this.subscribe(
-      EVENT_STORE_CHANGED,
+  _suscribeToEvent(key, subView) {
+    let token = this._EnventHandler.addEventListener(
+      // EVENT_STORE_CHANGED,
+      View.eventType('PROPS_CHANGED'),
       (payload, type) => {
-        part[EVENT_CALLBACK_PREFIX + EVENT_STORE_CHANGED](payload, type)
+        // window.alert()
+        // subView[EVENT_CALLBACK_PREFIX + EVENT_STORE_CHANGED](payload, type)
+        subView.dispatch(View.eventType('STORE_CHANGED'), payload)
       },
-      part, 100)
+      subView, 100)
 
     this._tokenEvent.add(key, token)
   }
 
   _initListeners() {
-    for (let eventType in View.eventTypes()) {
-      this._EnventHandler.addEventListener(View.eventTypes(eventType), (payload, type) => {
+    for (let eventType in View.eventType()) {
+      this._EnventHandler.addEventListener(View.eventType(eventType), (payload, type) => {
         var propName = EVENT_CALLBACK_PREFIX + camelCase(type)
 
         if (this.hasOwnProperty(propName) && isFunction(this[propName])) {
@@ -137,12 +141,8 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
       })
     }
   }
-
-  _dispatchStoreChanged(payload) {
-    let countOfParts = this._subViews.length
-    for (let i = 0; i < countOfParts; i++) {
-      this._subViews[i].dispatch(EVENT_STORE_CHANGED, payload)
-    }
+  dispatch(event, payload) {
+    this._EnventHandler.dispatch(event, payload)
   }
 
   /**
@@ -165,17 +165,31 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
      */
 
   setProps(props) {
-    this._EnventHandler.dispatch(View.eventTypes('PROPS_CHANGE'), props)
-    if (this._assertChangeProps) {
+    this.dispatch(View.eventType('PROPS_CHANGE'), props)
+    if (this._shouldChangeProps) {
       this.props = props
-      this._EnventHandler.dispatch(View.eventTypes('PROPS_CHANGED'), props)
+      this.dispatch(View.eventType('PROPS_CHANGED'), props)
       this.updateNode()
     }
-    this._assertChangeProps = true
+    this._shouldChangeProps = true
   }
 
-  getProp(key) {
-    return (key in this.props) ? this.props[key] : ''
+  getProp(key, defaultValue = '') {
+    return (key in this.props) ? this.props[key] : defaultValue
+  }
+
+  _setPrivateStateProp(key, val) {
+    this.dispatch(View.eventType('STATE_CHANGE'), {})
+    if (this._shouldChangeState) {
+      this._privateState.set(key, val)
+      this.dispatch(View.eventType('STATE_CHANGED'), {})
+      this.updateNode()
+    }
+    this._shouldChangeState = true
+  }
+
+  _getPrivateStateProp(key, defaultValue = undefined) {
+    return (this._privateState.has(key)) ? this._privateState.get(key) : defaultValue
   }
 
   /**
@@ -190,18 +204,14 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
   }
 
   updateNode() {
-    this._EnventHandler.dispatch(View.eventTypes('UPDATE'), {})
+    this._EnventHandler.dispatch(View.eventType('UPDATE'), {})
 
-    if (this._assertUpdate) {
-      // console.time('updateNode')
-
+    if (this._shouldUpdate) {
       this._update()
-      // console.timeEnd('updateNode')
-
-      this._EnventHandler.dispatch(View.eventTypes('UPDATED'), {})
+      this._EnventHandler.dispatch(View.eventType('UPDATED'), {})
     }
 
-    this._assertUpdate = true
+    this._shouldUpdate = true
   }
 
   _render() {
@@ -210,15 +220,15 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
   }
 
   render() {
-    this._EnventHandler.dispatch(View.eventTypes('RENDER'), {})
+    this._EnventHandler.dispatch(View.eventType('RENDER'), {})
 
-    if (this._assertRender) {
+    if (this._shouldRender) {
       this._render()
       this._isRendered = true
-      this._EnventHandler.dispatch(View.eventTypes('RENDERED'), {})
+      this._EnventHandler.dispatch(View.eventType('RENDERED'), {})
     }
 
-    this._assertRender = true
+    this._shouldRender = true
     // console.dir(this.node())
     // console.dir(this)
     return this.node()
@@ -234,15 +244,15 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
     )
     this.parentNode = parentNode
 
-    this._EnventHandler.dispatch(View.eventTypes('MOUNT'), {})
+    this._EnventHandler.dispatch(View.eventType('MOUNT'), {})
 
-    if (this._assertRender) {
+    if (this._shouldRender) {
       this._mount()
       this._isRendered = true
-      this._EnventHandler.dispatch(View.eventTypes('MOUNTED'), {})
+      this._EnventHandler.dispatch(View.eventType('MOUNTED'), {})
     }
 
-    this._assertRender = true
+    this._shouldRender = true
   }
 
   renderAndMount(parentNode) {
