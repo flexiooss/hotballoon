@@ -4,7 +4,8 @@ import {
   isBoolean,
   camelCase,
   assert,
-  MapOfArray
+  MapOfArray,
+  cloneWithJsonMethod
 } from 'flexio-jshelpers'
 import {
   EventHandler
@@ -153,6 +154,8 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
          * @param {String} type
          */
     this.onStoreChanged = (payload, type) => {
+      console.log(this.constructor.name)
+
       this.setProps(payload)
     }
   }
@@ -189,8 +192,10 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
 
   _suscribeToEvent(key, subView) {
     let token = this._EventHandler.addEventListener(
-      View.eventType('PROPS_CHANGED'),
+      View.eventType('STORE_CHANGED'),
       (payload, type) => {
+        console.log(this.constructor.name)
+
         subView.dispatch(View.eventType('STORE_CHANGED'), payload)
       },
       subView, 100)
@@ -235,8 +240,9 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
   setProps(props) {
     this.dispatch(View.eventType('PROPS_CHANGE'), props)
     if (this._shouldChangeProps) {
+      let oldProps = this.props
       this.props = props
-      this.dispatch(View.eventType('PROPS_CHANGED'), props)
+      this.dispatch(View.eventType('PROPS_CHANGED'), oldProps)
       this.updateNode()
     }
     this._shouldChangeProps = true
@@ -252,10 +258,11 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
       val
     })
     if (this._shouldChangeState) {
+      let oldStateProp = this._privateState.get(key)
       this._privateState.set(key, val)
       this.dispatch(View.eventType('STATE_CHANGED'), {
         key,
-        val
+        val: oldStateProp
       })
       this.updateNode()
     }
