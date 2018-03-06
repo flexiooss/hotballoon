@@ -1,3 +1,4 @@
+'use strict'
 class HBException {
   constructor(message, code) {
     this._message = message || ''

@@ -1,3 +1,4 @@
+'use strict'
 import {
   ListenerAttributeHandler
 } from 'flexio-nodes-reconciliation'

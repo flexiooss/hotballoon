@@ -1,11 +1,11 @@
+'use strict'
 import {
   isNode,
   isFunction,
   isBoolean,
   camelCase,
   assert,
-  MapOfArray,
-  cloneWithJsonMethod
+  MapOfArray
 } from 'flexio-jshelpers'
 import {
   EventHandler

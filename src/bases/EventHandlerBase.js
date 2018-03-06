@@ -3,7 +3,8 @@
 import {
   isFunction,
   isBoolean,
-  assert
+  assert,
+  Sequence
 } from 'flexio-jshelpers'
 
 class EventHandlerBase {
@@ -12,6 +13,8 @@ class EventHandlerBase {
     this._pendingPayload = new Map()
     this._isHandled = new Set()
     this._isPending = new Set()
+    this._sequenceId = new Sequence(this._ID)
+
     this._lastID = 0
 
     var _isDispatching = false
@@ -28,11 +31,11 @@ class EventHandlerBase {
     })
   }
 
-  _getNextId() {
-    this._lastID++
-    return this._lastID
-  }
-
+  /**
+     *
+     * @param {String} type of Listener
+     * @param {Object} payload
+     */
   dispatch(type, payload) {
     this._beforeDispatching(type, payload)
     if (this._listeners.has(type)) {
@@ -49,12 +52,24 @@ class EventHandlerBase {
     }
   }
 
+  /**
+     *
+     * @private
+     * @param {String} type of Listener
+     * @param {String} id : token of listener
+     */
   _invokeCallback(type, id) {
     this._isPending.add(id)
-    this._isHandled.add(id)
     this._listeners.get(type)[id].callback(this._pendingPayload.get(type), type)
+    this._isHandled.add(id)
   }
 
+  /**
+     *
+     * @param {String} type of Listener
+     * @param {Function} callback
+     * @returns {String} token
+     */
   addEventListener(type, callback) {
     assert(!!type,
       'hotballoon:EventHandler:addEventListener: ̀`type` argument assert not be empty'
@@ -66,7 +81,7 @@ class EventHandlerBase {
     if (!(this._listeners.has(type))) {
       this._listeners.set(type, {})
     }
-    let id = this._getNextId()
+    let id = this._sequenceId.getNewId().toString()
 
     this._listeners.get(type)[id] = {
       callback: callback
@@ -75,9 +90,14 @@ class EventHandlerBase {
     return id
   }
 
+  /**
+     *
+     * @param {String} type of Listener
+     * @param {String} id : token
+     */
   removeEventListener(type, id) {
     if (this._listeners.has(type)) {
-      assert(id in this._listenersget(type),
+      assert(id in this._listeners.get(type),
         'hotballoon:EventHandlerBase:removeEventListener: ̀`id` argument not in _listeners : `%s`',
         type
       )
@@ -85,6 +105,12 @@ class EventHandlerBase {
     }
   }
 
+  /**
+     *
+     * @param {String} type of Listener
+     * @param {String} id : token
+     * @returns {boolean}
+     */
   hasEventListener(type, id) {
     return (this._listeners.has(type)) && (id in this._listeners.get(type))
   }

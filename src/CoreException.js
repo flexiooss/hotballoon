@@ -1,3 +1,4 @@
+'use strict'
 import {
   HBException
 } from './HBException'

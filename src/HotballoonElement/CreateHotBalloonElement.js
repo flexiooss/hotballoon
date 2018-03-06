@@ -1,11 +1,11 @@
+'use strict'
 import {
   assert,
   HyperFlex,
   isString,
   isNumber,
   isNode,
-  isObject,
-  hasParentPrototypeName
+  isObject
 } from 'flexio-jshelpers'
 
 import {

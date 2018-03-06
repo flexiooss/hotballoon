@@ -30,7 +30,7 @@ class EventOrderedHandler extends EventHandlerBase {
       this._listeners.set(type, {})
     }
 
-    let id = this._getNextId()
+    let id = this._sequenceId.getNewId().toString()
 
     this._listeners.get(type)[id] = {
       scope: scope,
@@ -49,9 +49,9 @@ class EventOrderedHandler extends EventHandlerBase {
 
   _invokeCallback(type, id) {
     this._isPending.add(id)
-    this._isHandled.add(id)
     let listener = this._listeners.get(type)[id]
     listener.callback.call(listener.scope, this._pendingPayload.get(type), type)
+    this._isHandled.add(id)
   }
 }
 

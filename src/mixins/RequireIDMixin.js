@@ -1,3 +1,4 @@
+'use strict'
 import {
   assert
 } from 'flexio-jshelpers'
