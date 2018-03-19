@@ -1,6 +1,7 @@
 'use strict'
 import {
-  View
+  View,
+  STORE_CHANGED as VIEW_STORE_CHANGED
 } from './View'
 import {
   EventOrderedHandler
@@ -27,7 +28,7 @@ import {
 
 const EVENT_HANDLER = Object.seal(new EventOrderedHandler())
 const STORE_CHANGED = Store.eventType('CHANGED')
-const VIEW_STORE_CHANGED = View.eventType('STORE_CHANGED')
+// const VIEW_STORE_CHANGED = View.eventType('STORE_CHANGED')
 /**
  * @class
  * @description ViewContainer is a Views container who can suscribe to Stores to dispatch state to Views
@@ -323,8 +324,8 @@ class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateStateMix
      * @param {Object} payload
      *
      */
-  createAction(action, typAction, payload) {
-    action.newAction(typAction, payload)
+  createAction(Action, typAction, payload, ...args) {
+    Action.newAction(typAction, payload, ...args)
   }
 
   /**
@@ -333,8 +334,8 @@ class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateStateMix
      * @param {Function} clb
      * @param {mixed} ...args
      */
-  newViewAction(actionName, clb, ...args) {
-    this.createAction(actionName, clb, ...args)
+  newViewAction(Action, clb, payload, ...args) {
+    this.createAction(Action, clb, payload, ...args)
   }
 }
 
