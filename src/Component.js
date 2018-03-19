@@ -22,22 +22,115 @@ import {
   PrivateStateMixin
 } from './mixins/PrivateStateMixin'
 
+const VIEWCONTAINER_WILL_REMOVE = ViewContainer.eventType('WILL_REMOVE')
+
+/**
+ * @class
+ * @description The Component is the entry point of the module
+ *
+ */
 class Component extends ApplicationContextMixin(RequireIDMixin(PrivateStateMixin(class {}))) {
   constructor(hotBallonApplication, id) {
     super()
+
+    /**
+         * @description Mixinis init
+         */
     this.ApplicationContextMixinInit(hotBallonApplication)
     this.RequireIDMixinInit(id)
     this.PrivateStateMixinInit()
 
-    this._sequenceId = new Sequence(this._ID + '_')
+    const _sequenceId = new Sequence(this._ID + '_')
+    const dispatcherListenerTokens = new Map()
+    const _actions = new MapOfInstance(Action)
+    const actionsKey = new Map()
+    const _stores = new MapOfInstance(Store)
+    const storesKey = new Map()
+    const _viewContainers = new MapOfInstance(ViewContainer)
+    const viewContainersKey = new Map()
 
-    this.dispatcherListenerTokens = new Map()
-    this._viewContainers = new MapOfInstance(ViewContainer)
-    this.viewContainersKey = new Map()
-    this._stores = new MapOfInstance(Store)
-    this.storesKey = new Map()
-    this._actions = new MapOfInstance(Action)
-    this.actionssKey = new Map()
+    Object.defineProperties(this, {
+      _sequenceId: {
+        configurable: false,
+        enumerable: false,
+        get: () => {
+          return _sequenceId
+        },
+        set: (v) => {
+          return false
+        }
+      },
+      dispatcherListenerTokens: {
+        configurable: false,
+        enumerable: true,
+        get: () => {
+          return dispatcherListenerTokens
+        },
+        set: (v) => {
+          return false
+        }
+      },
+      _actions: {
+        configurable: false,
+        enumerable: false,
+        get: () => {
+          return _actions
+        },
+        set: (v) => {
+          return false
+        }
+      },
+      actionsKey: {
+        configurable: false,
+        enumerable: true,
+        get: () => {
+          return actionsKey
+        },
+        set: (v) => {
+          return false
+        }
+      },
+      _stores: {
+        configurable: false,
+        enumerable: false,
+        get: () => {
+          return _stores
+        },
+        set: (v) => {
+          return false
+        }
+      },
+      storesKey: {
+        configurable: false,
+        enumerable: true,
+        get: () => {
+          return storesKey
+        },
+        set: (v) => {
+          return false
+        }
+      },
+      _viewContainers: {
+        configurable: false,
+        enumerable: false,
+        get: () => {
+          return _viewContainers
+        },
+        set: (v) => {
+          return false
+        }
+      },
+      viewContainersKey: {
+        configurable: false,
+        enumerable: true,
+        get: () => {
+          return viewContainersKey
+        },
+        set: (v) => {
+          return false
+        }
+      }
+    })
 
     this._initActions()
     this._initStores()
@@ -46,67 +139,96 @@ class Component extends ApplicationContextMixin(RequireIDMixin(PrivateStateMixin
   }
 
   /**
+     * @private
+     * @description called by the constructor for int Actrions, Stores, Listeners, ViewContainers
+     * @returns void
      *
-     * --------------------------------------------------------------
-     * Init
-     * --------------------------------------------------------------
      */
-
   _initActions() {}
   _initStores() {}
+  _initDispatcherListeners() {}
   _initViewContainers() {}
-  /**
-     *
-     * --------------------------------------------------------------
-     * Remove by Application
-     * --------------------------------------------------------------
-     */
 
+  /**
+     * @description called by the hotballoon Appliation before remove this Component
+     */
   willRemove() {}
 
   /**
-     *
-     * --------------------------------------------------------------
-     * Actions
-     * --------------------------------------------------------------
+     * @param {String}  tokenAction
+     * @param {hotballoon/Action}
+     * @returns {void}
      */
-  addAction(key, action) {
-    this._actions.add(key, action)
+  addAction(tokenAction, Action) {
+    this._actions.add(tokenAction, Action)
   }
-  Action(key) {
-    return this._actions.get(key)
-  }
+
   /**
      *
-     * --------------------------------------------------------------
-     * Stores
-     * --------------------------------------------------------------
+     * @param {String} tokenAction
+     * @param {hotballoon/Action} Action
+     *
      */
-  addStore(StoreConstructor, ...args) {
-    let key = 'store_' + this._sequenceId.getNewId()
-    return this._stores.add(key, new StoreConstructor(key, ...args))
+  Action(tokenAction) {
+    return this._actions.get(tokenAction)
   }
-  Store(key) {
-    return this._stores.get(key)
+
+  /**
+     * @param {String}  tokenStore
+     * @param {hotballoon/Store}
+     * @returns {void}
+     */
+  addStore(tokenStore, Store) {
+    this._stores.add(tokenStore, Store)
   }
+
   /**
      *
-     * --------------------------------------------------------------
-     * ViewContainers
-     * --------------------------------------------------------------
+     * @param {String}  tokenStore
+     * @returns {hotballoon/Store} Store
      */
-  addViewContainer(ViewContainerConstructor, storesMap, ...args) {
-    let key = 'viewContainer_' + this._sequenceId.getNewId()
-    return this._viewContainers.add(key, new ViewContainerConstructor(this, key, storesMap, ...args))
+  Store(tokenStore) {
+    return this._stores.get(tokenStore)
   }
-  removeViewContainer(viewContainerID) {
-    if (this._viewContainers.has(viewContainerID)) {
-      this.ViewContainer(viewContainerID).dispatch(ViewContainer.eventTypes('WILL_REMOVE'), {})
-      this._viewContainers.delete(viewContainerID)
+
+  /**
+     *
+     * @param {String} tokenViewContainer
+     * @param {hotballoon/ViewContainer} viewContainer
+     * @returns {void}
+     */
+  addViewContainer(key, ViewContainer) {
+    this._viewContainers.add(key, ViewContainer)
+  }
+
+  /**
+     *
+     * @param {String} tokenViewContainer
+     * @returns {void}
+     */
+  removeViewContainer(tokenViewContainer) {
+    if (this._viewContainers.has(tokenViewContainer)) {
+      this.ViewContainer(tokenViewContainer).dispatch(VIEWCONTAINER_WILL_REMOVE, {})
+      this._viewContainers.delete(tokenViewContainer)
     }
   }
-  ViewContainer(key) {
-    return this._viewContainers.get(key)
+
+  /**
+     *
+     * @param {String} tokenViewContainer
+     * @returns {hotballoon/ViewContainer} ViewContainer
+     */
+  ViewContainer(tokenViewContainer) {
+    return this._viewContainers.get(tokenViewContainer)
+  }
+
+  /**
+     *
+     * @param {String} prefix
+     * @returns {String}
+     */
+  nextID(prefix = '') {
+    return prefix + this._sequenceId.getNewId()
   }
 }
 export {

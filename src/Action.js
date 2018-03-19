@@ -7,15 +7,13 @@ import {
   assert
 } from 'flexio-jshelpers'
 
-const TYPES = {}
-
 class Action {
   constructor(dispatcher, componentId) {
     assert(dispatcher instanceof Dispatcher,
-      'hotballoon:Action:setDispatcher "dispatcher" argument assert be an instance of Dispatcher'
+      'hotballoon:Action:constructor "dispatcher" argument assert be an instance of Dispatcher'
     )
     assert(!!componentId,
-      'hotballoon:Action:_setComponentId "componentId" argument assert not be empty'
+      'hotballoon:Action:constructor "componentId" argument assert not be empty'
     )
     Object.defineProperties(this, {
       _dispatcher: {
@@ -29,22 +27,24 @@ class Action {
         writable: false,
         value: componentId
       }
-
     })
-
-    this._types = TYPES
   }
 
-  type(key) {
-    assert(key in this._types,
-      'hotballoon:Action:' + this.constructor.name + ':type: `key` argument not defined in `_types` property'
-    )
-    return this._componentId + '_' + this._types[key]
-  }
-
+  /**
+     * @public hub for dispatch actions
+     * @param {String} type : event name
+     * @param {Object} payload
+     * @returns void
+     */
   newAction(type, payload) {}
 
-  dispatch(type, payload) {
+  /**
+     * @private
+     * @param {String} type : event name
+     * @param {Object} payload
+     * @returns void
+     */
+  _dispatch(type, payload) {
     this._dispatcher.dispatch(type, payload)
   }
 }
