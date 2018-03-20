@@ -3,6 +3,10 @@ import {
   assert,
   filterObject
 } from 'flexio-jshelpers'
+
+/**
+ * @class
+ */
 class StoreModel {
   constructor() {
     this._schema = new Map()

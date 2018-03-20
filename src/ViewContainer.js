@@ -7,7 +7,8 @@ import {
   EventOrderedHandler
 } from './EventOrderedHandler'
 import {
-  Store
+  Store,
+  CHANGED as STORE_CHANGED
 } from './storeBases/Store'
 import {
   MapOfInstance,
@@ -27,7 +28,6 @@ import {
 } from './mixins/PrivateStateMixin'
 
 const EVENT_HANDLER = Object.seal(new EventOrderedHandler())
-const STORE_CHANGED = Store.eventType('CHANGED')
 
 export const INIT = 'INIT'
 export const STORE_CHANGE = 'STORE_CHANGE'
@@ -121,20 +121,6 @@ class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateStateMix
      * EventHandler
      * --------------------------------------------------------------
      */
-
-  /**
-     * @static
-     * @param {String} key
-     * @returns {String|Object}
-     */
-  static eventType(key) {
-    const types = {
-      INIT: 'INIT',
-      STORE_CHANGE: 'STORE_CHANGE',
-      WILL_REMOVE: 'WILL_REMOVE'
-    }
-    return (key) ? types[key] : types
-  }
 
   /**
      * @description Format an Event name
@@ -297,7 +283,7 @@ class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateStateMix
   }
 
   /**
-     * Render the View() into `_node` property
+     * @description Render all views
      */
   render() {
     this._renderViews()
@@ -305,7 +291,7 @@ class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateStateMix
   }
 
   /**
-     * Mount this into the `parentNode` argumenet
+     * Mount all views into the `parentNode` argument
      * @param {NodeElement} parentNode
      * @returns {NodeElement} parentNode
      */
@@ -320,7 +306,7 @@ class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateStateMix
   }
 
   /**
-     * Render the View() into `_node` property and mount this into the `parentNode` argumenet
+     * Render all views and mount these into the `parentNode` argument
      * @param {NodeElement} parentNode
      * @returns {NodeElement} parentNode
      */

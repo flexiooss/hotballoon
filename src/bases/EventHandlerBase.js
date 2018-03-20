@@ -7,6 +7,9 @@ import {
   Sequence
 } from 'flexio-jshelpers'
 
+/**
+ * @class
+ */
 class EventHandlerBase {
   constructor() {
     this._listeners = new Map()

@@ -15,6 +15,14 @@ import {
 
 const EVENT_HANDLER = Object.seal(new EventOrderedHandler())
 
+export const INIT = 'INIT'
+export const CHANGED = 'CHANGED'
+
+/**
+ * @class
+ * @description Store is the instance for store data from Component
+ * @extends RequireIDMixin
+ */
 export class Store extends RequireIDMixin(class {}) {
   constructor(id, store) {
     super()
@@ -42,15 +50,7 @@ export class Store extends RequireIDMixin(class {}) {
       }
     })
 
-    this._dispatch(this.constructor.eventType('INIT'))
-  }
-
-  static eventType(key) {
-    const types = {
-      INIT: 'INIT',
-      CHANGED: 'CHANGED'
-    }
-    return (key) ? types[key] : types
+    this._dispatch(INIT)
   }
 
   subscribe(type, callback, scope, priority) {
@@ -74,6 +74,6 @@ export class Store extends RequireIDMixin(class {}) {
   }
 
   _updated() {
-    this._dispatch(this.constructor.eventType('CHANGED'))
+    this._dispatch(CHANGED)
   }
 }

@@ -3,6 +3,12 @@ import {
   hasParentPrototypeName,
   assert
 } from 'flexio-jshelpers'
+
+/**
+ * ViewContainerContextMixin
+ * @class
+ * @param {*} Base
+ */
 export const ViewContainerContextMixin = (Base) => class extends Base {
   ViewContainerContextMixinInit(viewContainer) {
     this._setViewContainer(viewContainer)

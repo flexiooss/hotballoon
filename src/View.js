@@ -42,23 +42,30 @@ export const STATE_CHANGED = 'STATE_CHANGED'
 export const STORE_CHANGED = 'STORE_CHANGED'
 
 /**
- * @class View
+ * @class
+ * @description View describe a fragment of DOM
+ * @extends ViewContainerContextMixin
+ * @extends NodesHandlerMixin
  * @extends ViewContainerContextMixin
  * @extends PrivateStateMixin
- * @description
- * @param {ViewContainer} viewContainer
- * @param {Object} props : properties from his registered Store
+ * @extends RequireIDMixin
  *
  */
 class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin(RequireIDMixin(class {})))) {
-  constructor(id, viewContainer, props) {
+  /**
+     * @constructor
+     * @param {String} id
+     * @param {ViewContainer} viewContainer
+     * @param {Object} props
+     */
+  constructor(id, viewContainer, props = {}) {
     super()
     this.RequireIDMixinInit(id)
     this.ViewContainerContextMixinInit(viewContainer)
     this.PrivateStateMixinInit()
     this.NodesHandlerMixinInit(View)
 
-    this.props = props || {}
+    this.props = props
 
     var parentNode = null
     var _shouldInit = true
@@ -420,7 +427,7 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
 
   /**
      * @private
-     * @description
+     * @description mount `_node` property into `parentNode` argument
      */
   _mount() {
     this.parentNode.appendChild(this.node())
@@ -428,7 +435,8 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
 
   /**
      * @public
-     * @description
+     * @description call _mount() with event hook
+     * @see _mount()
      * @param {NodeElement} parentNode
      */
   mount(parentNode) {
@@ -450,7 +458,7 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
 
   /**
      * @public
-     * @description
+     * @description Render the View() into `_node` property and mount this into the `parentNode` argument
      * @param {NodeElement} parentNode
      */
   renderAndMount(parentNode) {

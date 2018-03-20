@@ -6,6 +6,9 @@ import {
   KEY
 } from './constantes'
 
+/**
+ * @class
+ */
 class HotBalloonAttributeHandler extends ListenerAttributeHandler {
   static select(element, scope) {
     return new HotBalloonAttributeHandler(element, scope)

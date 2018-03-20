@@ -28,7 +28,7 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>View<span class="signature">(viewContainer, props)</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>View<span class="signature">(id, viewContainer, props)</span><span class="type-signature"></span></h2>
         
     
 </header>
@@ -41,12 +41,16 @@
     
 
     
-    <h4 class="name" id="View"><span class="type-signature"></span>new View<span class="signature">(viewContainer, props)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="View"><span class="type-signature"></span>new View<span class="signature">(id, viewContainer, props)</span><span class="type-signature"></span></h4>
     
 
     
 
 
+
+<div class="description">
+    View describe a fragment of DOM
+</div>
 
 
 
@@ -77,6 +81,29 @@
     </thead>
 
     <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
     
 
         <tr>
@@ -120,7 +147,7 @@
 
             
 
-            <td class="description last">: properties from his registered Store</td>
+            <td class="description last"></td>
         </tr>
 
     
@@ -161,7 +188,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="View.js.html">View.js</a>, <a href="View.js.html#line44">line 44</a>
+        <a href="View.js.html">View.js</a>, <a href="View.js.html#line54">line 54</a>
     </li></ul></dd>
     
 
@@ -199,9 +226,15 @@
 
 
     <ul>
-        <li>ViewContainerContextMixin</li>
+        <li><a href="ViewContainerContextMixin.html">ViewContainerContextMixin</a></li>
+    
+        <li>NodesHandlerMixin</li>
+    
+        <li><a href="ViewContainerContextMixin.html">ViewContainerContextMixin</a></li>
     
         <li>PrivateStateMixin</li>
+    
+        <li>RequireIDMixin</li>
     </ul>
 
 
@@ -348,7 +381,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="View.js.html">View.js</a>, <a href="View.js.html#line364">line 364</a>
+        <a href="View.js.html">View.js</a>, <a href="View.js.html#line371">line 371</a>
     </li></ul></dd>
     
 
@@ -458,7 +491,7 @@ onStoreChanged
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="View.js.html">View.js</a>, <a href="View.js.html#line249">line 249</a>
+        <a href="View.js.html">View.js</a>, <a href="View.js.html#line256">line 256</a>
     </li></ul></dd>
     
 
@@ -498,6 +531,10 @@ onStoreChanged
     
 
 
+
+<div class="description">
+    mount `_node` property into `parentNode` argument
+</div>
 
 
 
@@ -540,7 +577,7 @@ onStoreChanged
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="View.js.html">View.js</a>, <a href="View.js.html#line425">line 425</a>
+        <a href="View.js.html">View.js</a>, <a href="View.js.html#line432">line 432</a>
     </li></ul></dd>
     
 
@@ -622,7 +659,7 @@ onStoreChanged
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="View.js.html">View.js</a>, <a href="View.js.html#line400">line 400</a>
+        <a href="View.js.html">View.js</a>, <a href="View.js.html#line407">line 407</a>
     </li></ul></dd>
     
 
@@ -776,7 +813,7 @@ onStoreChanged
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="View.js.html">View.js</a>, <a href="View.js.html#line341">line 341</a>
+        <a href="View.js.html">View.js</a>, <a href="View.js.html#line348">line 348</a>
     </li></ul></dd>
     
 
@@ -957,7 +994,7 @@ onStoreChanged
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="View.js.html">View.js</a>, <a href="View.js.html#line219">line 219</a>
+        <a href="View.js.html">View.js</a>, <a href="View.js.html#line226">line 226</a>
     </li></ul></dd>
     
 
@@ -1043,7 +1080,7 @@ onStoreChanged
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="View.js.html">View.js</a>, <a href="View.js.html#line379">line 379</a>
+        <a href="View.js.html">View.js</a>, <a href="View.js.html#line386">line 386</a>
     </li></ul></dd>
     
 
@@ -1197,7 +1234,7 @@ onStoreChanged
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="View.js.html">View.js</a>, <a href="View.js.html#line282">line 282</a>
+        <a href="View.js.html">View.js</a>, <a href="View.js.html#line289">line 289</a>
     </li></ul></dd>
     
 
@@ -1361,7 +1398,7 @@ onStoreChanged
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="View.js.html">View.js</a>, <a href="View.js.html#line332">line 332</a>
+        <a href="View.js.html">View.js</a>, <a href="View.js.html#line339">line 339</a>
     </li></ul></dd>
     
 
@@ -1411,6 +1448,10 @@ onStoreChanged
     
 
 
+
+<div class="description">
+    call _mount() with event hook
+</div>
 
 
 
@@ -1502,12 +1543,19 @@ onStoreChanged
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="View.js.html">View.js</a>, <a href="View.js.html#line434">line 434</a>
+        <a href="View.js.html">View.js</a>, <a href="View.js.html#line442">line 442</a>
     </li></ul></dd>
     
 
     
 
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li>_mount()</li>
+        </ul>
+    </dd>
     
 
     
@@ -1683,7 +1731,7 @@ onStoreChanged
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="View.js.html">View.js</a>, <a href="View.js.html#line300">line 300</a>
+        <a href="View.js.html">View.js</a>, <a href="View.js.html#line307">line 307</a>
     </li></ul></dd>
     
 
@@ -1863,7 +1911,7 @@ onStoreChanged
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="View.js.html">View.js</a>, <a href="View.js.html#line194">line 194</a>
+        <a href="View.js.html">View.js</a>, <a href="View.js.html#line201">line 201</a>
     </li></ul></dd>
     
 
@@ -1945,7 +1993,7 @@ onStoreChanged
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="View.js.html">View.js</a>, <a href="View.js.html#line408">line 408</a>
+        <a href="View.js.html">View.js</a>, <a href="View.js.html#line415">line 415</a>
     </li></ul></dd>
     
 
@@ -1985,6 +2033,10 @@ onStoreChanged
     
 
 
+
+<div class="description">
+    Render the View() into `_node` property and mount this into the `parentNode` argument
+</div>
 
 
 
@@ -2076,7 +2128,7 @@ onStoreChanged
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="View.js.html">View.js</a>, <a href="View.js.html#line456">line 456</a>
+        <a href="View.js.html">View.js</a>, <a href="View.js.html#line464">line 464</a>
     </li></ul></dd>
     
 
@@ -2207,7 +2259,7 @@ onStoreChanged
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="View.js.html">View.js</a>, <a href="View.js.html#line315">line 315</a>
+        <a href="View.js.html">View.js</a>, <a href="View.js.html#line322">line 322</a>
     </li></ul></dd>
     
 
@@ -2289,7 +2341,7 @@ onStoreChanged
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="View.js.html">View.js</a>, <a href="View.js.html#line386">line 386</a>
+        <a href="View.js.html">View.js</a>, <a href="View.js.html#line393">line 393</a>
     </li></ul></dd>
     
 
@@ -2375,7 +2427,7 @@ onStoreChanged
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="View.js.html">View.js</a>, <a href="View.js.html#line203">line 203</a>
+        <a href="View.js.html">View.js</a>, <a href="View.js.html#line210">line 210</a>
     </li></ul></dd>
     
 
@@ -2437,13 +2489,13 @@ onStoreChanged
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Action.html">Action</a></li><li><a href="Component.html">Component</a></li><li><a href="View.html">View</a></li><li><a href="ViewContainer.html">ViewContainer</a></li></ul><h3>Global</h3><ul><li><a href="global.html#_setAPP">_setAPP</a></li><li><a href="global.html#APP">APP</a></li><li><a href="global.html#ApplicationContextMixin">ApplicationContextMixin</a></li><li><a href="global.html#ApplicationContextMixinInit">ApplicationContextMixinInit</a></li><li><a href="global.html#Dispatcher">Dispatcher</a></li><li><a href="global.html#node">node</a></li><li><a href="global.html#NodesHandlerMixinInit">NodesHandlerMixinInit</a></li><li><a href="global.html#registerSubView">registerSubView</a></li><li><a href="global.html#Service">Service</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Action.html">Action</a></li><li><a href="Component.html">Component</a></li><li><a href="CreateHotBalloonElement.html">CreateHotBalloonElement</a></li><li><a href="EventHandlerBase.html">EventHandlerBase</a></li><li><a href="HotBalloonAttributeHandler.html">HotBalloonAttributeHandler</a></li><li><a href="Storage.html">Storage</a></li><li><a href="Store.html">Store</a></li><li><a href="StoreModel.html">StoreModel</a></li><li><a href="View.html">View</a></li><li><a href="ViewContainer.html">ViewContainer</a></li><li><a href="ViewContainerContextMixin.html">ViewContainerContextMixin</a></li></ul><h3>Global</h3><ul><li><a href="global.html#_setAPP">_setAPP</a></li><li><a href="global.html#APP">APP</a></li><li><a href="global.html#ApplicationContextMixin">ApplicationContextMixin</a></li><li><a href="global.html#ApplicationContextMixinInit">ApplicationContextMixinInit</a></li><li><a href="global.html#Dispatcher">Dispatcher</a></li><li><a href="global.html#node">node</a></li><li><a href="global.html#NodesHandlerMixinInit">NodesHandlerMixinInit</a></li><li><a href="global.html#registerSubView">registerSubView</a></li><li><a href="global.html#Service">Service</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Mar 20 2018 22:34:14 GMT+0100 (CET)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Mar 20 2018 23:00:01 GMT+0100 (CET)
 </footer>
 
 <script> prettyPrint(); </script>

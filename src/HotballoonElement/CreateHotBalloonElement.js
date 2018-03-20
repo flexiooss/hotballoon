@@ -19,6 +19,9 @@ import {
   KEY_RECONCILIATE_RULES
 } from 'flexio-nodes-reconciliation'
 
+/**
+ * @class
+ */
 class CreateHotBalloonElement extends HyperFlex {
   constructor(scope, querySelector, ...args) {
     super(querySelector, ...args)
