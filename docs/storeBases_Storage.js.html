@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: Dispatcher.js</title>
+    <title>JSDoc: Source: storeBases/Storage.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: Dispatcher.js</h1>
+    <h1 class="page-title">Source: storeBases/Storage.js</h1>
 
     
 
@@ -28,47 +28,55 @@
         <article>
             <pre class="prettyprint source linenums"><code>'use strict'
 import {
-  EventHandlerBase
-} from './bases/EventHandlerBase'
-import {
-  assert
+  deepFreezeSeal,
+  cloneWithJsonMethod
 } from 'flexio-jshelpers'
+
+const DEFAULT_STORE = {}
 
 /**
  * @class
- * @description Dispatcher is the event handler between Actions and Component
- * @extends EventHandlerBase
+ * @description simple allocation of storage for Store
  */
-class Dispatcher extends EventHandlerBase {
+export class Storage {
   /**
-     * @description Ensure that a Listener already called
-     * @param {String} type of Listener
-     * @param {Array&lt;String>} ids
+     * @constructor
+     * @param {Object} state
      */
-  waitFor(type, ids) {
-    assert(!!this.isDispatching(),
-      'hotballoon:Dispatcher:waitFor: Must be invoked while dispatching.'
-    )
-    assert(!!Array.isArray(ids),
-      'hotballoon:Dispatcher:waitFor: `ids` argument should be Array type')
-    let countOfIds = ids.length
-    for (let i = 0; i &lt; countOfIds; i++) {
-      let id = ids[i]
-      if (!this._isPending.has(id)) {
-        assert(!this._isHandled.has(id),
-          'hotballoon:Dispatcher:waitFor: `id` : `%s` already handled',
-          id)
-        assert((id in this._listeners.get(type)),
-          'hotballoon:Dispatcher:waitFor: `id` : `%s` not defined',
-          id)
-        this._invokeCallback(type, id)
-      }
-    }
+  constructor(state = DEFAULT_STORE) {
+    Object.defineProperty(this, '_state', {
+      enumerable: false,
+      configurable: false,
+      get: () => {
+        return cloneWithJsonMethod(state)
+      },
+      set: (v) => false
+    })
+    deepFreezeSeal(this)
   }
-}
 
-export {
-  Dispatcher
+  /**
+     * @static
+     * @param {Object} state
+     */
+  static create(state) {
+    return new Storage(state)
+  }
+
+  /**
+     *
+     * @param {Object} state
+     */
+  set(state) {
+    return this.constructor.create(state)
+  }
+
+  /**
+     * @returns {Object} state
+     */
+  get() {
+    return this._state
+  }
 }
 </code></pre>
         </article>

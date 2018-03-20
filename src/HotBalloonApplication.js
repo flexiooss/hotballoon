@@ -14,38 +14,76 @@ import {
   Component
 } from './Component'
 
+/**
+ *
+ * @class
+ * @description HotBalloonApplication is the container for a loop hotballoon
+ */
 class HotBalloonApplication {
+  /**
+     * @constructor
+     * @param {Dispatcher} dispatcher
+     */
   constructor(dispatcher) {
     assert(dispatcher instanceof Dispatcher,
       'hotballoon:HotBalloonApplication:constructor: `dispatcher` argument should be an instance of hotballoon/Dispatcher'
     )
 
-    const _dispatcher = dispatcher
-    Object.defineProperty(this, '_dispatcher', {
-      configurable: false,
-      enumerable: false,
-      get: () => {
-        return _dispatcher
+    const _components = new MapOfInstance(Component)
+    const _services = new MapExtended()
+    const _sequenceComponentId = new Sequence('component_')
+
+    Object.defineProperties(this, {
+      '_dispatcher': {
+        configurable: false,
+        enumerable: false,
+        get: () => {
+          return dispatcher
+        },
+        set: (v) => {
+          assert(false,
+            'hotballoon:HotBalloonApplication:constructor:_dispatcher.set: `dispatcher` already set'
+          )
+        }
       },
-      set: (v) => {
-        assert(false,
-          'hotballoon:HotBalloonApplication:constructor:_dispatcher.set: `dispatcher` already set'
-        )
+      '_components': {
+        configurable: false,
+        enumerable: false,
+        get: () => {
+          return _components
+        },
+        set: (v) => {
+          assert(false,
+            'hotballoon:HotBalloonApplication:constructor:_components.set: `components` already set'
+          )
+        }
+      },
+      '_services': {
+        configurable: false,
+        enumerable: false,
+        get: () => {
+          return _services
+        },
+        set: (v) => {
+          assert(false,
+            'hotballoon:HotBalloonApplication:constructor:_services.set: `services` already set'
+          )
+        }
+      },
+      '_sequenceComponentId': {
+        configurable: false,
+        enumerable: false,
+        get: () => {
+          return _sequenceComponentId
+        },
+        set: (v) => {
+          assert(false,
+            'hotballoon:HotBalloonApplication:constructor:_sequenceComponentId.set: `_sequenceComponentId` already set'
+          )
+        }
       }
-
     })
-
-    this._components = new MapOfInstance(Component)
-    this._services = new MapExtended()
-    this._sequenceComponentId = new Sequence('component_')
   }
-
-  /**
-     *
-     * --------------------------------------------------------------
-     * Dispatcher
-     * --------------------------------------------------------------
-     */
 
   /**
      * @returns {Dispatcher}
@@ -55,14 +93,8 @@ class HotBalloonApplication {
   }
 
   /**
-     *
-     * --------------------------------------------------------------
-     * Component
-     * --------------------------------------------------------------
-     */
-
-  /**
-     *@param {Component}
+     * @description register a Component into this Application
+     * @param {Component}
      * @returns {String} token : componentID
      */
   addComponent(Component, ...args) {
@@ -95,13 +127,6 @@ class HotBalloonApplication {
   Component(componentID) {
     return this._components.get(componentID)
   }
-
-  /**
-     *
-     * --------------------------------------------------------------
-     * Services
-     * --------------------------------------------------------------
-     */
 
   /**
      *

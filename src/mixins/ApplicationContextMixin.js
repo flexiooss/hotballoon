@@ -5,12 +5,16 @@ import {
 } from 'flexio-jshelpers'
 
 /**
+ *
+ * @class
  * @description Mixin - add handler for hotballon context dependency
  */
 export const ApplicationContextMixin = (Base) => class extends Base {
   /**
-     * @description init of mixin
-     * @param {HotBalloonApplication} hotBallonApplication
+     * @description Mixin - init
+     * @param {HotBalloonApplication} component
+     * @memberOf ApplicationContextMixin
+     * @instance
      */
   ApplicationContextMixinInit(hotBallonApplication) {
     this._setAPP(hotBallonApplication)
@@ -19,6 +23,8 @@ export const ApplicationContextMixin = (Base) => class extends Base {
   /**
      * @private
      * @param {HotBalloonApplication} hotBallonApplication
+     * @memberOf ApplicationContextMixin
+     * @instance
      */
   _setAPP(hotBallonApplication) {
     assert(!this._APP,
@@ -35,13 +41,17 @@ export const ApplicationContextMixin = (Base) => class extends Base {
 
   /**
      * @return {HotBalloonApplication}
+     * @memberOf ApplicationContextMixin
+     * @instance
      */
   APP() {
     return this._APP
   }
 
   /**
-     * @return {hotballoon/Dispatcher}
+     * @return {Dispatcher}
+     * @memberOf ApplicationContextMixin
+     * @instance
      */
   Dispatcher() {
     return this.APP().Dispatcher()
@@ -49,6 +59,8 @@ export const ApplicationContextMixin = (Base) => class extends Base {
 
   /**
      * @return {Service}
+     * @memberOf ApplicationContextMixin
+     * @instance
      */
   Service(key) {
     return this.APP().Service(key)

@@ -8,8 +8,8 @@ import {
 } from 'flexio-jshelpers'
 
 /**
- * Action is the entry point of Component
  * @class
+ * @description Action is the entry point of Component
  */
 class Action {
   constructor(dispatcher, componentId) {

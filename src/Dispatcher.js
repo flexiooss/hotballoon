@@ -6,9 +6,14 @@ import {
   assert
 } from 'flexio-jshelpers'
 
+/**
+ * @class
+ * @description Dispatcher is the event handler between Actions and Component
+ * @extends EventHandlerBase
+ */
 class Dispatcher extends EventHandlerBase {
   /**
-     *
+     * @description Ensure that a Listener already called
      * @param {String} type of Listener
      * @param {Array<String>} ids
      */

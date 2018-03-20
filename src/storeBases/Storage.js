@@ -7,10 +7,14 @@ import {
 const DEFAULT_STORE = {}
 
 /**
- * @description simple allocation of storage for Store
  * @class
+ * @description simple allocation of storage for Store
  */
 export class Storage {
+  /**
+     * @constructor
+     * @param {Object} state
+     */
   constructor(state = DEFAULT_STORE) {
     Object.defineProperty(this, '_state', {
       enumerable: false,

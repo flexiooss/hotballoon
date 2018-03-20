@@ -11,6 +11,10 @@ class StoreModel {
   constructor() {
     this._schema = new Map()
   }
+
+  /**
+     * @returns {Map}
+     */
   get() {
     return this._schema
   }
@@ -31,10 +35,18 @@ class StoreModel {
     })
   }
 
+  /**
+     *
+     * @param {Object} state
+     */
   fillState(state) {
     return this._inModel(state)
   }
 
+  /**
+     * @private
+     * @param {Object} object
+     */
   _inModel(object) {
     if (this.hasModel) {
       filterObject(object, (value, key, scope) => {

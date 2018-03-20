@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: Action</title>
+    <title>JSDoc: Class: PrivateStateMixin</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: Action</h1>
+    <h1 class="page-title">Class: PrivateStateMixin</h1>
 
     
 
@@ -28,7 +28,7 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>Action<span class="signature">()</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>PrivateStateMixin<span class="signature">()</span><span class="type-signature"></span></h2>
         
     
 </header>
@@ -41,7 +41,7 @@
     
 
     
-    <h4 class="name" id="Action"><span class="type-signature"></span>new Action<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="PrivateStateMixin"><span class="type-signature"></span>new PrivateStateMixin<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
@@ -49,7 +49,7 @@
 
 
 <div class="description">
-    Action is the entry point of Component
+    Mixin - handle a private state
 </div>
 
 
@@ -93,7 +93,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Action.js.html">Action.js</a>, <a href="Action.js.html#line14">line 14</a>
+        <a href="mixins_PrivateStateMixin.js.html">mixins/PrivateStateMixin.js</a>, <a href="mixins_PrivateStateMixin.js.html#line11">line 11</a>
     </li></ul></dd>
     
 
@@ -147,7 +147,7 @@
     
 
     
-    <h4 class="name" id="_dispatch"><span class="type-signature">(private) </span>_dispatch<span class="signature">(type, payload)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="_delete"><span class="type-signature">(private) </span>_delete<span class="signature">(key)</span><span class="type-signature"></span></h4>
     
 
     
@@ -187,36 +187,13 @@
 
         <tr>
             
-                <td class="name"><code>type</code></td>
+                <td class="name"><code>key</code></td>
             
 
             <td class="type">
             
                 
 <span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">: event name</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>payload</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
 
 
             
@@ -267,7 +244,292 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Action.js.html">Action.js</a>, <a href="Action.js.html#line52">line 52</a>
+        <a href="mixins_PrivateStateMixin.js.html">mixins/PrivateStateMixin.js</a>, <a href="mixins_PrivateStateMixin.js.html#line49">line 49</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="_setState"><span class="type-signature">(private) </span>_setState<span class="signature">(key, value)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>key</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">mixed</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="mixins_PrivateStateMixin.js.html">mixins/PrivateStateMixin.js</a>, <a href="mixins_PrivateStateMixin.js.html#line28">line 28</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="_state"><span class="type-signature">(private) </span>_state<span class="signature">(key)</span><span class="type-signature"> &rarr; {mixed}</span></h4>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>key</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="mixins_PrivateStateMixin.js.html">mixins/PrivateStateMixin.js</a>, <a href="mixins_PrivateStateMixin.js.html#line39">line 39</a>
     </li></ul></dd>
     
 
@@ -293,11 +555,19 @@
 <h5>Returns:</h5>
 
         
-<div class="param-desc">
-    void
-</div>
 
 
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">mixed</span>
+
+
+    </dd>
+</dl>
 
     
 
@@ -311,7 +581,7 @@
     
 
     
-    <h4 class="name" id="newAction"><span class="type-signature"></span>newAction<span class="signature">(type, payload)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="PrivateStateMixinInit"><span class="type-signature"></span>PrivateStateMixinInit<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
@@ -319,7 +589,7 @@
 
 
 <div class="description">
-    hub for dispatch actions
+    Mixin - init
 </div>
 
 
@@ -328,78 +598,6 @@
 
 
 
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>type</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">: event name</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>payload</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
 
 
 
@@ -435,7 +633,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Action.js.html">Action.js</a>, <a href="Action.js.html#line44">line 44</a>
+        <a href="mixins_PrivateStateMixin.js.html">mixins/PrivateStateMixin.js</a>, <a href="mixins_PrivateStateMixin.js.html#line17">line 17</a>
     </li></ul></dd>
     
 
@@ -458,16 +656,6 @@
 
 
 
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    void
-</div>
-
-
-
-    
 
 
 

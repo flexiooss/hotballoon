@@ -39,10 +39,17 @@ import {
   select as $$
 } from '../HotballoonElement/HotBalloonAttributeHandler'
 
+/**
+ *
+ * @class
+ * @description Mixin - handle a NodeElement property
+ */
 export const NodesHandlerMixin = (Base) => class extends Base {
   /**
-     *
-     * @param {hotballoon:View} View
+     * @description Mixin - init
+     * @param {View} View
+     * @memberOf NodesHandlerMixin
+     * @instance
      */
   NodesHandlerMixinInit(View) {
     /**
@@ -88,37 +95,78 @@ export const NodesHandlerMixin = (Base) => class extends Base {
       return html(this, querySelector, ...args)
     }
   }
-  /**
-     *
-     * --------------------------------------------------------------
-     * Part
-     * --------------------------------------------------------------
-     */
 
+  /**
+     * @param {String} key
+     * @param {View} view
+     * @memberOf NodesHandlerMixin
+     * @instance
+     */
   registerSubView(key, view) {
     this._addSubView(key, view)
   }
+
+  /**
+     * @param {String} key
+     * @param {View} view
+     * @memberOf NodesHandlerMixin
+     * @instance
+     */
   addNodeSubView(key, view) {
     this._setNodeViewRef()
     this._addSubView(key, view)
   }
 
+  /**
+     * @param {String} key
+     * @return {View} view
+     * @memberOf NodesHandlerMixin
+     * @instance
+     */
   subView(key) {
     return this._subViews.get(key)
   }
 
+  /**
+     * @param {String} key
+     * @return {NodeElement} nodeElement
+     * @memberOf NodesHandlerMixin
+     * @instance
+     */
   nodeRef(key) {
     return this._nodeRefs.get(key)
   }
 
+  /**
+     * @param {String} key
+     * @param {NodeElement} node
+     * @return {NodeElement} nodeElement
+     * @memberOf NodesHandlerMixin
+     * @instance
+     */
   addNodeRef(key, node) {
     return this._setNodeRef(key, node)
   }
 
+  /**
+     * @param {String} key
+     * @param {NodeElement} node
+     * @return {NodeElement} nodeElement
+     * @memberOf NodesHandlerMixin
+     * @instance
+     */
   replaceNodeRef(key, node) {
     return this._setNodeRef(key, node)
   }
 
+  /**
+     * @private
+     * @param {String} key
+     * @param {View} view
+     * @return {View} view
+     * @memberOf NodesHandlerMixin
+     * @instance
+     */
   _addSubView(key, view) {
     assert(key,
       'hoballoon:View:_addSubView: `key` argument assert not be undefined')
@@ -127,26 +175,43 @@ export const NodesHandlerMixin = (Base) => class extends Base {
     return view
   }
 
+  /**
+     * @private
+     * @param {String} key
+     * @param {NodeElement} node
+     * @return {NodeElement} node
+     * @memberOf NodesHandlerMixin
+     * @instance
+     */
   _setNodeRef(key, node) {
     $$(node).setNodeRef(key)
     this._nodeRefs.set(key, node)
     return node
   }
 
+  /**
+     * @private
+     * @memberOf NodesHandlerMixin
+     * @instance
+     */
   _setNodeViewRef() {
     $$(this.node()).setViewRef(this._ID)
   }
 
   /**
-     *
-     * --------------------------------------------------------------
-     * Node
-     * --------------------------------------------------------------
+     * @returns {NodeElement} node
+     * @memberOf NodesHandlerMixin
+     * @instance
      */
   node() {
     return this._node
   }
 
+  /**
+     * @returns {NodeElement} node
+     * @memberOf NodesHandlerMixin
+     * @instance
+     */
   _replaceNode() {
     this._node = this.view()
     return this._node
@@ -162,13 +227,13 @@ export const NodesHandlerMixin = (Base) => class extends Base {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Action.html">Action</a></li><li><a href="Component.html">Component</a></li><li><a href="CreateHotBalloonElement.html">CreateHotBalloonElement</a></li><li><a href="EventHandlerBase.html">EventHandlerBase</a></li><li><a href="HotBalloonAttributeHandler.html">HotBalloonAttributeHandler</a></li><li><a href="Storage.html">Storage</a></li><li><a href="Store.html">Store</a></li><li><a href="StoreModel.html">StoreModel</a></li><li><a href="View.html">View</a></li><li><a href="ViewContainer.html">ViewContainer</a></li><li><a href="ViewContainerContextMixin.html">ViewContainerContextMixin</a></li></ul><h3>Global</h3><ul><li><a href="global.html#_setAPP">_setAPP</a></li><li><a href="global.html#APP">APP</a></li><li><a href="global.html#ApplicationContextMixin">ApplicationContextMixin</a></li><li><a href="global.html#ApplicationContextMixinInit">ApplicationContextMixinInit</a></li><li><a href="global.html#Dispatcher">Dispatcher</a></li><li><a href="global.html#node">node</a></li><li><a href="global.html#NodesHandlerMixinInit">NodesHandlerMixinInit</a></li><li><a href="global.html#registerSubView">registerSubView</a></li><li><a href="global.html#Service">Service</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Action.html">Action</a></li><li><a href="ApplicationContextMixin.html">ApplicationContextMixin</a></li><li><a href="Component.html">Component</a></li><li><a href="ComponentContextMixin.html">ComponentContextMixin</a></li><li><a href="CreateHotBalloonElement.html">CreateHotBalloonElement</a></li><li><a href="Dispatcher.html">Dispatcher</a></li><li><a href="EventHandlerBase.html">EventHandlerBase</a></li><li><a href="EventOrderedHandler.html">EventOrderedHandler</a></li><li><a href="HotBalloonApplication.html">HotBalloonApplication</a></li><li><a href="HotBalloonAttributeHandler.html">HotBalloonAttributeHandler</a></li><li><a href="NodesHandlerMixin.html">NodesHandlerMixin</a></li><li><a href="PrivateStateMixin.html">PrivateStateMixin</a></li><li><a href="RequireIDMixin.html">RequireIDMixin</a></li><li><a href="Storage.html">Storage</a></li><li><a href="Store.html">Store</a></li><li><a href="StoreModel.html">StoreModel</a></li><li><a href="View.html">View</a></li><li><a href="ViewContainer.html">ViewContainer</a></li><li><a href="ViewContainerContextMixin.html">ViewContainerContextMixin</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Mar 20 2018 23:00:01 GMT+0100 (CET)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Mar 20 2018 23:50:00 GMT+0100 (CET)
 </footer>
 
 <script> prettyPrint(); </script>

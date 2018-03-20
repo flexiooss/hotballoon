@@ -11,10 +11,17 @@ import {
   select as $$
 } from '../HotballoonElement/HotBalloonAttributeHandler'
 
+/**
+ *
+ * @class
+ * @description Mixin - handle a NodeElement property
+ */
 export const NodesHandlerMixin = (Base) => class extends Base {
   /**
-     *
-     * @param {hotballoon:View} View
+     * @description Mixin - init
+     * @param {View} View
+     * @memberOf NodesHandlerMixin
+     * @instance
      */
   NodesHandlerMixinInit(View) {
     /**
@@ -60,37 +67,78 @@ export const NodesHandlerMixin = (Base) => class extends Base {
       return html(this, querySelector, ...args)
     }
   }
-  /**
-     *
-     * --------------------------------------------------------------
-     * Part
-     * --------------------------------------------------------------
-     */
 
+  /**
+     * @param {String} key
+     * @param {View} view
+     * @memberOf NodesHandlerMixin
+     * @instance
+     */
   registerSubView(key, view) {
     this._addSubView(key, view)
   }
+
+  /**
+     * @param {String} key
+     * @param {View} view
+     * @memberOf NodesHandlerMixin
+     * @instance
+     */
   addNodeSubView(key, view) {
     this._setNodeViewRef()
     this._addSubView(key, view)
   }
 
+  /**
+     * @param {String} key
+     * @return {View} view
+     * @memberOf NodesHandlerMixin
+     * @instance
+     */
   subView(key) {
     return this._subViews.get(key)
   }
 
+  /**
+     * @param {String} key
+     * @return {NodeElement} nodeElement
+     * @memberOf NodesHandlerMixin
+     * @instance
+     */
   nodeRef(key) {
     return this._nodeRefs.get(key)
   }
 
+  /**
+     * @param {String} key
+     * @param {NodeElement} node
+     * @return {NodeElement} nodeElement
+     * @memberOf NodesHandlerMixin
+     * @instance
+     */
   addNodeRef(key, node) {
     return this._setNodeRef(key, node)
   }
 
+  /**
+     * @param {String} key
+     * @param {NodeElement} node
+     * @return {NodeElement} nodeElement
+     * @memberOf NodesHandlerMixin
+     * @instance
+     */
   replaceNodeRef(key, node) {
     return this._setNodeRef(key, node)
   }
 
+  /**
+     * @private
+     * @param {String} key
+     * @param {View} view
+     * @return {View} view
+     * @memberOf NodesHandlerMixin
+     * @instance
+     */
   _addSubView(key, view) {
     assert(key,
       'hoballoon:View:_addSubView: `key` argument assert not be undefined')
@@ -99,26 +147,43 @@ export const NodesHandlerMixin = (Base) => class extends Base {
     return view
   }
 
+  /**
+     * @private
+     * @param {String} key
+     * @param {NodeElement} node
+     * @return {NodeElement} node
+     * @memberOf NodesHandlerMixin
+     * @instance
+     */
   _setNodeRef(key, node) {
     $$(node).setNodeRef(key)
     this._nodeRefs.set(key, node)
     return node
   }
 
+  /**
+     * @private
+     * @memberOf NodesHandlerMixin
+     * @instance
+     */
   _setNodeViewRef() {
     $$(this.node()).setViewRef(this._ID)
   }
 
   /**
-     *
-     * --------------------------------------------------------------
-     * Node
-     * --------------------------------------------------------------
+     * @returns {NodeElement} node
+     * @memberOf NodesHandlerMixin
+     * @instance
      */
   node() {
     return this._node
   }
 
+  /**
+     * @returns {NodeElement} node
+     * @memberOf NodesHandlerMixin
+     * @instance
+     */
   _replaceNode() {
     this._node = this.view()
     return this._node
