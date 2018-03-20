@@ -5,12 +5,17 @@
     "module": "dist/hotballoon.es.js",
     "version": "1.0.1",
     "license": "Apache-2.0",
+    "scripts": {
+        "gendoc": "yarn jsdoc -p -r ./src/"
+    },
     "bugs": {
         "url": "https://github.com/flexiooss/hotballoon/issues"
     },
     "author": "Thomas Chatelain (https://github.com/TomAchT)",
     "repository": "https://github.com/flexiooss/hotballoon.git",
-    "devDependencies": {},
+    "devDependencies": {
+        "jsdoc": "^3.5.5"
+    },
     "dependencies": {
         "flexio-jshelpers": "https://github.com/flexiooss/flexio-jshelpers.git"
     }

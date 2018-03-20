@@ -7,6 +7,10 @@ import {
   assert
 } from 'flexio-jshelpers'
 
+/**
+ * Action is the entry point of Component
+ * @class
+ */
 class Action {
   constructor(dispatcher, componentId) {
     assert(dispatcher instanceof Dispatcher,
@@ -31,7 +35,8 @@ class Action {
   }
 
   /**
-     * @public hub for dispatch actions
+     * hub for dispatch actions
+     * @public
      * @param {String} type : event name
      * @param {Object} payload
      * @returns void
