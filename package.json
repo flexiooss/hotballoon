@@ -6,7 +6,7 @@
     "version": "1.0.1",
     "license": "Apache-2.0",
     "scripts": {
-        "gendoc": "yarn jsdoc -d ./docs -p -r ./src/"
+        "doc": "yarn jsdoc -d ./docs/ -p -r ./src/ "
     },
     "bugs": {
         "url": "https://github.com/flexiooss/hotballoon/issues"

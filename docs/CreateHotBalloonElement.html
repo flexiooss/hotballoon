@@ -89,7 +89,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="HotballoonElement_CreateHotBalloonElement.js.html">HotballoonElement/CreateHotBalloonElement.js</a>, <a href="HotballoonElement_CreateHotBalloonElement.js.html#line25">line 25</a>
+        <a href="HotballoonElement_CreateHotBalloonElement.js.html">HotballoonElement/CreateHotBalloonElement.js</a>, <a href="HotballoonElement_CreateHotBalloonElement.js.html#line26">line 26</a>
     </li></ul></dd>
     
 
@@ -121,6 +121,17 @@
     </div>
 
     
+        <h3 class="subsection-title">Extends</h3>
+
+        
+
+
+    <ul>
+        <li>HyperFlex</li>
+    </ul>
+
+
+    
 
     
 
@@ -143,7 +154,239 @@
     
 
     
-    <h4 class="name" id="_parseArguments"><span class="type-signature"></span>_parseArguments<span class="signature">(element, &hellip;arguments)</span><span class="type-signature"> &rarr; {NodeElement}</span></h4>
+    <h4 class="name" id=".html"><span class="type-signature">(static) </span>html<span class="signature">(scope, querySelector, &hellip;args)</span><span class="type-signature"> &rarr; {NodeElement}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Helper for create a NodeElement
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>scope</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">View instance</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>querySelector</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">tag#id.class[.class,...]</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>args</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">mixed</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                    &lt;repeatable><br>
+                
+                </td>
+            
+
+            
+
+            <td class="description last">attributes, style, childs, text</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="HotballoonElement_CreateHotBalloonElement.js.html">HotballoonElement/CreateHotBalloonElement.js</a>, <a href="HotballoonElement_CreateHotBalloonElement.js.html#line40">line 40</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">NodeElement</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>html(this, 'div#MyID.class1.class2', {data-type: 'myType', style:{color: '#000'}}, 'My Text', html(this, 'div#MyChildID','Child'))</code></pre>
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="_parseArguments"><span class="type-signature">(private) </span>_parseArguments<span class="signature">(element, &hellip;arguments)</span><span class="type-signature"> &rarr; {NodeElement}</span></h4>
     
 
     
@@ -283,7 +526,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="HotballoonElement_CreateHotBalloonElement.js.html">HotballoonElement/CreateHotBalloonElement.js</a>, <a href="HotballoonElement_CreateHotBalloonElement.js.html#line39">line 39</a>
+        <a href="HotballoonElement_CreateHotBalloonElement.js.html">HotballoonElement/CreateHotBalloonElement.js</a>, <a href="HotballoonElement_CreateHotBalloonElement.js.html#line49">line 49</a>
     </li></ul></dd>
     
 
@@ -339,7 +582,7 @@
     
 
     
-    <h4 class="name" id="_setAttributes"><span class="type-signature"></span>_setAttributes<span class="signature">(element, attributes)</span><span class="type-signature"> &rarr; {void}</span></h4>
+    <h4 class="name" id="_setAttributes"><span class="type-signature">(private) </span>_setAttributes<span class="signature">(element, attributes)</span><span class="type-signature"> &rarr; {void}</span></h4>
     
 
     
@@ -459,7 +702,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="HotballoonElement_CreateHotBalloonElement.js.html">HotballoonElement/CreateHotBalloonElement.js</a>, <a href="HotballoonElement_CreateHotBalloonElement.js.html#line67">line 67</a>
+        <a href="HotballoonElement_CreateHotBalloonElement.js.html">HotballoonElement/CreateHotBalloonElement.js</a>, <a href="HotballoonElement_CreateHotBalloonElement.js.html#line77">line 77</a>
     </li></ul></dd>
     
 
@@ -635,7 +878,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="HotballoonElement_CreateHotBalloonElement.js.html">HotballoonElement/CreateHotBalloonElement.js</a>, <a href="HotballoonElement_CreateHotBalloonElement.js.html#line96">line 96</a>
+        <a href="HotballoonElement_CreateHotBalloonElement.js.html">HotballoonElement/CreateHotBalloonElement.js</a>, <a href="HotballoonElement_CreateHotBalloonElement.js.html#line106">line 106</a>
     </li></ul></dd>
     
 
@@ -669,7 +912,7 @@
     
 
     
-    <h4 class="name" id="_setReconciliationRule"><span class="type-signature"></span>_setReconciliationRule<span class="signature">(element, rules)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="_setReconciliationRule"><span class="type-signature">(private) </span>_setReconciliationRule<span class="signature">(element, rules)</span><span class="type-signature"></span></h4>
     
 
     
@@ -789,7 +1032,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="HotballoonElement_CreateHotBalloonElement.js.html">HotballoonElement/CreateHotBalloonElement.js</a>, <a href="HotballoonElement_CreateHotBalloonElement.js.html#line104">line 104</a>
+        <a href="HotballoonElement_CreateHotBalloonElement.js.html">HotballoonElement/CreateHotBalloonElement.js</a>, <a href="HotballoonElement_CreateHotBalloonElement.js.html#line115">line 115</a>
     </li></ul></dd>
     
 
@@ -833,13 +1076,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Action.html">Action</a></li><li><a href="ApplicationContextMixin.html">ApplicationContextMixin</a></li><li><a href="Component.html">Component</a></li><li><a href="ComponentContextMixin.html">ComponentContextMixin</a></li><li><a href="CreateHotBalloonElement.html">CreateHotBalloonElement</a></li><li><a href="Dispatcher.html">Dispatcher</a></li><li><a href="EventHandlerBase.html">EventHandlerBase</a></li><li><a href="EventOrderedHandler.html">EventOrderedHandler</a></li><li><a href="HotBalloonApplication.html">HotBalloonApplication</a></li><li><a href="HotBalloonAttributeHandler.html">HotBalloonAttributeHandler</a></li><li><a href="NodesHandlerMixin.html">NodesHandlerMixin</a></li><li><a href="PrivateStateMixin.html">PrivateStateMixin</a></li><li><a href="RequireIDMixin.html">RequireIDMixin</a></li><li><a href="Storage.html">Storage</a></li><li><a href="Store.html">Store</a></li><li><a href="StoreModel.html">StoreModel</a></li><li><a href="View.html">View</a></li><li><a href="ViewContainer.html">ViewContainer</a></li><li><a href="ViewContainerContextMixin.html">ViewContainerContextMixin</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Action.html">Action</a></li><li><a href="ApplicationContextMixin.html">ApplicationContextMixin</a></li><li><a href="Component.html">Component</a></li><li><a href="ComponentContextMixin.html">ComponentContextMixin</a></li><li><a href="CreateHotBalloonElement.html">CreateHotBalloonElement</a></li><li><a href="Dispatcher.html">Dispatcher</a></li><li><a href="EventHandlerBase.html">EventHandlerBase</a></li><li><a href="EventOrderedHandler.html">EventOrderedHandler</a></li><li><a href="HotBalloonApplication.html">HotBalloonApplication</a></li><li><a href="HotBalloonAttributeHandler.html">HotBalloonAttributeHandler</a></li><li><a href="NodesHandlerMixin.html">NodesHandlerMixin</a></li><li><a href="PrivateStateMixin.html">PrivateStateMixin</a></li><li><a href="RequireIDMixin.html">RequireIDMixin</a></li><li><a href="Storage.html">Storage</a></li><li><a href="Store.html">Store</a></li><li><a href="StoreModel.html">StoreModel</a></li><li><a href="View.html">View</a></li><li><a href="ViewContainer.html">ViewContainer</a></li><li><a href="ViewContainerContextMixin.html">ViewContainerContextMixin</a></li></ul><h3>Global</h3><ul><li><a href="global.html#ROOT,">ROOT,</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Mar 20 2018 23:50:00 GMT+0100 (CET)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Mar 22 2018 22:11:42 GMT+0100 (CET)
 </footer>
 
 <script> prettyPrint(); </script>
