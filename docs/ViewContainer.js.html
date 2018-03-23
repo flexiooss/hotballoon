@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: ViewContainer.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: ViewContainer.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict'
+import {
+  View,
+  STORE_CHANGED as VIEW_STORE_CHANGED
+} from './View'
+import {
+  EventOrderedHandler
+} from './EventOrderedHandler'
+import {
+  Store,
+  CHANGED as STORE_CHANGED
+} from './storeBases/Store'
+import {
+  MapOfInstance,
+  MapOfArray,
+  isNode,
+  isBoolean,
+  assert
+} from 'flexio-jshelpers'
+import {
+  ComponentContextMixin
+} from './mixins/ComponentContextMixin'
+import {
+  RequireIDMixin
+} from './mixins/RequireIDMixin'
+import {
+  PrivateStateMixin
+} from './mixins/PrivateStateMixin'
+
+const EVENT_HANDLER = Object.seal(new EventOrderedHandler())
+
+export const INIT = 'INIT'
+export const STORE_CHANGE = 'STORE_CHANGE'
+export const WILL_REMOVE = 'WILL_REMOVE'
+
+/**
+ *
+ * @class
+ * @description ViewContainer is a Views container who can suscribe to Stores to dispatch state to Views
+ * @extends hotballoon/ComponentContextMixin
+ * @extends hotballoon/RequireIDMixin
+ * @extends hotballoon/PrivateStateMixin
+ *
+ */
+class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateStateMixin(class {}))) {
+  constructor(component, id, storesKey) {
+    super()
+    /**
+         * MixinInit
+         */
+    this.ComponentContextMixinInit(component)
+    this.RequireIDMixinInit(id)
+    this.PrivateStateMixinInit()
+
+    assert(storesKey instanceof Map,
+      'hoballoon:ViewContainer:subscribeToStore: `storesKey` argument assert be an instance of Map'
+    )
+
+    var _mounted = false
+    var _rendered = false
+    var _tokenEvent = new MapOfArray()
+    var _views = new MapOfInstance(View)
+
+    Object.defineProperties(this, {
+      storesKey: {
+        configurable: false,
+        enumerable: true,
+        writable: false,
+        value: storesKey
+      },
+      _mounted: {
+        configurable: false,
+        enumerable: false,
+        get: () => {
+          return _mounted
+        },
+        set: (v) => {
+          assert(!!isBoolean(v),
+            'hotballoon:ViewContainer:constructor: `_mounted` argument should be a boolean'
+          )
+          _mounted = v
+        }
+      },
+      _rendered: {
+        configurable: false,
+        enumerable: false,
+        get: () => {
+          return _rendered
+        },
+        set: (v) => {
+          assert(!!isBoolean(v),
+            'hotballoon:ViewContainer:constructor: `_rendered` argument should be a boolean'
+          )
+          _rendered = v
+        }
+      },
+      '_EventHandler': {
+        enumerable: false,
+        configurable: false,
+        value: EVENT_HANDLER
+      },
+      '_tokenEvent': {
+        enumerable: false,
+        configurable: false,
+        value: _tokenEvent
+      },
+      '_views': {
+        enumerable: false,
+        configurable: false,
+        value: _views
+      }
+    })
+
+    this._registerStores()
+    this.registerViews()
+  }
+
+  /**
+     *
+     * --------------------------------------------------------------
+     * EventHandler
+     * --------------------------------------------------------------
+     */
+
+  /**
+     * @description Format an Event name
+     * @private
+     * @param {String} storeKey : store token
+     * @param {String}  event : event types
+     * @return {string} event name formated
+     */
+  _formatStoreEventName(storeKey, type) {
+    return storeKey + '_' + type
+  }
+
+  /**
+     * @description Suscribe to _EventHandler event
+     * @param {String} event
+     * @param {Function} callback
+     * @param {Object} scope
+     * @param {Integer}  priority
+     * @returns {String} token
+     */
+  subscribe(type, callback, scope, priority) {
+    return this._EventHandler.addEventListener(type, callback, scope, priority)
+  }
+
+  /**
+     * @description dispatch _EventHandler event
+     * @param {String} eventType
+     * @param {Object} payload
+     */
+  dispatch(eventType, payload) {
+    this._EventHandler.dispatch(eventType, payload)
+  }
+
+  /**
+     *
+     * --------------------------------------------------------------
+     * Stores
+     * --------------------------------------------------------------
+     */
+
+  /**
+     *
+     * @param {String} storeKey : store token
+     * @param {String}  event : event types
+     */
+  subscribeToStore(storeKey, event) {
+    const store = this.Store(storeKey)
+    assert(store instanceof Store,
+      'hoballoon:ViewContainer:subscribeToStore: `store` argument assert be an instance of StoreBase ')
+
+    store.subscribe(event,
+      (payload, type) => {
+        this.dispatch(this._formatStoreEventName(storeKey, type), payload)
+      },
+      this, 100)
+  }
+
+  /**
+     * @private
+     */
+  _registerStores() {
+    this.storesKey.forEach((value, key, map) => {
+      this.subscribeToStore(value, STORE_CHANGED)
+    })
+  }
+
+  /**
+     *
+     * --------------------------------------------------------------
+     * Views
+     * --------------------------------------------------------------
+     */
+
+  /**
+     *
+     * @param {hotballoon/View} view
+     * @param {String} storeKey : store token
+     * @param {String}  storeEvent event types
+     */
+  addView(view, storeKey, storeEvent) {
+    this._views.add(view._ID, view)
+    if (storeKey &amp;&amp; storeEvent) {
+      this._suscribeToEvent(view._ID, storeKey, storeEvent, view)
+    }
+    return view
+  }
+
+  /**
+     *
+     * @private
+     * @param {String} key : event token
+     * @param {String} storeKey : store token
+     * @param {String} storeEvent : event name
+     * @param {hotballoon/View} view
+     * @param {Integer} priority
+     */
+  _suscribeToEvent(key, storeKey, storeEvent, view, priority = 0) {
+    const eventName = this._formatStoreEventName(storeKey, storeEvent)
+    const token = this.subscribe(
+      eventName,
+      (payload, type) => {
+        view.dispatch(VIEW_STORE_CHANGED, payload)
+      },
+      view, priority)
+    this._tokenEvent.add(key, token)
+  }
+
+  /**
+     *
+     * @param {hotballoon/View} view
+     * @param {String} key : View token
+     */
+  replaceView(view, key) {
+    this._views.replace(view, key)
+  }
+
+  /**
+     *
+     * @param {String} key : View token
+     * @return {hotballoon/View} View
+     */
+  View(key) {
+    return this._views.get(key)
+  }
+
+  /**
+     *
+     * --------------------------------------------------------------
+     * Rendering
+     * --------------------------------------------------------------
+     */
+
+  /**
+     * @private
+     * @param {NodeElement} parentNode
+     */
+  _renderViewsAndMount(parentNode) {
+    this._views.forEach((view, key, map) => {
+      view.renderAndMount(parentNode)
+    })
+  }
+
+  /**
+     * @private
+     * @param {NodeElement} parentNode
+     */
+  _mountViews(parentNode) {
+    this._views.forEach((view, key, map) => {
+      view.mount(parentNode)
+    })
+  }
+
+  /**
+     * @private
+     */
+  _renderViews() {
+    this._views.forEach((view, key, map) => {
+      view.render()
+    })
+  }
+
+  /**
+     * @description Render all views
+     */
+  render() {
+    this._renderViews()
+    this._rendered = true
+  }
+
+  /**
+     * Mount all views into the `parentNode` argument
+     * @param {NodeElement} parentNode
+     * @returns {NodeElement} parentNode
+     */
+  mount(parentNode) {
+    assert(isNode(parentNode),
+      'hotballoon:ViewContainer:mount: `parentNode` arguement assert be a NodeElement, %s given',
+      typeof parentNode)
+    this._mountViews(parentNode)
+    this._mounted = true
+
+    return parentNode
+  }
+
+  /**
+     * Render all views and mount these into the `parentNode` argument
+     * @param {NodeElement} parentNode
+     * @returns {NodeElement} parentNode
+     */
+  renderAndMount(parentNode) {
+    this.render()
+    this.mount(parentNode)
+    return parentNode
+  }
+
+  /**
+     * @private
+     * @param {hotballoon/Action} action
+     * @param {String} typAction
+     * @param {Object} payload
+     *
+     */
+  _createAction(Action, typAction, payload, ...args) {
+    Action.newAction(typAction, payload, ...args)
+  }
+
+  /**
+     * Dispatch an Action
+     * @param {hotballoon/Action} Action
+     * @param {Function} clb - callback
+     * @param {Object} payload
+     * @param {mixed} ...args
+     */
+  newViewAction(Action, clb, payload, ...args) {
+    this._createAction(Action, clb, payload, ...args)
+  }
+}
+
+export {
+  ViewContainer
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Action.html">Action</a></li><li><a href="ApplicationContextMixin.html">ApplicationContextMixin</a></li><li><a href="Component.html">Component</a></li><li><a href="ComponentContextMixin.html">ComponentContextMixin</a></li><li><a href="CreateHotBalloonElement.html">CreateHotBalloonElement</a></li><li><a href="Dispatcher.html">Dispatcher</a></li><li><a href="EventHandlerBase.html">EventHandlerBase</a></li><li><a href="EventOrderedHandler.html">EventOrderedHandler</a></li><li><a href="HotBalloonApplication.html">HotBalloonApplication</a></li><li><a href="HotBalloonAttributeHandler.html">HotBalloonAttributeHandler</a></li><li><a href="NodesHandlerMixin.html">NodesHandlerMixin</a></li><li><a href="PrivateStateMixin.html">PrivateStateMixin</a></li><li><a href="RequireIDMixin.html">RequireIDMixin</a></li><li><a href="Storage.html">Storage</a></li><li><a href="Store.html">Store</a></li><li><a href="StoreModel.html">StoreModel</a></li><li><a href="View.html">View</a></li><li><a href="ViewContainer.html">ViewContainer</a></li><li><a href="ViewContainerContextMixin.html">ViewContainerContextMixin</a></li></ul><h3>Global</h3><ul><li><a href="global.html#ROOT,">ROOT,</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Mar 22 2018 22:11:42 GMT+0100 (CET)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

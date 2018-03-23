@@ -15,23 +15,36 @@ import {
 
 const EVENT_HANDLER = Object.seal(new EventOrderedHandler())
 
+export const INIT = 'INIT'
+export const CHANGED = 'CHANGED'
+
+/**
+ * @class
+ * @description Store is the instance for store data from Component
+ * @extends RequireIDMixin
+ */
 export class Store extends RequireIDMixin(class {}) {
-  constructor(id, store) {
+  /**
+     * @constructor
+     * @param {String} id
+     * @param {Store} storage
+     */
+  constructor(id, storage) {
     super()
     this.RequireIDMixinInit(id)
 
-    assert(store instanceof Storage,
-      'hotballoon:StoreHandler:constructor: `store` argument should be a `StoreBase` instance')
+    assert(storage instanceof Storage,
+      'hotballoon:StoreHandler:constructor: `storage` argument should be a `Storage` instance')
 
     Object.defineProperties(this, {
       _store: {
         enumerable: false,
         configurable: false,
-        get: () => store,
+        get: () => storage,
         set: (storeCandidate) => {
           assert(storeCandidate instanceof Storage,
-            'hotballoon:Store:update: _state property assert be an instance of hotballoon/StoreBase ')
-          store = storeCandidate
+            'hotballoon:Store:update: _store property assert be an instance of hotballoon/Storage ')
+          storage = storeCandidate
           this._updated()
         }
       },
@@ -42,38 +55,55 @@ export class Store extends RequireIDMixin(class {}) {
       }
     })
 
-    this._dispatch(this.constructor.eventType('INIT'))
+    this._dispatch(INIT)
   }
 
-  static eventType(key) {
-    const types = {
-      INIT: 'INIT',
-      CHANGED: 'CHANGED'
-    }
-    return (key) ? types[key] : types
-  }
-
+  /**
+     *
+     * @param {String} type
+     * @param {Function} callback
+     * @param {Object} scope
+     * @param {Integer} priority
+     */
   subscribe(type, callback, scope, priority) {
     return this._EventHandler.addEventListener(type, callback, scope, priority)
   }
 
+  /**
+     * @returns {Object} state frozen
+     */
   state() {
     return deepFreezeSeal(this._get())
   }
 
+  /**
+     * @private
+     */
   _get() {
     return this._store.get()
   }
 
+  /**
+     *
+     * @param {Object} state
+     */
   set(state) {
     this._store = this._store.set(state)
   }
 
+  /**
+     * @private
+     * @param {String} eventType
+     * @param {Object} payload
+     */
   _dispatch(eventType, payload = this.state()) {
     this._EventHandler.dispatch(eventType, payload)
   }
 
+  /**
+     * @private
+     */
   _updated() {
-    this._dispatch(this.constructor.eventType('CHANGED'))
+    this._dispatch(CHANGED)
   }
 }

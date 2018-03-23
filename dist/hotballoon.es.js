@@ -2,7 +2,9 @@ import {
   Dispatcher
 } from '../src/Dispatcher'
 import {
-  Store
+  Store,
+  INIT,
+  CHANGED
 } from '../src/storeBases/Store'
 
 import {
@@ -67,6 +69,11 @@ export const hotballoonElement = {
 export const storeBases = {
   Storage,
   StoreModel
+}
+
+export const storeEvents = {
+  INIT,
+  CHANGED
 }
 
 export {

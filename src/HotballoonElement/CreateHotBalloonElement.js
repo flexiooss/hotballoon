@@ -19,16 +19,29 @@ import {
   KEY_RECONCILIATE_RULES
 } from 'flexio-nodes-reconciliation'
 
+/**
+ * @class
+ * @extends HyperFlex - flexio-jshelpers
+ */
 class CreateHotBalloonElement extends HyperFlex {
   constructor(scope, querySelector, ...args) {
     super(querySelector, ...args)
     this.scope = scope
   }
+  /**
+     * @static
+     * @description Helper for create a NodeElement
+     * @param {Object} scope - View instance
+     * @param {String} querySelector - tag#id.class[.class,...]
+     * @param {mixed} args - attributes, style, childs, text
+     * @example html(this, 'div#MyID.class1.class2', {data-type: 'myType', style:{color: '#000'}}, 'My Text', html(this, 'div#MyChildID','Child'))
+     * @returns {NodeElement}
+     */
   static html(scope, querySelector, ...args) {
     return new CreateHotBalloonElement(scope, querySelector, ...args)._createElement()
   }
   /**
-     *
+     * @private
      * @param {NodeElement} element
      * @param {...var} arguments
      * @returns {NodeElement} element
@@ -56,7 +69,7 @@ class CreateHotBalloonElement extends HyperFlex {
   }
 
   /**
-     *
+     * @private
      * @param {NodeElement} element
      * @param {Object} attributes
      * @returns {void}
@@ -93,8 +106,9 @@ class CreateHotBalloonElement extends HyperFlex {
   _setNodeRef(node, key) {
     this.scope.addNodeRef(key, node)
   }
+
   /**
-     *
+     * @private
      * @param {NodeElement} element
      * @param {Array} rules
      */

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: HotBalloonApplication.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: HotBalloonApplication.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict'
+import {
+  Dispatcher
+} from './Dispatcher'
+import {
+  MapExtended,
+  MapOfInstance,
+  Sequence,
+  assert
+}
+  from 'flexio-jshelpers'
+
+import {
+  Component
+} from './Component'
+
+/**
+ *
+ * @class
+ * @description HotBalloonApplication is the container for a loop hotballoon
+ */
+class HotBalloonApplication {
+  /**
+     * @constructor
+     * @param {Dispatcher} dispatcher
+     */
+  constructor(dispatcher) {
+    assert(dispatcher instanceof Dispatcher,
+      'hotballoon:HotBalloonApplication:constructor: `dispatcher` argument should be an instance of hotballoon/Dispatcher'
+    )
+
+    const _components = new MapOfInstance(Component)
+    const _services = new MapExtended()
+    const _sequenceComponentId = new Sequence('component_')
+
+    Object.defineProperties(this, {
+      '_dispatcher': {
+        configurable: false,
+        enumerable: false,
+        get: () => {
+          return dispatcher
+        },
+        set: (v) => {
+          assert(false,
+            'hotballoon:HotBalloonApplication:constructor:_dispatcher.set: `dispatcher` already set'
+          )
+        }
+      },
+      '_components': {
+        configurable: false,
+        enumerable: false,
+        get: () => {
+          return _components
+        },
+        set: (v) => {
+          assert(false,
+            'hotballoon:HotBalloonApplication:constructor:_components.set: `components` already set'
+          )
+        }
+      },
+      '_services': {
+        configurable: false,
+        enumerable: false,
+        get: () => {
+          return _services
+        },
+        set: (v) => {
+          assert(false,
+            'hotballoon:HotBalloonApplication:constructor:_services.set: `services` already set'
+          )
+        }
+      },
+      '_sequenceComponentId': {
+        configurable: false,
+        enumerable: false,
+        get: () => {
+          return _sequenceComponentId
+        },
+        set: (v) => {
+          assert(false,
+            'hotballoon:HotBalloonApplication:constructor:_sequenceComponentId.set: `_sequenceComponentId` already set'
+          )
+        }
+      }
+    })
+  }
+
+  /**
+     * @returns {Dispatcher}
+     */
+  Dispatcher() {
+    return this._dispatcher
+  }
+
+  /**
+     * @description register a Component into this Application
+     * @param {Component}
+     * @returns {String} token : componentID
+     */
+  addComponent(Component, ...args) {
+    const componentId = this._sequenceComponentId.getNewId()
+    this._components.add(componentId, new Component(this, componentId, ...args))
+    return componentId
+  }
+
+  /**
+     *
+     * @param {String} componentID
+     * @returns {boolean} removed ?
+     */
+  removeComponent(componentID) {
+    if (this._components.has(componentID)) {
+      const removable = this.Component(componentID).willRemove()
+      if (removable !== false) {
+        this._components.delete(componentID)
+        return true
+      }
+      return false
+    }
+  }
+
+  /**
+     *
+     * @param {String} componentID
+     * @returns {Component}
+     */
+  Component(componentID) {
+    return this._components.get(componentID)
+  }
+
+  /**
+     *
+     * @param {String} serviceName
+     * @param {Service} service
+     * @returns {Service} service
+     */
+  addService(serviceName, service) {
+    assert(!this._services.has(serviceName),
+      'hotballoon:HotBalloonApplication:addService: `serviceName` : `%s` is already set',
+      serviceName
+    )
+    return this._services.add(serviceName, service)
+  }
+
+  /**
+     *
+     * @param {String} serviceName
+     */
+  removeService(serviceName) {
+    if (this._services.has(serviceName)) {
+      let service = this.Service(serviceName)
+      if ('willRemove' in service) {
+        service.willRemove()
+      }
+      this._services.delete(serviceName)
+    }
+  }
+
+  /**
+     *
+     * @param {String} serviceName
+     * @returns {Service}
+     */
+  Service(serviceName) {
+    return this._services.get(serviceName)
+  }
+}
+
+export {
+  HotBalloonApplication
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Action.html">Action</a></li><li><a href="ApplicationContextMixin.html">ApplicationContextMixin</a></li><li><a href="Component.html">Component</a></li><li><a href="ComponentContextMixin.html">ComponentContextMixin</a></li><li><a href="CreateHotBalloonElement.html">CreateHotBalloonElement</a></li><li><a href="Dispatcher.html">Dispatcher</a></li><li><a href="EventHandlerBase.html">EventHandlerBase</a></li><li><a href="EventOrderedHandler.html">EventOrderedHandler</a></li><li><a href="HotBalloonApplication.html">HotBalloonApplication</a></li><li><a href="HotBalloonAttributeHandler.html">HotBalloonAttributeHandler</a></li><li><a href="NodesHandlerMixin.html">NodesHandlerMixin</a></li><li><a href="PrivateStateMixin.html">PrivateStateMixin</a></li><li><a href="RequireIDMixin.html">RequireIDMixin</a></li><li><a href="Storage.html">Storage</a></li><li><a href="Store.html">Store</a></li><li><a href="StoreModel.html">StoreModel</a></li><li><a href="View.html">View</a></li><li><a href="ViewContainer.html">ViewContainer</a></li><li><a href="ViewContainerContextMixin.html">ViewContainerContextMixin</a></li></ul><h3>Global</h3><ul><li><a href="global.html#ROOT,">ROOT,</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Mar 22 2018 22:11:42 GMT+0100 (CET)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

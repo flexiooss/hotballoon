@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: Component.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: Component.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict'
+import {
+  Action
+} from './Action'
+import {
+  Store
+} from './storeBases/Store'
+import {
+  ViewContainer,
+  WILL_REMOVE as VIEWCONTAINER_WILL_REMOVE
+} from './ViewContainer'
+import {
+  MapOfInstance,
+  Sequence
+} from 'flexio-jshelpers'
+import {
+  RequireIDMixin
+} from './mixins/RequireIDMixin'
+import {
+  ApplicationContextMixin
+} from './mixins/ApplicationContextMixin'
+import {
+  PrivateStateMixin
+} from './mixins/PrivateStateMixin'
+
+/**
+ * @class
+ * @description The Component is the entry point of the module
+ * @extends ApplicationContextMixin
+ * @extends RequireIDMixin
+ * @extends PrivateStateMixin
+ *
+ */
+class Component extends ApplicationContextMixin(RequireIDMixin(PrivateStateMixin(class {}))) {
+  constructor(hotBallonApplication, id) {
+    super()
+
+    /**
+         * @description Mixinis init
+         */
+    this.ApplicationContextMixinInit(hotBallonApplication)
+    this.RequireIDMixinInit(id)
+    this.PrivateStateMixinInit()
+
+    const _sequenceId = new Sequence(this._ID + '_')
+    const dispatcherListenerTokens = new Map()
+    const _actions = new MapOfInstance(Action)
+    const actionsKey = new Map()
+    const _stores = new MapOfInstance(Store)
+    const storesKey = new Map()
+    const _viewContainers = new MapOfInstance(ViewContainer)
+    const viewContainersKey = new Map()
+
+    Object.defineProperties(this, {
+      _sequenceId: {
+        configurable: false,
+        enumerable: false,
+        get: () => {
+          return _sequenceId
+        },
+        set: (v) => {
+          return false
+        }
+      },
+      dispatcherListenerTokens: {
+        configurable: false,
+        enumerable: true,
+        get: () => {
+          return dispatcherListenerTokens
+        },
+        set: (v) => {
+          return false
+        }
+      },
+      _actions: {
+        configurable: false,
+        enumerable: false,
+        get: () => {
+          return _actions
+        },
+        set: (v) => {
+          return false
+        }
+      },
+      actionsKey: {
+        configurable: false,
+        enumerable: true,
+        get: () => {
+          return actionsKey
+        },
+        set: (v) => {
+          return false
+        }
+      },
+      _stores: {
+        configurable: false,
+        enumerable: false,
+        get: () => {
+          return _stores
+        },
+        set: (v) => {
+          return false
+        }
+      },
+      storesKey: {
+        configurable: false,
+        enumerable: true,
+        get: () => {
+          return storesKey
+        },
+        set: (v) => {
+          return false
+        }
+      },
+      _viewContainers: {
+        configurable: false,
+        enumerable: false,
+        get: () => {
+          return _viewContainers
+        },
+        set: (v) => {
+          return false
+        }
+      },
+      viewContainersKey: {
+        configurable: false,
+        enumerable: true,
+        get: () => {
+          return viewContainersKey
+        },
+        set: (v) => {
+          return false
+        }
+      }
+    })
+
+    this._initActions()
+    this._initStores()
+    this._initDispatcherListeners()
+    this._initViewContainers()
+  }
+
+  /**
+     * @private
+     * @description called by the constructor for int Actrions, Stores, Listeners, ViewContainers
+     * @returns void
+     *
+     */
+  _initActions() {}
+  _initStores() {}
+  _initDispatcherListeners() {}
+  _initViewContainers() {}
+
+  /**
+     * @description called by the hotballoon Appliation before remove this Component
+     */
+  willRemove() {}
+
+  /**
+     * @param {String}  tokenAction
+     * @param {hotballoon/Action}
+     * @returns {void}
+     */
+  addAction(tokenAction, Action) {
+    this._actions.add(tokenAction, Action)
+  }
+
+  /**
+     *
+     * @param {String} tokenAction
+     * @param {hotballoon/Action} Action
+     *
+     */
+  Action(tokenAction) {
+    return this._actions.get(tokenAction)
+  }
+
+  /**
+     * @param {String}  tokenStore
+     * @param {hotballoon/Store}
+     * @returns {void}
+     */
+  addStore(tokenStore, Store) {
+    this._stores.add(tokenStore, Store)
+  }
+
+  /**
+     *
+     * @param {String}  tokenStore
+     * @returns {hotballoon/Store} Store
+     */
+  Store(tokenStore) {
+    return this._stores.get(tokenStore)
+  }
+
+  /**
+     *
+     * @param {String} tokenViewContainer
+     * @param {hotballoon/ViewContainer} viewContainer
+     * @returns {void}
+     */
+  addViewContainer(key, ViewContainer) {
+    this._viewContainers.add(key, ViewContainer)
+  }
+
+  /**
+     *
+     * @param {String} tokenViewContainer
+     * @returns {void}
+     */
+  removeViewContainer(tokenViewContainer) {
+    if (this._viewContainers.has(tokenViewContainer)) {
+      this.ViewContainer(tokenViewContainer).dispatch(VIEWCONTAINER_WILL_REMOVE, {})
+      this._viewContainers.delete(tokenViewContainer)
+    }
+  }
+
+  /**
+     *
+     * @param {String} tokenViewContainer
+     * @returns {hotballoon/ViewContainer} ViewContainer
+     */
+  ViewContainer(tokenViewContainer) {
+    return this._viewContainers.get(tokenViewContainer)
+  }
+
+  /**
+     *
+     * @param {String} prefix
+     * @returns {String}
+     */
+  nextID(prefix = '') {
+    return prefix + this._sequenceId.getNewId()
+  }
+}
+export {
+  Component
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Action.html">Action</a></li><li><a href="ApplicationContextMixin.html">ApplicationContextMixin</a></li><li><a href="Component.html">Component</a></li><li><a href="ComponentContextMixin.html">ComponentContextMixin</a></li><li><a href="CreateHotBalloonElement.html">CreateHotBalloonElement</a></li><li><a href="Dispatcher.html">Dispatcher</a></li><li><a href="EventHandlerBase.html">EventHandlerBase</a></li><li><a href="EventOrderedHandler.html">EventOrderedHandler</a></li><li><a href="HotBalloonApplication.html">HotBalloonApplication</a></li><li><a href="HotBalloonAttributeHandler.html">HotBalloonAttributeHandler</a></li><li><a href="NodesHandlerMixin.html">NodesHandlerMixin</a></li><li><a href="PrivateStateMixin.html">PrivateStateMixin</a></li><li><a href="RequireIDMixin.html">RequireIDMixin</a></li><li><a href="Storage.html">Storage</a></li><li><a href="Store.html">Store</a></li><li><a href="StoreModel.html">StoreModel</a></li><li><a href="View.html">View</a></li><li><a href="ViewContainer.html">ViewContainer</a></li><li><a href="ViewContainerContextMixin.html">ViewContainerContextMixin</a></li></ul><h3>Global</h3><ul><li><a href="global.html#ROOT,">ROOT,</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Mar 22 2018 22:11:42 GMT+0100 (CET)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,12 +1,14 @@
 'use strict'
 import {
-  View
+  View,
+  STORE_CHANGED as VIEW_STORE_CHANGED
 } from './View'
 import {
   EventOrderedHandler
 } from './EventOrderedHandler'
 import {
-  Store
+  Store,
+  CHANGED as STORE_CHANGED
 } from './storeBases/Store'
 import {
   MapOfInstance,
@@ -26,11 +28,19 @@ import {
 } from './mixins/PrivateStateMixin'
 
 const EVENT_HANDLER = Object.seal(new EventOrderedHandler())
-const STORE_CHANGED = Store.eventType('CHANGED')
-const VIEW_STORE_CHANGED = View.eventType('STORE_CHANGED')
+
+export const INIT = 'INIT'
+export const STORE_CHANGE = 'STORE_CHANGE'
+export const WILL_REMOVE = 'WILL_REMOVE'
+
 /**
+ *
  * @class
  * @description ViewContainer is a Views container who can suscribe to Stores to dispatch state to Views
+ * @extends hotballoon/ComponentContextMixin
+ * @extends hotballoon/RequireIDMixin
+ * @extends hotballoon/PrivateStateMixin
+ *
  */
 class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateStateMixin(class {}))) {
   constructor(component, id, storesKey) {
@@ -46,15 +56,18 @@ class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateStateMix
       'hoballoon:ViewContainer:subscribeToStore: `storesKey` argument assert be an instance of Map'
     )
 
-    this.storesKey = storesKey
-    this._registerStores()
-
     var _mounted = false
     var _rendered = false
     var _tokenEvent = new MapOfArray()
     var _views = new MapOfInstance(View)
 
     Object.defineProperties(this, {
+      storesKey: {
+        configurable: false,
+        enumerable: true,
+        writable: false,
+        value: storesKey
+      },
       _mounted: {
         configurable: false,
         enumerable: false,
@@ -98,6 +111,7 @@ class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateStateMix
       }
     })
 
+    this._registerStores()
     this.registerViews()
   }
 
@@ -109,30 +123,18 @@ class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateStateMix
      */
 
   /**
-     * @static
-     * @param {String} key
-     * @returns {String|Object}
-     */
-  static eventType(key) {
-    const types = {
-      INIT: 'INIT',
-      STORE_CHANGE: 'STORE_CHANGE',
-      WILL_REMOVE: 'WILL_REMOVE'
-    }
-    return (key) ? types[key] : types
-  }
-
-  /**
+     * @description Format an Event name
      * @private
      * @param {String} storeKey : store token
      * @param {String}  event : event types
+     * @return {string} event name formated
      */
   _formatStoreEventName(storeKey, type) {
     return storeKey + '_' + type
   }
 
   /**
-     * @description suscribe to _EventHandler event
+     * @description Suscribe to _EventHandler event
      * @param {String} event
      * @param {Function} callback
      * @param {Object} scope
@@ -238,8 +240,9 @@ class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateStateMix
   /**
      *
      * @param {String} key : View token
+     * @return {hotballoon/View} View
      */
-  view(key) {
+  View(key) {
     return this._views.get(key)
   }
 
@@ -279,13 +282,16 @@ class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateStateMix
     })
   }
 
+  /**
+     * @description Render all views
+     */
   render() {
     this._renderViews()
     this._rendered = true
   }
 
   /**
-     *
+     * Mount all views into the `parentNode` argument
      * @param {NodeElement} parentNode
      * @returns {NodeElement} parentNode
      */
@@ -300,7 +306,7 @@ class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateStateMix
   }
 
   /**
-     *
+     * Render all views and mount these into the `parentNode` argument
      * @param {NodeElement} parentNode
      * @returns {NodeElement} parentNode
      */
@@ -310,31 +316,26 @@ class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateStateMix
     return parentNode
   }
 
-  /*
-     *
-     * --------------------------------------------------------------
-     * Actions
-     * --------------------------------------------------------------
-     */
-
   /**
+     * @private
      * @param {hotballoon/Action} action
      * @param {String} typAction
      * @param {Object} payload
      *
      */
-  createAction(action, typAction, payload) {
-    action.newAction(typAction, payload)
+  _createAction(Action, typAction, payload, ...args) {
+    Action.newAction(typAction, payload, ...args)
   }
 
   /**
-     *
-     * @param {String} actionName
-     * @param {Function} clb
+     * Dispatch an Action
+     * @param {hotballoon/Action} Action
+     * @param {Function} clb - callback
+     * @param {Object} payload
      * @param {mixed} ...args
      */
-  newViewAction(actionName, clb, ...args) {
-    this.createAction(actionName, clb, ...args)
+  newViewAction(Action, clb, payload, ...args) {
+    this._createAction(Action, clb, payload, ...args)
   }
 }
 
