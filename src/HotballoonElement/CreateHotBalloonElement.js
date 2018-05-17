@@ -13,9 +13,6 @@ import {
 } from './HotBalloonAttributeHandler'
 
 import {
-  KEY
-} from './constantes'
-import {
   KEY_RECONCILIATE_RULES
 } from 'flexio-nodes-reconciliation'
 
@@ -28,24 +25,61 @@ class CreateHotBalloonElement extends HyperFlex {
     super(querySelector, ...args)
     this.scope = scope
   }
+
   /**
-     * @static
-     * @description Helper for create a NodeElement
-     * @param {Object} scope - View instance
-     * @param {String} querySelector - tag#id.class[.class,...]
-     * @param {mixed} args - attributes, style, childs, text
-     * @example html(this, 'div#MyID.class1.class2', {data-type: 'myType', style:{color: '#000'}}, 'My Text', html(this, 'div#MyChildID','Child'))
-     * @returns {NodeElement}
-     */
+   * @static
+   * @description Helper for create a NodeElement
+   * @param {Object} scope - View instance
+   * @param {String} querySelector - tag#id.class[.class,...]
+   * @param {mixed} args - attributes, style, childs, text
+   * @example html(this, 'div#MyID.class1.class2', {data-type: 'myType', style:{color: '#000'}}, 'My Text', html(this, 'div#MyChildID','Child'))
+   * @returns {NodeElement}
+   */
   static html(scope, querySelector, ...args) {
-    return new CreateHotBalloonElement(scope, querySelector, ...args)._createElement()
+    const elFactory = new CreateHotBalloonElement(scope, querySelector, ...args)
+    let el = elFactory._createElement()
+    elFactory._changeIdAndSetNodeRef(el)
+    return el
+  }
+
+  /**
+   *
+   * @private
+   * @param {DomElement} element
+   */
+  _changeIdAndSetNodeRef(element) {
+    const shortId = element.id
+    if (shortId) {
+      element.id = this._generateIdFromScope(element.id)
+      this._setNodeRef(shortId, element)
+    }
   }
   /**
-     * @private
-     * @param {NodeElement} element
-     * @param {...var} arguments
-     * @returns {NodeElement} element
-     */
+   *
+   * @private
+   * @param {String} id
+   * @returns {String} id
+   */
+  _generateIdFromScope(id) {
+    return this.scope.APP()._ID + '-' + this.scope.Component()._ID + '-' + this.scope.ViewContainer()._ID + '-' + id
+  }
+
+  /**
+   * @private
+   * @param {String} key
+   * @param {NodeElement} node
+   * @description alias of hotballoon/View:addNodeRef
+   */
+  _setNodeRef(key, node) {
+    this.scope.addNodeRef(key, node)
+  }
+
+  /**
+   * @private
+   * @param {NodeElement} element
+   * @param {...var} arguments
+   * @returns {NodeElement} element
+   */
   _parseArguments(element, ...args) {
     // console.log('_parseArguments')
 
@@ -69,11 +103,11 @@ class CreateHotBalloonElement extends HyperFlex {
   }
 
   /**
-     * @private
-     * @param {NodeElement} element
-     * @param {Object} attributes
-     * @returns {void}
-     */
+   * @private
+   * @param {NodeElement} element
+   * @param {Object} attributes
+   * @returns {void}
+   */
   _setAttributes(element, attributes) {
     assert(isNode(element),
       'flexio-jshelpers:setAttributes: `element` argument assert be a NodeElement `%s` given',
@@ -87,8 +121,6 @@ class CreateHotBalloonElement extends HyperFlex {
       let attribut = attributes[key]
       if (key === 'style') {
         this._setStyles(element, attribut)
-      } else if (key === KEY.NODE_REF) {
-        this._setNodeRef(element, attribut)
       } else if (key === KEY_RECONCILIATE_RULES) {
         this._setReconciliationRule(element, attribut)
       } else {
@@ -98,20 +130,10 @@ class CreateHotBalloonElement extends HyperFlex {
   }
 
   /**
-     * @private
-     * @param {NodeElement} node
-     * @param {String} key
-     * @description alias of hotballoon/View:addNodeRef
-     */
-  _setNodeRef(node, key) {
-    this.scope.addNodeRef(key, node)
-  }
-
-  /**
-     * @private
-     * @param {NodeElement} element
-     * @param {Array} rules
-     */
+   * @private
+   * @param {NodeElement} element
+   * @param {Array} rules
+   */
   _setReconciliationRule(element, rules) {
     $$(element).addReconcileRules(rules)
   }

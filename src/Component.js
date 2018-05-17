@@ -32,14 +32,14 @@ import {
  *
  */
 class Component extends ApplicationContextMixin(RequireIDMixin(PrivateStateMixin(class {}))) {
-  constructor(hotBallonApplication, id) {
+  constructor(hotBallonApplication) {
     super()
 
     /**
-         * @description Mixinis init
-         */
+     * @description Mixinis init
+     */
     this.ApplicationContextMixinInit(hotBallonApplication)
-    this.RequireIDMixinInit(id)
+    this.RequireIDMixinInit(hotBallonApplication.nextID())
     this.PrivateStateMixinInit()
 
     const _sequenceId = new Sequence(this._ID + '_')
@@ -134,6 +134,14 @@ class Component extends ApplicationContextMixin(RequireIDMixin(PrivateStateMixin
       }
     })
 
+    this._init()
+  }
+
+  /**
+   * @private
+   * @returns void
+   */
+  _init() {
     this._initActions()
     this._initStores()
     this._initDispatcherListeners()
@@ -141,73 +149,86 @@ class Component extends ApplicationContextMixin(RequireIDMixin(PrivateStateMixin
   }
 
   /**
-     * @private
-     * @description called by the constructor for int Actrions, Stores, Listeners, ViewContainers
-     * @returns void
-     *
-     */
+   * @private
+   * @description called by the constructor for int Actrions, Stores, Listeners, ViewContainers
+   * @returns void
+   *
+   */
   _initActions() {}
   _initStores() {}
   _initDispatcherListeners() {}
   _initViewContainers() {}
 
   /**
-     * @description called by the hotballoon Appliation before remove this Component
-     */
+   * @description called by the hotballoon Appliation before remove this Component
+   */
   willRemove() {}
 
   /**
-     * @param {String}  tokenAction
-     * @param {hotballoon/Action}
-     * @returns {void}
-     */
-  addAction(tokenAction, Action) {
-    this._actions.add(tokenAction, Action)
+   *
+   * @param {String} type : action type
+   * @param {Function} callback
+   * @returns {String} token
+   */
+  addActionListener(type, callback) {
+    return this.Dispatcher().addActionListener(type, callback)
   }
 
   /**
-     *
-     * @param {String} tokenAction
-     * @param {hotballoon/Action} Action
-     *
-     */
+   * @param {String}  tokenAction
+   * @param {hotballoon/Action}
+   * @returns {String} tokenAction
+   */
+  addAction(tokenAction, Action) {
+    this._actions.add(tokenAction, Action)
+    return tokenAction
+  }
+
+  /**
+   *
+   * @param {String} tokenAction
+   * @param {hotballoon/Action} Action
+   *
+   */
   Action(tokenAction) {
     return this._actions.get(tokenAction)
   }
 
   /**
-     * @param {String}  tokenStore
-     * @param {hotballoon/Store}
-     * @returns {void}
-     */
+   * @param {String}  tokenStore
+   * @param {hotballoon/Store}
+   * @returns {String} tokenStore
+   */
   addStore(tokenStore, Store) {
     this._stores.add(tokenStore, Store)
+    return tokenStore
   }
 
   /**
-     *
-     * @param {String}  tokenStore
-     * @returns {hotballoon/Store} Store
-     */
+   *
+   * @param {String}  tokenStore
+   * @returns {hotballoon/Store} Store
+   */
   Store(tokenStore) {
     return this._stores.get(tokenStore)
   }
 
   /**
-     *
-     * @param {String} tokenViewContainer
-     * @param {hotballoon/ViewContainer} viewContainer
-     * @returns {void}
-     */
+   *
+   * @param {String} key
+   * @param {hotballoon/ViewContainer} viewContainer
+   * @returns {String} key
+   */
   addViewContainer(key, ViewContainer) {
     this._viewContainers.add(key, ViewContainer)
+    return key
   }
 
   /**
-     *
-     * @param {String} tokenViewContainer
-     * @returns {void}
-     */
+   *
+   * @param {String} tokenViewContainer
+   * @returns {void}
+   */
   removeViewContainer(tokenViewContainer) {
     if (this._viewContainers.has(tokenViewContainer)) {
       this.ViewContainer(tokenViewContainer).dispatch(VIEWCONTAINER_WILL_REMOVE, {})
@@ -216,21 +237,21 @@ class Component extends ApplicationContextMixin(RequireIDMixin(PrivateStateMixin
   }
 
   /**
-     *
-     * @param {String} tokenViewContainer
-     * @returns {hotballoon/ViewContainer} ViewContainer
-     */
-  ViewContainer(tokenViewContainer) {
-    return this._viewContainers.get(tokenViewContainer)
+   *
+   * @param {String} key
+   * @returns {hotballoon/ViewContainer} ViewContainer
+   */
+  ViewContainer(key) {
+    return this._viewContainers.get(key)
   }
 
   /**
-     *
-     * @param {String} prefix
-     * @returns {String}
-     */
+   *
+   * @param {String} prefix
+   * @returns {String}
+   */
   nextID(prefix = '') {
-    return prefix + this._sequenceId.getNewId()
+    return prefix + this._sequenceId.nextID()
   }
 }
 export {

@@ -53,11 +53,11 @@ export const STORE_CHANGED = 'STORE_CHANGED'
  */
 class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin(RequireIDMixin(class {})))) {
   /**
-     * @constructor
-     * @param {String} id
-     * @param {ViewContainer} viewContainer
-     * @param {Object} props
-     */
+   * @constructor
+   * @param {String} id
+   * @param {ViewContainer} viewContainer
+   * @param {Object} props
+   */
   constructor(id, viewContainer, props = {}) {
     super()
     this.RequireIDMixinInit(id)
@@ -194,35 +194,35 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
     this._initListeners()
 
     /**
-         * @description dispatch new props to subViews in _subViewsNode property
-         * @param {Object} payload
-         * @param {String} type
-         */
+     * @description dispatch new props to subViews in _subViewsNode property
+     * @param {Object} payload
+     * @param {String} type
+     */
     this.onStoreChanged = (payload, type) => {
       this.setProps(payload)
     }
   }
 
   /**
-     * Main method
-     * @return {NodeType}
-     */
+   * Main method
+   * @return {NodeType}
+   */
   view() {}
 
   /*
-     * --------------------------------------------------------------
-     * EventHandler
-     * --------------------------------------------------------------
-     */
+   * --------------------------------------------------------------
+   * EventHandler
+   * --------------------------------------------------------------
+   */
 
   /**
-     *
-     * @private
-     * @description suscribe subView an event of this view
-     * @param {String} key
-     * @param {hotballoon/View} subView
-     * @param {String} event : event name
-     */
+   *
+   * @private
+   * @description suscribe subView an event of this view
+   * @param {String} key
+   * @param {hotballoon/View} subView
+   * @param {String} event : event name
+   */
   _suscribeToEvent(key, subView, event = STORE_CHANGED) {
     let token = this._EventHandler.addEventListener(
       event,
@@ -235,24 +235,24 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
   }
 
   /**
-     * @private
-     * @description register all events for private listeners
-     * Internal event property with callable value
-     *
-     * onInit
-     * onUpdtate
-     * onUpdtated
-     * onRender
-     * onRendered
-     * onMount
-     * onMounted
-     * onPropsChange
-     * onPropsChanged
-     * onStateChange
-     * onStateChanged
-     * onStoreChanged
-     *
-     */
+   * @private
+   * @description register all events for private listeners
+   * Internal event property with callable value
+   *
+   * onInit
+   * onUpdtate
+   * onUpdtated
+   * onRender
+   * onRendered
+   * onMount
+   * onMounted
+   * onPropsChange
+   * onPropsChanged
+   * onStateChange
+   * onStateChanged
+   * onStoreChanged
+   *
+   */
   _initListeners() {
     const types = {
       INIT,
@@ -281,44 +281,25 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
   }
 
   /**
-     *
-     * @param {String} event : event name
-     * @param {Object} payload
-     * @returns void
-     */
+   *
+   * @param {String} event : event name
+   * @param {Object} payload
+   * @returns void
+   */
   dispatch(event, payload) {
     this._EventHandler.dispatch(event, payload)
   }
 
   /**
-     *
-     * --------------------------------------------------------------
-     * ViewContainer
-     * --------------------------------------------------------------
-     */
+   *
+   * --------------------------------------------------------------
+   * Prop & State
+   * --------------------------------------------------------------
+   */
 
   /**
-     * @description alias for newAction
-     * @param {hotballoon/Action} Action
-     * @param {String} actionType
-     * @param {Object} payload
-     * @returns {hotballoon/View} this
-     */
-  newAction(Action, actionType, payload) {
-    this.ViewContainer().newViewAction(Action, actionType, payload)
-    return this
-  }
-
-  /**
-     *
-     * --------------------------------------------------------------
-     * Prop & State
-     * --------------------------------------------------------------
-     */
-
-  /**
-     * @param {Object} props
-     */
+   * @param {Object} props
+   */
   setProps(props) {
     this.dispatch(PROPS_CHANGE, props)
     if (this._shouldChangeProps) {
@@ -331,20 +312,20 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
   }
 
   /**
-     *
-     * @param {String} key
-     * @param {any} defaultValue
-     * @returns any
-     */
+   *
+   * @param {String} key
+   * @param {any} defaultValue
+   * @returns any
+   */
   getProp(key, defaultValue = '') {
     return (key in this.props) ? this.props[key] : defaultValue
   }
 
   /**
-     * @private
-     * @param {String} key
-     * @param {any} val
-     */
+   * @private
+   * @param {String} key
+   * @param {any} val
+   */
   _setPrivateStateProp(key, val) {
     this.dispatch(STATE_CHANGE, {
       key,
@@ -363,33 +344,33 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
   }
 
   /**
-     *
-     * @param {string} key
-     * @param {any} defaultValue
-     * @returns any
-     */
+   *
+   * @param {string} key
+   * @param {any} defaultValue
+   * @returns any
+   */
   _getPrivateStateProp(key, defaultValue = undefined) {
     return (this._privateState.has(key)) ? this._privateState.get(key) : defaultValue
   }
 
   /**
-     *
-     * --------------------------------------------------------------
-     * Rendering
-     * --------------------------------------------------------------
-     */
+   *
+   * --------------------------------------------------------------
+   * Rendering
+   * --------------------------------------------------------------
+   */
 
   /**
-     * @private
-     * @description update the node reference of this View
-     */
+   * @private
+   * @description update the node reference of this View
+   */
   _update() {
     reconcile(this._node, this.view(), this.parentNode)
   }
 
   /**
-     * @public
-     */
+   * @public
+   */
   updateNode() {
     this._EventHandler.dispatch(UPDATE, {})
 
@@ -402,16 +383,16 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
   }
 
   /**
-     * @private
-     */
+   * @private
+   */
   _render() {
     this._replaceNode()
     this._setNodeViewRef()
   }
 
   /**
-     * @public
-     */
+   * @public
+   */
   render() {
     this._EventHandler.dispatch(RENDER, {})
 
@@ -426,19 +407,19 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
   }
 
   /**
-     * @private
-     * @description mount `_node` property into `parentNode` argument
-     */
+   * @private
+   * @description mount `_node` property into `parentNode` argument
+   */
   _mount() {
     this.parentNode.appendChild(this.node())
   }
 
   /**
-     * @public
-     * @description call _mount() with event hook
-     * @see _mount()
-     * @param {NodeElement} parentNode
-     */
+   * @public
+   * @description call _mount() with event hook
+   * @see _mount()
+   * @param {NodeElement} parentNode
+   */
   mount(parentNode) {
     assert(isNode(parentNode),
       'hotballoon:View:render require a Node argument'
@@ -457,10 +438,10 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
   }
 
   /**
-     * @public
-     * @description Render the View() into `_node` property and mount this into the `parentNode` argument
-     * @param {NodeElement} parentNode
-     */
+   * @public
+   * @description Render the View() into `_node` property and mount this into the `parentNode` argument
+   * @param {NodeElement} parentNode
+   */
   renderAndMount(parentNode) {
     this.render()
     this.mount(parentNode)

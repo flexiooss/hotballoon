@@ -35,10 +35,10 @@ class EventHandlerBase {
   }
 
   /**
-     *
-     * @param {String} type of Listener
-     * @param {Object} payload
-     */
+   *
+   * @param {String} type of Listener
+   * @param {Object} payload
+   */
   dispatch(type, payload) {
     this._beforeDispatching(type, payload)
     if (this._listeners.has(type)) {
@@ -56,11 +56,11 @@ class EventHandlerBase {
   }
 
   /**
-     *
-     * @private
-     * @param {String} type of Listener
-     * @param {String} id : token of listener
-     */
+   *
+   * @private
+   * @param {String} type of Listener
+   * @param {String} id : token of listener
+   */
   _invokeCallback(type, id) {
     this._isPending.add(id)
     this._listeners.get(type)[id].callback(this._pendingPayload.get(type), type)
@@ -68,11 +68,11 @@ class EventHandlerBase {
   }
 
   /**
-     *
-     * @param {String} type of Listener
-     * @param {Function} callback
-     * @returns {String} token
-     */
+   *
+   * @param {String} type of Listener
+   * @param {Function} callback
+   * @returns {String} token
+   */
   addEventListener(type, callback) {
     assert(!!type,
       'hotballoon:EventHandler:addEventListener: ̀`type` argument assert not be empty'
@@ -84,7 +84,7 @@ class EventHandlerBase {
     if (!(this._listeners.has(type))) {
       this._listeners.set(type, {})
     }
-    let id = this._sequenceId.getNewId().toString()
+    let id = this._sequenceId.nextID().toString()
 
     this._listeners.get(type)[id] = {
       callback: callback
@@ -94,10 +94,10 @@ class EventHandlerBase {
   }
 
   /**
-     *
-     * @param {String} type of Listener
-     * @param {String} id : token
-     */
+   *
+   * @param {String} type of Listener
+   * @param {String} id : token
+   */
   removeEventListener(type, id) {
     if (this._listeners.has(type)) {
       assert(id in this._listeners.get(type),
@@ -109,11 +109,11 @@ class EventHandlerBase {
   }
 
   /**
-     *
-     * @param {String} type of Listener
-     * @param {String} id : token
-     * @returns {boolean}
-     */
+   *
+   * @param {String} type of Listener
+   * @param {String} id : token
+   * @returns {boolean}
+   */
   hasEventListener(type, id) {
     return (this._listeners.has(type)) && (id in this._listeners.get(type))
   }

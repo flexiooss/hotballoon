@@ -17,13 +17,13 @@ import {
  */
 class EventOrderedHandler extends EventHandlerBase {
   /**
-     *
-     * @param {String} type
-     * @param {function} callback
-     * @param {Object} scope
-     * @param {Integer} priority
-     * @requires {String} token
-     */
+   *
+   * @param {String} type
+   * @param {function} callback
+   * @param {Object} scope
+   * @param {Integer} priority
+   * @requires {String} token
+   */
   addEventListener(type, callback, scope, priority) {
     assert(!!type,
       'hotballoon:EventHandler:addEventListener: ̀`type` argument assert not be empty'
@@ -42,7 +42,7 @@ class EventOrderedHandler extends EventHandlerBase {
       this._listeners.set(type, {})
     }
 
-    let id = this._sequenceId.getNewId().toString()
+    let id = this._sequenceId.nextID().toString()
 
     this._listeners.get(type)[id] = {
       scope: scope,
@@ -60,10 +60,10 @@ class EventOrderedHandler extends EventHandlerBase {
   }
 
   /**
-     * @private
-     * @param {String} type
-     * @param {String} id
-     */
+   * @private
+   * @param {String} type
+   * @param {String} id
+   */
   _invokeCallback(type, id) {
     this._isPending.add(id)
     let listener = this._listeners.get(type)[id]

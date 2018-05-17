@@ -1,15 +1,19 @@
 'use strict'
+
 import {
   Dispatcher
 } from './Dispatcher'
+
 import {
   MapExtended,
   MapOfInstance,
   Sequence,
   assert
-}
-  from 'flexio-jshelpers'
+} from 'flexio-jshelpers'
 
+import {
+  RequireIDMixin
+} from './mixins/RequireIDMixin'
 import {
   Component
 } from './Component'
@@ -19,19 +23,22 @@ import {
  * @class
  * @description HotBalloonApplication is the container for a loop hotballoon
  */
-class HotBalloonApplication {
+class HotBalloonApplication extends RequireIDMixin(class {}) {
   /**
-     * @constructor
-     * @param {Dispatcher} dispatcher
-     */
-  constructor(dispatcher) {
+   * @constructor
+   * @param {Dispatcher} dispatcher
+   */
+  constructor(id, dispatcher) {
+    super()
+    this.RequireIDMixinInit(id)
+
     assert(dispatcher instanceof Dispatcher,
       'hotballoon:HotBalloonApplication:constructor: `dispatcher` argument should be an instance of hotballoon/Dispatcher'
     )
 
     const _components = new MapOfInstance(Component)
     const _services = new MapExtended()
-    const _sequenceComponentId = new Sequence('component_')
+    const _sequenceId = new Sequence('hb_')
 
     Object.defineProperties(this, {
       '_dispatcher': {
@@ -70,15 +77,15 @@ class HotBalloonApplication {
           )
         }
       },
-      '_sequenceComponentId': {
+      '_sequenceId': {
         configurable: false,
         enumerable: false,
         get: () => {
-          return _sequenceComponentId
+          return _sequenceId
         },
         set: (v) => {
           assert(false,
-            'hotballoon:HotBalloonApplication:constructor:_sequenceComponentId.set: `_sequenceComponentId` already set'
+            'hotballoon:HotBalloonApplication:constructor:_sequenceId.set: `_sequenceId` already set'
           )
         }
       }
@@ -86,28 +93,37 @@ class HotBalloonApplication {
   }
 
   /**
-     * @returns {Dispatcher}
-     */
+   * @returns {String} token :next sequence token
+   */
+  nextID() {
+    return this._sequenceId.nextID()
+  }
+
+  /**
+   * @returns {Dispatcher}
+   */
   Dispatcher() {
     return this._dispatcher
   }
 
   /**
-     * @description register a Component into this Application
-     * @param {Component}
-     * @returns {String} token : componentID
-     */
-  addComponent(Component, ...args) {
-    const componentId = this._sequenceComponentId.getNewId()
-    this._components.add(componentId, new Component(this, componentId, ...args))
-    return componentId
+   * @description register a Component into this Application
+   * @param {Component}
+   * @returns {String} token : componentID
+   */
+  addComponent(component) {
+    assert(component instanceof Component,
+      'hotballoon:HotBalloonApplication:addComponent: `component` argument should be an instance of hotballoon:Component'
+    )
+    this._components.add(component._ID, component)
+    return component._ID
   }
 
   /**
-     *
-     * @param {String} componentID
-     * @returns {boolean} removed ?
-     */
+   *
+   * @param {String} componentID
+   * @returns {boolean} removed ?
+   */
   removeComponent(componentID) {
     if (this._components.has(componentID)) {
       const removable = this.Component(componentID).willRemove()
@@ -120,20 +136,20 @@ class HotBalloonApplication {
   }
 
   /**
-     *
-     * @param {String} componentID
-     * @returns {Component}
-     */
+   *
+   * @param {String} componentID
+   * @returns {Component}
+   */
   Component(componentID) {
     return this._components.get(componentID)
   }
 
   /**
-     *
-     * @param {String} serviceName
-     * @param {Service} service
-     * @returns {Service} service
-     */
+   *
+   * @param {String} serviceName
+   * @param {Service} service
+   * @returns {Service} service
+   */
   addService(serviceName, service) {
     assert(!this._services.has(serviceName),
       'hotballoon:HotBalloonApplication:addService: `serviceName` : `%s` is already set',
@@ -143,9 +159,9 @@ class HotBalloonApplication {
   }
 
   /**
-     *
-     * @param {String} serviceName
-     */
+   *
+   * @param {String} serviceName
+   */
   removeService(serviceName) {
     if (this._services.has(serviceName)) {
       let service = this.Service(serviceName)
@@ -157,10 +173,10 @@ class HotBalloonApplication {
   }
 
   /**
-     *
-     * @param {String} serviceName
-     * @returns {Service}
-     */
+   *
+   * @param {String} serviceName
+   * @returns {Service}
+   */
   Service(serviceName) {
     return this._services.get(serviceName)
   }

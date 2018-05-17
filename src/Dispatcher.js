@@ -13,10 +13,10 @@ import {
  */
 class Dispatcher extends EventHandlerBase {
   /**
-     * @description Ensure that a Listener already called
-     * @param {String} type of Listener
-     * @param {Array<String>} ids
-     */
+   * @description Ensure that a Listener already called
+   * @param {String} type of Listener
+   * @param {Array<String>} ids
+   */
   waitFor(type, ids) {
     assert(!!this.isDispatching(),
       'hotballoon:Dispatcher:waitFor: Must be invoked while dispatching.'
@@ -36,6 +36,26 @@ class Dispatcher extends EventHandlerBase {
         this._invokeCallback(type, id)
       }
     }
+  }
+
+  /**
+   *
+   * @param {String} type
+   * @param {Function} callback
+   * @returns {String} token
+   */
+  addActionListener(type, callback) {
+    return this.addEventListener(type, callback)
+  }
+
+  /**
+   *
+   * @param {String} type
+   * @param {String} id
+   * @returns void
+   */
+  removeActionListener(type, id) {
+    this.removeEventListener(type, id)
   }
 }
 
