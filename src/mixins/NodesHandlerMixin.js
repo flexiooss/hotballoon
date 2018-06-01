@@ -144,6 +144,7 @@ export const NodesHandlerMixin = (Base) => class extends Base {
       'hoballoon:View:_addSubView: `key` argument assert not be undefined')
     this._subViews.set(key, view)
     this._suscribeToEvent(key, view)
+    view.render()
     return view
   }
 

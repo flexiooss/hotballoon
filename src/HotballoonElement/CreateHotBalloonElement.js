@@ -7,14 +7,8 @@ import {
   isNode,
   isObject
 } from 'flexio-jshelpers'
-
-import {
-  select as $$
-} from './HotBalloonAttributeHandler'
-
-import {
-  KEY_RECONCILIATE_RULES
-} from 'flexio-nodes-reconciliation'
+import { select as $$ } from './HotBalloonAttributeHandler'
+import { KEY_RECONCILIATE_RULES } from 'flexio-nodes-reconciliation'
 
 /**
  * @class
@@ -91,15 +85,22 @@ class CreateHotBalloonElement extends HyperFlex {
 
     for (let i = 0; i < countOfArgs; i++) {
       const arg = args[i]
+
       if (isNode(arg)) {
         element.appendChild(arg)
       } else if (isString(arg) || isNumber(arg)) {
         element.appendChild(document.createTextNode(arg))
+      } else if (this._hasSameHBClassName(arg, this.scope)) {
+        element.appendChild(arg.node())
       } else if (isObject(arg)) {
         this._setAttributes(element, arg)
       }
     }
     return element
+  }
+
+  _hasSameHBClassName(object1, object2) {
+    return isObject(object1) && isObject(object2) && ('__HB__CLASSNAME__' in object1) && ('__HB__CLASSNAME__' in object2) && (object1.__HB__CLASSNAME__ === object2.__HB__CLASSNAME__)
   }
 
   /**

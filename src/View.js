@@ -51,7 +51,7 @@ export const STORE_CHANGED = 'STORE_CHANGED'
  * @extends RequireIDMixin
  *
  */
-class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin(RequireIDMixin(class {})))) {
+class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin(RequireIDMixin(class { })))) {
   /**
    * @constructor
    * @param {String} id
@@ -78,6 +78,12 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
     const _tokenEvent = new MapOfArray()
 
     Object.defineProperties(this, {
+      '__HB__CLASSNAME__': {
+        configurable: false,
+        writable: false,
+        enumerable: true,
+        value: '__HB__CLASSNAME__VIEW__'
+      },
       parentNode: {
         configurable: false,
         enumerable: true,
@@ -207,7 +213,7 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
    * Main method
    * @return {NodeType}
    */
-  view() {}
+  view() { }
 
   /*
    * --------------------------------------------------------------
