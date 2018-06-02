@@ -1,17 +1,8 @@
 'use strict'
-import {
-  EventOrderedHandler
-} from '../EventOrderedHandler'
-import {
-  assert,
-  deepFreezeSeal
-} from 'flexio-jshelpers'
-import {
-  RequireIDMixin
-} from '../mixins/RequireIDMixin'
-import {
-  Storage
-} from './Storage'
+import { EventOrderedHandler } from '../EventOrderedHandler'
+import { assert } from 'flexio-jshelpers'
+import { RequireIDMixin } from '../mixins/RequireIDMixin'
+import { Storage } from './Storage'
 
 const EVENT_HANDLER = Object.seal(new EventOrderedHandler())
 
@@ -23,28 +14,30 @@ export const CHANGED = 'CHANGED'
  * @description Store is the instance for store data from Component
  * @extends RequireIDMixin
  */
-export class Store extends RequireIDMixin(class {}) {
+export class Store extends RequireIDMixin(class { }) {
   /**
      * @constructor
      * @param {String} id
      * @param {Store} storage
      */
-  constructor(id, storage) {
+  constructor(id, storeInit) {
     super()
     this.RequireIDMixinInit(id)
 
-    assert(storage instanceof Storage,
-      'hotballoon:StoreHandler:constructor: `storage` argument should be a `Storage` instance')
+    var _storage = Storage.create(this._ID, storeInit)
+
+    // assert(storage instanceof Storage,
+    //   'hotballoon:StoreHandler:constructor: `storage` argument should be a `Storage` instance')
 
     Object.defineProperties(this, {
       _store: {
         enumerable: false,
         configurable: false,
-        get: () => storage,
-        set: (storeCandidate) => {
-          assert(storeCandidate instanceof Storage,
+        get: () => _storage,
+        set: (storageCandidate) => {
+          assert(storageCandidate instanceof Storage,
             'hotballoon:Store:update: _store property assert be an instance of hotballoon/Storage ')
-          storage = storeCandidate
+          _storage = storageCandidate
           this._updated()
         }
       },
@@ -73,7 +66,14 @@ export class Store extends RequireIDMixin(class {}) {
      * @returns {Object} state frozen
      */
   state() {
-    return deepFreezeSeal(this._get())
+    return this._get()
+  }
+
+  /**
+     * @returns {Object} state cloned
+     */
+  clone() {
+    return this._store._clone()
   }
 
   /**
@@ -88,7 +88,7 @@ export class Store extends RequireIDMixin(class {}) {
      * @param {Object} state
      */
   set(state) {
-    this._store = this._store.set(state)
+    this._store = this._store.set(this._ID, state)
   }
 
   /**

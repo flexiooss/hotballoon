@@ -10,6 +10,7 @@ import {
 import {
   EventHandler
 } from './EventHandler'
+import { MapOfState } from './MapOfState'
 import {
   PrivateStateMixin
 } from './mixins/PrivateStateMixin'
@@ -65,7 +66,7 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
     this.PrivateStateMixinInit()
     this.NodesHandlerMixinInit(View)
 
-    this.props = props
+    this.props = new MapOfState()
 
     var parentNode = null
     var _shouldInit = true

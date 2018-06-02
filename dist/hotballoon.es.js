@@ -16,9 +16,8 @@ import {
 import {
   Action
 } from '../src/Action'
-import {
-  View
-} from '../src/View'
+import { View } from '../src/View'
+import { MapOfState } from '../src/MapOfState'
 import {
   ViewContainer
 } from '../src/ViewContainer'
@@ -54,12 +53,9 @@ import {
  * storeBases
  */
 
-import {
-  Storage
-} from '../src/storeBases/Storage'
-import {
-  StoreModel
-} from '../src/storeBases/StoreModel'
+import { State } from '../src/storeBases/State'
+import { Storage } from '../src/storeBases/Storage'
+import { StoreModel } from '../src/storeBases/StoreModel'
 
 export const hotballoonElement = {
   html,
@@ -67,6 +63,7 @@ export const hotballoonElement = {
 }
 
 export const storeBases = {
+  State,
   Storage,
   StoreModel
 }
@@ -84,6 +81,7 @@ export {
   Action,
   ViewContainer,
   View,
+  MapOfState,
   PrivateStateMixin,
   ApplicationContextMixin,
   ComponentContextMixin,
