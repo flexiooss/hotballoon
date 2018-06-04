@@ -3,6 +3,7 @@ import { State } from './storeBases/State'
 
 export class MapOfState extends MapOfInstance {
   constructor() {
-    super(State)
+    super()
+    this._classType = State
   }
 }

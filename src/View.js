@@ -1,31 +1,12 @@
 'use strict'
-import {
-  isNode,
-  isFunction,
-  isBoolean,
-  camelCase,
-  assert,
-  MapOfArray
-} from 'flexio-jshelpers'
-import {
-  EventHandler
-} from './EventHandler'
+import { MapOfArray, assert, camelCase, isBoolean, isFunction, isNode } from 'flexio-jshelpers'
+import { reconcile } from 'flexio-nodes-reconciliation'
+import { EventHandler } from './EventHandler'
 import { MapOfState } from './MapOfState'
-import {
-  PrivateStateMixin
-} from './mixins/PrivateStateMixin'
-import {
-  ViewContainerContextMixin
-} from './mixins/ViewContainerContextMixin'
-import {
-  NodesHandlerMixin
-} from './mixins/NodesHandlerMixin'
-import {
-  RequireIDMixin
-} from './mixins/RequireIDMixin'
-import {
-  reconcile
-} from 'flexio-nodes-reconciliation'
+import { NodesHandlerMixin } from './mixins/NodesHandlerMixin'
+import { PrivateStateMixin } from './mixins/PrivateStateMixin'
+import { RequireIDMixin } from './mixins/RequireIDMixin'
+import { ViewContainerContextMixin } from './mixins/ViewContainerContextMixin'
 
 const EVENT_CALLBACK_PREFIX = 'on'
 
@@ -298,7 +279,7 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
   }
 
   /**
-   *
+   *MapOfState
    * --------------------------------------------------------------
    * Prop & State
    * --------------------------------------------------------------
@@ -310,8 +291,8 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
   setProps(props) {
     this.dispatch(PROPS_CHANGE, props)
     if (this._shouldChangeProps) {
-      let oldProps = this.props
-      this.props = props
+      let oldProps = this.props.get(props.storeID)
+      this.props.set(props.storeID, props)
       this.dispatch(PROPS_CHANGED, oldProps)
       this.updateNode()
     }

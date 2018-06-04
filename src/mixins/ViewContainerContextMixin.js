@@ -76,6 +76,10 @@ export const ViewContainerContextMixin = (Base) => class extends Base {
     return this.Component().Store(key)
   }
 
+  StoreByStoreKey(key) {
+    return this.Component().Store(this.Component().storesKey.get(key))
+  }
+
   /**
      * @returns {HotBalloonApplication}
      * @memberOf ViewContainerContextMixin

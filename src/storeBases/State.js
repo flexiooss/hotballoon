@@ -1,7 +1,7 @@
 export class State {
   constructor(storeId, state) {
     Object.defineProperties(this, {
-      _storeID: {
+      storeID: {
         configurable: false,
         writable: false,
         enumerable: true,
@@ -14,6 +14,7 @@ export class State {
         value: state
       }
     })
+    Object.freeze(Object.seal(this))
   }
 
   static createEmpty() {
