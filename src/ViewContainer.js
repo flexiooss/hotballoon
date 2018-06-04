@@ -15,7 +15,8 @@ import {
   MapOfArray,
   isNode,
   isBoolean,
-  assert
+  assert,
+  isIterable
 } from 'flexio-jshelpers'
 import {
   ComponentContextMixin
@@ -42,7 +43,7 @@ export const WILL_REMOVE = 'WILL_REMOVE'
  * @extends hotballoon/PrivateStateMixin
  *
  */
-class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateStateMixin(class {}))) {
+class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateStateMixin(class { }))) {
   constructor(component, id, storesKey) {
     super()
     /**
@@ -197,15 +198,27 @@ class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateStateMix
   /**
    *
    * @param {hotballoon/View} view
-   * @param {String} storeKey : store token
+   * @param {Iterable} stores : stores token
    * @param {String}  storeEvent event types
    */
-  addView(view, storeKey, storeEvent) {
+  addView(view, stores = new Set()) {
     this._views.add(view._ID, view)
-    if (storeKey && storeEvent) {
-      this._suscribeToEvent(view._ID, storeKey, storeEvent, view)
-    }
+    this._suscribeToStoreEvent(view, stores)
     return view
+  }
+
+  /**
+   * @private
+   * @param {hotballoon/View} view
+   * @param {Iterable} stores : stores token
+   */
+  _suscribeToStoreEvent(view, stores) {
+    assert(isIterable(stores),
+      'hoballoon:ViewContainer:addView: `stores` argument should be iterable')
+    stores.forEach((store) => {
+      view.props.set(store._ID, store.state())
+      this._suscribeToEvent(view._ID, store._ID, STORE_CHANGED, view)
+    })
   }
 
   /**

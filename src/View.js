@@ -38,16 +38,13 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
    * @constructor
    * @param {String} id
    * @param {ViewContainer} viewContainer
-   * @param {Object} props
    */
-  constructor(id, viewContainer, props = {}) {
+  constructor(id, viewContainer) {
     super()
     this.RequireIDMixinInit(id)
     this.ViewContainerContextMixinInit(viewContainer)
     this.PrivateStateMixinInit()
     this.NodesHandlerMixinInit(View)
-
-    this.props = new MapOfState()
 
     var parentNode = null
     var _shouldInit = true
@@ -58,6 +55,7 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
     var _isRendered = false
     const _EventHandler = new EventHandler()
     const _tokenEvent = new MapOfArray()
+    const props = new MapOfState()
 
     Object.defineProperties(this, {
       '__HB__CLASSNAME__': {
@@ -65,6 +63,14 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
         writable: false,
         enumerable: true,
         value: '__HB__CLASSNAME__VIEW__'
+      },
+      props: {
+        configurable: false,
+        enumerable: true,
+        get: () => {
+          return props
+        },
+        set: (v) => false
       },
       parentNode: {
         configurable: false,
@@ -385,6 +391,7 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
     this._EventHandler.dispatch(RENDER, {})
 
     if (this._shouldRender) {
+      this._renderSubviews()
       this._render()
       this._isRendered = true
       this._EventHandler.dispatch(RENDERED, {})
@@ -392,6 +399,10 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
 
     this._shouldRender = true
     return this.node()
+  }
+
+  _renderSubviews() {
+    this._subViews.forEach((view) => view.render())
   }
 
   /**

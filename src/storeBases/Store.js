@@ -73,7 +73,7 @@ export class Store extends RequireIDMixin(class { }) {
      * @returns {Object} state cloned
      */
   clone() {
-    return this._store._clone()
+    return this._store.clone()
   }
 
   /**
