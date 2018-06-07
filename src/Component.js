@@ -31,7 +31,7 @@ import {
  * @extends PrivateStateMixin
  *
  */
-class Component extends ApplicationContextMixin(RequireIDMixin(PrivateStateMixin(class {}))) {
+class Component extends ApplicationContextMixin(RequireIDMixin(PrivateStateMixin(class { }))) {
   constructor(hotBallonApplication) {
     super()
 
@@ -154,15 +154,15 @@ class Component extends ApplicationContextMixin(RequireIDMixin(PrivateStateMixin
    * @returns void
    *
    */
-  _initActions() {}
-  _initStores() {}
-  _initDispatcherListeners() {}
-  _initViewContainers() {}
+  _initActions() { }
+  _initStores() { }
+  _initDispatcherListeners() { }
+  _initViewContainers() { }
 
   /**
    * @description called by the hotballoon Appliation before remove this Component
    */
-  willRemove() {}
+  willRemove() { }
 
   /**
    *
@@ -211,6 +211,15 @@ class Component extends ApplicationContextMixin(RequireIDMixin(PrivateStateMixin
    */
   Store(tokenStore) {
     return this._stores.get(tokenStore)
+  }
+
+  /**
+   *
+   * @param {string} key token registered into storesKey
+   * @returns {hotballoon/Store} Store
+   */
+  StoreByRegister(key) {
+    return this.Store(this.storesKey.get(key))
   }
 
   /**

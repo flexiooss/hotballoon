@@ -104,6 +104,10 @@ export class Store extends RequireIDMixin(class { }) {
      * @private
      */
   _updated() {
+    console.log('STORE CHANGED')
+    console.log(this)
+    console.log(this.state())
+
     this._dispatch(CHANGED)
   }
 }

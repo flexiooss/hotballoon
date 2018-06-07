@@ -1,5 +1,5 @@
 export class State {
-  constructor(storeId, state) {
+  constructor(storeId, data) {
     Object.defineProperties(this, {
       storeID: {
         configurable: false,
@@ -7,11 +7,11 @@ export class State {
         enumerable: true,
         value: storeId
       },
-      state: {
+      data: {
         configurable: false,
         writable: false,
         enumerable: true,
-        value: state
+        value: data
       }
     })
     Object.freeze(Object.seal(this))
