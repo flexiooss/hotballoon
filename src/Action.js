@@ -23,6 +23,12 @@ class Action {
     const _actions = new Map()
 
     Object.defineProperties(this, {
+      '__HB__CLASSNAME__': {
+        configurable: false,
+        writable: false,
+        enumerable: true,
+        value: '__HB__ACTION__'
+      },
       _dispatcher: {
         configurable: false,
         enumerable: false,
@@ -42,7 +48,7 @@ class Action {
     this._registerActions()
   }
 
-  _registerActions() {}
+  _registerActions() { }
 
   _registerAction(type, callback = (payload) => {
     return {

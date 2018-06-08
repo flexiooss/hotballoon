@@ -30,6 +30,12 @@ export class Store extends RequireIDMixin(class { }) {
     //   'hotballoon:StoreHandler:constructor: `storage` argument should be a `Storage` instance')
 
     Object.defineProperties(this, {
+      '__HB__CLASSNAME__': {
+        configurable: false,
+        writable: false,
+        enumerable: true,
+        value: '__HB__STORE__'
+      },
       _store: {
         enumerable: false,
         configurable: false,

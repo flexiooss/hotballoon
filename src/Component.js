@@ -52,6 +52,12 @@ class Component extends ApplicationContextMixin(RequireIDMixin(PrivateStateMixin
     const viewContainersKey = new Map()
 
     Object.defineProperties(this, {
+      '__HB__CLASSNAME__': {
+        configurable: false,
+        writable: false,
+        enumerable: true,
+        value: '__HB__COMPONENT__'
+      },
       _sequenceId: {
         configurable: false,
         enumerable: false,

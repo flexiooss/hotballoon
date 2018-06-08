@@ -62,7 +62,7 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
         configurable: false,
         writable: false,
         enumerable: true,
-        value: '__HB__CLASSNAME__VIEW__'
+        value: '__HB__VIEW__'
       },
       props: {
         configurable: false,

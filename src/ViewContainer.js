@@ -63,6 +63,12 @@ class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateStateMix
     var _views = new MapOfInstance(View)
 
     Object.defineProperties(this, {
+      '__HB__CLASSNAME__': {
+        configurable: false,
+        writable: false,
+        enumerable: true,
+        value: '__HB__VIEWCONTAINER__'
+      },
       storesKey: {
         configurable: false,
         enumerable: true,

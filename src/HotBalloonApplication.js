@@ -23,7 +23,7 @@ import {
  * @class
  * @description HotBalloonApplication is the container for a loop hotballoon
  */
-class HotBalloonApplication extends RequireIDMixin(class {}) {
+class HotBalloonApplication extends RequireIDMixin(class { }) {
   /**
    * @constructor
    * @param {Dispatcher} dispatcher
@@ -41,6 +41,12 @@ class HotBalloonApplication extends RequireIDMixin(class {}) {
     const _sequenceId = new Sequence('hb_')
 
     Object.defineProperties(this, {
+      '__HB__CLASSNAME__': {
+        configurable: false,
+        writable: false,
+        enumerable: true,
+        value: '__HB__APPLICATION__'
+      },
       '_dispatcher': {
         configurable: false,
         enumerable: false,
