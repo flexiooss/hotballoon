@@ -1,32 +1,17 @@
 'use strict'
+import { EventOrderedHandler } from './EventOrderedHandler'
+import { MapOfInstance, MapOfArray, isNode, isBoolean, assert, isIterable } from 'flexio-jshelpers'
+import { ComponentContextMixin } from './mixins/ComponentContextMixin'
+import { RequireIDMixin } from './mixins/RequireIDMixin'
+import { PrivateStateMixin } from './mixins/PrivateStateMixin'
 import {
   View,
   STORE_CHANGED as VIEW_STORE_CHANGED
 } from './View'
 import {
-  EventOrderedHandler
-} from './EventOrderedHandler'
-import {
   Store,
   CHANGED as STORE_CHANGED
 } from './storeBases/Store'
-import {
-  MapOfInstance,
-  MapOfArray,
-  isNode,
-  isBoolean,
-  assert,
-  isIterable
-} from 'flexio-jshelpers'
-import {
-  ComponentContextMixin
-} from './mixins/ComponentContextMixin'
-import {
-  RequireIDMixin
-} from './mixins/RequireIDMixin'
-import {
-  PrivateStateMixin
-} from './mixins/PrivateStateMixin'
 
 const EVENT_HANDLER = Object.seal(new EventOrderedHandler())
 
@@ -44,7 +29,7 @@ export const WILL_REMOVE = 'WILL_REMOVE'
  *
  */
 class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateStateMixin(class { }))) {
-  constructor(component, id, storesKey) {
+  constructor(component, id, parentNode, storeKeysRegistered = new Map()) {
     super()
     /**
      * MixinInit
@@ -53,8 +38,8 @@ class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateStateMix
     this.RequireIDMixinInit(id)
     this.PrivateStateMixinInit()
 
-    assert(storesKey instanceof Map,
-      'hoballoon:ViewContainer:subscribeToStore: `storesKey` argument assert be an instance of Map'
+    assert(storeKeysRegistered instanceof Map,
+      'hoballoon:ViewContainer:subscribeToStore: `storeKeysRegister` argument assert be an instance of Map'
     )
 
     var _mounted = false
@@ -69,11 +54,11 @@ class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateStateMix
         enumerable: true,
         value: '__HB__VIEWCONTAINER__'
       },
-      storesKey: {
+      storeKeysRegistered: {
         configurable: false,
         enumerable: true,
         writable: false,
-        value: storesKey
+        value: storeKeysRegistered
       },
       _mounted: {
         configurable: false,
@@ -115,7 +100,20 @@ class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateStateMix
         enumerable: false,
         configurable: false,
         value: _views
-      }
+      },
+      parentNode: {
+        configurable: false,
+        enumerable: true,
+        get: () => {
+          return parentNode
+        },
+        set: (v) => {
+          assert(!!isNode(v),
+            'hotballoon:View:constructor: `parentNode` argument should be a NodeElement'
+          )
+          parentNode = v
+        }
+      },
     })
 
     this._registerStores()
@@ -189,7 +187,7 @@ class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateStateMix
    * @private
    */
   _registerStores() {
-    this.storesKey.forEach((value, key, map) => {
+    this.storeKeysRegistered.forEach((value, key, map) => {
       this.subscribeToStore(value, STORE_CHANGED)
     })
   }

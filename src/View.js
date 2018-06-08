@@ -348,13 +348,6 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
   }
 
   /**
-   *
-   * --------------------------------------------------------------
-   * Rendering
-   * --------------------------------------------------------------
-   */
-
-  /**
    * @private
    * @description update the node reference of this View
    */
@@ -423,7 +416,6 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
     assert(isNode(parentNode),
       'hotballoon:View:render require a Node argument'
     )
-    this.parentNode = parentNode
 
     this._EventHandler.dispatch(MOUNT, {})
 
@@ -441,9 +433,9 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
    * @description Render the View() into `_node` property and mount this into the `parentNode` argument
    * @param {NodeElement} parentNode
    */
-  renderAndMount(parentNode) {
+  renderAndMount() {
     this.render()
-    this.mount(parentNode)
+    this.mount()
   }
 }
 

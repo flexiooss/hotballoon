@@ -47,7 +47,7 @@ class Component extends ApplicationContextMixin(RequireIDMixin(PrivateStateMixin
     const _actions = new MapOfInstance(Action)
     const actionsKey = new Map()
     const _stores = new MapOfInstance(Store)
-    const storesKey = new Map()
+    const storesKeyRegister = new Map()
     const _viewContainers = new MapOfInstance(ViewContainer)
     const viewContainersKey = new Map()
 
@@ -108,11 +108,11 @@ class Component extends ApplicationContextMixin(RequireIDMixin(PrivateStateMixin
           return false
         }
       },
-      storesKey: {
+      storesKeyRegister: {
         configurable: false,
         enumerable: true,
         get: () => {
-          return storesKey
+          return storesKeyRegister
         },
         set: (v) => {
           return false
@@ -221,11 +221,11 @@ class Component extends ApplicationContextMixin(RequireIDMixin(PrivateStateMixin
 
   /**
    *
-   * @param {string} key token registered into storesKey
+   * @param {string} key token registered into storesKeyRegister
    * @returns {hotballoon/Store} Store
    */
   StoreByRegister(key) {
-    return this.Store(this.storesKey.get(key))
+    return this.Store(this.storesKeyRegister.get(key))
   }
 
   /**

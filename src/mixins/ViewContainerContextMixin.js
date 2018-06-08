@@ -78,7 +78,7 @@ export const ViewContainerContextMixin = (Base) => class extends Base {
 
   /**
   *
-  * @param {string} key token registered into storesKey
+  * @param {string} key token registered into storeKeysRegister
   * @returns {hotballoon/Store} Store
   */
   StoreByRegister(key) {
