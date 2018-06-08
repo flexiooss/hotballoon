@@ -102,4 +102,13 @@ export const ComponentContextMixin = (Base) => class extends Base {
   StoreByRegister(key) {
     return this.Component().StoreByRegister(key)
   }
+
+  /**
+  *
+  * @param {string} key token registered into storesKey
+  * @returns {hotballoon/Store} Store
+  */
+  StoreDataByRegister(key) {
+    return this.Component().StoreDataByRegister(key)
+  }
 }

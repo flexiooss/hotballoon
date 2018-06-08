@@ -46,7 +46,7 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
     this.PrivateStateMixinInit()
     this.NodesHandlerMixinInit(View)
 
-    var parentNode = null
+    var parentNode = viewContainer.parentNode
     var _shouldInit = true
     var _shouldUpdate = true
     var _shouldRender = true
@@ -195,6 +195,30 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
     this.onStoreChanged = (payload, type) => {
       this.setProps(payload)
     }
+  }
+
+  /**
+   * @static
+   * @param {string} id
+   * @param {hotballoon:ViewContainer} viewContainer
+   * @return View
+   */
+  static create(id, viewContainer) {
+    return new this(id, viewContainer)
+  }
+
+  /**
+   *
+   * @static
+   * @param {string} id
+   * @param {hotballoon:ViewContainer} viewContainer
+   * @param {nodeElement} parentNode
+   * @return View
+   */
+  static createWithParentNode(id, viewContainer, parentNode) {
+    const inst = new this(id, viewContainer)
+    inst.parentNode = parentNode
+    return inst
   }
 
   /**

@@ -41,6 +41,9 @@ class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateStateMix
     assert(storeKeysRegistered instanceof Map,
       'hoballoon:ViewContainer:subscribeToStore: `storeKeysRegister` argument assert be an instance of Map'
     )
+    assert(!!isNode(parentNode),
+      'hotballoon:View:constructor: `parentNode` argument should be a NodeElement'
+    )
 
     var _mounted = false
     var _rendered = false
@@ -113,7 +116,7 @@ class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateStateMix
           )
           parentNode = v
         }
-      },
+      }
     })
 
     this._registerStores()
