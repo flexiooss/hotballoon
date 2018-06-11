@@ -143,20 +143,20 @@ export const NodesHandlerMixin = (Base) => class extends Base {
     assert(key,
       'hoballoon:View:_addSubView: `key` argument assert not be undefined')
     this._subViews.set(key, view)
-    this._addPropsToSubView(view)
-    this._suscribeToEvent(key, view)
+    // this._addPropsToSubView(view)
+    this.addNodeSubView(key, view)
     return view
   }
 
-  /**
-   * @private
-   * @return {View} view
-   * @memberOf NodesHandlerMixin
-   * @void
-   */
-  _addPropsToSubView(view) {
-    this.props.forEach((state, storeID) => view.props.set(storeID, state))
-  }
+  // /**
+  //  * @private
+  //  * @return {View} view
+  //  * @memberOf NodesHandlerMixin
+  //  * @void
+  //  */
+  // _addPropsToSubView(view) {
+  //   this.props.forEach((state, storeID) => view.props.set(storeID, state))
+  // }
 
   /**
    * @private

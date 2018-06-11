@@ -1,14 +1,12 @@
 'use strict'
-import { MapOfArray, assert, camelCase, isBoolean, isFunction, isNode } from 'flexio-jshelpers'
+import { MapOfArray, assert, isBoolean, isNode } from 'flexio-jshelpers'
 import { reconcile } from 'flexio-nodes-reconciliation'
-import { EventHandler } from './EventHandler'
-import { MapOfState } from './MapOfState'
+import { EventOrderedHandler } from './EventOrderedHandler'
+// import { MapOfState } from './MapOfState'
 import { NodesHandlerMixin } from './mixins/NodesHandlerMixin'
 import { PrivateStateMixin } from './mixins/PrivateStateMixin'
 import { RequireIDMixin } from './mixins/RequireIDMixin'
 import { ViewContainerContextMixin } from './mixins/ViewContainerContextMixin'
-
-const EVENT_CALLBACK_PREFIX = 'on'
 
 export const INIT = 'INIT'
 export const UPDATE = 'UPDATE'
@@ -53,9 +51,8 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
     var _shouldChangeProps = true
     var _shouldChangeState = true
     var _isRendered = false
-    const _EventHandler = new EventHandler()
+    const _EventHandler = new EventOrderedHandler()
     const _tokenEvent = new MapOfArray()
-    const props = new MapOfState()
 
     Object.defineProperties(this, {
       '__HB__CLASSNAME__': {
@@ -63,14 +60,6 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
         writable: false,
         enumerable: true,
         value: '__HB__VIEW__'
-      },
-      props: {
-        configurable: false,
-        enumerable: true,
-        get: () => {
-          return props
-        },
-        set: (v) => false
       },
       parentNode: {
         configurable: false,
@@ -186,15 +175,6 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
     })
 
     this._initListeners()
-
-    /**
-     * @description dispatch new props to subViews in _subViewsNode property
-     * @param {Object} payload
-     * @param {String} type
-     */
-    this.onStoreChanged = (payload, type) => {
-      this.setProps(payload)
-    }
   }
 
   /**
@@ -272,32 +252,38 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
    *
    */
   _initListeners() {
-    const types = {
-      INIT,
-      UPDATE,
-      UPDATED,
-      RENDER,
-      RENDERED,
-      MOUNT,
-      MOUNTED,
-      PROPS_CHANGE,
-      PROPS_CHANGED,
-      STATE_CHANGE,
-      STATE_CHANGED,
-      STORE_CHANGED
-    }
+    // const types = {
+    //   INIT,
+    //   UPDATE,
+    //   UPDATED,
+    //   RENDER,
+    //   RENDERED,
+    //   MOUNT,
+    //   MOUNTED,
+    //   STATE_CHANGE,
+    //   STATE_CHANGED,
+    //   STORE_CHANGED
+    // }
 
-    for (let eventType in types) {
-      this._EventHandler.addEventListener(eventType, (payload, type) => {
-        const propName = EVENT_CALLBACK_PREFIX + camelCase(type)
+    this.addEventListener(STORE_CHANGED, (payload, type) => {
+      this.setProps(payload)
+    }, this,
+      100)
 
-        if (this.hasOwnProperty(propName) && isFunction(this[propName])) {
-          this[propName](payload)
-        }
-      })
-    }
+    // for (let eventType in types) {
+    //   this._EventHandler.addEventListener(eventType, (payload, type) => {
+    //     const propName = EVENT_CALLBACK_PREFIX + camelCase(type)
+
+    //     if (this.hasOwnProperty(propName) && isFunction(this[propName])) {
+    //       this[propName](payload)
+    //     }
+    //   })
+    // }
   }
 
+  addEventListener(event, callback, scope, priority) {
+    this._EventHandler.addEventListener(event, callback, scope, priority)
+  }
   /**
    *
    * @param {String} event : event name

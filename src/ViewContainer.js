@@ -181,7 +181,8 @@ class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateStateMix
 
     store.subscribe(event,
       (payload, type) => {
-        this.dispatch(this._formatStoreEventName(storeKey, type), payload)
+        // this.dispatch(this._formatStoreEventName(storeKey, type), payload)
+        this.dispatch(type, payload)
       },
       this, 100)
   }
@@ -223,7 +224,6 @@ class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateStateMix
     assert(isIterable(stores),
       'hoballoon:ViewContainer:addView: `stores` argument should be iterable')
     stores.forEach((store) => {
-      view.props.set(store._ID, store.state())
       this._suscribeToEvent(view._ID, store._ID, STORE_CHANGED, view)
     })
   }
