@@ -1,22 +1,8 @@
 'use strict'
-
-import {
-  Dispatcher
-} from './Dispatcher'
-
-import {
-  MapExtended,
-  MapOfInstance,
-  Sequence,
-  assert
-} from 'flexio-jshelpers'
-
-import {
-  RequireIDMixin
-} from './mixins/RequireIDMixin'
-import {
-  Component
-} from './Component'
+import { Dispatcher } from './Dispatcher'
+import { MapExtended, MapOfInstance, Sequence, assert } from 'flexio-jshelpers'
+import { RequireIDMixin } from './mixins/RequireIDMixin'
+import { Component } from './Component'
 
 /**
  *

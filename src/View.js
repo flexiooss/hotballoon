@@ -1,8 +1,10 @@
 'use strict'
-import { MapOfArray, assert, isBoolean, isNode } from 'flexio-jshelpers'
+import { CLASS_TAG_NAME } from './CLASS_TAG_NAME'
+import { MapOfArray, MapOfInstance, assert, isBoolean, isNode } from 'flexio-jshelpers'
+import { select as $ } from './HotballoonElement/HotBalloonAttributeHandler'
+
 import { reconcile } from 'flexio-nodes-reconciliation'
 import { EventOrderedHandler } from './EventOrderedHandler'
-// import { MapOfState } from './MapOfState'
 import { NodesHandlerMixin } from './mixins/NodesHandlerMixin'
 import { PrivateStateMixin } from './mixins/PrivateStateMixin'
 import { RequireIDMixin } from './mixins/RequireIDMixin'
@@ -15,8 +17,6 @@ export const RENDER = 'RENDER'
 export const RENDERED = 'RENDERED'
 export const MOUNT = 'MOUNT'
 export const MOUNTED = 'MOUNTED'
-export const PROPS_CHANGE = 'PROPS_CHANGE'
-export const PROPS_CHANGED = 'PROPS_CHANGED'
 export const STATE_CHANGE = 'STATE_CHANGE'
 export const STATE_CHANGED = 'STATE_CHANGED'
 export const STORE_CHANGED = 'STORE_CHANGED'
@@ -44,22 +44,39 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
     this.PrivateStateMixinInit()
     this.NodesHandlerMixinInit(View)
 
+    var _node = null
     var parentNode = viewContainer.parentNode
     var _shouldInit = true
     var _shouldUpdate = true
     var _shouldRender = true
-    var _shouldChangeProps = true
     var _shouldChangeState = true
     var _isRendered = false
     const _EventHandler = new EventOrderedHandler()
     const _tokenEvent = new MapOfArray()
+    const _nodeRefs = new Map()
+    const _subViews = new MapOfInstance(View)
+
+    Object.defineProperty(this, CLASS_TAG_NAME, {
+      configurable: false,
+      writable: false,
+      enumerable: true,
+      value: '__HB__VIEW__'
+    })
 
     Object.defineProperties(this, {
-      '__HB__CLASSNAME__': {
+      _node: {
+        enumerable: false,
         configurable: false,
-        writable: false,
-        enumerable: true,
-        value: '__HB__VIEW__'
+        get: () => {
+          return _node
+        },
+        set: (node) => {
+          assert(isNode(node),
+            'View:_node:set: `node` argument assert be a Node, `%s` given',
+            typeof node
+          )
+          _node = node
+        }
       },
       parentNode: {
         configurable: false,
@@ -113,19 +130,6 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
           _shouldRender = v
         }
       },
-      _shouldChangeProps: {
-        configurable: false,
-        enumerable: false,
-        get: () => {
-          return _shouldChangeProps
-        },
-        set: (v) => {
-          assert(!!isBoolean(v),
-            'hotballoon:View:constructor: `_shouldChangeProps` argument should be a boolean'
-          )
-          _shouldChangeProps = v
-        }
-      },
       _shouldChangeState: {
         configurable: false,
         enumerable: false,
@@ -167,6 +171,26 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
         enumerable: false,
         get: () => {
           return _tokenEvent
+        },
+        set: (v) => {
+          return false
+        }
+      },
+      _nodeRefs: {
+        configurable: false,
+        enumerable: false,
+        get: () => {
+          return _nodeRefs
+        },
+        set: (v) => {
+          return false
+        }
+      },
+      _subViews: {
+        configurable: false,
+        enumerable: false,
+        get: () => {
+          return _subViews
         },
         set: (v) => {
           return false
@@ -236,49 +260,16 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
    * @private
    * @description register all events for private listeners
    * Internal event property with callable value
-   *
-   * onInit
-   * onUpdtate
-   * onUpdtated
-   * onRender
-   * onRendered
-   * onMount
-   * onMounted
-   * onPropsChange
-   * onPropsChanged
-   * onStateChange
-   * onStateChanged
-   * onStoreChanged
-   *
    */
   _initListeners() {
-    // const types = {
-    //   INIT,
-    //   UPDATE,
-    //   UPDATED,
-    //   RENDER,
-    //   RENDERED,
-    //   MOUNT,
-    //   MOUNTED,
-    //   STATE_CHANGE,
-    //   STATE_CHANGED,
-    //   STORE_CHANGED
-    // }
-
-    this.addEventListener(STORE_CHANGED, (payload, type) => {
-      this.setProps(payload)
-    }, this,
-      100)
-
-    // for (let eventType in types) {
-    //   this._EventHandler.addEventListener(eventType, (payload, type) => {
-    //     const propName = EVENT_CALLBACK_PREFIX + camelCase(type)
-
-    //     if (this.hasOwnProperty(propName) && isFunction(this[propName])) {
-    //       this[propName](payload)
-    //     }
-    //   })
-    // }
+    this.addEventListener(
+      STORE_CHANGED,
+      (payload, type) => {
+        this.updateNode(payload)
+      },
+      this,
+      100
+    )
   }
 
   addEventListener(event, callback, scope, priority) {
@@ -295,41 +286,10 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
   }
 
   /**
-   *MapOfState
-   * --------------------------------------------------------------
-   * Prop & State
-   * --------------------------------------------------------------
-   */
-
-  /**
-   * @param {Object} props
-   */
-  setProps(props) {
-    this.dispatch(PROPS_CHANGE, props)
-    if (this._shouldChangeProps) {
-      let oldProps = this.props.get(props.storeID)
-      this.props.set(props.storeID, props)
-      this.dispatch(PROPS_CHANGED, oldProps)
-      this.updateNode()
-    }
-    this._shouldChangeProps = true
-  }
-
-  /**
-   *
-   * @param {String} key
-   * @param {any} defaultValue
-   * @returns any
-   */
-  getProp(key, defaultValue = '') {
-    return (key in this.props) ? this.props[key] : defaultValue
-  }
-
-  /**
-   * @private
-   * @param {String} key
-   * @param {any} val
-   */
+ * @private
+ * @param {String} key
+ * @param {any} val
+ */
   _setPrivateStateProp(key, val) {
     this.dispatch(STATE_CHANGE, {
       key,
@@ -362,7 +322,7 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
    * @description update the node reference of this View
    */
   _update() {
-    reconcile(this._node, this.view(), this.parentNode)
+    reconcile(this.node(), this.view(), this.parentNode)
   }
 
   /**
@@ -405,7 +365,7 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
   }
 
   _renderSubviews() {
-    this._subViews.forEach((view) => view.render())
+    this._subViews.forEach((subView) => subView.render())
   }
 
   /**
@@ -415,21 +375,28 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
   _mount() {
     this.parentNode.appendChild(this.node())
   }
+  // /**
+  //  * @private
+  //  * @description mount `_node` property into `parentNode` argument
+  //  */
+  // _mountSubViews() {
+  //   this._subViews.forEach((subView) => {
+  //     console.log('_renderSubviews')
+  //     console.log(subView)
+  //     subView.mount()
+  //   })
+  // }
 
   /**
    * @public
-   * @description call _mount() with event hook
    * @see _mount()
    * @param {NodeElement} parentNode
    */
-  mount(parentNode) {
-    assert(isNode(parentNode),
-      'hotballoon:View:render require a Node argument'
-    )
-
+  mount() {
     this._EventHandler.dispatch(MOUNT, {})
 
     if (this._shouldRender) {
+      // this._mountSubViews()
       this._mount()
       this._isRendered = true
       this._EventHandler.dispatch(MOUNTED, {})
@@ -446,6 +413,138 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
   renderAndMount() {
     this.render()
     this.mount()
+  }
+
+  /**
+  * @param {String} key
+  * @return {View} view
+  * @memberOf NodesHandlerMixin
+  * @instance
+  */
+  subView(key) {
+    return this._subViews.get(key)
+  }
+
+  /**
+   * @param {String} key
+   * @param {View} view
+   * @memberOf NodesHandlerMixin
+   * @instance
+   */
+  registerSubView(key, view, stores = new Set()) {
+    view.ViewContainer().addView(view, stores)
+    this._addSubView(key, view)
+    this.addEventListener(
+      STATE_CHANGED,
+      (state) => {
+        this._setPrivateStateProp(state.key, state.val)
+      },
+      this,
+      100
+    )
+    return view
+  }
+
+  /**
+   * @param {String} key
+   * @param {View} view
+   * @memberOf NodesHandlerMixin
+   * @instance
+   */
+  addNodeSubView(key, view) {
+    this._setNodeViewRef()
+    // this._addSubView(key, view)
+  }
+
+  /**
+   * @param {String} key
+   * @return {NodeElement} nodeElement
+   * @memberOf NodesHandlerMixin
+   * @instance
+   */
+  nodeRef(key) {
+    return this._nodeRefs.get(key)
+  }
+
+  /**
+   * @param {String} key
+   * @param {NodeElement} node
+   * @return {NodeElement} nodeElement
+   * @memberOf NodesHandlerMixin
+   * @instance
+   */
+  addNodeRef(key, node) {
+    return this._setNodeRef(key, node)
+  }
+
+  /**
+   * @private
+   * @param {String} key
+   * @param {View} view
+   * @return {View} view
+   * @memberOf NodesHandlerMixin
+   * @instance
+   */
+  _addSubView(key, view) {
+    assert(key,
+      'hoballoon:View:_addSubView: `key` argument assert not be undefined')
+    this._subViews.set(key, view)
+    // this.addNodeSubView(key, view)
+    return view
+  }
+
+  /**
+   * @param {String} key
+   * @param {NodeElement} node
+   * @return {NodeElement} nodeElement
+   * @memberOf NodesHandlerMixin
+   * @instance
+   */
+  replaceNodeRef(key, node) {
+    return this._setNodeRef(key, node)
+  }
+
+  /**
+  * @private
+  * @param {String} key
+  * @param {NodeElement} node
+  * @return {NodeElement} node
+  * @memberOf NodesHandlerMixin
+  * @instance
+  */
+  _setNodeRef(key, node) {
+    $(node).setNodeRef(key)
+    this._nodeRefs.set(key, node)
+    node.setAttribute('_hb_noderef', key)
+    return node
+  }
+
+  /**
+   * @private
+   * @memberOf NodesHandlerMixin
+   * @instance
+   */
+  _setNodeViewRef() {
+    $(this.node()).setViewRef(this._ID)
+  }
+
+  /**
+   * @returns {NodeElement} node
+   * @memberOf NodesHandlerMixin
+   * @instance
+   */
+  node() {
+    return this._node
+  }
+
+  /**
+   * @returns {NodeElement} node
+   * @memberOf NodesHandlerMixin
+   * @instance
+   */
+  _replaceNode() {
+    this._node = this.view()
+    return this._node
   }
 }
 

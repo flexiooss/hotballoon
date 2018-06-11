@@ -1,4 +1,5 @@
 'use strict'
+import { CLASS_TAG_NAME } from './CLASS_TAG_NAME'
 import { EventOrderedHandler } from './EventOrderedHandler'
 import { MapOfInstance, MapOfArray, isNode, isBoolean, assert, isIterable } from 'flexio-jshelpers'
 import { ComponentContextMixin } from './mixins/ComponentContextMixin'
@@ -50,13 +51,14 @@ class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateStateMix
     var _tokenEvent = new MapOfArray()
     var _views = new MapOfInstance(View)
 
+    Object.defineProperty(this, CLASS_TAG_NAME, {
+      configurable: false,
+      writable: false,
+      enumerable: true,
+      value: '__HB__VIEWCONTAINER__'
+    })
+
     Object.defineProperties(this, {
-      '__HB__CLASSNAME__': {
-        configurable: false,
-        writable: false,
-        enumerable: true,
-        value: '__HB__VIEWCONTAINER__'
-      },
       storeKeysRegistered: {
         configurable: false,
         enumerable: true,
@@ -174,25 +176,27 @@ class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateStateMix
    * @param {String} storeKey : store token
    * @param {String}  event : event types
    */
-  subscribeToStore(storeKey, event) {
-    const store = this.Store(storeKey)
+  subscribeToStore(storeID, event = STORE_CHANGED) {
+    const store = this.Store(storeID)
     assert(store instanceof Store,
-      'hoballoon:ViewContainer:subscribeToStore: `store` argument assert be an instance of StoreBase ')
+      'hoballoon:ViewContainer:subscribeToStore: `store` const should be an instance of StoreBase ')
 
-    store.subscribe(event,
+    store.subscribe(
+      event,
       (payload, type) => {
-        // this.dispatch(this._formatStoreEventName(storeKey, type), payload)
-        this.dispatch(type, payload)
+        this.dispatch(this._formatStoreEventName(storeID, type), payload)
       },
-      this, 100)
+      this,
+      100
+    )
   }
 
   /**
    * @private
    */
   _registerStores() {
-    this.storeKeysRegistered.forEach((value, key, map) => {
-      this.subscribeToStore(value, STORE_CHANGED)
+    this.storeKeysRegistered.forEach((storeID, key, map) => {
+      this.subscribeToStore(storeID)
     })
   }
 
@@ -211,20 +215,21 @@ class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateStateMix
    */
   addView(view, stores = new Set()) {
     this._views.add(view._ID, view)
-    this._suscribeToStoreEvent(view, stores)
+    this.suscribeToStoreEvent(view, stores)
     return view
   }
 
   /**
-   * @private
    * @param {hotballoon/View} view
-   * @param {Iterable} stores : stores token
+   * @param {Iterable} stores : stores instances
    */
-  _suscribeToStoreEvent(view, stores) {
+  suscribeToStoreEvent(view, stores) {
     assert(isIterable(stores),
       'hoballoon:ViewContainer:addView: `stores` argument should be iterable')
     stores.forEach((store) => {
-      this._suscribeToEvent(view._ID, store._ID, STORE_CHANGED, view)
+      assert(store instanceof Store,
+        'hoballoon:ViewContainer:_suscribeToStoreEvent: `store` argument should be qan instance of Hotballoon/Store')
+      this._suscribeToEvent(view, store, STORE_CHANGED)
     })
   }
 
@@ -237,15 +242,16 @@ class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateStateMix
    * @param {hotballoon/View} view
    * @param {Integer} priority
    */
-  _suscribeToEvent(key, storeKey, storeEvent, view, priority = 0) {
-    const eventName = this._formatStoreEventName(storeKey, storeEvent)
+  _suscribeToEvent(view, store, event, priority = 0) {
     const token = this.subscribe(
-      eventName,
+      this._formatStoreEventName(store._ID, event),
       (payload, type) => {
         view.dispatch(VIEW_STORE_CHANGED, payload)
       },
-      view, priority)
-    this._tokenEvent.add(key, token)
+      view,
+      priority
+    )
+    this._tokenEvent.add(store._ID + '-' + view._ID, token)
   }
 
   /**

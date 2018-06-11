@@ -1,13 +1,7 @@
 'use strict'
-import {
-  assert,
-  HyperFlex,
-  isString,
-  isNumber,
-  isNode,
-  isObject
-} from 'flexio-jshelpers'
-import { select as $$ } from './HotBalloonAttributeHandler'
+import { CLASS_TAG_NAME, isEqualTagClassName } from '../CLASS_TAG_NAME'
+import { assert, HyperFlex, isString, isNumber, isNode, isObject } from 'flexio-jshelpers'
+import { select as $ } from './HotBalloonAttributeHandler'
 import { KEY_RECONCILIATE_RULES } from 'flexio-nodes-reconciliation'
 
 /**
@@ -81,7 +75,7 @@ class CreateHotBalloonElement extends HyperFlex {
       'flexio-jshelpers:parseArguments: `element` argument assert be a NodeElement `%s` given',
       typeof element
     )
-    let countOfArgs = args.length
+    const countOfArgs = args.length
 
     for (let i = 0; i < countOfArgs; i++) {
       const arg = args[i]
@@ -90,7 +84,8 @@ class CreateHotBalloonElement extends HyperFlex {
         element.appendChild(arg)
       } else if (isString(arg) || isNumber(arg)) {
         element.appendChild(document.createTextNode(arg))
-      } else if (this._hasSameHBClassName(arg, this.scope)) {
+      } else if (isEqualTagClassName(arg, this.scope)) {
+        arg.parentNode = element
         element.appendChild(arg.node())
       } else if (isObject(arg)) {
         this._setAttributes(element, arg)
@@ -99,16 +94,12 @@ class CreateHotBalloonElement extends HyperFlex {
     return element
   }
 
-  _hasSameHBClassName(object1, object2) {
-    return isObject(object1) && isObject(object2) && ('__HB__CLASSNAME__' in object1) && ('__HB__CLASSNAME__' in object2) && (object1.__HB__CLASSNAME__ === object2.__HB__CLASSNAME__)
-  }
-
   /**
-   * @private
-   * @param {NodeElement} element
-   * @param {Object} attributes
-   * @returns {void}
-   */
+ * @private
+ * @param {NodeElement} element
+ * @param {Object} attributes
+ * @returns {void}
+ */
   _setAttributes(element, attributes) {
     assert(isNode(element),
       'flexio-jshelpers:setAttributes: `element` argument assert be a NodeElement `%s` given',
@@ -136,7 +127,7 @@ class CreateHotBalloonElement extends HyperFlex {
    * @param {Array} rules
    */
   _setReconciliationRule(element, rules) {
-    $$(element).addReconcileRules(rules)
+    $(element).addReconcileRules(rules)
   }
 }
 
