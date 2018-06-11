@@ -124,7 +124,7 @@ class CreateHotBalloonElement extends HyperFlex {
         this._setStyles(element, attribut)
       } else if (key === KEY_RECONCILIATE_RULES) {
         this._setReconciliationRule(element, attribut)
-      } else {
+      } else if (attribut !== null) {
         element.setAttribute(key, attribut)
       }
     }
