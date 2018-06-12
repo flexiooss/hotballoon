@@ -1,10 +1,6 @@
 'use strict'
-import {
-  ListenerAttributeHandler
-} from 'flexio-nodes-reconciliation'
-import {
-  KEY
-} from './constantes'
+import { ListenerAttributeHandler } from 'flexio-nodes-reconciliation'
+import { KEY } from './constantes'
 
 /**
  * @class

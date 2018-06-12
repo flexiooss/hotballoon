@@ -51,8 +51,10 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
     var _shouldInit = true
     var _shouldUpdate = true
     var _shouldRender = true
+    var _shouldMount = true
     var _shouldChangeState = true
     var _isRendered = false
+    var _isMounted = false
     const _EventHandler = new EventOrderedHandler()
     const _tokenEvent = new MapOfArray()
     const _nodeRefs = new Map()
@@ -132,6 +134,19 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
           _shouldRender = v
         }
       },
+      _shouldMount: {
+        configurable: false,
+        enumerable: false,
+        get: () => {
+          return _shouldMount
+        },
+        set: (v) => {
+          assert(!!isBoolean(v),
+            'hotballoon:View:constructor: `_shouldMount` argument should be a boolean'
+          )
+          _shouldMount = v
+        }
+      },
       _shouldChangeState: {
         configurable: false,
         enumerable: false,
@@ -156,6 +171,19 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
             'hotballoon:View:constructor: `_isRendered` argument should be a boolean'
           )
           _isRendered = v
+        }
+      },
+      _isMounted: {
+        configurable: false,
+        enumerable: false,
+        get: () => {
+          return _isMounted
+        },
+        set: (v) => {
+          assert(!!isBoolean(v),
+            'hotballoon:View:constructor: `_isMounted` argument should be a boolean'
+          )
+          _isMounted = v
         }
       },
       _EventHandler: {
@@ -337,6 +365,10 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
     this._shouldUpdate = true
   }
 
+  shouldNotUpdate() {
+    this._shouldUpdate = false
+  }
+
   /**
    * @private
    */
@@ -349,6 +381,8 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
    * @public
    */
   render() {
+    console.log('%c View:render: ' + this.constructor.name, 'background: #222; color: white; width:100%;font-size:15px;')
+
     this._EventHandler.dispatch(RENDER, {})
 
     if (this._shouldRender) {
@@ -359,6 +393,10 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
 
     this._shouldRender = true
     return this.node()
+  }
+
+  shouldNotRender() {
+    this._shouldRender = false
   }
 
   /**
@@ -377,13 +415,17 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
   mount() {
     this._EventHandler.dispatch(MOUNT, {})
 
-    if (this._shouldRender) {
+    if (this._shouldMount) {
       this._mount()
-      this._isRendered = true
+      this._isMounted = true
       this._EventHandler.dispatch(MOUNTED, {})
     }
 
-    this._shouldRender = true
+    this._shouldMount = true
+  }
+
+  shouldNotMount() {
+    this._shouldMount = false
   }
 
   /**
@@ -413,7 +455,6 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
    * @instance
    */
   registerSubView(key, view, stores = new Set()) {
-    // view.ViewContainer().addView(view, stores)
     view.ViewContainer().suscribeToStoreEvent(view, stores)
     this._addSubView(key, view)
     this.addEventListener(
