@@ -3,7 +3,7 @@ import {
 } from '../src/Dispatcher'
 import {
   Store,
-  INIT,
+  INIT as STORE_INIT,
   CHANGED
 } from '../src/storeBases/Store'
 
@@ -16,38 +16,32 @@ import {
 import {
   Action
 } from '../src/Action'
-import { View } from '../src/View'
+import {
+  View,
+  ATTRIBUTE_NODEREF,
+  INIT as VIEW_INIT,
+  UPDATE,
+  UPDATED,
+  RENDER,
+  RENDERED, MOUNT,
+  MOUNTED, STATE_CHANGE,
+  STATE_CHANGED,
+  STORE_CHANGED
+} from '../src/View'
 import { MapOfState } from '../src/MapOfState'
-import {
-  ViewContainer
-} from '../src/ViewContainer'
-import {
-  HotBalloonApplication
-} from '../src/HotBalloonApplication'
-import {
-  ApplicationContextMixin
-} from '../src/mixins/ApplicationContextMixin'
-import {
-  ComponentContextMixin
-} from '../src/mixins/ComponentContextMixin'
-import {
-  PrivateStateMixin
-} from '../src/mixins/PrivateStateMixin'
+import { ViewContainer } from '../src/ViewContainer'
+import { HotBalloonApplication } from '../src/HotBalloonApplication'
+import { ApplicationContextMixin } from '../src/mixins/ApplicationContextMixin'
+import { ComponentContextMixin } from '../src/mixins/ComponentContextMixin'
+import { PrivateStateMixin } from '../src/mixins/PrivateStateMixin'
 
-import {
-  Component
-} from '../src/Component'
+import { Component } from '../src/Component'
 
 /**
  * hotballoonElement
  */
-import {
-  html
-} from '../src/HotballoonElement/CreateHotBalloonElement'
-import {
-  HotBalloonAttributeHandler,
-  select as selectAttributeHandler
-} from '../src/HotballoonElement/HotBalloonAttributeHandler'
+import { html } from '../src/HotballoonElement/CreateHotBalloonElement'
+import { HotBalloonAttributeHandler, select as selectAttributeHandler } from '../src/HotballoonElement/HotBalloonAttributeHandler'
 
 /**
  * storeBases
@@ -68,9 +62,22 @@ export const storeBases = {
   StoreModel
 }
 
-export const storeEvents = {
-  INIT,
+export const STORE_EVENTS = {
+  STORE_INIT,
   CHANGED
+}
+
+export const VIEW_EVENTS = {
+  VIEW_INIT,
+  UPDATE,
+  UPDATED,
+  RENDER,
+  RENDERED,
+  MOUNT,
+  MOUNTED,
+  STATE_CHANGE,
+  STATE_CHANGED,
+  STORE_CHANGED
 }
 
 export {
@@ -81,6 +88,7 @@ export {
   Action,
   ViewContainer,
   View,
+  ATTRIBUTE_NODEREF,
   MapOfState,
   PrivateStateMixin,
   ApplicationContextMixin,

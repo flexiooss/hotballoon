@@ -21,6 +21,8 @@ export const STATE_CHANGE = 'STATE_CHANGE'
 export const STATE_CHANGED = 'STATE_CHANGED'
 export const STORE_CHANGED = 'STORE_CHANGED'
 
+export const ATTRIBUTE_NODEREF = '_hb_noderef'
+
 /**
  * @class
  * @description View describe a fragment of DOM
@@ -231,22 +233,16 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
    */
   view() { }
 
-  /*
-   * --------------------------------------------------------------
-   * EventHandler
-   * --------------------------------------------------------------
-   */
-
   /**
-   *
-   * @private
-   * @description suscribe subView an event of this view
-   * @param {String} key
-   * @param {hotballoon/View} subView
-   * @param {String} event : event name
-   */
+ *
+ * @private
+ * @description suscribe subView an event of this view
+ * @param {String} key
+ * @param {hotballoon/View} subView
+ * @param {String} event : event name
+ */
   _suscribeToEvent(key, subView, event = STORE_CHANGED) {
-    let token = this._EventHandler.addEventListener(
+    let token = this.addEventListener(
       event,
       (payload, type) => {
         subView.dispatch(event, payload)
@@ -329,6 +325,8 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
    * @public
    */
   updateNode() {
+    console.log('%c updateNode ' + this.constructor.name, 'background: #222; color: #bada55')
+
     this._EventHandler.dispatch(UPDATE, {})
 
     if (this._shouldUpdate) {
@@ -354,7 +352,6 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
     this._EventHandler.dispatch(RENDER, {})
 
     if (this._shouldRender) {
-      this._renderSubviews()
       this._render()
       this._isRendered = true
       this._EventHandler.dispatch(RENDERED, {})
@@ -364,10 +361,6 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
     return this.node()
   }
 
-  _renderSubviews() {
-    this._subViews.forEach((subView) => subView.render())
-  }
-
   /**
    * @private
    * @description mount `_node` property into `parentNode` argument
@@ -375,17 +368,6 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
   _mount() {
     this.parentNode.appendChild(this.node())
   }
-  // /**
-  //  * @private
-  //  * @description mount `_node` property into `parentNode` argument
-  //  */
-  // _mountSubViews() {
-  //   this._subViews.forEach((subView) => {
-  //     console.log('_renderSubviews')
-  //     console.log(subView)
-  //     subView.mount()
-  //   })
-  // }
 
   /**
    * @public
@@ -396,7 +378,6 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
     this._EventHandler.dispatch(MOUNT, {})
 
     if (this._shouldRender) {
-      // this._mountSubViews()
       this._mount()
       this._isRendered = true
       this._EventHandler.dispatch(MOUNTED, {})
@@ -432,7 +413,8 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
    * @instance
    */
   registerSubView(key, view, stores = new Set()) {
-    view.ViewContainer().addView(view, stores)
+    // view.ViewContainer().addView(view, stores)
+    view.ViewContainer().suscribeToStoreEvent(view, stores)
     this._addSubView(key, view)
     this.addEventListener(
       STATE_CHANGED,
@@ -489,7 +471,6 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
     assert(key,
       'hoballoon:View:_addSubView: `key` argument assert not be undefined')
     this._subViews.set(key, view)
-    // this.addNodeSubView(key, view)
     return view
   }
 
@@ -515,7 +496,7 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
   _setNodeRef(key, node) {
     $(node).setNodeRef(key)
     this._nodeRefs.set(key, node)
-    node.setAttribute('_hb_noderef', key)
+    node.setAttribute(ATTRIBUTE_NODEREF, key)
     return node
   }
 

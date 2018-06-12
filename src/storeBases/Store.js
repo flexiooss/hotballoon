@@ -4,8 +4,6 @@ import { assert } from 'flexio-jshelpers'
 import { RequireIDMixin } from '../mixins/RequireIDMixin'
 import { Storage } from './Storage'
 
-const EVENT_HANDLER = Object.seal(new EventOrderedHandler())
-
 export const INIT = 'INIT'
 export const CHANGED = 'CHANGED'
 
@@ -16,15 +14,16 @@ export const CHANGED = 'CHANGED'
  */
 export class Store extends RequireIDMixin(class { }) {
   /**
-     * @constructor
-     * @param {String} id
-     * @param {Store} storage
-     */
+   * @constructor
+   * @param {String} id
+   * @param {Store} storage
+   */
   constructor(id, storeInit) {
     super()
     this.RequireIDMixinInit(id)
 
     var _storage = Storage.create(this._ID, storeInit)
+    const EVENT_HANDLER = Object.seal(new EventOrderedHandler())
 
     // assert(storage instanceof Storage,
     //   'hotballoon:StoreHandler:constructor: `storage` argument should be a `Storage` instance')
@@ -117,8 +116,7 @@ export class Store extends RequireIDMixin(class { }) {
      * @private
      */
   _updated() {
-    console.log('STORE CHANGED')
-    console.log(this)
+    console.log('%c STORE CHANGED: ' + this.constructor.name + ' : ' + this._ID, 'background: #eee; color: blue')
     console.log(this.state())
 
     this._dispatch(CHANGED)

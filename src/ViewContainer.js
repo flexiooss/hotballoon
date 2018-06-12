@@ -14,8 +14,6 @@ import {
   CHANGED as STORE_CHANGED
 } from './storeBases/Store'
 
-const EVENT_HANDLER = Object.seal(new EventOrderedHandler())
-
 export const INIT = 'INIT'
 export const STORE_CHANGE = 'STORE_CHANGE'
 export const WILL_REMOVE = 'WILL_REMOVE'
@@ -30,7 +28,7 @@ export const WILL_REMOVE = 'WILL_REMOVE'
  *
  */
 class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateStateMixin(class { }))) {
-  constructor(component, id, parentNode, storeKeysRegistered = new Map()) {
+  constructor(component, id, parentNode, storesRegistered = new Map()) {
     super()
     /**
      * MixinInit
@@ -39,13 +37,14 @@ class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateStateMix
     this.RequireIDMixinInit(id)
     this.PrivateStateMixinInit()
 
-    assert(storeKeysRegistered instanceof Map,
-      'hoballoon:ViewContainer:subscribeToStore: `storeKeysRegister` argument assert be an instance of Map'
+    assert(storesRegistered instanceof Map,
+      'hoballoon:ViewContainer:subscribeToStore: `storesRegistered` argument assert be an instance of Map'
     )
     assert(!!isNode(parentNode),
       'hotballoon:View:constructor: `parentNode` argument should be a NodeElement'
     )
 
+    const EVENT_HANDLER = Object.seal(new EventOrderedHandler())
     var _mounted = false
     var _rendered = false
     var _tokenEvent = new MapOfArray()
@@ -59,11 +58,11 @@ class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateStateMix
     })
 
     Object.defineProperties(this, {
-      storeKeysRegistered: {
+      storesRegistered: {
         configurable: false,
         enumerable: true,
         writable: false,
-        value: storeKeysRegistered
+        value: storesRegistered
       },
       _mounted: {
         configurable: false,
@@ -161,6 +160,8 @@ class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateStateMix
    * @param {Object} payload
    */
   dispatch(eventType, payload) {
+    console.log('%c ViewContainer:dispatch: ' + eventType, 'background: #eee; color: red')
+
     this._EventHandler.dispatch(eventType, payload)
   }
 
@@ -176,15 +177,14 @@ class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateStateMix
    * @param {String} storeKey : store token
    * @param {String}  event : event types
    */
-  subscribeToStore(storeID, event = STORE_CHANGED) {
-    const store = this.Store(storeID)
+  subscribeToStore(store, event = STORE_CHANGED) {
     assert(store instanceof Store,
       'hoballoon:ViewContainer:subscribeToStore: `store` const should be an instance of StoreBase ')
 
     store.subscribe(
       event,
       (payload, type) => {
-        this.dispatch(this._formatStoreEventName(storeID, type), payload)
+        this.dispatch(this._formatStoreEventName(store._ID, type), payload)
       },
       this,
       100
@@ -195,8 +195,8 @@ class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateStateMix
    * @private
    */
   _registerStores() {
-    this.storeKeysRegistered.forEach((storeID, key, map) => {
-      this.subscribeToStore(storeID)
+    this.storesRegistered.forEach((store, key, map) => {
+      this.subscribeToStore(store)
     })
   }
 
@@ -243,6 +243,9 @@ class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateStateMix
    * @param {Integer} priority
    */
   _suscribeToEvent(view, store, event, priority = 0) {
+    console.log('_suscribeToEvent')
+    console.log(this._formatStoreEventName(store._ID, event))
+
     const token = this.subscribe(
       this._formatStoreEventName(store._ID, event),
       (payload, type) => {
@@ -337,6 +340,8 @@ class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateStateMix
    * @returns {NodeElement} parentNode
    */
   renderAndMount(parentNode) {
+    console.log('%c ViewContainer:renderAndMount ', 'background: red; color: white; font-size:16px')
+
     this.render()
     this.mount(parentNode)
     return parentNode

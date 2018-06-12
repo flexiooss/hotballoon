@@ -86,7 +86,8 @@ class CreateHotBalloonElement extends HyperFlex {
         element.appendChild(document.createTextNode(arg))
       } else if (isEqualTagClassName(arg, this.scope)) {
         arg.parentNode = element
-        element.appendChild(arg.node())
+        arg.renderAndMount()
+        // element.appendChild(arg.node())
       } else if (isObject(arg)) {
         this._setAttributes(element, arg)
       }
