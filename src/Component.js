@@ -238,13 +238,12 @@ class Component extends ApplicationContextMixin(RequireIDMixin(PrivateStateMixin
 
   /**
    *
-   * @param {String} key
    * @param {hotballoon/ViewContainer} viewContainer
-   * @returns {String} key
+   * @returns {hotballoon/ViewContainer} ViewContainer
    */
-  addViewContainer(key, ViewContainer) {
-    this._viewContainers.add(key, ViewContainer)
-    return key
+  addViewContainer(ViewContainer) {
+    this._viewContainers.add(ViewContainer._ID, ViewContainer)
+    return ViewContainer
   }
 
   /**

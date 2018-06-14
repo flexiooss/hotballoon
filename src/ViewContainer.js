@@ -1,7 +1,7 @@
 'use strict'
 import { CLASS_TAG_NAME } from './CLASS_TAG_NAME'
 import { EventOrderedHandler } from './EventOrderedHandler'
-import { MapOfInstance, MapOfArray, isNode, isBoolean, assert, isIterable } from 'flexio-jshelpers'
+import { MapOfInstance, MapOfArray, isNode, isString, isBoolean, assert, isIterable, deepFreezeSeal } from 'flexio-jshelpers'
 import { ComponentContextMixin } from './mixins/ComponentContextMixin'
 import { RequireIDMixin } from './mixins/RequireIDMixin'
 import { PrivateStateMixin } from './mixins/PrivateStateMixin'
@@ -13,6 +13,26 @@ import {
   Store,
   CHANGED as STORE_CHANGED
 } from './storeBases/Store'
+
+export class ViewContainerParameters {
+  constructor(componentInst, id, parentNode, mapOfStores) {
+    assert(!!isString(id),
+      'hoballoon:ViewContainerParameters: `id` argument assert be a String'
+    )
+    assert(!!isNode(parentNode),
+      'hotballoon:View:ViewContainerParameters: `parentNode` argument should be a NodeElement'
+    )
+    assert(mapOfStores instanceof Map,
+      'hoballoon:ViewContainerParameters: `mapOfStores` argument assert be an instance of Map'
+    )
+    this.component = componentInst
+    this.id = id
+    this.parentNode = parentNode
+    this.mapOfStores = mapOfStores
+
+    return deepFreezeSeal(this)
+  }
+}
 
 export const INIT = 'INIT'
 export const STORE_CHANGE = 'STORE_CHANGE'
@@ -27,22 +47,16 @@ export const WILL_REMOVE = 'WILL_REMOVE'
  * @extends hotballoon/PrivateStateMixin
  *
  */
-class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateStateMixin(class { }))) {
-  constructor(component, id, parentNode, storesRegistered = new Map()) {
+export class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateStateMixin(class { }))) {
+  // constructor(component, id, parentNode, storesRegistered = new Map()) {
+  constructor(viewContainerParameters) {
+    assert(viewContainerParameters instanceof ViewContainerParameters,
+      'hoballoon:ViewContainer:constructor: `viewContainerParameters` argument assert be an instance of ViewContainerParameters'
+    )
     super()
-    /**
-     * MixinInit
-     */
-    this.ComponentContextMixinInit(component)
-    this.RequireIDMixinInit(id)
+    this.ComponentContextMixinInit(viewContainerParameters.component)
+    this.RequireIDMixinInit(viewContainerParameters.id)
     this.PrivateStateMixinInit()
-
-    assert(storesRegistered instanceof Map,
-      'hoballoon:ViewContainer:subscribeToStore: `storesRegistered` argument assert be an instance of Map'
-    )
-    assert(!!isNode(parentNode),
-      'hotballoon:View:constructor: `parentNode` argument should be a NodeElement'
-    )
 
     const EVENT_HANDLER = Object.seal(new EventOrderedHandler())
     var _mounted = false
@@ -62,7 +76,7 @@ class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateStateMix
         configurable: false,
         enumerable: true,
         writable: false,
-        value: storesRegistered
+        value: viewContainerParameters.mapOfStores
       },
       _mounted: {
         configurable: false,
@@ -108,28 +122,14 @@ class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateStateMix
       parentNode: {
         configurable: false,
         enumerable: true,
-        get: () => {
-          return parentNode
-        },
-        set: (v) => {
-          assert(!!isNode(v),
-            'hotballoon:View:constructor: `parentNode` argument should be a NodeElement'
-          )
-          parentNode = v
-        }
+        writable: false,
+        value: viewContainerParameters.parentNode
       }
     })
 
     this._registerStores()
     this.registerViews()
   }
-
-  /**
-   *
-   * --------------------------------------------------------------
-   * EventHandler
-   * --------------------------------------------------------------
-   */
 
   /**
    * @description Format an Event name
@@ -346,8 +346,4 @@ class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateStateMix
     this.mount(parentNode)
     return parentNode
   }
-}
-
-export {
-  ViewContainer
 }

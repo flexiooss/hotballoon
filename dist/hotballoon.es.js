@@ -29,7 +29,7 @@ import {
   STORE_CHANGED
 } from '../src/View'
 import { MapOfState } from '../src/MapOfState'
-import { ViewContainer } from '../src/ViewContainer'
+import { ViewContainer, ViewContainerParameters } from '../src/ViewContainer'
 import { HotBalloonApplication } from '../src/HotBalloonApplication'
 import { ApplicationContextMixin } from '../src/mixins/ApplicationContextMixin'
 import { ComponentContextMixin } from '../src/mixins/ComponentContextMixin'
@@ -87,6 +87,7 @@ export {
   Store,
   Action,
   ViewContainer,
+  ViewContainerParameters,
   View,
   ATTRIBUTE_NODEREF,
   MapOfState,
