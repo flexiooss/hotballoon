@@ -488,6 +488,16 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
   nodeRef(key) {
     return this._nodeRefs.get(key)
   }
+  /**
+   * nodeRef alias
+   * @param {String} key
+   * @return {NodeElement} nodeElement
+   * @memberOf NodesHandlerMixin
+   * @instance
+   */
+  $(key) {
+    return this._nodeRefs.get(key)
+  }
 
   /**
    * @param {String} key
