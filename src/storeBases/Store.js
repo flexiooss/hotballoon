@@ -56,6 +56,12 @@ export class Store extends RequireIDMixin(class { }) {
     this._dispatch(INIT)
   }
 
+  static create(component, storeInit) {
+    console.log(component)
+
+    return new this(this.constructor.name + '-' + component.nextID(), storeInit)
+  }
+
   /**
      *
      * @param {String} type

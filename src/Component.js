@@ -201,13 +201,12 @@ class Component extends ApplicationContextMixin(RequireIDMixin(PrivateStateMixin
   }
 
   /**
-   * @param {String}  tokenStore
    * @param {hotballoon/Store}
    * @returns {String} tokenStore
    */
-  addStore(tokenStore, Store) {
-    this._stores.add(tokenStore, Store)
-    return tokenStore
+  addStore(store) {
+    this._stores.add(store._ID, store)
+    return store._ID
   }
 
   /**

@@ -25,12 +25,25 @@ export class ViewContainerParameters {
     assert(mapOfStores instanceof Map,
       'hoballoon:ViewContainerParameters: `mapOfStores` argument assert be an instance of Map'
     )
-    this.component = componentInst
-    this.id = id
-    this.parentNode = parentNode
-    this.mapOfStores = mapOfStores
 
-    return deepFreezeSeal(this)
+    Object.defineProperties(this, {
+      component: {
+        value: componentInst
+      },
+      id: {
+        configurable: false,
+        enumerable: false,
+        writable: false,
+        value: id
+      },
+      parentNode: {
+        value: parentNode
+      },
+      mapOfStores: {
+        value: mapOfStores
+      }
+    }
+    )
   }
 }
 
