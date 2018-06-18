@@ -1,6 +1,6 @@
 'use strict'
 import { EventOrderedHandler } from '../EventOrderedHandler'
-import { assert } from 'flexio-jshelpers'
+import { assert, staticClassName } from 'flexio-jshelpers'
 import { RequireIDMixin } from '../mixins/RequireIDMixin'
 import { Storage } from './Storage'
 
@@ -57,9 +57,7 @@ export class Store extends RequireIDMixin(class { }) {
   }
 
   static create(component, storeInit) {
-    console.log(component)
-
-    return new this(this.constructor.name + '-' + component.nextID(), storeInit)
+    return new this(staticClassName(this) + '-' + component.nextID(), storeInit)
   }
 
   /**
@@ -91,7 +89,7 @@ export class Store extends RequireIDMixin(class { }) {
      * @returns {Object} state cloned
      */
   clone() {
-    return this._store.clone()
+    return this._store.clone().data
   }
 
   /**
