@@ -12,7 +12,8 @@ class CoreException extends HBException {
   static codes() {
     return {
       UNKNOW: 'Unknow error',
-      BAD_INHERIT_CLASS: 'Bad instance of Class'
+      BAD_INHERIT_CLASS: 'Bad instance of Class',
+      METHOD_NOT_OVERIDED: 'This Method should be overided'
     }
   }
 }

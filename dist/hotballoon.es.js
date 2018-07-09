@@ -28,32 +28,37 @@ import {
   STATE_CHANGED,
   STORE_CHANGED
 } from '../src/View'
-import { MapOfState } from '../src/MapOfState'
-import { ViewContainer, ViewContainerParameters } from '../src/ViewContainer'
-import { HotBalloonApplication } from '../src/HotBalloonApplication'
-import { ApplicationContextMixin } from '../src/mixins/ApplicationContextMixin'
-import { ComponentContextMixin } from '../src/mixins/ComponentContextMixin'
-import { PrivateStateMixin } from '../src/mixins/PrivateStateMixin'
+import {MapOfState} from '../src/MapOfState'
+import {ViewContainer, ViewContainerParameters} from '../src/ViewContainer'
+import {HotBalloonApplication} from '../src/HotBalloonApplication'
+import {ApplicationContextMixin} from '../src/mixins/ApplicationContextMixin'
+import {ComponentContextMixin} from '../src/mixins/ComponentContextMixin'
+import {PrivateStateMixin} from '../src/mixins/PrivateStateMixin'
 
-import { Component } from '../src/Component'
+import {Component} from '../src/Component'
 
 /**
  * hotballoonElement
  */
-import { html } from '../src/HotballoonElement/CreateHotBalloonElement'
-import { HotBalloonAttributeHandler, select as selectAttributeHandler } from '../src/HotballoonElement/HotBalloonAttributeHandler'
+import {html} from '../src/HotballoonElement/CreateHotBalloonElement'
+import {HotballoonElementParams} from '../src/HotballoonElement/HotballoonElementParams'
+import {
+  HotBalloonAttributeHandler,
+  select as selectAttributeHandler
+} from '../src/HotballoonElement/HotBalloonAttributeHandler'
 
 /**
  * storeBases
  */
 
-import { State } from '../src/storeBases/State'
-import { Storage } from '../src/storeBases/Storage'
-import { StoreModel } from '../src/storeBases/StoreModel'
+import {State} from '../src/storeBases/State'
+import {Storage} from '../src/storeBases/Storage'
+import {StoreModel} from '../src/storeBases/StoreModel'
 
 export const hotballoonElement = {
   html,
-  HotBalloonAttributeHandler
+  HotBalloonAttributeHandler,
+  HotballoonElementParams
 }
 
 export const storeBases = {

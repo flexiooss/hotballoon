@@ -1,6 +1,7 @@
 'use strict'
 import { CLASS_TAG_NAME, isEqualTagClassName } from '../CLASS_TAG_NAME'
-import { assert, HyperFlex, isString, isNumber, isNode, isObject } from 'flexio-jshelpers'
+import { assert, isString, isNumber, isNode, isObject } from 'flexio-jshelpers'
+import { HyperFlex } from 'flexio-hyperflex'
 import { select as $ } from './HotBalloonAttributeHandler'
 import { KEY_RECONCILIATE_RULES } from 'flexio-nodes-reconciliation'
 
@@ -19,6 +20,7 @@ class CreateHotBalloonElement extends HyperFlex {
    * @description Helper for create a NodeElement
    * @param {Object} scope - View instance
    * @param {String} querySelector - tag#id.class[.class,...]
+   * @param {NodeElement} [child] child
    * @param {mixed} args - attributes, style, childs, text
    * @example html(this, 'div#MyID.class1.class2', {data-type: 'myType', style:{color: '#000'}}, 'My Text', html(this, 'div#MyChildID','Child'))
    * @returns {NodeElement}

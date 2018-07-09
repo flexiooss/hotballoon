@@ -1,4 +1,5 @@
 'use strict'
+import {CoreException} from './CoreException'
 import { CLASS_TAG_NAME } from './CLASS_TAG_NAME'
 import { MapOfArray, MapOfInstance, assert, isBoolean, isNode } from 'flexio-jshelpers'
 import { select as $ } from './HotballoonElement/HotBalloonAttributeHandler'
@@ -44,7 +45,7 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
     this.RequireIDMixinInit(id)
     this.ViewContainerContextMixinInit(viewContainer)
     this.PrivateStateMixinInit()
-    this.NodesHandlerMixinInit(View)
+    this.NodesHandlerMixinInit(this)
 
     var _node = null
     var parentNode = viewContainer.parentNode
@@ -257,9 +258,26 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
 
   /**
    * Main method
-   * @return {NodeType}
+   * @return {NodeElement}
    */
-  view() { }
+  view() {
+    throw new CoreException('view should be overiderd', 'METHOD_NOT_OVERIDED')
+  }
+
+  /**
+   * @description Helper for create a NodeElement
+   * @alias CreateHotBalloonElement.html
+   * @param {String} querySelector - tag#id.class[.class,...]
+   * @param {string} [textNode] - text
+   * @param {NodeElement} [child] child
+   * @param {Object} [attributes] attributes
+   * @param {Object} [style] style
+   * @example html(this, 'div#MyID.class1.class2', {data-type: 'myType', style:{color: '#000'}}, 'My Text', html(this, 'div#MyChildID','Child'))
+   * @returns {NodeElement}
+   */
+  html(querySelector, ...args) {
+    return this._html(querySelector, ...args)
+  }
 
   /**
  *

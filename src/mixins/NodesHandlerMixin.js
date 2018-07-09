@@ -13,7 +13,7 @@ export const NodesHandlerMixin = (Base) => class extends Base {
    * @instance
    */
   NodesHandlerMixinInit(View) {
-    this.html = (querySelector, ...args) => {
+    this._html = (querySelector, ...args) => {
       return html(this, querySelector, ...args)
     }
   }
