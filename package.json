@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "flexio-jshelpers": "https://github.com/flexiooss/flexio-jshelpers.git",
-    "flexio-hyperflex": "https://github.com/flexiooss/flexio-hyperflex.git"
+    "flexio-hyperflex": "https://github.com/flexiooss/flexio-hyperflex.git",
+    "flexio-nodes-reconciliation": "https://github.com/flexiooss/flexio-nodes-reconciliation.git"
   }
 }
