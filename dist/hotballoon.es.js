@@ -57,8 +57,8 @@ import {StoreModel} from '../src/storeBases/StoreModel'
 
 export const hotballoonElement = {
   html,
-  HotBalloonAttributeHandler,
-  HotballoonElementParams
+  HotBalloonAttributeHandler
+
 }
 
 export const storeBases = {
@@ -102,5 +102,5 @@ export {
   EventHandler,
   EventOrderedHandler,
   html,
-  selectAttributeHandler
+  HotballoonElementParams
 }

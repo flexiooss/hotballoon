@@ -1,7 +1,7 @@
 'use strict'
 import { CLASS_TAG_NAME } from './CLASS_TAG_NAME'
 import { EventOrderedHandler } from './EventOrderedHandler'
-import { MapOfInstance, MapOfArray, isNode, isString, isBoolean, assert, isIterable, deepFreezeSeal } from 'flexio-jshelpers'
+import { MapOfInstance, MapOfArray, isNode, isString, isBoolean, assert, isIterable } from 'flexio-jshelpers'
 import { ComponentContextMixin } from './mixins/ComponentContextMixin'
 import { RequireIDMixin } from './mixins/RequireIDMixin'
 import { PrivateStateMixin } from './mixins/PrivateStateMixin'

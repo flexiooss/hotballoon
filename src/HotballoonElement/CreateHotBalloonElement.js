@@ -1,5 +1,5 @@
 'use strict'
-import { CLASS_TAG_NAME, isEqualTagClassName } from '../CLASS_TAG_NAME'
+import { isEqualTagClassName } from '../CLASS_TAG_NAME'
 import { assert, isString, isNumber, isNode, isObject } from 'flexio-jshelpers'
 import { HyperFlex } from 'flexio-hyperflex'
 import { select as $ } from './HotBalloonAttributeHandler'
@@ -25,17 +25,27 @@ class CreateHotBalloonElement extends HyperFlex {
    * @example html(this, 'div#MyID.class1.class2', {data-type: 'myType', style:{color: '#000'}}, 'My Text', html(this, 'div#MyChildID','Child'))
    * @returns {NodeElement}
    */
-  static html(scope, querySelector, ...args) {
-    const elFactory = new CreateHotBalloonElement(scope, querySelector, ...args)
-    let el = elFactory._createElement()
-    elFactory._changeIdAndSetNodeRef(el)
-    return el
+  // static html(scope, querySelector, ...args) {
+  //   const elFactory = new CreateHotBalloonElement(scope, querySelector, ...args)
+  //   let el = elFactory._createElement()
+  //   return elFactory._changeIdAndSetNodeRef(el)
+  // }
+
+  /**
+   *
+   * @param {View} scope
+   * @param {string} querySelector - tag#id.class[.class,...]
+   * @param {HotballoonElementParams} hotballoonElementParam
+   */
+  static html(scope, querySelector, hotballoonElementParam) {
+
   }
 
   /**
    *
    * @private
-   * @param {DomElement} element
+   * @param {NodeElement} element
+   * @return {NodeElement} element
    */
   _changeIdAndSetNodeRef(element) {
     const shortId = element.id
@@ -43,6 +53,7 @@ class CreateHotBalloonElement extends HyperFlex {
       element.id = this._generateIdFromScope(element.id)
       this._setNodeRef(shortId, element)
     }
+    return element
   }
   /**
    *
