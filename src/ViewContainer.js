@@ -234,7 +234,7 @@ export class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateS
 
   /**
    * @param {hotballoon/View} view
-   * @param {Iterable} stores : stores instances
+   * @param {iterable<Store>} stores : stores instances
    */
   suscribeToStoreEvent(view, stores) {
     assert(isIterable(stores),

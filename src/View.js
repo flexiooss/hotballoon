@@ -1,15 +1,14 @@
 'use strict'
 import {CoreException} from './CoreException'
-import { CLASS_TAG_NAME } from './CLASS_TAG_NAME'
-import { MapOfArray, MapOfInstance, assert, isBoolean, isNode } from 'flexio-jshelpers'
-import { select as $ } from './HotballoonElement/HotBalloonAttributeHandler'
-
-import { reconcile } from 'flexio-nodes-reconciliation'
-import { EventOrderedHandler } from './EventOrderedHandler'
-import { NodesHandlerMixin } from './mixins/NodesHandlerMixin'
-import { PrivateStateMixin } from './mixins/PrivateStateMixin'
-import { RequireIDMixin } from './mixins/RequireIDMixin'
-import { ViewContainerContextMixin } from './mixins/ViewContainerContextMixin'
+import {CLASS_TAG_NAME} from './CLASS_TAG_NAME'
+import {MapOfArray, MapOfInstance, assert, isBoolean, isNode} from 'flexio-jshelpers'
+import {$} from './HotballoonElement/HotBalloonAttributeHandler'
+import {reconcile} from 'flexio-nodes-reconciliation'
+import {EventOrderedHandler} from './EventOrderedHandler'
+import {RequireIDMixin} from './mixins/RequireIDMixin'
+import {PrivateStateMixin} from './mixins/PrivateStateMixin'
+import {DebugableMixin} from './mixins/DebugableMixin'
+import {ViewContainerContextMixin} from './mixins/ViewContainerContextMixin'
 
 export const INIT = 'INIT'
 export const UPDATE = 'UPDATE'
@@ -27,25 +26,27 @@ export const ATTRIBUTE_NODEREF = '_hb_noderef'
 /**
  * @class
  * @description View describe a fragment of DOM
+ * @extends DebugableMixin
  * @extends ViewContainerContextMixin
- * @extends NodesHandlerMixin
  * @extends ViewContainerContextMixin
  * @extends PrivateStateMixin
  * @extends RequireIDMixin
  *
  */
-class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin(RequireIDMixin(class { })))) {
+class View extends DebugableMixin(ViewContainerContextMixin(PrivateStateMixin(RequireIDMixin(class {
+})))) {
   /**
    * @constructor
-   * @param {String} id
+   * @param {string} id
    * @param {ViewContainer} viewContainer
    */
   constructor(id, viewContainer) {
     super()
+
+    this.DebugableMixinInit()
     this.RequireIDMixinInit(id)
     this.ViewContainerContextMixinInit(viewContainer)
     this.PrivateStateMixinInit()
-    this.NodesHandlerMixinInit(this)
 
     var _node = null
     var parentNode = viewContainer.parentNode
@@ -61,6 +62,9 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
     const _nodeRefs = new Map()
     const _subViews = new MapOfInstance(View)
 
+    /**
+     * @property {string} CLASS_TAG_NAME
+     */
     Object.defineProperty(this, CLASS_TAG_NAME, {
       configurable: false,
       writable: false,
@@ -69,6 +73,10 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
     })
 
     Object.defineProperties(this, {
+      /**
+       * @property {Node} _node
+       * @private
+       */
       _node: {
         enumerable: false,
         configurable: false,
@@ -83,6 +91,9 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
           _node = node
         }
       },
+      /**
+       * @property {Node} parentNode
+       */
       parentNode: {
         configurable: false,
         enumerable: true,
@@ -91,11 +102,15 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
         },
         set: (v) => {
           assert(!!isNode(v),
-            'hotballoon:View:constructor: `parentNode` argument should be a NodeElement'
+            'hotballoon:View:constructor: `parentNode` argument should be a Node'
           )
           parentNode = v
         }
       },
+      /**
+       * @property {boolean} _shouldInit
+       * @private
+       */
       _shouldInit: {
         configurable: false,
         enumerable: false,
@@ -109,6 +124,10 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
           _shouldInit = v
         }
       },
+      /**
+       * @property {boolean} _shouldUpdate
+       * @private
+       */
       _shouldUpdate: {
         configurable: false,
         enumerable: false,
@@ -122,6 +141,10 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
           _shouldUpdate = v
         }
       },
+      /**
+       * @property {boolean} _shouldRender
+       * @private
+       */
       _shouldRender: {
         configurable: false,
         enumerable: false,
@@ -135,6 +158,10 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
           _shouldRender = v
         }
       },
+      /**
+       * @property {boolean} _shouldMount
+       * @private
+       */
       _shouldMount: {
         configurable: false,
         enumerable: false,
@@ -148,6 +175,10 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
           _shouldMount = v
         }
       },
+      /**
+       * @property {boolean} _shouldChangeState
+       * @private
+       */
       _shouldChangeState: {
         configurable: false,
         enumerable: false,
@@ -161,6 +192,10 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
           _shouldChangeState = v
         }
       },
+      /**
+       * @property {boolean} _isRendered
+       * @private
+       */
       _isRendered: {
         configurable: false,
         enumerable: false,
@@ -174,6 +209,10 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
           _isRendered = v
         }
       },
+      /**
+       * @property {boolean} _isMounted
+       * @private
+       */
       _isMounted: {
         configurable: false,
         enumerable: false,
@@ -187,6 +226,10 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
           _isMounted = v
         }
       },
+      /**
+       * @property {EventOrderedHandler} _EventHandler
+       * @private
+       */
       _EventHandler: {
         configurable: false,
         enumerable: false,
@@ -197,6 +240,10 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
           return false
         }
       },
+      /**
+       * @property {MapOfArray} _tokenEvent
+       * @private
+       */
       _tokenEvent: {
         configurable: false,
         enumerable: false,
@@ -207,6 +254,10 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
           return false
         }
       },
+      /**
+       * @property {Map} _nodeRefs
+       * @private
+       */
       _nodeRefs: {
         configurable: false,
         enumerable: false,
@@ -217,6 +268,10 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
           return false
         }
       },
+      /**
+       * @property {MapOfInstance<View>} _subViews
+       * @private
+       */
       _subViews: {
         configurable: false,
         enumerable: false,
@@ -247,7 +302,7 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
    * @static
    * @param {string} id
    * @param {hotballoon:ViewContainer} viewContainer
-   * @param {nodeElement} parentNode
+   * @param {Node} parentNode
    * @return View
    */
   static createWithParentNode(id, viewContainer, parentNode) {
@@ -258,35 +313,20 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
 
   /**
    * Main method
-   * @return {NodeElement}
+   * @return {Node}
    */
   view() {
     throw new CoreException('view should be overiderd', 'METHOD_NOT_OVERIDED')
   }
 
   /**
-   * @description Helper for create a NodeElement
-   * @alias CreateHotBalloonElement.html
-   * @param {String} querySelector - tag#id.class[.class,...]
-   * @param {string} [textNode] - text
-   * @param {NodeElement} [child] child
-   * @param {Object} [attributes] attributes
-   * @param {Object} [style] style
-   * @example html(this, 'div#MyID.class1.class2', {data-type: 'myType', style:{color: '#000'}}, 'My Text', html(this, 'div#MyChildID','Child'))
-   * @returns {NodeElement}
+   *
+   * @private
+   * @description suscribe subView an event of this view
+   * @param {String} key
+   * @param {hotballoon/View} subView
+   * @param {String} event : event name
    */
-  html(querySelector, ...args) {
-    return this._html(querySelector, ...args)
-  }
-
-  /**
- *
- * @private
- * @description suscribe subView an event of this view
- * @param {String} key
- * @param {hotballoon/View} subView
- * @param {String} event : event name
- */
   _suscribeToEvent(key, subView, event = STORE_CHANGED) {
     let token = this.addEventListener(
       event,
@@ -314,12 +354,21 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
     )
   }
 
-  addEventListener(event, callback, scope, priority) {
-    this._EventHandler.addEventListener(event, callback, scope, priority)
-  }
   /**
    *
-   * @param {String} event : event name
+   * @param {string} event
+   * @param {function} callback
+   * @param {Object} scope
+   * @param {number} priority
+   * @return {string} token
+   */
+  addEventListener(event, callback, scope, priority) {
+    return this._EventHandler.addEventListener(event, callback, scope, priority)
+  }
+
+  /**
+   *
+   * @param {string} event : event name
    * @param {Object} payload
    * @returns void
    */
@@ -328,10 +377,10 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
   }
 
   /**
- * @private
- * @param {String} key
- * @param {any} val
- */
+   * @private
+   * @param {String} key
+   * @param {any} val
+   */
   _setPrivateStateProp(key, val) {
     this.dispatch(STATE_CHANGE, {
       key,
@@ -371,7 +420,7 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
    * @public
    */
   updateNode() {
-    console.log('%c updateNode ' + this.constructor.name, 'background: #222; color: #bada55')
+    this._log('%c updateNode ' + this.constructor.name, 'background: #222; color: #bada55')
 
     this._EventHandler.dispatch(UPDATE, {})
 
@@ -383,6 +432,9 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
     this._shouldUpdate = true
   }
 
+  /**
+   *
+   */
   shouldNotUpdate() {
     this._shouldUpdate = false
   }
@@ -399,7 +451,7 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
    * @public
    */
   render() {
-    console.log('%c View:render: ' + this.constructor.name, 'background: #222; color: white; width:100%;font-size:15px;')
+    this._log('%c View:render: ' + this.constructor.name, 'background: #222; color: white; width:100%;font-size:15px;')
 
     this._EventHandler.dispatch(RENDER, {})
 
@@ -428,7 +480,7 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
   /**
    * @public
    * @see _mount()
-   * @param {NodeElement} parentNode
+   * @param {Node} parentNode
    */
   mount() {
     this._EventHandler.dispatch(MOUNT, {})
@@ -449,7 +501,7 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
   /**
    * @public
    * @description Render the View() into `_node` property and mount this into the `parentNode` argument
-   * @param {NodeElement} parentNode
+   * @param {Node} parentNode
    */
   renderAndMount() {
     this.render()
@@ -457,11 +509,11 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
   }
 
   /**
-  * @param {String} key
-  * @return {View} view
-  * @memberOf NodesHandlerMixin
-  * @instance
-  */
+   * @param {String} key
+   * @return {View} view
+   * @memberOf NodesHandlerMixin
+   * @instance
+   */
   subView(key) {
     return this._subViews.get(key)
   }
@@ -469,7 +521,7 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
   /**
    * @param {String} key
    * @param {View} view
-   * @memberOf NodesHandlerMixin
+   * @param {iterable<Store>} stores
    * @instance
    */
   registerSubView(key, view, stores = new Set()) {
@@ -499,17 +551,18 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
 
   /**
    * @param {String} key
-   * @return {NodeElement} nodeElement
+   * @return {Node} Node
    * @memberOf NodesHandlerMixin
    * @instance
    */
   nodeRef(key) {
     return this._nodeRefs.get(key)
   }
+
   /**
    * nodeRef alias
    * @param {String} key
-   * @return {NodeElement} nodeElement
+   * @return {Node} Node
    * @memberOf NodesHandlerMixin
    * @instance
    */
@@ -519,8 +572,8 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
 
   /**
    * @param {String} key
-   * @param {NodeElement} node
-   * @return {NodeElement} nodeElement
+   * @param {Node} node
+   * @return {Node} Node
    * @memberOf NodesHandlerMixin
    * @instance
    */
@@ -545,8 +598,8 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
 
   /**
    * @param {String} key
-   * @param {NodeElement} node
-   * @return {NodeElement} nodeElement
+   * @param {Node} node
+   * @return {Node} Node
    * @memberOf NodesHandlerMixin
    * @instance
    */
@@ -555,13 +608,13 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
   }
 
   /**
-  * @private
-  * @param {String} key
-  * @param {NodeElement} node
-  * @return {NodeElement} node
-  * @memberOf NodesHandlerMixin
-  * @instance
-  */
+   * @private
+   * @param {String} key
+   * @param {Node} node
+   * @return {Node} node
+   * @memberOf NodesHandlerMixin
+   * @instance
+   */
   _setNodeRef(key, node) {
     $(node).setNodeRef(key)
     this._nodeRefs.set(key, node)
@@ -579,7 +632,7 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
   }
 
   /**
-   * @returns {NodeElement} node
+   * @returns {Node} node
    * @memberOf NodesHandlerMixin
    * @instance
    */
@@ -588,7 +641,7 @@ class View extends NodesHandlerMixin(ViewContainerContextMixin(PrivateStateMixin
   }
 
   /**
-   * @returns {NodeElement} node
+   * @returns {Node} node
    * @memberOf NodesHandlerMixin
    * @instance
    */

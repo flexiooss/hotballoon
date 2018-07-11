@@ -102,5 +102,5 @@ export {
   EventHandler,
   EventOrderedHandler,
   html,
-  HotballoonElementParams
+  HotballoonElementParams as HtmlParams
 }

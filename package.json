@@ -1,8 +1,8 @@
 {
   "name": "hotballoon",
   "description": "Small JavaScript library for building interfaces by Flexio",
-  "main": "dist/hotballoon.js",
-  "module": "dist/hotballoon.es.js",
+  "main": "index.js",
+  "module": "index.es.js",
   "version": "1.0.1",
   "license": "Apache-2.0",
   "scripts": {

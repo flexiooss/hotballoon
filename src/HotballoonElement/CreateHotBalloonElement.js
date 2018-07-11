@@ -1,29 +1,36 @@
 'use strict'
-import { isEqualTagClassName } from '../CLASS_TAG_NAME'
-import { assert, isString, isNumber, isNode, isObject } from 'flexio-jshelpers'
-import { HyperFlex } from 'flexio-hyperflex'
-import { select as $ } from './HotBalloonAttributeHandler'
-import { KEY_RECONCILIATE_RULES } from 'flexio-nodes-reconciliation'
+import {HotballoonElementParams} from './HotballoonElementParams'
+import {assert, isObject, isNode} from 'flexio-jshelpers'
+import {HyperFlex} from 'flexio-hyperflex'
+import {$} from './HotBalloonAttributeHandler'
+import {KEY_RECONCILIATE_RULES} from 'flexio-nodes-reconciliation'
 
 /**
  * @class
  * @extends HyperFlex - flexio-jshelpers
  */
 class CreateHotBalloonElement extends HyperFlex {
-  constructor(scope, querySelector, ...args) {
-    super(querySelector, ...args)
+  /**
+   *
+   * @param  {View} scope
+   * @param {string} querySelector
+   * @param {HotballoonElementParams} hotballoonElementParams
+   * @return {CreateHotBalloonElement}
+   */
+  constructor(scope, querySelector, hotballoonElementParams) {
+    super(querySelector, hotballoonElementParams)
     this.scope = scope
   }
 
   /**
    * @static
-   * @description Helper for create a NodeElement
+   * @description Helper for create a Node
    * @param {Object} scope - View instance
    * @param {String} querySelector - tag#id.class[.class,...]
-   * @param {NodeElement} [child] child
+   * @param {Node} [child] child
    * @param {mixed} args - attributes, style, childs, text
    * @example html(this, 'div#MyID.class1.class2', {data-type: 'myType', style:{color: '#000'}}, 'My Text', html(this, 'div#MyChildID','Child'))
-   * @returns {NodeElement}
+   * @returns {No}
    */
   // static html(scope, querySelector, ...args) {
   //   const elFactory = new CreateHotBalloonElement(scope, querySelector, ...args)
@@ -32,20 +39,23 @@ class CreateHotBalloonElement extends HyperFlex {
   // }
 
   /**
-   *
+   * @static
    * @param {View} scope
    * @param {string} querySelector - tag#id.class[.class,...]
-   * @param {HotballoonElementParams} hotballoonElementParam
+   * @param {HotballoonElementParams} hotballoonElementParams
+   * @return {Node}
    */
-  static html(scope, querySelector, hotballoonElementParam) {
-
+  static html(scope, querySelector, hotballoonElementParams) {
+    const elFactory = new CreateHotBalloonElement(scope, querySelector, hotballoonElementParams)
+    elFactory.createHtmlElement()
+    return elFactory._changeIdAndSetNodeRef()
   }
 
   /**
    *
    * @private
-   * @param {NodeElement} element
-   * @return {NodeElement} element
+   * @param {Node} element
+   * @return {Node} element
    */
   _changeIdAndSetNodeRef(element) {
     const shortId = element.id
@@ -55,11 +65,12 @@ class CreateHotBalloonElement extends HyperFlex {
     }
     return element
   }
+
   /**
    *
    * @private
    * @param {String} id
-   * @returns {String} id
+   * @return {String} id
    */
   _generateIdFromScope(id) {
     return this.scope.APP()._ID + '-' + this.scope.Component()._ID + '-' + this.scope.ViewContainer()._ID + '-' + id
@@ -68,7 +79,7 @@ class CreateHotBalloonElement extends HyperFlex {
   /**
    * @private
    * @param {String} key
-   * @param {NodeElement} node
+   * @param {Node} node
    * @description alias of hotballoon/View:addNodeRef
    */
   _setNodeRef(key, node) {
@@ -77,46 +88,56 @@ class CreateHotBalloonElement extends HyperFlex {
 
   /**
    * @private
-   * @param {NodeElement} element
+   * @param {Node} element
    * @param {...var} arguments
-   * @returns {NodeElement} element
+   * @returns {Node} element
    */
-  _parseArguments(element, ...args) {
+  _parseArguments(element) {
     // console.log('_parseArguments')
 
     assert(isNode(element),
-      'flexio-jshelpers:parseArguments: `element` argument assert be a NodeElement `%s` given',
+      'flexio-jshelpers:parseArguments: `element` argument assert be a Node `%s` given',
       typeof element
     )
-    const countOfArgs = args.length
 
-    for (let i = 0; i < countOfArgs; i++) {
-      const arg = args[i]
+    const args = [...this.args][0]
+    console.log('args')
+    console.log(element)
+    console.log(args)
+    assert(args instanceof HotballoonElementParams,
+      'hotballoon:_parseArguments: `args` property should be an instanceof `HotballoonElementParams`, `%s` given',
+      typeof args
+    )
 
-      if (isNode(arg)) {
-        element.appendChild(arg)
-      } else if (isString(arg) || isNumber(arg)) {
-        element.appendChild(document.createTextNode(arg))
-      } else if (isEqualTagClassName(arg, this.scope)) {
-        arg.parentNode = element
-        arg.renderAndMount()
-        // element.appendChild(arg.node())
-      } else if (isObject(arg)) {
-        this._setAttributes(element, arg)
-      }
+    this._setAttributes(element, args._attributes)
+    this._setStyles(element, args._style)
+    this._setReconciliationRule(element, args._reconciliationRules)
+
+    if (args._text !== '') {
+      element.appendChild(document.createTextNode(args._text))
     }
+
+    const countOfChildren = args._children.length
+    console.log('countOfChildren')
+    console.log(countOfChildren)
+    for (let i = 0; i < countOfChildren; i++) {
+      const child = args._children[i]
+      child.parentNode = element
+      child.renderAndMount()
+    }
+
     return element
   }
 
   /**
- * @private
- * @param {NodeElement} element
- * @param {Object} attributes
- * @returns {void}
- */
+   * @private
+   * @param {Node} element
+   * @param {Object<string, string>} attributes
+   * @returns {void}
+   */
   _setAttributes(element, attributes) {
     assert(isNode(element),
-      'flexio-jshelpers:setAttributes: `element` argument assert be a NodeElement `%s` given',
+      'flexio-jshelpers:setAttributes: `element` argument assert be a Node `%s` given',
       typeof element
     )
     assert(isObject(attributes),
@@ -137,8 +158,8 @@ class CreateHotBalloonElement extends HyperFlex {
 
   /**
    * @private
-   * @param {NodeElement} element
-   * @param {Array} rules
+   * @param {Node} element
+   * @param {Array<string>} rules
    */
   _setReconciliationRule(element, rules) {
     $(element).addReconcileRules(rules)
