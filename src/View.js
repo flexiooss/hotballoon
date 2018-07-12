@@ -7,7 +7,7 @@ import {reconcile} from 'flexio-nodes-reconciliation'
 import {EventOrderedHandler} from './EventOrderedHandler'
 import {RequireIDMixin} from './mixins/RequireIDMixin'
 import {PrivateStateMixin} from './mixins/PrivateStateMixin'
-import {DebugableMixin} from './mixins/DebugableMixin'
+import {LogHandler} from './LogHandler'
 import {ViewContainerContextMixin} from './mixins/ViewContainerContextMixin'
 import {html} from './HotballoonElement/CreateHotBalloonElement'
 
@@ -27,15 +27,14 @@ export const ATTRIBUTE_NODEREF = '_hb_noderef'
 /**
  * @class
  * @description View describe a fragment of DOM
- * @extends DebugableMixin
  * @extends ViewContainerContextMixin
  * @extends ViewContainerContextMixin
  * @extends PrivateStateMixin
  * @extends RequireIDMixin
  *
  */
-class View extends DebugableMixin(ViewContainerContextMixin(PrivateStateMixin(RequireIDMixin(class {
-})))) {
+class View extends ViewContainerContextMixin(PrivateStateMixin(RequireIDMixin(class {
+}))) {
   /**
    * @constructor
    * @param {string} id
@@ -44,7 +43,6 @@ class View extends DebugableMixin(ViewContainerContextMixin(PrivateStateMixin(Re
   constructor(id, viewContainer) {
     super()
 
-    this.DebugableMixinInit()
     this.RequireIDMixinInit(id)
     this.ViewContainerContextMixinInit(viewContainer)
     this.PrivateStateMixinInit()
@@ -61,7 +59,7 @@ class View extends DebugableMixin(ViewContainerContextMixin(PrivateStateMixin(Re
     const _EventHandler = new EventOrderedHandler()
     const _tokenEvent = new MapOfArray()
     const _nodeRefs = new Map()
-    const _subViews = new MapOfInstance(View)
+    const _views = new MapOfInstance(View)
 
     /**
      * @property {string} CLASS_TAG_NAME
@@ -271,18 +269,26 @@ class View extends DebugableMixin(ViewContainerContextMixin(PrivateStateMixin(Re
         }
       },
       /**
-       * @property {MapOfInstance<View>} _subViews
+       * @property {MapOfInstance<View>} _views
        * @private
        */
-      _subViews: {
+      _views: {
         configurable: false,
         enumerable: false,
         get: () => {
-          return _subViews
+          return _views
         },
         set: (v) => {
           return false
         }
+      },
+      /**
+       * @property {LogHandler} View#debug
+       */
+      debug: {
+        configurable: false,
+        enumerable: false,
+        value: new LogHandler()
       }
     })
 
@@ -323,8 +329,8 @@ class View extends DebugableMixin(ViewContainerContextMixin(PrivateStateMixin(Re
 
   /**
    *
-   * @param {string} querySelector
-   * @param {HotballoonElementParams} hotballoonElementParams
+   * @param {String} querySelector
+   * @param {HotballoonElementParams} [hotballoonElementParams]
    * @return {Node}
    */
   html(querySelector, hotballoonElementParams) {
@@ -336,7 +342,7 @@ class View extends DebugableMixin(ViewContainerContextMixin(PrivateStateMixin(Re
    * @private
    * @description suscribe subView an event of this view
    * @param {String} key
-   * @param {hotballoon/View} subView
+   * @param {View} subView
    * @param {String} event : event name
    */
   _suscribeToEvent(key, subView, event = STORE_CHANGED) {
@@ -432,7 +438,7 @@ class View extends DebugableMixin(ViewContainerContextMixin(PrivateStateMixin(Re
    * @public
    */
   updateNode() {
-    this._log('%c updateNode ' + this.constructor.name, 'background: #222; color: #bada55')
+    this.debug.log('%c updateNode ' + this.constructor.name, 'background: #222; color: #bada55')
 
     this._EventHandler.dispatch(UPDATE, {})
 
@@ -463,7 +469,7 @@ class View extends DebugableMixin(ViewContainerContextMixin(PrivateStateMixin(Re
    * @return {Node} _node
    */
   render() {
-    this._log('%c View:render: ' + this.constructor.name, 'background: #222; color: white; width:100%;font-size:15px;')
+    this.debug.log('%c View:render: ' + this.constructor.name, 'background: #222; color: white; width:100%;font-size:15px;')
 
     this._EventHandler.dispatch(RENDER, {})
 
@@ -525,20 +531,19 @@ class View extends DebugableMixin(ViewContainerContextMixin(PrivateStateMixin(Re
 
   /**
    * @param {String} key
-   * @return {View} view
+   * @return {View}
    */
-  subView(key) {
-    return this._subViews.get(key)
+  View(key) {
+    return this._views.get(key)
   }
 
   /**
-   * @param {String} key
    * @param {View} view
    * @param {iterable<Store>} stores
    */
-  registerSubView(key, view, stores = new Set()) {
+  registerView(view, stores = new Set()) {
     view.ViewContainer().suscribeToStoreEvent(view, stores)
-    this._addSubView(key, view)
+    this._addView(view._ID, view)
     this.addEventListener(
       STATE_CHANGED,
       (state) => {
@@ -554,7 +559,7 @@ class View extends DebugableMixin(ViewContainerContextMixin(PrivateStateMixin(Re
    * @param {String} key
    * @param {View} view
    */
-  addNodeSubView(key, view) {
+  addNodeView(key, view) {
     this._setNodeViewRef()
   }
 
@@ -594,10 +599,10 @@ class View extends DebugableMixin(ViewContainerContextMixin(PrivateStateMixin(Re
    * @memberOf NodesHandlerMixin
    * @instance
    */
-  _addSubView(key, view) {
+  _addView(key, view) {
     assert(key,
-      'hoballoon:View:_addSubView: `key` argument assert not be undefined')
-    this._subViews.set(key, view)
+      'hoballoon:View:_addView: `key` argument assert not be undefined')
+    this._views.set(key, view)
     return view
   }
 
@@ -646,6 +651,4 @@ class View extends DebugableMixin(ViewContainerContextMixin(PrivateStateMixin(Re
   }
 }
 
-export {
-  View
-}
+export {View}

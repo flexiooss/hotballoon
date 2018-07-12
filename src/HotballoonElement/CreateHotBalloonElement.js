@@ -17,7 +17,7 @@ class CreateHotBalloonElement extends HyperFlex {
    * @param {HotballoonElementParams} hotballoonElementParams
    * @return {CreateHotBalloonElement}
    */
-  constructor(scope, querySelector, hotballoonElementParams) {
+  constructor(scope, querySelector, hotballoonElementParams = new HotballoonElementParams()) {
     super(querySelector, hotballoonElementParams)
     /**
      *
@@ -88,7 +88,7 @@ class CreateHotBalloonElement extends HyperFlex {
    */
   _setParams() {
     super._setParams()
-    return this._setViews(this._hyperFlexParams.reconciliationRules)
+    return this._setViews(this._hyperFlexParams.views)
       ._setReconciliationRule(this._hyperFlexParams.reconciliationRules)
   }
 

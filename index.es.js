@@ -26,12 +26,13 @@ import {ApplicationContextMixin} from './src/mixins/ApplicationContextMixin'
 import {ComponentContextMixin} from './src/mixins/ComponentContextMixin'
 import {PrivateStateMixin} from './src/mixins/PrivateStateMixin'
 import {Component} from './src/Component'
+import {LogHandler} from './src/LogHandler'
 
 import {html} from './src/HotballoonElement/CreateHotBalloonElement'
 import {HotballoonElementParams} from './src/HotballoonElement/HotballoonElementParams'
 import {
   HotBalloonAttributeHandler,
-  select as selectAttributeHandler
+  select as $
 } from './src/HotballoonElement/HotBalloonAttributeHandler'
 
 import {State} from './src/storeBases/State'
@@ -84,5 +85,7 @@ export {
   EventHandler,
   EventOrderedHandler,
   html,
-  HotballoonElementParams as HtmlParams
+  HotballoonElementParams as HtmlParams,
+  $,
+  LogHandler
 }
