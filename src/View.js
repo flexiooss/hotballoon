@@ -291,7 +291,7 @@ class View extends DebugableMixin(ViewContainerContextMixin(PrivateStateMixin(Re
   /**
    * @static
    * @param {string} id
-   * @param {hotballoon:ViewContainer} viewContainer
+   * @param {ViewContainer} viewContainer
    * @return View
    */
   static create(id, viewContainer) {
@@ -302,7 +302,7 @@ class View extends DebugableMixin(ViewContainerContextMixin(PrivateStateMixin(Re
    *
    * @static
    * @param {string} id
-   * @param {hotballoon:ViewContainer} viewContainer
+   * @param {ViewContainer} viewContainer
    * @param {Node} parentNode
    * @return View
    */
@@ -323,7 +323,7 @@ class View extends DebugableMixin(ViewContainerContextMixin(PrivateStateMixin(Re
   /**
    *
    * @param {string} querySelector
-   * @param {hotballoon:HotballoonElementParams} hotballoonElementParams
+   * @param {HotballoonElementParams} hotballoonElementParams
    * @return {Node}
    */
   html(querySelector, hotballoonElementParams) {
@@ -424,7 +424,7 @@ class View extends DebugableMixin(ViewContainerContextMixin(PrivateStateMixin(Re
    * @description update the node reference of this View
    */
   _update() {
-    reconcile(this.node(), this.view(), this.parentNode)
+    reconcile(this.node, this.view(), this.parentNode)
   }
 
   /**
@@ -444,7 +444,7 @@ class View extends DebugableMixin(ViewContainerContextMixin(PrivateStateMixin(Re
   }
 
   /**
-   *
+   * Set `_shouldUpdate` to false
    */
   shouldNotUpdate() {
     this._shouldUpdate = false
@@ -459,7 +459,7 @@ class View extends DebugableMixin(ViewContainerContextMixin(PrivateStateMixin(Re
   }
 
   /**
-   * @public
+   * @return {Node} _node
    */
   render() {
     this._log('%c View:render: ' + this.constructor.name, 'background: #222; color: white; width:100%;font-size:15px;')
@@ -473,9 +473,12 @@ class View extends DebugableMixin(ViewContainerContextMixin(PrivateStateMixin(Re
     }
 
     this._shouldRender = true
-    return this.node()
+    return this.node
   }
 
+  /**
+   * Set `_shouldRender` to false
+   */
   shouldNotRender() {
     this._shouldRender = false
   }
@@ -485,7 +488,7 @@ class View extends DebugableMixin(ViewContainerContextMixin(PrivateStateMixin(Re
    * @description mount `_node` property into `parentNode` argument
    */
   _mount() {
-    this.parentNode.appendChild(this.node())
+    this.parentNode.appendChild(this.node)
   }
 
   /**
@@ -522,8 +525,6 @@ class View extends DebugableMixin(ViewContainerContextMixin(PrivateStateMixin(Re
   /**
    * @param {String} key
    * @return {View} view
-   * @memberOf NodesHandlerMixin
-   * @instance
    */
   subView(key) {
     return this._subViews.get(key)
@@ -533,7 +534,6 @@ class View extends DebugableMixin(ViewContainerContextMixin(PrivateStateMixin(Re
    * @param {String} key
    * @param {View} view
    * @param {iterable<Store>} stores
-   * @instance
    */
   registerSubView(key, view, stores = new Set()) {
     view.ViewContainer().suscribeToStoreEvent(view, stores)
@@ -552,30 +552,23 @@ class View extends DebugableMixin(ViewContainerContextMixin(PrivateStateMixin(Re
   /**
    * @param {String} key
    * @param {View} view
-   * @memberOf NodesHandlerMixin
-   * @instance
    */
   addNodeSubView(key, view) {
     this._setNodeViewRef()
-    // this._addSubView(key, view)
   }
 
   /**
    * @param {String} key
    * @return {Node} Node
-   * @memberOf NodesHandlerMixin
-   * @instance
    */
   nodeRef(key) {
     return this._nodeRefs.get(key)
   }
 
   /**
-   * nodeRef alias
+   * @alias nodeRef
    * @param {String} key
    * @return {Node} Node
-   * @memberOf NodesHandlerMixin
-   * @instance
    */
   $(key) {
     return this._nodeRefs.get(key)
@@ -611,8 +604,6 @@ class View extends DebugableMixin(ViewContainerContextMixin(PrivateStateMixin(Re
    * @param {String} key
    * @param {Node} node
    * @return {Node} Node
-   * @memberOf NodesHandlerMixin
-   * @instance
    */
   replaceNodeRef(key, node) {
     return this._setNodeRef(key, node)
@@ -623,8 +614,6 @@ class View extends DebugableMixin(ViewContainerContextMixin(PrivateStateMixin(Re
    * @param {String} key
    * @param {Node} node
    * @return {Node} node
-   * @memberOf NodesHandlerMixin
-   * @instance
    */
   _setNodeRef(key, node) {
     $(node).setNodeRef(key)
@@ -635,26 +624,20 @@ class View extends DebugableMixin(ViewContainerContextMixin(PrivateStateMixin(Re
 
   /**
    * @private
-   * @memberOf NodesHandlerMixin
-   * @instance
    */
   _setNodeViewRef() {
-    $(this.node()).setViewRef(this._ID)
+    $(this.node).setViewRef(this._ID)
   }
 
   /**
-   * @returns {Node} node
-   * @memberOf NodesHandlerMixin
-   * @instance
+   * @return {Node} node
    */
-  node() {
+  get node() {
     return this._node
   }
 
   /**
-   * @returns {Node} node
-   * @memberOf NodesHandlerMixin
-   * @instance
+   * @return {Node} node
    */
   _replaceNode() {
     this._node = this.view()

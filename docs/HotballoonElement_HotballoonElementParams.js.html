@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: mixins/ApplicationContextMixin.js</title>
+    <title>JSDoc: Source: HotballoonElement/HotballoonElementParams.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: mixins/ApplicationContextMixin.js</h1>
+    <h1 class="page-title">Source: HotballoonElement/HotballoonElementParams.js</h1>
 
     
 
@@ -27,72 +27,53 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>'use strict'
-import {
-  hasParentPrototypeName,
-  assert
-} from 'flexio-jshelpers'
+import {HyperFlexParams} from 'flexio-hyperflex'
 
-/**
- *
- * @class
- * @description Mixin - add handler for hotballon context dependency
- */
-export const ApplicationContextMixin = (Base) => class extends Base {
+class HotballoonElementParams extends HyperFlexParams {
   /**
-     * @description Mixin - init
-     * @param {HotBalloonApplication} component
-     * @memberOf ApplicationContextMixin
-     * @instance
-     */
-  ApplicationContextMixinInit(hotBallonApplication) {
-    this._setAPP(hotBallonApplication)
+   *
+   * @param attributes
+   * @param style
+   * @param text
+   * @param children
+   * @param {Array&lt;string>} reconciliationRules
+   * @return {HotballoonElementParams}
+   */
+  constructor() {
+    super()
+    this._views = []
+    this._reconciliationRules = []
   }
 
   /**
-     * @private
-     * @param {HotBalloonApplication} hotBallonApplication
-     * @memberOf ApplicationContextMixin
-     * @instance
-     */
-  _setAPP(hotBallonApplication) {
-    assert(!this._APP,
-      'hotballoon:ApplicationContextMixin:_setAPP APP already defined'
-    )
-
-    assert(hasParentPrototypeName(hotBallonApplication, 'HotBalloonApplication'),
-      'hotballoon:ApplicationContextMixin:_setAPP require an argument instance of ̀ hotballoon/HotBalloonApplication`, `%s` given',
-      typeof hotBallonApplication
-    )
-
-    this._APP = hotBallonApplication
+   *
+   * @return {array&lt;string>}
+   */
+  get reconciliationRules() {
+    return this._reconciliationRules
   }
 
   /**
-     * @return {HotBalloonApplication}
-     * @memberOf ApplicationContextMixin
-     * @instance
-     */
-  APP() {
-    return this._APP
+   *
+   * @return {Array&lt;View>}
+   */
+  get views() {
+    return this._views
   }
 
   /**
-     * @return {Dispatcher}
-     * @memberOf ApplicationContextMixin
-     * @instance
-     */
-  Dispatcher() {
-    return this.APP().Dispatcher()
+   *
+   * @param {Array&lt;string>} reconciliationRules
+   * @return {HotballoonElementParams}
+   */
+  addReconciliationRules(reconciliationRules) {
+    this._reconciliationRules = reconciliationRules
+    return this
   }
+}
 
-  /**
-     * @return {Service}
-     * @memberOf ApplicationContextMixin
-     * @instance
-     */
-  Service(key) {
-    return this.APP().Service(key)
-  }
+export {
+  HotballoonElementParams
 }
 </code></pre>
         </article>

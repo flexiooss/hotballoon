@@ -27,121 +27,122 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>'use strict'
-import {
-  assert,
-  HyperFlex,
-  isString,
-  isNumber,
-  isNode,
-  isObject
-} from 'flexio-jshelpers'
-
-import {
-  select as $$
-} from './HotBalloonAttributeHandler'
-
-import {
-  KEY
-} from './constantes'
-import {
-  KEY_RECONCILIATE_RULES
-} from 'flexio-nodes-reconciliation'
+import {HotballoonElementParams} from './HotballoonElementParams'
+import {assert, isObject, isNode} from 'flexio-jshelpers'
+import {HyperFlex} from 'flexio-hyperflex'
+import {$} from './HotBalloonAttributeHandler'
+import {KEY_RECONCILIATE_RULES} from 'flexio-nodes-reconciliation'
 
 /**
  * @class
- * @extends HyperFlex - flexio-jshelpers
+ * @extends HyperFlex
  */
 class CreateHotBalloonElement extends HyperFlex {
-  constructor(scope, querySelector, ...args) {
-    super(querySelector, ...args)
-    this.scope = scope
-  }
   /**
-     * @static
-     * @description Helper for create a NodeElement
-     * @param {Object} scope - View instance
-     * @param {String} querySelector - tag#id.class[.class,...]
-     * @param {mixed} args - attributes, style, childs, text
-     * @example html(this, 'div#MyID.class1.class2', {data-type: 'myType', style:{color: '#000'}}, 'My Text', html(this, 'div#MyChildID','Child'))
-     * @returns {NodeElement}
-     */
-  static html(scope, querySelector, ...args) {
-    return new CreateHotBalloonElement(scope, querySelector, ...args)._createElement()
-  }
-  /**
+   *
+   * @param {View} scope
+   * @param {string} querySelector
+   * @param {HotballoonElementParams} hotballoonElementParams
+   * @return {CreateHotBalloonElement}
+   */
+  constructor(scope, querySelector, hotballoonElementParams) {
+    super(querySelector, hotballoonElementParams)
+    /**
+     *
+     * @type {View}
      * @private
-     * @param {NodeElement} element
-     * @param {...var} arguments
-     * @returns {NodeElement} element
      */
-  _parseArguments(element, ...args) {
-    // console.log('_parseArguments')
+    this._scope = scope
+  }
 
-    assert(isNode(element),
-      'flexio-jshelpers:parseArguments: `element` argument assert be a NodeElement `%s` given',
-      typeof element
-    )
-    let countOfArgs = args.length
+  /**
+   * @static
+   * @override
+   * @param {View} scope
+   * @param {string} querySelector - tag#id.class[.class,...]
+   * @param {HotballoonElementParams} hotballoonElementParams
+   * @return {Node}
+   */
+  static html(scope, querySelector, hotballoonElementParams) {
+    return new CreateHotBalloonElement(scope, querySelector, hotballoonElementParams)
+      .createHtmlElement()
+      ._changeIdAndSetNodeRef()
+      ._element
+  }
 
-    for (let i = 0; i &lt; countOfArgs; i++) {
-      const arg = args[i]
-      if (isNode(arg)) {
-        element.appendChild(arg)
-      } else if (isString(arg) || isNumber(arg)) {
-        element.appendChild(document.createTextNode(arg))
-      } else if (isObject(arg)) {
-        this._setAttributes(element, arg)
-      }
+  /**
+   *
+   * @private
+   * @return {CreateHotBalloonElement}
+   */
+  _changeIdAndSetNodeRef() {
+    const shortId = this._element.id
+    if (shortId) {
+      this._element.id = this._generateIdFromScope(shortId)
+      this._setNodeRef(shortId, this._element)
     }
-    return element
+    return this
   }
 
   /**
-     * @private
-     * @param {NodeElement} element
-     * @param {Object} attributes
-     * @returns {void}
-     */
-  _setAttributes(element, attributes) {
-    assert(isNode(element),
-      'flexio-jshelpers:setAttributes: `element` argument assert be a NodeElement `%s` given',
-      typeof element
-    )
-    assert(isObject(attributes),
-      'flexio-jshelpers:setAttributes: `attributes` argument assert be an Object `%s` given',
-      typeof attributes
-    )
-    for (let key in attributes) {
-      let attribut = attributes[key]
-      if (key === 'style') {
-        this._setStyles(element, attribut)
-      } else if (key === KEY.NODE_REF) {
-        this._setNodeRef(element, attribut)
-      } else if (key === KEY_RECONCILIATE_RULES) {
-        this._setReconciliationRule(element, attribut)
-      } else {
-        element.setAttribute(key, attribut)
-      }
+   *
+   * @private
+   * @param {String} id
+   * @return {String}
+   */
+  _generateIdFromScope(id) {
+    return this._scope.APP()._ID +
+      '-' + this._scope.Component()._ID +
+      '-' + this._scope.ViewContainer()._ID +
+      '-' + id
+  }
+
+  /**
+   * @description alias of hotballoon/View:addNodeRef
+   * @param {String} key
+   * @param {Node} node
+   * @return {CreateHotBalloonElement}
+   * @private
+   */
+  _setNodeRef(key, node) {
+    this._scope.addNodeRef(key, node)
+    return this
+  }
+
+  /**
+   * @private
+   * @override
+   * @return {CreateHotBalloonElement}
+   */
+  _setParams() {
+    super._setParams()
+    return this._setViews(this._hyperFlexParams.reconciliationRules)
+      ._setReconciliationRule(this._hyperFlexParams.reconciliationRules)
+  }
+
+  /**
+   *
+   * @param {array&lt;View>} views
+   * @return {CreateHotBalloonElement}
+   * @private
+   */
+  _setViews(views) {
+    const countOfViews = views.length
+    for (let i = 0; i &lt; countOfViews; i++) {
+      views[i].parentNode = this._element
+      views[i].renderAndMount()
     }
+    return this
   }
 
   /**
-     * @private
-     * @param {NodeElement} node
-     * @param {String} key
-     * @description alias of hotballoon/View:addNodeRef
-     */
-  _setNodeRef(node, key) {
-    this.scope.addNodeRef(key, node)
-  }
-
-  /**
-     * @private
-     * @param {NodeElement} element
-     * @param {Array} rules
-     */
-  _setReconciliationRule(element, rules) {
-    $$(element).addReconcileRules(rules)
+   * @private
+   * @param {Array&lt;string>} rules
+   * @return {CreateHotBalloonElement}
+   */
+  _setReconciliationRule(rules) {
+    $(this._element).addReconcileRules(rules)
+    return this
   }
 }
 
@@ -156,13 +157,13 @@ export const html = CreateHotBalloonElement.html
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Action.html">Action</a></li><li><a href="ApplicationContextMixin.html">ApplicationContextMixin</a></li><li><a href="Component.html">Component</a></li><li><a href="ComponentContextMixin.html">ComponentContextMixin</a></li><li><a href="CreateHotBalloonElement.html">CreateHotBalloonElement</a></li><li><a href="Dispatcher.html">Dispatcher</a></li><li><a href="EventHandlerBase.html">EventHandlerBase</a></li><li><a href="EventOrderedHandler.html">EventOrderedHandler</a></li><li><a href="HotBalloonApplication.html">HotBalloonApplication</a></li><li><a href="HotBalloonAttributeHandler.html">HotBalloonAttributeHandler</a></li><li><a href="NodesHandlerMixin.html">NodesHandlerMixin</a></li><li><a href="PrivateStateMixin.html">PrivateStateMixin</a></li><li><a href="RequireIDMixin.html">RequireIDMixin</a></li><li><a href="Storage.html">Storage</a></li><li><a href="Store.html">Store</a></li><li><a href="StoreModel.html">StoreModel</a></li><li><a href="View.html">View</a></li><li><a href="ViewContainer.html">ViewContainer</a></li><li><a href="ViewContainerContextMixin.html">ViewContainerContextMixin</a></li></ul><h3>Global</h3><ul><li><a href="global.html#ROOT,">ROOT,</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Action.html">Action</a></li><li><a href="ApplicationContextMixin.html">ApplicationContextMixin</a></li><li><a href="Component.html">Component</a></li><li><a href="ComponentContextMixin.html">ComponentContextMixin</a></li><li><a href="CreateHotBalloonElement.html">CreateHotBalloonElement</a></li><li><a href="DebugableMixin.html">DebugableMixin</a></li><li><a href="Dispatcher.html">Dispatcher</a></li><li><a href="EventHandlerBase.html">EventHandlerBase</a></li><li><a href="EventOrderedHandler.html">EventOrderedHandler</a></li><li><a href="HotBalloonApplication.html">HotBalloonApplication</a></li><li><a href="HotBalloonAttributeHandler.html">HotBalloonAttributeHandler</a></li><li><a href="HotballoonElementParams.html">HotballoonElementParams</a></li><li><a href="PrivateStateMixin.html">PrivateStateMixin</a></li><li><a href="RequireIDMixin.html">RequireIDMixin</a></li><li><a href="Storage.html">Storage</a></li><li><a href="Store.html">Store</a></li><li><a href="StoreModel.html">StoreModel</a></li><li><a href="View.html">View</a></li><li><a href="ViewContainer.html">ViewContainer</a></li><li><a href="ViewContainerContextMixin.html">ViewContainerContextMixin</a></li><li><a href="ViewContainerParameters_ViewContainerParameters.html">ViewContainerParameters</a></li></ul><h3>Global</h3><ul><li><a href="global.html#__HB__CLASSNAME__">__HB__CLASSNAME__</a></li><li><a href="global.html#_actions">_actions</a></li><li><a href="global.html#_componentId">_componentId</a></li><li><a href="global.html#_dispatcher">_dispatcher</a></li><li><a href="global.html#_EventHandler">_EventHandler</a></li><li><a href="global.html#_isMounted">_isMounted</a></li><li><a href="global.html#_isRendered">_isRendered</a></li><li><a href="global.html#_log">_log</a></li><li><a href="global.html#_node">_node</a></li><li><a href="global.html#_nodeRefs">_nodeRefs</a></li><li><a href="global.html#_shouldChangeState">_shouldChangeState</a></li><li><a href="global.html#_shouldInit">_shouldInit</a></li><li><a href="global.html#_shouldMount">_shouldMount</a></li><li><a href="global.html#_shouldRender">_shouldRender</a></li><li><a href="global.html#_shouldUpdate">_shouldUpdate</a></li><li><a href="global.html#_subViews">_subViews</a></li><li><a href="global.html#_tokenEvent">_tokenEvent</a></li><li><a href="global.html#component">component</a></li><li><a href="global.html#nodeRef">nodeRef</a></li><li><a href="global.html#parentNode">parentNode</a></li><li><a href="global.html#ROOT,">ROOT,</a></li><li><a href="global.html#StoreByRegister">StoreByRegister</a></li><li><a href="global.html#StoreDataByRegister">StoreDataByRegister</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Mar 22 2018 22:11:42 GMT+0100 (CET)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Jul 12 2018 15:24:29 GMT+0200 (CEST)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -59,15 +59,15 @@ import {
  * @extends PrivateStateMixin
  *
  */
-class Component extends ApplicationContextMixin(RequireIDMixin(PrivateStateMixin(class {}))) {
-  constructor(hotBallonApplication, id) {
+class Component extends ApplicationContextMixin(RequireIDMixin(PrivateStateMixin(class { }))) {
+  constructor(hotBallonApplication) {
     super()
 
     /**
-         * @description Mixinis init
-         */
+     * @description Mixinis init
+     */
     this.ApplicationContextMixinInit(hotBallonApplication)
-    this.RequireIDMixinInit(id)
+    this.RequireIDMixinInit(hotBallonApplication.nextID())
     this.PrivateStateMixinInit()
 
     const _sequenceId = new Sequence(this._ID + '_')
@@ -75,11 +75,17 @@ class Component extends ApplicationContextMixin(RequireIDMixin(PrivateStateMixin
     const _actions = new MapOfInstance(Action)
     const actionsKey = new Map()
     const _stores = new MapOfInstance(Store)
-    const storesKey = new Map()
+    const storesKeyRegister = new Map()
     const _viewContainers = new MapOfInstance(ViewContainer)
     const viewContainersKey = new Map()
 
     Object.defineProperties(this, {
+      '__HB__CLASSNAME__': {
+        configurable: false,
+        writable: false,
+        enumerable: true,
+        value: '__HB__COMPONENT__'
+      },
       _sequenceId: {
         configurable: false,
         enumerable: false,
@@ -130,11 +136,11 @@ class Component extends ApplicationContextMixin(RequireIDMixin(PrivateStateMixin
           return false
         }
       },
-      storesKey: {
+      storesKeyRegister: {
         configurable: false,
         enumerable: true,
         get: () => {
-          return storesKey
+          return storesKeyRegister
         },
         set: (v) => {
           return false
@@ -162,6 +168,14 @@ class Component extends ApplicationContextMixin(RequireIDMixin(PrivateStateMixin
       }
     })
 
+    this._init()
+  }
+
+  /**
+   * @private
+   * @returns void
+   */
+  _init() {
     this._initActions()
     this._initStores()
     this._initDispatcherListeners()
@@ -169,73 +183,101 @@ class Component extends ApplicationContextMixin(RequireIDMixin(PrivateStateMixin
   }
 
   /**
-     * @private
-     * @description called by the constructor for int Actrions, Stores, Listeners, ViewContainers
-     * @returns void
-     *
-     */
-  _initActions() {}
-  _initStores() {}
-  _initDispatcherListeners() {}
-  _initViewContainers() {}
+   * @private
+   * @description called by the constructor for int Actrions, Stores, Listeners, ViewContainers
+   * @returns void
+   *
+   */
+  _initActions() { }
+  _initStores() { }
+  _initDispatcherListeners() { }
+  _initViewContainers() { }
 
   /**
-     * @description called by the hotballoon Appliation before remove this Component
-     */
-  willRemove() {}
+   * @description called by the hotballoon Appliation before remove this Component
+   */
+  willRemove() { }
 
   /**
-     * @param {String}  tokenAction
-     * @param {hotballoon/Action}
-     * @returns {void}
-     */
-  addAction(tokenAction, Action) {
-    this._actions.add(tokenAction, Action)
+   *
+   * @param {String} type : action type
+   * @param {Function} callback
+   * @returns {String} token
+   */
+  addActionListener(type, callback) {
+    return this.Dispatcher().addActionListener(type, callback)
   }
 
   /**
-     *
-     * @param {String} tokenAction
-     * @param {hotballoon/Action} Action
-     *
-     */
+   * @param {String}  tokenAction
+   * @param {hotballoon/Action}
+   * @returns {String} tokenAction
+   */
+  addAction(tokenAction, Action) {
+    this._actions.add(tokenAction, Action)
+    return tokenAction
+  }
+
+  /**
+   *
+   * @param {String} tokenAction
+   * @param {hotballoon/Action} Action
+   *
+   */
   Action(tokenAction) {
     return this._actions.get(tokenAction)
   }
 
   /**
-     * @param {String}  tokenStore
-     * @param {hotballoon/Store}
-     * @returns {void}
-     */
-  addStore(tokenStore, Store) {
-    this._stores.add(tokenStore, Store)
+   * @param {hotballoon/Store}
+   * @returns {String} tokenStore
+   */
+  addStore(store) {
+    this._stores.add(store._ID, store)
+    return store._ID
   }
 
   /**
-     *
-     * @param {String}  tokenStore
-     * @returns {hotballoon/Store} Store
-     */
+   *
+   * @param {String}  tokenStore
+   * @returns {hotballoon/Store} Store
+   */
   Store(tokenStore) {
     return this._stores.get(tokenStore)
   }
 
   /**
-     *
-     * @param {String} tokenViewContainer
-     * @param {hotballoon/ViewContainer} viewContainer
-     * @returns {void}
-     */
-  addViewContainer(key, ViewContainer) {
-    this._viewContainers.add(key, ViewContainer)
+   *
+   * @param {string} key token registered into storesKeyRegister
+   * @returns {hotballoon/Store} Store
+   */
+  StoreByRegister(key) {
+    return this.Store(this.storesKeyRegister.get(key))
+  }
+  /**
+   *
+   * @param {string} key token registered into storesKeyRegister
+   * @returns {mixed} data of Store
+   */
+  StoreDataByRegister(key) {
+    return this.StoreByRegister(key).data()
   }
 
   /**
-     *
-     * @param {String} tokenViewContainer
-     * @returns {void}
-     */
+   *
+   * @param {hotballoon/ViewContainer} viewContainer
+   * @returns {hotballoon/ViewContainer} ViewContainer
+   */
+  addViewContainer(ViewContainer) {
+    this._viewContainers.add(ViewContainer._ID, ViewContainer)
+    return ViewContainer
+  }
+
+  /**
+   *
+   * @param {String} tokenViewContainer
+   * @returns {void}
+   */
   removeViewContainer(tokenViewContainer) {
     if (this._viewContainers.has(tokenViewContainer)) {
       this.ViewContainer(tokenViewContainer).dispatch(VIEWCONTAINER_WILL_REMOVE, {})
@@ -244,21 +286,21 @@ class Component extends ApplicationContextMixin(RequireIDMixin(PrivateStateMixin
   }
 
   /**
-     *
-     * @param {String} tokenViewContainer
-     * @returns {hotballoon/ViewContainer} ViewContainer
-     */
-  ViewContainer(tokenViewContainer) {
-    return this._viewContainers.get(tokenViewContainer)
+   *
+   * @param {String} key
+   * @returns {hotballoon/ViewContainer} ViewContainer
+   */
+  ViewContainer(key) {
+    return this._viewContainers.get(key)
   }
 
   /**
-     *
-     * @param {String} prefix
-     * @returns {String}
-     */
+   *
+   * @param {String} prefix
+   * @returns {String}
+   */
   nextID(prefix = '') {
-    return prefix + this._sequenceId.getNewId()
+    return prefix + this._sequenceId.nextID()
   }
 }
 export {
@@ -274,13 +316,13 @@ export {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Action.html">Action</a></li><li><a href="ApplicationContextMixin.html">ApplicationContextMixin</a></li><li><a href="Component.html">Component</a></li><li><a href="ComponentContextMixin.html">ComponentContextMixin</a></li><li><a href="CreateHotBalloonElement.html">CreateHotBalloonElement</a></li><li><a href="Dispatcher.html">Dispatcher</a></li><li><a href="EventHandlerBase.html">EventHandlerBase</a></li><li><a href="EventOrderedHandler.html">EventOrderedHandler</a></li><li><a href="HotBalloonApplication.html">HotBalloonApplication</a></li><li><a href="HotBalloonAttributeHandler.html">HotBalloonAttributeHandler</a></li><li><a href="NodesHandlerMixin.html">NodesHandlerMixin</a></li><li><a href="PrivateStateMixin.html">PrivateStateMixin</a></li><li><a href="RequireIDMixin.html">RequireIDMixin</a></li><li><a href="Storage.html">Storage</a></li><li><a href="Store.html">Store</a></li><li><a href="StoreModel.html">StoreModel</a></li><li><a href="View.html">View</a></li><li><a href="ViewContainer.html">ViewContainer</a></li><li><a href="ViewContainerContextMixin.html">ViewContainerContextMixin</a></li></ul><h3>Global</h3><ul><li><a href="global.html#ROOT,">ROOT,</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Action.html">Action</a></li><li><a href="ApplicationContextMixin.html">ApplicationContextMixin</a></li><li><a href="Component.html">Component</a></li><li><a href="ComponentContextMixin.html">ComponentContextMixin</a></li><li><a href="CreateHotBalloonElement.html">CreateHotBalloonElement</a></li><li><a href="DebugableMixin.html">DebugableMixin</a></li><li><a href="Dispatcher.html">Dispatcher</a></li><li><a href="EventHandlerBase.html">EventHandlerBase</a></li><li><a href="EventOrderedHandler.html">EventOrderedHandler</a></li><li><a href="HotBalloonApplication.html">HotBalloonApplication</a></li><li><a href="HotBalloonAttributeHandler.html">HotBalloonAttributeHandler</a></li><li><a href="HotballoonElementParams.html">HotballoonElementParams</a></li><li><a href="PrivateStateMixin.html">PrivateStateMixin</a></li><li><a href="RequireIDMixin.html">RequireIDMixin</a></li><li><a href="Storage.html">Storage</a></li><li><a href="Store.html">Store</a></li><li><a href="StoreModel.html">StoreModel</a></li><li><a href="View.html">View</a></li><li><a href="ViewContainer.html">ViewContainer</a></li><li><a href="ViewContainerContextMixin.html">ViewContainerContextMixin</a></li><li><a href="ViewContainerParameters_ViewContainerParameters.html">ViewContainerParameters</a></li></ul><h3>Global</h3><ul><li><a href="global.html#__HB__CLASSNAME__">__HB__CLASSNAME__</a></li><li><a href="global.html#_actions">_actions</a></li><li><a href="global.html#_componentId">_componentId</a></li><li><a href="global.html#_dispatcher">_dispatcher</a></li><li><a href="global.html#_EventHandler">_EventHandler</a></li><li><a href="global.html#_isMounted">_isMounted</a></li><li><a href="global.html#_isRendered">_isRendered</a></li><li><a href="global.html#_log">_log</a></li><li><a href="global.html#_node">_node</a></li><li><a href="global.html#_nodeRefs">_nodeRefs</a></li><li><a href="global.html#_shouldChangeState">_shouldChangeState</a></li><li><a href="global.html#_shouldInit">_shouldInit</a></li><li><a href="global.html#_shouldMount">_shouldMount</a></li><li><a href="global.html#_shouldRender">_shouldRender</a></li><li><a href="global.html#_shouldUpdate">_shouldUpdate</a></li><li><a href="global.html#_subViews">_subViews</a></li><li><a href="global.html#_tokenEvent">_tokenEvent</a></li><li><a href="global.html#component">component</a></li><li><a href="global.html#nodeRef">nodeRef</a></li><li><a href="global.html#parentNode">parentNode</a></li><li><a href="global.html#ROOT,">ROOT,</a></li><li><a href="global.html#StoreByRegister">StoreByRegister</a></li><li><a href="global.html#StoreDataByRegister">StoreDataByRegister</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Mar 22 2018 22:11:42 GMT+0100 (CET)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Jul 12 2018 15:24:29 GMT+0200 (CEST)
 </footer>
 
 <script> prettyPrint(); </script>

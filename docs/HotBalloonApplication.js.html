@@ -27,41 +27,40 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>'use strict'
-import {
-  Dispatcher
-} from './Dispatcher'
-import {
-  MapExtended,
-  MapOfInstance,
-  Sequence,
-  assert
-}
-  from 'flexio-jshelpers'
-
-import {
-  Component
-} from './Component'
+import { Dispatcher } from './Dispatcher'
+import { MapExtended, MapOfInstance, Sequence, assert } from 'flexio-jshelpers'
+import { RequireIDMixin } from './mixins/RequireIDMixin'
+import { Component } from './Component'
 
 /**
  *
  * @class
  * @description HotBalloonApplication is the container for a loop hotballoon
  */
-class HotBalloonApplication {
+class HotBalloonApplication extends RequireIDMixin(class { }) {
   /**
-     * @constructor
-     * @param {Dispatcher} dispatcher
-     */
-  constructor(dispatcher) {
+   * @constructor
+   * @param {Dispatcher} dispatcher
+   */
+  constructor(id, dispatcher) {
+    super()
+    this.RequireIDMixinInit(id)
+
     assert(dispatcher instanceof Dispatcher,
       'hotballoon:HotBalloonApplication:constructor: `dispatcher` argument should be an instance of hotballoon/Dispatcher'
     )
 
     const _components = new MapOfInstance(Component)
     const _services = new MapExtended()
-    const _sequenceComponentId = new Sequence('component_')
+    const _sequenceId = new Sequence('hb_')
 
     Object.defineProperties(this, {
+      '__HB__CLASSNAME__': {
+        configurable: false,
+        writable: false,
+        enumerable: true,
+        value: '__HB__APPLICATION__'
+      },
       '_dispatcher': {
         configurable: false,
         enumerable: false,
@@ -98,15 +97,15 @@ class HotBalloonApplication {
           )
         }
       },
-      '_sequenceComponentId': {
+      '_sequenceId': {
         configurable: false,
         enumerable: false,
         get: () => {
-          return _sequenceComponentId
+          return _sequenceId
         },
         set: (v) => {
           assert(false,
-            'hotballoon:HotBalloonApplication:constructor:_sequenceComponentId.set: `_sequenceComponentId` already set'
+            'hotballoon:HotBalloonApplication:constructor:_sequenceId.set: `_sequenceId` already set'
           )
         }
       }
@@ -114,28 +113,37 @@ class HotBalloonApplication {
   }
 
   /**
-     * @returns {Dispatcher}
-     */
+   * @returns {String} token :next sequence token
+   */
+  nextID() {
+    return this._sequenceId.nextID()
+  }
+
+  /**
+   * @returns {Dispatcher}
+   */
   Dispatcher() {
     return this._dispatcher
   }
 
   /**
-     * @description register a Component into this Application
-     * @param {Component}
-     * @returns {String} token : componentID
-     */
-  addComponent(Component, ...args) {
-    const componentId = this._sequenceComponentId.getNewId()
-    this._components.add(componentId, new Component(this, componentId, ...args))
-    return componentId
+   * @description register a Component into this Application
+   * @param {Component}
+   * @returns {String} token : componentID
+   */
+  addComponent(component) {
+    assert(component instanceof Component,
+      'hotballoon:HotBalloonApplication:addComponent: `component` argument should be an instance of hotballoon:Component'
+    )
+    this._components.add(component._ID, component)
+    return component._ID
   }
 
   /**
-     *
-     * @param {String} componentID
-     * @returns {boolean} removed ?
-     */
+   *
+   * @param {String} componentID
+   * @returns {boolean} removed ?
+   */
   removeComponent(componentID) {
     if (this._components.has(componentID)) {
       const removable = this.Component(componentID).willRemove()
@@ -148,20 +156,20 @@ class HotBalloonApplication {
   }
 
   /**
-     *
-     * @param {String} componentID
-     * @returns {Component}
-     */
+   *
+   * @param {String} componentID
+   * @returns {Component}
+   */
   Component(componentID) {
     return this._components.get(componentID)
   }
 
   /**
-     *
-     * @param {String} serviceName
-     * @param {Service} service
-     * @returns {Service} service
-     */
+   *
+   * @param {String} serviceName
+   * @param {Service} service
+   * @returns {Service} service
+   */
   addService(serviceName, service) {
     assert(!this._services.has(serviceName),
       'hotballoon:HotBalloonApplication:addService: `serviceName` : `%s` is already set',
@@ -171,9 +179,9 @@ class HotBalloonApplication {
   }
 
   /**
-     *
-     * @param {String} serviceName
-     */
+   *
+   * @param {String} serviceName
+   */
   removeService(serviceName) {
     if (this._services.has(serviceName)) {
       let service = this.Service(serviceName)
@@ -185,10 +193,10 @@ class HotBalloonApplication {
   }
 
   /**
-     *
-     * @param {String} serviceName
-     * @returns {Service}
-     */
+   *
+   * @param {String} serviceName
+   * @returns {Service}
+   */
   Service(serviceName) {
     return this._services.get(serviceName)
   }
@@ -207,13 +215,13 @@ export {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Action.html">Action</a></li><li><a href="ApplicationContextMixin.html">ApplicationContextMixin</a></li><li><a href="Component.html">Component</a></li><li><a href="ComponentContextMixin.html">ComponentContextMixin</a></li><li><a href="CreateHotBalloonElement.html">CreateHotBalloonElement</a></li><li><a href="Dispatcher.html">Dispatcher</a></li><li><a href="EventHandlerBase.html">EventHandlerBase</a></li><li><a href="EventOrderedHandler.html">EventOrderedHandler</a></li><li><a href="HotBalloonApplication.html">HotBalloonApplication</a></li><li><a href="HotBalloonAttributeHandler.html">HotBalloonAttributeHandler</a></li><li><a href="NodesHandlerMixin.html">NodesHandlerMixin</a></li><li><a href="PrivateStateMixin.html">PrivateStateMixin</a></li><li><a href="RequireIDMixin.html">RequireIDMixin</a></li><li><a href="Storage.html">Storage</a></li><li><a href="Store.html">Store</a></li><li><a href="StoreModel.html">StoreModel</a></li><li><a href="View.html">View</a></li><li><a href="ViewContainer.html">ViewContainer</a></li><li><a href="ViewContainerContextMixin.html">ViewContainerContextMixin</a></li></ul><h3>Global</h3><ul><li><a href="global.html#ROOT,">ROOT,</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Action.html">Action</a></li><li><a href="ApplicationContextMixin.html">ApplicationContextMixin</a></li><li><a href="Component.html">Component</a></li><li><a href="ComponentContextMixin.html">ComponentContextMixin</a></li><li><a href="CreateHotBalloonElement.html">CreateHotBalloonElement</a></li><li><a href="DebugableMixin.html">DebugableMixin</a></li><li><a href="Dispatcher.html">Dispatcher</a></li><li><a href="EventHandlerBase.html">EventHandlerBase</a></li><li><a href="EventOrderedHandler.html">EventOrderedHandler</a></li><li><a href="HotBalloonApplication.html">HotBalloonApplication</a></li><li><a href="HotBalloonAttributeHandler.html">HotBalloonAttributeHandler</a></li><li><a href="HotballoonElementParams.html">HotballoonElementParams</a></li><li><a href="PrivateStateMixin.html">PrivateStateMixin</a></li><li><a href="RequireIDMixin.html">RequireIDMixin</a></li><li><a href="Storage.html">Storage</a></li><li><a href="Store.html">Store</a></li><li><a href="StoreModel.html">StoreModel</a></li><li><a href="View.html">View</a></li><li><a href="ViewContainer.html">ViewContainer</a></li><li><a href="ViewContainerContextMixin.html">ViewContainerContextMixin</a></li><li><a href="ViewContainerParameters_ViewContainerParameters.html">ViewContainerParameters</a></li></ul><h3>Global</h3><ul><li><a href="global.html#__HB__CLASSNAME__">__HB__CLASSNAME__</a></li><li><a href="global.html#_actions">_actions</a></li><li><a href="global.html#_componentId">_componentId</a></li><li><a href="global.html#_dispatcher">_dispatcher</a></li><li><a href="global.html#_EventHandler">_EventHandler</a></li><li><a href="global.html#_isMounted">_isMounted</a></li><li><a href="global.html#_isRendered">_isRendered</a></li><li><a href="global.html#_log">_log</a></li><li><a href="global.html#_node">_node</a></li><li><a href="global.html#_nodeRefs">_nodeRefs</a></li><li><a href="global.html#_shouldChangeState">_shouldChangeState</a></li><li><a href="global.html#_shouldInit">_shouldInit</a></li><li><a href="global.html#_shouldMount">_shouldMount</a></li><li><a href="global.html#_shouldRender">_shouldRender</a></li><li><a href="global.html#_shouldUpdate">_shouldUpdate</a></li><li><a href="global.html#_subViews">_subViews</a></li><li><a href="global.html#_tokenEvent">_tokenEvent</a></li><li><a href="global.html#component">component</a></li><li><a href="global.html#nodeRef">nodeRef</a></li><li><a href="global.html#parentNode">parentNode</a></li><li><a href="global.html#ROOT,">ROOT,</a></li><li><a href="global.html#StoreByRegister">StoreByRegister</a></li><li><a href="global.html#StoreDataByRegister">StoreDataByRegister</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Mar 22 2018 22:11:42 GMT+0100 (CET)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Jul 12 2018 15:24:29 GMT+0200 (CEST)
 </footer>
 
 <script> prettyPrint(); </script>

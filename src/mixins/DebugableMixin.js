@@ -32,7 +32,7 @@ export const DebugableMixin = (Base) => class extends Base {
 
   /**
    *
-   * @param {string, string}
+   * @param {...String} args
    * @private
    */
   _log(...args) {

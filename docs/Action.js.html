@@ -27,19 +27,20 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>'use strict'
-import {
-  Dispatcher
-} from './Dispatcher'
-
-import {
-  assert
-} from 'flexio-jshelpers'
+import {Dispatcher} from './Dispatcher'
+import {assert, isFunction} from 'flexio-jshelpers'
+import {CoreException} from './CoreException'
 
 /**
  * @class
  * @description Action is the entry point of Component
  */
 class Action {
+  /**
+   *
+   * @param {hotballoon:Dispatcher} dispatcher
+   * @param {string} componentId
+   */
   constructor(dispatcher, componentId) {
     assert(dispatcher instanceof Dispatcher,
       'hotballoon:Action:constructor "dispatcher" argument assert be an instance of Dispatcher'
@@ -47,36 +48,103 @@ class Action {
     assert(!!componentId,
       'hotballoon:Action:constructor "componentId" argument assert not be empty'
     )
+    const _actions = new Map()
+
     Object.defineProperties(this, {
+      /**
+       * @property {string} __HB__CLASSNAME__
+       */
+      '__HB__CLASSNAME__': {
+        configurable: false,
+        writable: false,
+        enumerable: true,
+        value: '__HB__ACTION__'
+      },
+      /**
+       * @property {hotballoon:Dispatcher} _dispatcher
+       * @private
+       */
       _dispatcher: {
         configurable: false,
         enumerable: false,
         value: dispatcher
       },
+      /**
+       * @property {string} _componentId
+       * @private
+       */
       _componentId: {
         configurable: false,
         enumerable: false,
         writable: false,
         value: componentId
+      },
+      /**
+       * @property {Map&lt;string, Function>} _actions
+       * @private
+       */
+      _actions: {
+        configurable: false,
+        value: _actions
       }
     })
+    this._registerActions()
   }
 
   /**
-     * hub for dispatch actions
-     * @public
-     * @param {String} type : event name
-     * @param {Object} payload
-     * @returns void
-     */
-  newAction(type, payload) {}
+   * Call on construct
+   * @private
+   */
+  _registerActions() {
+    throw new CoreException('_registerActions should be overiderd', 'METHOD_NOT_OVERIDED')
+  }
 
   /**
-     * @private
-     * @param {String} type : event name
-     * @param {Object} payload
-     * @returns void
-     */
+   *
+   * @param {string} type
+   * @param {Function} callback
+   * @private
+   */
+  _registerAction(type, callback = (payload) => {
+    return {
+      payload: payload
+    }
+  }) {
+    this._actions.set(type, callback)
+  }
+
+  /**
+   * hub for dispatch actions
+   * @public
+   * @param {String} type : event name
+   * @param {Object} payload
+   * @return void
+   */
+  trigger(type, payload) {
+    assert(this._actions.has(type),
+      'hotballoon:Action:trigger "type" : `%s` of _actions not registered',
+      type
+    )
+    const action = this._actions.get(type)
+    assert(isFunction(action),
+      'hotballoon:Action:trigger "type" : `%s` of _actions should be an instance of function',
+      type
+    )
+    const finalPayload = action(payload)
+    assert(!('type' in finalPayload),
+      'hotballoon:Action:trigger "type" property of payload is reserved'
+    )
+
+    finalPayload.type = type
+    this._dispatch(type, finalPayload)
+  }
+
+  /**
+   * @private
+   * @param {String} type : event name
+   * @param {Object} payload
+   * @return void
+   */
   _dispatch(type, payload) {
     this._dispatcher.dispatch(type, payload)
   }
@@ -95,13 +163,13 @@ export {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Action.html">Action</a></li><li><a href="ApplicationContextMixin.html">ApplicationContextMixin</a></li><li><a href="Component.html">Component</a></li><li><a href="ComponentContextMixin.html">ComponentContextMixin</a></li><li><a href="CreateHotBalloonElement.html">CreateHotBalloonElement</a></li><li><a href="Dispatcher.html">Dispatcher</a></li><li><a href="EventHandlerBase.html">EventHandlerBase</a></li><li><a href="EventOrderedHandler.html">EventOrderedHandler</a></li><li><a href="HotBalloonApplication.html">HotBalloonApplication</a></li><li><a href="HotBalloonAttributeHandler.html">HotBalloonAttributeHandler</a></li><li><a href="NodesHandlerMixin.html">NodesHandlerMixin</a></li><li><a href="PrivateStateMixin.html">PrivateStateMixin</a></li><li><a href="RequireIDMixin.html">RequireIDMixin</a></li><li><a href="Storage.html">Storage</a></li><li><a href="Store.html">Store</a></li><li><a href="StoreModel.html">StoreModel</a></li><li><a href="View.html">View</a></li><li><a href="ViewContainer.html">ViewContainer</a></li><li><a href="ViewContainerContextMixin.html">ViewContainerContextMixin</a></li></ul><h3>Global</h3><ul><li><a href="global.html#ROOT,">ROOT,</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Action.html">Action</a></li><li><a href="ApplicationContextMixin.html">ApplicationContextMixin</a></li><li><a href="Component.html">Component</a></li><li><a href="ComponentContextMixin.html">ComponentContextMixin</a></li><li><a href="CreateHotBalloonElement.html">CreateHotBalloonElement</a></li><li><a href="DebugableMixin.html">DebugableMixin</a></li><li><a href="Dispatcher.html">Dispatcher</a></li><li><a href="EventHandlerBase.html">EventHandlerBase</a></li><li><a href="EventOrderedHandler.html">EventOrderedHandler</a></li><li><a href="HotBalloonApplication.html">HotBalloonApplication</a></li><li><a href="HotBalloonAttributeHandler.html">HotBalloonAttributeHandler</a></li><li><a href="HotballoonElementParams.html">HotballoonElementParams</a></li><li><a href="PrivateStateMixin.html">PrivateStateMixin</a></li><li><a href="RequireIDMixin.html">RequireIDMixin</a></li><li><a href="Storage.html">Storage</a></li><li><a href="Store.html">Store</a></li><li><a href="StoreModel.html">StoreModel</a></li><li><a href="View.html">View</a></li><li><a href="ViewContainer.html">ViewContainer</a></li><li><a href="ViewContainerContextMixin.html">ViewContainerContextMixin</a></li><li><a href="ViewContainerParameters_ViewContainerParameters.html">ViewContainerParameters</a></li></ul><h3>Global</h3><ul><li><a href="global.html#__HB__CLASSNAME__">__HB__CLASSNAME__</a></li><li><a href="global.html#_actions">_actions</a></li><li><a href="global.html#_componentId">_componentId</a></li><li><a href="global.html#_dispatcher">_dispatcher</a></li><li><a href="global.html#_EventHandler">_EventHandler</a></li><li><a href="global.html#_isMounted">_isMounted</a></li><li><a href="global.html#_isRendered">_isRendered</a></li><li><a href="global.html#_log">_log</a></li><li><a href="global.html#_node">_node</a></li><li><a href="global.html#_nodeRefs">_nodeRefs</a></li><li><a href="global.html#_shouldChangeState">_shouldChangeState</a></li><li><a href="global.html#_shouldInit">_shouldInit</a></li><li><a href="global.html#_shouldMount">_shouldMount</a></li><li><a href="global.html#_shouldRender">_shouldRender</a></li><li><a href="global.html#_shouldUpdate">_shouldUpdate</a></li><li><a href="global.html#_subViews">_subViews</a></li><li><a href="global.html#_tokenEvent">_tokenEvent</a></li><li><a href="global.html#component">component</a></li><li><a href="global.html#nodeRef">nodeRef</a></li><li><a href="global.html#parentNode">parentNode</a></li><li><a href="global.html#ROOT,">ROOT,</a></li><li><a href="global.html#StoreByRegister">StoreByRegister</a></li><li><a href="global.html#StoreDataByRegister">StoreDataByRegister</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Mar 22 2018 22:11:42 GMT+0100 (CET)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Jul 12 2018 15:24:29 GMT+0200 (CEST)
 </footer>
 
 <script> prettyPrint(); </script>

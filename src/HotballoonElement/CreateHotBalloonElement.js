@@ -15,7 +15,7 @@ class CreateHotBalloonElement extends HyperFlex {
    * @param {View} scope
    * @param {string} querySelector
    * @param {HotballoonElementParams} hotballoonElementParams
-   * @return {hotballoon:CreateHotBalloonElement}
+   * @return {CreateHotBalloonElement}
    */
   constructor(scope, querySelector, hotballoonElementParams) {
     super(querySelector, hotballoonElementParams)
