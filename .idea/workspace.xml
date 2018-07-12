@@ -2,19 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c13bbe00-65c0-403d-a96b-410248228156" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/node_modules/flexio-hyperflex/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.es.js" beforeDir="false" afterPath="$PROJECT_DIR$/index.es.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/node_modules/flexio-hyperflex/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/flexio-hyperflex/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/flexio-hyperflex/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/flexio-hyperflex/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/node_modules/flexio-jshelpers/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/flexio-jshelpers/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/node_modules/flexio-jshelpers/src/Sequence.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/flexio-jshelpers/src/Sequence.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/node_modules/flexio-nodes-reconciliation/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/flexio-nodes-reconciliation/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/index.es.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/index.es.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/src/ViewContainer.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/src/ViewContainer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Action.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Action.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ViewContainer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/ViewContainer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/flexio-nodes-reconciliation/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/flexio-nodes-reconciliation/package.json" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -32,16 +28,7 @@
         <entry file="file://$PROJECT_DIR$/src/View.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="27">
-              <caret line="1" column="20" lean-forward="true" selection-start-line="1" selection-end-line="2" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DebugableMixin.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/mixins/DebugableMixin.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1026">
-              <caret line="38" column="17" selection-start-line="38" selection-start-column="17" selection-end-line="38" selection-end-column="17" />
+              <caret line="1" column="20" selection-start-line="1" selection-end-line="2" />
             </state>
           </provider>
         </entry>
@@ -50,14 +37,9 @@
         <entry file="file://$PROJECT_DIR$/package.json">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="81">
-              <caret line="3" column="14" selection-start-line="3" selection-end-line="4" />
+              <caret line="3" column="14" selection-start-line="3" selection-end-line="3" selection-end-column="11" />
             </state>
           </provider>
-        </entry>
-      </file>
-      <file leaf-file-name=".yarnclean" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/.yarnclean">
-          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
       <file leaf-file-name="HotBalloonAttributeHandler.js" pinned="false" current-in-tab="false">
@@ -96,23 +78,23 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.es.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/index.es.js">
+      <file leaf-file-name="Action.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Action.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="216">
-              <caret line="8" column="12" selection-start-line="8" selection-start-column="12" selection-end-line="8" selection-end-column="12" />
+            <state relative-caret-position="481">
+              <caret line="80" column="12" lean-forward="true" selection-start-line="80" selection-start-column="12" selection-end-line="80" selection-end-column="12" />
+              <folding>
+                <element signature="e#13#52#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Action.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/Action.js">
+      <file leaf-file-name="index.es.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/index.es.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="682">
-              <caret line="66" column="22" selection-start-line="66" selection-start-column="22" selection-end-line="66" selection-end-column="22" />
-              <folding>
-                <element signature="e#13#53#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="1026">
+              <caret line="38" column="31" selection-start-line="38" selection-start-column="31" selection-end-line="38" selection-end-column="31" />
             </state>
           </provider>
         </entry>
@@ -120,11 +102,8 @@
       <file leaf-file-name="index.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1816">
-              <caret line="75" column="16" selection-start-line="75" selection-start-column="16" selection-end-line="75" selection-end-column="16" />
-              <folding>
-                <element signature="e#0#41#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="452">
+              <caret line="28" lean-forward="true" selection-start-line="28" selection-end-line="28" />
             </state>
           </provider>
         </entry>
@@ -146,12 +125,14 @@
       <find>view</find>
       <find>view(</find>
       <find>returns</find>
+      <find>src</find>
     </findStrings>
     <replaceStrings>
       <replace>Node</replace>
       <replace>@return</replace>
       <replace>./</replace>
       <replace>return</replace>
+      <replace>./src</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -171,9 +152,9 @@
         <option value="$PROJECT_DIR$/src/mixins/DebugableMixin.js" />
         <option value="$PROJECT_DIR$/src/View.js" />
         <option value="$PROJECT_DIR$/src/ViewContainer.js" />
+        <option value="$PROJECT_DIR$/src/Action.js" />
         <option value="$PROJECT_DIR$/index.es.js" />
         <option value="$PROJECT_DIR$/index.js" />
-        <option value="$PROJECT_DIR$/src/Action.js" />
       </list>
     </option>
   </component>
@@ -216,6 +197,12 @@
               <item name="hotballoon" type="b2602c69:ProjectViewProjectNode" />
               <item name="hotballoon" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="hotballoon" type="b2602c69:ProjectViewProjectNode" />
+              <item name="hotballoon" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="HotballoonElement" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -281,7 +268,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="39703000" />
+    <option name="totallyTimeSpent" value="40145000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1920" height="2160" extended-state="4" />
@@ -297,14 +284,23 @@
       <window_info anchor="bottom" id="Terminal" order="8" sideWeight="0.6881188" visible="true" weight="0.2769907" />
       <window_info id="Favorites" order="3" side_tool="true" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.24973205" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info id="npm" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.22873746" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Version Control" order="9" />
       <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4986695" weight="0.32975087" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.31188118" side_tool="true" weight="0.27254707" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32964823" />
+      <window_info anchor="bottom" id="Terminal" order="8" sideWeight="0.6881188" visible="true" weight="0.2769907" />
+      <window_info id="Favorites" order="3" side_tool="true" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -596,16 +592,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1816">
-          <caret line="75" column="16" selection-start-line="75" selection-start-column="16" selection-end-line="75" selection-end-column="16" />
-          <folding>
-            <element signature="e#0#41#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/HotballoonElement/HotBalloonAttributeHandler.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1215">
@@ -619,7 +605,7 @@
     <entry file="file://$PROJECT_DIR$/package.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="81">
-          <caret line="3" column="14" selection-start-line="3" selection-end-line="4" />
+          <caret line="3" column="14" selection-start-line="3" selection-end-line="3" selection-end-column="11" />
         </state>
       </provider>
     </entry>
@@ -636,27 +622,34 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/index.es.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="8" column="12" selection-start-line="8" selection-start-column="12" selection-end-line="8" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/View.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="27">
-          <caret line="1" column="20" lean-forward="true" selection-start-line="1" selection-end-line="2" />
+          <caret line="1" column="20" selection-start-line="1" selection-end-line="2" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Action.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="682">
-          <caret line="66" column="22" selection-start-line="66" selection-start-column="22" selection-end-line="66" selection-end-column="22" />
+        <state relative-caret-position="481">
+          <caret line="80" column="12" lean-forward="true" selection-start-line="80" selection-start-column="12" selection-end-line="80" selection-end-column="12" />
           <folding>
-            <element signature="e#13#53#0" expanded="true" />
+            <element signature="e#13#52#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="452">
+          <caret line="28" lean-forward="true" selection-start-line="28" selection-end-line="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.es.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1026">
+          <caret line="38" column="31" selection-start-line="38" selection-start-column="31" selection-end-line="38" selection-end-column="31" />
         </state>
       </provider>
     </entry>
