@@ -1,7 +1,7 @@
 'use strict'
 import {assert, isBoolean} from 'flexio-jshelpers'
 
-export class LogHandler {
+class LogHandler {
   constructor() {
     /**
      *
@@ -31,3 +31,5 @@ export class LogHandler {
     }
   }
 }
+
+export {LogHandler}

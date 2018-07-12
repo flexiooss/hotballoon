@@ -13,6 +13,7 @@ import {
   Store,
   CHANGED as STORE_CHANGED
 } from './storeBases/Store'
+import {LogHandler} from 'src/LogHandler'
 
 export class ViewContainerParameters {
   /**
@@ -36,7 +37,7 @@ export class ViewContainerParameters {
 
     Object.defineProperties(this, {
       /**
-         * @property {hotballoon:Component} component
+         * @property {Component} component
          */
       component: {
         value: componentInst
@@ -151,6 +152,14 @@ export class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateS
         enumerable: true,
         writable: false,
         value: viewContainerParameters.parentNode
+      },
+      /**
+       * @property {LogHandler} ViewContainer#debug
+       */
+      debug: {
+        configurable: false,
+        enumerable: false,
+        value: new LogHandler()
       }
     })
 
@@ -187,7 +196,7 @@ export class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateS
    * @param {Object} payload
    */
   dispatch(eventType, payload) {
-    console.log('%c ViewContainer:dispatch: ' + eventType, 'background: #eee; color: red')
+    this.debug.log('%c ViewContainer:dispatch: ' + eventType, 'background: #eee; color: red')
 
     this._EventHandler.dispatch(eventType, payload)
   }
@@ -256,8 +265,8 @@ export class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateS
    * @param {Integer} priority
    */
   _suscribeToEvent(view, store, event, priority = 0) {
-    console.log('_suscribeToEvent')
-    console.log(this._formatStoreEventName(store._ID, event))
+    this.debug.log('_suscribeToEvent')
+    this.debug.log(this._formatStoreEventName(store._ID, event))
 
     const token = this.subscribe(
       this._formatStoreEventName(store._ID, event),
@@ -346,7 +355,7 @@ export class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateS
    * @return {Node} parentNode
    */
   renderAndMount(parentNode) {
-    console.log('%c ViewContainer:renderAndMount ', 'background: red; color: white; font-size:16px')
+    this.debug.log('%c ViewContainer:renderAndMount ', 'background: red; color: white; font-size:16px')
 
     this.render()
     this.mount(parentNode)
