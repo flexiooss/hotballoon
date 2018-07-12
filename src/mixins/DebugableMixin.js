@@ -17,6 +17,7 @@ export const DebugableMixin = (Base) => class extends Base {
 
     /**
      * @property {boolean} _debug
+     * @member
      */
     Object.defineProperty(this, '_debug', {
       enumerable: true,
@@ -34,6 +35,7 @@ export const DebugableMixin = (Base) => class extends Base {
    *
    * @param {...String} args
    * @private
+   * @member
    */
   _log(...args) {
     if (this._debug) {

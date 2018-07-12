@@ -76,6 +76,7 @@ class View extends DebugableMixin(ViewContainerContextMixin(PrivateStateMixin(Re
     Object.defineProperties(this, {
       /**
        * @property {Node} _node
+       * @member
        * @private
        */
       _node: {
