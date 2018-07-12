@@ -9,6 +9,7 @@ import {RequireIDMixin} from './mixins/RequireIDMixin'
 import {PrivateStateMixin} from './mixins/PrivateStateMixin'
 import {DebugableMixin} from './mixins/DebugableMixin'
 import {ViewContainerContextMixin} from './mixins/ViewContainerContextMixin'
+import {html} from './HotballoonElement/CreateHotBalloonElement'
 
 export const INIT = 'INIT'
 export const UPDATE = 'UPDATE'
@@ -317,6 +318,16 @@ class View extends DebugableMixin(ViewContainerContextMixin(PrivateStateMixin(Re
    */
   view() {
     throw new CoreException('view should be overiderd', 'METHOD_NOT_OVERIDED')
+  }
+
+  /**
+   *
+   * @param {string} querySelector
+   * @param {hotballoon:HotballoonElementParams} hotballoonElementParams
+   * @return {Node}
+   */
+  html(querySelector, hotballoonElementParams) {
+    return html(this, querySelector, hotballoonElementParams)
   }
 
   /**

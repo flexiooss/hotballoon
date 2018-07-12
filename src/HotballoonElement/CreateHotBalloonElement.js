@@ -7,162 +7,114 @@ import {KEY_RECONCILIATE_RULES} from 'flexio-nodes-reconciliation'
 
 /**
  * @class
- * @extends HyperFlex - flexio-jshelpers
+ * @extends HyperFlex
  */
 class CreateHotBalloonElement extends HyperFlex {
   /**
    *
-   * @param  {View} scope
+   * @param {View} scope
    * @param {string} querySelector
    * @param {HotballoonElementParams} hotballoonElementParams
-   * @return {CreateHotBalloonElement}
+   * @return {hotballoon:CreateHotBalloonElement}
    */
   constructor(scope, querySelector, hotballoonElementParams) {
     super(querySelector, hotballoonElementParams)
-    this.scope = scope
+    /**
+     *
+     * @type {View}
+     * @private
+     */
+    this._scope = scope
   }
 
   /**
    * @static
-   * @description Helper for create a Node
-   * @param {Object} scope - View instance
-   * @param {String} querySelector - tag#id.class[.class,...]
-   * @param {Node} [child] child
-   * @param {mixed} args - attributes, style, childs, text
-   * @example html(this, 'div#MyID.class1.class2', {data-type: 'myType', style:{color: '#000'}}, 'My Text', html(this, 'div#MyChildID','Child'))
-   * @returns {No}
-   */
-  // static html(scope, querySelector, ...args) {
-  //   const elFactory = new CreateHotBalloonElement(scope, querySelector, ...args)
-  //   let el = elFactory._createElement()
-  //   return elFactory._changeIdAndSetNodeRef(el)
-  // }
-
-  /**
-   * @static
+   * @override
    * @param {View} scope
    * @param {string} querySelector - tag#id.class[.class,...]
    * @param {HotballoonElementParams} hotballoonElementParams
    * @return {Node}
    */
   static html(scope, querySelector, hotballoonElementParams) {
-    const elFactory = new CreateHotBalloonElement(scope, querySelector, hotballoonElementParams)
-    elFactory.createHtmlElement()
-    return elFactory._changeIdAndSetNodeRef()
+    return new CreateHotBalloonElement(scope, querySelector, hotballoonElementParams)
+      .createHtmlElement()
+      ._changeIdAndSetNodeRef()
+      ._element
   }
 
   /**
    *
    * @private
-   * @param {Node} element
-   * @return {Node} element
+   * @return {CreateHotBalloonElement}
    */
-  _changeIdAndSetNodeRef(element) {
-    const shortId = element.id
+  _changeIdAndSetNodeRef() {
+    const shortId = this._element.id
     if (shortId) {
-      element.id = this._generateIdFromScope(element.id)
-      this._setNodeRef(shortId, element)
+      this._element.id = this._generateIdFromScope(shortId)
+      this._setNodeRef(shortId, this._element)
     }
-    return element
+    return this
   }
 
   /**
    *
    * @private
    * @param {String} id
-   * @return {String} id
+   * @return {String}
    */
   _generateIdFromScope(id) {
-    return this.scope.APP()._ID + '-' + this.scope.Component()._ID + '-' + this.scope.ViewContainer()._ID + '-' + id
+    return this._scope.APP()._ID +
+      '-' + this._scope.Component()._ID +
+      '-' + this._scope.ViewContainer()._ID +
+      '-' + id
   }
 
   /**
-   * @private
+   * @description alias of hotballoon/View:addNodeRef
    * @param {String} key
    * @param {Node} node
-   * @description alias of hotballoon/View:addNodeRef
+   * @return {CreateHotBalloonElement}
+   * @private
    */
   _setNodeRef(key, node) {
-    this.scope.addNodeRef(key, node)
+    this._scope.addNodeRef(key, node)
+    return this
   }
 
   /**
    * @private
-   * @param {Node} element
-   * @param {...var} arguments
-   * @returns {Node} element
+   * @override
+   * @return {CreateHotBalloonElement}
    */
-  _parseArguments(element) {
-    // console.log('_parseArguments')
-
-    assert(isNode(element),
-      'flexio-jshelpers:parseArguments: `element` argument assert be a Node `%s` given',
-      typeof element
-    )
-
-    const args = [...this.args][0]
-    console.log('args')
-    console.log(element)
-    console.log(args)
-    assert(args instanceof HotballoonElementParams,
-      'hotballoon:_parseArguments: `args` property should be an instanceof `HotballoonElementParams`, `%s` given',
-      typeof args
-    )
-
-    this._setAttributes(element, args._attributes)
-    this._setStyles(element, args._style)
-    this._setReconciliationRule(element, args._reconciliationRules)
-
-    if (args._text !== '') {
-      element.appendChild(document.createTextNode(args._text))
-    }
-
-    const countOfChildren = args._children.length
-    console.log('countOfChildren')
-    console.log(countOfChildren)
-    for (let i = 0; i < countOfChildren; i++) {
-      const child = args._children[i]
-      child.parentNode = element
-      child.renderAndMount()
-    }
-
-    return element
+  _setParams() {
+    super._setParams()
+    return this._setViews(this._hyperFlexParams.reconciliationRules)
+      ._setReconciliationRule(this._hyperFlexParams.reconciliationRules)
   }
 
   /**
+   *
+   * @param {array<View>} views
+   * @return {CreateHotBalloonElement}
    * @private
-   * @param {Node} element
-   * @param {Object<string, string>} attributes
-   * @returns {void}
    */
-  _setAttributes(element, attributes) {
-    assert(isNode(element),
-      'flexio-jshelpers:setAttributes: `element` argument assert be a Node `%s` given',
-      typeof element
-    )
-    assert(isObject(attributes),
-      'flexio-jshelpers:setAttributes: `attributes` argument assert be an Object `%s` given',
-      typeof attributes
-    )
-    for (let key in attributes) {
-      let attribut = attributes[key]
-      if (key === 'style') {
-        this._setStyles(element, attribut)
-      } else if (key === KEY_RECONCILIATE_RULES) {
-        this._setReconciliationRule(element, attribut)
-      } else if (attribut !== null) {
-        element.setAttribute(key, attribut)
-      }
+  _setViews(views) {
+    const countOfViews = views.length
+    for (let i = 0; i < countOfViews; i++) {
+      views[i].parentNode = this._element
+      views[i].renderAndMount()
     }
+    return this
   }
 
   /**
    * @private
-   * @param {Node} element
    * @param {Array<string>} rules
+   * @return {CreateHotBalloonElement}
    */
-  _setReconciliationRule(element, rules) {
-    $(element).addReconcileRules(rules)
+  _setReconciliationRule(rules) {
+    $(this._element).addReconcileRules(rules)
+    return this
   }
 }
 

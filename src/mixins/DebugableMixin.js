@@ -1,5 +1,5 @@
 'use strict'
-import { assert, isBoolean} from 'flexio-jshelpers'
+import {assert, isBoolean} from 'flexio-jshelpers'
 
 /**
  *
@@ -8,10 +8,10 @@ import { assert, isBoolean} from 'flexio-jshelpers'
  */
 export const DebugableMixin = (Base) => class extends Base {
   /**
-     * @description Mixin - init
-     * @memberOf DebugableMixin
-     * @instance
-     */
+   * @description Mixin - init
+   * @memberOf DebugableMixin
+   * @instance
+   */
   DebugableMixinInit() {
     var _debug = false
 
@@ -21,7 +21,6 @@ export const DebugableMixin = (Base) => class extends Base {
     Object.defineProperty(this, '_debug', {
       enumerable: true,
       configurable: false,
-      writable: false,
       get: () => _debug,
       set: v => {
         assert(isBoolean(v),

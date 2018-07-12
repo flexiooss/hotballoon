@@ -35,7 +35,7 @@ export class ViewContainerParameters {
     )
 
     Object.defineProperties(this, {
-        /**
+      /**
          * @property {hotballoon:Component} component
          */
       component: {
@@ -194,13 +194,6 @@ export class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateS
 
   /**
    *
-   * --------------------------------------------------------------
-   * Stores
-   * --------------------------------------------------------------
-   */
-
-  /**
-   *
    * @param {String} storeKey : store token
    * @param {String}  event : event types
    */
@@ -226,13 +219,6 @@ export class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateS
       this.subscribeToStore(store)
     })
   }
-
-  /**
-   *
-   * --------------------------------------------------------------
-   * Views
-   * --------------------------------------------------------------
-   */
 
   /**
    *
@@ -301,13 +287,6 @@ export class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateS
   View(key) {
     return this._views.get(key)
   }
-
-  /**
-   *
-   * --------------------------------------------------------------
-   * Rendering
-   * --------------------------------------------------------------
-   */
 
   /**
    * @private
