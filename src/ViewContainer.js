@@ -13,7 +13,7 @@ import {
   Store,
   CHANGED as STORE_CHANGED
 } from './storeBases/Store'
-import {LogHandler} from 'src/LogHandler'
+import {LogHandler} from './LogHandler'
 
 export class ViewContainerParameters {
   /**
