@@ -15,18 +15,29 @@ import {
 } from './storeBases/Store'
 
 export class ViewContainerParameters {
+  /**
+   *
+   * @param {hotballoon:Component} componentInst
+   * @param {string} id
+   * @param {Node} parentNode
+   * @param {Map<string, hotballoon:Store> mapOfStores
+   * @return ViewContainerParameters
+   */
   constructor(componentInst, id, parentNode, mapOfStores) {
     assert(!!isString(id),
       'hoballoon:ViewContainerParameters: `id` argument assert be a String'
     )
     assert(!!isNode(parentNode),
-      'hotballoon:View:ViewContainerParameters: `parentNode` argument should be a NodeElement'
+      'hotballoon:View:ViewContainerParameters: `parentNode` argument should be a Node'
     )
     assert(mapOfStores instanceof Map,
       'hoballoon:ViewContainerParameters: `mapOfStores` argument assert be an instance of Map'
     )
 
     Object.defineProperties(this, {
+        /**
+         * @property {hotballoon:Component} component
+         */
       component: {
         value: componentInst
       },
@@ -61,7 +72,10 @@ export const WILL_REMOVE = 'WILL_REMOVE'
  *
  */
 export class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateStateMixin(class { }))) {
-  // constructor(component, id, parentNode, storesRegistered = new Map()) {
+  /**
+   *
+   * @param {ViewContainerParameters} viewContainerParameters
+   */
   constructor(viewContainerParameters) {
     assert(viewContainerParameters instanceof ViewContainerParameters,
       'hoballoon:ViewContainer:constructor: `viewContainerParameters` argument assert be an instance of ViewContainerParameters'
@@ -161,7 +175,7 @@ export class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateS
    * @param {Function} callback
    * @param {Object} scope
    * @param {Integer}  priority
-   * @returns {String} token
+   * @return {String} token
    */
   subscribe(type, callback, scope, priority) {
     return this._EventHandler.addEventListener(type, callback, scope, priority)
@@ -297,7 +311,7 @@ export class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateS
 
   /**
    * @private
-   * @param {NodeElement} parentNode
+   * @param {Node} parentNode
    */
   _renderViewsAndMount(parentNode) {
     this._views.forEach((view, key, map) => {
@@ -307,7 +321,7 @@ export class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateS
 
   /**
    * @private
-   * @param {NodeElement} parentNode
+   * @param {Node} parentNode
    */
   _mountViews(parentNode) {
     this._views.forEach((view, key, map) => {
@@ -334,12 +348,12 @@ export class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateS
 
   /**
    * Mount all views into the `parentNode` argument
-   * @param {NodeElement} parentNode
-   * @returns {NodeElement} parentNode
+   * @param {Node} parentNode
+   * @return {Node} parentNode
    */
   mount(parentNode) {
     assert(isNode(parentNode),
-      'hotballoon:ViewContainer:mount: `parentNode` arguement assert be a NodeElement, %s given',
+      'hotballoon:ViewContainer:mount: `parentNode` arguement assert be a Node, %s given',
       typeof parentNode)
     this._mountViews(parentNode)
     this._mounted = true
@@ -349,8 +363,8 @@ export class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateS
 
   /**
    * Render all views and mount these into the `parentNode` argument
-   * @param {NodeElement} parentNode
-   * @returns {NodeElement} parentNode
+   * @param {Node} parentNode
+   * @return {Node} parentNode
    */
   renderAndMount(parentNode) {
     console.log('%c ViewContainer:renderAndMount ', 'background: red; color: white; font-size:16px')

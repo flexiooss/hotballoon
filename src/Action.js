@@ -1,18 +1,18 @@
 'use strict'
-import {
-  Dispatcher
-} from './Dispatcher'
-
-import {
-  assert,
-  isFunction
-} from 'flexio-jshelpers'
+import {Dispatcher} from './Dispatcher'
+import {assert, isFunction} from 'flexio-jshelpers'
+import {CoreException} from './CoreException'
 
 /**
  * @class
  * @description Action is the entry point of Component
  */
 class Action {
+  /**
+   *
+   * @param {hotballoon:Dispatcher} dispatcher
+   * @param {string} componentId
+   */
   constructor(dispatcher, componentId) {
     assert(dispatcher instanceof Dispatcher,
       'hotballoon:Action:constructor "dispatcher" argument assert be an instance of Dispatcher'
@@ -23,23 +23,38 @@ class Action {
     const _actions = new Map()
 
     Object.defineProperties(this, {
+      /**
+       * @property {string} __HB__CLASSNAME__
+       */
       '__HB__CLASSNAME__': {
         configurable: false,
         writable: false,
         enumerable: true,
         value: '__HB__ACTION__'
       },
+      /**
+       * @property {hotballoon:Dispatcher} _dispatcher
+       * @private
+       */
       _dispatcher: {
         configurable: false,
         enumerable: false,
         value: dispatcher
       },
+      /**
+       * @property {string} _componentId
+       * @private
+       */
       _componentId: {
         configurable: false,
         enumerable: false,
         writable: false,
         value: componentId
       },
+      /**
+       * @property {Map<string, Function>} _actions
+       * @private
+       */
       _actions: {
         configurable: false,
         value: _actions
@@ -48,8 +63,20 @@ class Action {
     this._registerActions()
   }
 
-  _registerActions() { }
+  /**
+   * Call on construct
+   * @private
+   */
+  _registerActions() {
+    throw new CoreException('_registerActions should be overiderd', 'METHOD_NOT_OVERIDED')
+  }
 
+  /**
+   *
+   * @param {string} type
+   * @param {Function} callback
+   * @private
+   */
   _registerAction(type, callback = (payload) => {
     return {
       payload: payload
@@ -63,7 +90,7 @@ class Action {
    * @public
    * @param {String} type : event name
    * @param {Object} payload
-   * @returns void
+   * @return void
    */
   trigger(type, payload) {
     assert(this._actions.has(type),
@@ -88,7 +115,7 @@ class Action {
    * @private
    * @param {String} type : event name
    * @param {Object} payload
-   * @returns void
+   * @return void
    */
   _dispatch(type, payload) {
     this._dispatcher.dispatch(type, payload)
