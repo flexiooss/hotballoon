@@ -22,8 +22,6 @@ import {
 import {MapOfState} from './src/MapOfState'
 import {ViewContainer, ViewContainerParameters} from './src/ViewContainer'
 import {HotBalloonApplication} from './src/HotBalloonApplication'
-import {ApplicationContextMixin} from './src/mixins/ApplicationContextMixin'
-import {ComponentContextMixin} from './src/mixins/ComponentContextMixin'
 import {PrivateStateMixin} from './src/mixins/PrivateStateMixin'
 import {Component} from './src/Component'
 
@@ -79,8 +77,6 @@ export {
   ATTRIBUTE_NODEREF,
   MapOfState,
   PrivateStateMixin,
-  ApplicationContextMixin,
-  ComponentContextMixin,
   EventHandler,
   EventOrderedHandler,
   html,

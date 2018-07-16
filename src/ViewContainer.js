@@ -15,7 +15,7 @@ import {CoreException} from './CoreException'
 export class ViewContainerParameters {
   /**
    *
-   * @param {hotballoon:Component} componentInst
+   * @param {Component} componentInst
    * @param {string} id
    * @param {Node} parentNode
    * @return ViewContainerParameters
@@ -29,22 +29,23 @@ export class ViewContainerParameters {
     )
 
     Object.defineProperties(this, {
-      /**
+        /**
          * @property {Component} component
+         * @name ViewContainerParameters#component
          */
-      component: {
-        value: componentInst
-      },
-      id: {
-        configurable: false,
-        enumerable: false,
-        writable: false,
-        value: id
-      },
-      parentNode: {
-        value: parentNode
+        component: {
+          value: componentInst
+        },
+        id: {
+          configurable: false,
+          enumerable: false,
+          writable: false,
+          value: id
+        },
+        parentNode: {
+          value: parentNode
+        }
       }
-    }
     )
   }
 }
@@ -70,9 +71,9 @@ export class ViewContainer extends ViewContainerBase {
       'hotballoon:ViewContainer:constructor: `viewContainerParameters` argument assert be an instance of ViewContainerParameters'
     )
 
-    super(viewContainerParameters.id, viewContainerParameters.parentNode)
-
-    this.debug.color('blueDark')
+    super(viewContainerParameters.id)
+    this.parentNode = viewContainerParameters.parentNode
+    this.debug.color = 'blueDark'
 
     Object.defineProperty(this, CLASS_TAG_NAME, {
       configurable: false,
@@ -170,7 +171,7 @@ export class ViewContainer extends ViewContainerBase {
     this.debug.log(this._formatStoreEventName(store._ID, event))
     this.debug.print()
 
-    const token = this.subscribe(
+    const token = this.addEventListener(
       this._formatStoreEventName(store._ID, event),
       (payload, type) => {
         view.dispatch(VIEW_STORE_CHANGED, payload)
@@ -248,8 +249,9 @@ export class ViewContainer extends ViewContainerBase {
   }
 
   /**
-   * @return {Component} component
-   * @instance
+   *
+   * @return {Component}
+   * @constructor
    */
   Component() {
     return this._Component

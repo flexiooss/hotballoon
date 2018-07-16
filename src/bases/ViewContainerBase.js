@@ -1,16 +1,15 @@
 'use strict'
 import {EventOrderedHandler} from '../EventOrderedHandler'
 import {View} from '../View'
-import {LogHandler, MapOfArray, MapOfInstance, isBoolean, assert} from 'flexio-jshelpers'
+import {LogHandler, MapOfArray, MapOfInstance, isBoolean, isNode, assert} from 'flexio-jshelpers'
 import {WithIDBase} from './WithIDBase'
 
-class ViewContainerBase extends WithIDBase{
+class ViewContainerBase extends WithIDBase {
   /**
    *
    * @param {String} id
-   * @param {Node} parentNode
    */
-  constructor(id, parentNode) {
+  constructor(id) {
     super(id)
 
     var _mounted = false
@@ -18,6 +17,7 @@ class ViewContainerBase extends WithIDBase{
     var _tokenEvent = new MapOfArray()
     var _Views = new MapOfInstance(View)
     var _Stores = new Map()
+    var parentNode
 
     Object.defineProperties(this, {
       /**
@@ -105,8 +105,15 @@ class ViewContainerBase extends WithIDBase{
       parentNode: {
         configurable: false,
         enumerable: true,
-        writable: false,
-        value: parentNode
+        get: () => {
+          return parentNode
+        },
+        set: (v) => {
+          assert(!!isNode(v),
+            'hotballoon:View:constructor: `parentNode` argument should be a Node'
+          )
+          parentNode = v
+        }
       },
       /**
        * @property {LogHandler}

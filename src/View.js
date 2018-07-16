@@ -9,6 +9,7 @@ import {RequireIDMixin} from './mixins/RequireIDMixin'
 import {PrivateStateMixin} from './mixins/PrivateStateMixin'
 import {ViewContainerContextMixin} from './mixins/ViewContainerContextMixin'
 import {html} from './HotballoonElement/CreateHotBalloonElement'
+import {ViewContainerBase} from './bases/ViewContainerBase'
 
 export const INIT = 'INIT'
 export const UPDATE = 'UPDATE'
@@ -32,33 +33,23 @@ export const ATTRIBUTE_NODEREF = '_hb_noderef'
  * @extends RequireIDMixin
  *
  */
-class View extends ViewContainerContextMixin(PrivateStateMixin(RequireIDMixin(class {
-}))) {
+class View extends ViewContainerBase {
   /**
    * @constructor
    * @param {string} id
-   * @param {ViewContainer} viewContainer
+   * @param {ViewContainerBase} container
    */
-  constructor(id, viewContainer) {
-    super()
-
-    this.RequireIDMixinInit(id)
-    this.ViewContainerContextMixinInit(viewContainer)
-    this.PrivateStateMixinInit()
+  constructor(id, container) {
+    super(id)
+    this.debug.color = 'blue'
 
     var _node = null
-    var parentNode = viewContainer.parentNode
     var _shouldInit = true
     var _shouldUpdate = true
     var _shouldRender = true
     var _shouldMount = true
     var _shouldChangeState = true
-    var _isRendered = false
-    var _isMounted = false
-    const _EventHandler = new EventOrderedHandler()
-    const _tokenEvent = new MapOfArray()
     const _nodeRefs = new Map()
-    const _views = new MapOfInstance(View)
 
     /**
      * @property {string} CLASS_TAG_NAME
@@ -71,6 +62,16 @@ class View extends ViewContainerContextMixin(PrivateStateMixin(RequireIDMixin(cl
     })
 
     Object.defineProperties(this, {
+      /**
+       * @property {ViewContainerBase}
+       * @name View#_container
+       * @protected
+       */
+      _container: {
+        enumerable: false,
+        configurable: false,
+        value: container
+      },
       /**
        * @property {Node} _node
        * @name View#_node
@@ -91,23 +92,8 @@ class View extends ViewContainerContextMixin(PrivateStateMixin(RequireIDMixin(cl
         }
       },
       /**
-       * @property {Node} parentNode
-       */
-      parentNode: {
-        configurable: false,
-        enumerable: true,
-        get: () => {
-          return parentNode
-        },
-        set: (v) => {
-          assert(!!isNode(v),
-            'hotballoon:View:constructor: `parentNode` argument should be a Node'
-          )
-          parentNode = v
-        }
-      },
-      /**
        * @property {boolean} _shouldInit
+       * @name View#_shouldInit
        * @private
        */
       _shouldInit: {
@@ -125,6 +111,7 @@ class View extends ViewContainerContextMixin(PrivateStateMixin(RequireIDMixin(cl
       },
       /**
        * @property {boolean} _shouldUpdate
+       * @name View#_shouldUpdate
        * @private
        */
       _shouldUpdate: {
@@ -142,6 +129,7 @@ class View extends ViewContainerContextMixin(PrivateStateMixin(RequireIDMixin(cl
       },
       /**
        * @property {boolean} _shouldRender
+       * @name View#_shouldRender
        * @private
        */
       _shouldRender: {
@@ -159,6 +147,7 @@ class View extends ViewContainerContextMixin(PrivateStateMixin(RequireIDMixin(cl
       },
       /**
        * @property {boolean} _shouldMount
+       * @name View#_shouldMount
        * @private
        */
       _shouldMount: {
@@ -176,6 +165,7 @@ class View extends ViewContainerContextMixin(PrivateStateMixin(RequireIDMixin(cl
       },
       /**
        * @property {boolean} _shouldChangeState
+       * @name View#_shouldChangeState
        * @private
        */
       _shouldChangeState: {
@@ -192,69 +182,8 @@ class View extends ViewContainerContextMixin(PrivateStateMixin(RequireIDMixin(cl
         }
       },
       /**
-       * @property {boolean} _isRendered
-       * @private
-       */
-      _isRendered: {
-        configurable: false,
-        enumerable: false,
-        get: () => {
-          return _isRendered
-        },
-        set: (v) => {
-          assert(!!isBoolean(v),
-            'hotballoon:View:constructor: `_isRendered` argument should be a boolean'
-          )
-          _isRendered = v
-        }
-      },
-      /**
-       * @property {boolean} _isMounted
-       * @private
-       */
-      _isMounted: {
-        configurable: false,
-        enumerable: false,
-        get: () => {
-          return _isMounted
-        },
-        set: (v) => {
-          assert(!!isBoolean(v),
-            'hotballoon:View:constructor: `_isMounted` argument should be a boolean'
-          )
-          _isMounted = v
-        }
-      },
-      /**
-       * @property {EventOrderedHandler} _EventHandler
-       * @private
-       */
-      _EventHandler: {
-        configurable: false,
-        enumerable: false,
-        get: () => {
-          return _EventHandler
-        },
-        set: (v) => {
-          return false
-        }
-      },
-      /**
-       * @property {MapOfArray} _tokenEvent
-       * @private
-       */
-      _tokenEvent: {
-        configurable: false,
-        enumerable: false,
-        get: () => {
-          return _tokenEvent
-        },
-        set: (v) => {
-          return false
-        }
-      },
-      /**
        * @property {Map} _nodeRefs
+       * @name View#_nodeRefs
        * @private
        */
       _nodeRefs: {
@@ -266,30 +195,8 @@ class View extends ViewContainerContextMixin(PrivateStateMixin(RequireIDMixin(cl
         set: (v) => {
           return false
         }
-      },
-      /**
-       * @property {MapOfInstance<View>} _views
-       * @private
-       */
-      _views: {
-        configurable: false,
-        enumerable: false,
-        get: () => {
-          return _views
-        },
-        set: (v) => {
-          return false
-        }
-      },
-      /**
-       * @property {LogHandler} View#debug
-       * @name View#debug
-       */
-      debug: {
-        configurable: false,
-        enumerable: false,
-        value: new LogHandler(this.constructor.name, 'blue')
       }
+
     })
 
     this._initListeners()
@@ -298,23 +205,23 @@ class View extends ViewContainerContextMixin(PrivateStateMixin(RequireIDMixin(cl
   /**
    * @static
    * @param {string} id
-   * @param {ViewContainer} viewContainer
+   * @param {ViewContainerBase} container
    * @return View
    */
-  static create(id, viewContainer) {
-    return new this(id, viewContainer)
+  static create(id, container) {
+    return new this(id, container)
   }
 
   /**
    *
    * @static
    * @param {string} id
-   * @param {ViewContainer} viewContainer
+   * @param {ViewContainerBase} container
    * @param {Node} parentNode
    * @return View
    */
-  static createWithParentNode(id, viewContainer, parentNode) {
-    const inst = new this(id, viewContainer)
+  static createWithParentNode(id, container, parentNode) {
+    const inst = new this(id, container)
     inst.parentNode = parentNode
     return inst
   }
@@ -324,7 +231,7 @@ class View extends ViewContainerContextMixin(PrivateStateMixin(RequireIDMixin(cl
    * @return {Node}
    */
   view() {
-    throw new CoreException('view should be overiderd', 'METHOD_NOT_OVERIDED')
+    throw new CoreException('view should be override', 'METHOD_NOT_OVERIDED')
   }
 
   /**
@@ -370,28 +277,6 @@ class View extends ViewContainerContextMixin(PrivateStateMixin(RequireIDMixin(cl
       this,
       100
     )
-  }
-
-  /**
-   *
-   * @param {string} event
-   * @param {function} callback
-   * @param {Object} scope
-   * @param {number} priority
-   * @return {string} token
-   */
-  addEventListener(event, callback, scope, priority) {
-    return this._EventHandler.addEventListener(event, callback, scope, priority)
-  }
-
-  /**
-   *
-   * @param {string} event : event name
-   * @param {Object} payload
-   * @returns void
-   */
-  dispatch(event, payload) {
-    this._EventHandler.dispatch(event, payload)
   }
 
   /**
@@ -477,7 +362,7 @@ class View extends ViewContainerContextMixin(PrivateStateMixin(RequireIDMixin(cl
 
     if (this._shouldRender) {
       this._render()
-      this._isRendered = true
+      this._rendered = true
       this._EventHandler.dispatch(RENDERED, {})
     }
 
@@ -510,7 +395,7 @@ class View extends ViewContainerContextMixin(PrivateStateMixin(RequireIDMixin(cl
 
     if (this._shouldMount) {
       this._mount()
-      this._isMounted = true
+      this._mounted = true
       this._EventHandler.dispatch(MOUNTED, {})
     }
 
@@ -532,20 +417,12 @@ class View extends ViewContainerContextMixin(PrivateStateMixin(RequireIDMixin(cl
   }
 
   /**
-   * @param {String} key
-   * @return {View}
-   */
-  View(key) {
-    return this._views.get(key)
-  }
-
-  /**
    * @param {View} view
    * @param {iterable<Store>} stores
    */
   registerView(view, stores = new Set()) {
     view.ViewContainer().suscribeToStoreEvent(view, stores)
-    this._addView(view._ID, view)
+    this.addView(view)
     this.addEventListener(
       STATE_CHANGED,
       (state) => {
@@ -592,8 +469,6 @@ class View extends ViewContainerContextMixin(PrivateStateMixin(RequireIDMixin(cl
   addNodeRef(key, node) {
     return this._setNodeRef(key, node)
   }
-
-
 
   /**
    * @param {String} key
