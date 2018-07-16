@@ -36,6 +36,7 @@ import {
 import {State} from './src/storeBases/State'
 import {Storage} from './src/storeBases/Storage'
 import {StoreModel} from './src/storeBases/StoreModel'
+import {StoresParameters} from './src/storeBases/StoresParameters'
 
 export const hotballoonElement = {
   html,
@@ -70,6 +71,7 @@ export {
   HotBalloonApplication,
   Dispatcher,
   Component,
+  StoresParameters,
   Store,
   Action,
   ViewContainer,

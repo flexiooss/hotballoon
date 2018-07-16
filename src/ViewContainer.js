@@ -29,31 +29,31 @@ export class ViewContainerParameters {
     )
 
     Object.defineProperties(this, {
-      /**
+        /**
          * @property {Component} component
          * @name ViewContainerParameters#component
          */
-      component: {
-        value: componentInst
-      },
-      /**
+        component: {
+          value: componentInst
+        },
+        /**
          * @property {String}
          * @name ViewContainerParameters#id
          */
-      id: {
-        configurable: false,
-        enumerable: false,
-        writable: false,
-        value: id
-      },
-      /**
+        id: {
+          configurable: false,
+          enumerable: false,
+          writable: false,
+          value: id
+        },
+        /**
          * @property {Node}
          * @name ViewContainerParameters#parentNode
          */
-      parentNode: {
-        value: parentNode
+        parentNode: {
+          value: parentNode
+        }
       }
-    }
     )
   }
 }
@@ -73,13 +73,14 @@ export class ViewContainer extends ViewContainerBase {
   /**
    *
    * @param {ViewContainerParameters} viewContainerParameters
+   * @param {StoresParameters} stores
    */
-  constructor(viewContainerParameters) {
+  constructor(viewContainerParameters, stores) {
     assert(viewContainerParameters instanceof ViewContainerParameters,
       'hotballoon:ViewContainer:constructor: `viewContainerParameters` argument assert be an instance of ViewContainerParameters'
     )
 
-    super(viewContainerParameters.id)
+    super(viewContainerParameters.id, stores)
     this.parentNode = viewContainerParameters.parentNode
     this.debug.color = 'blueDark'
 

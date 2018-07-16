@@ -2,20 +2,21 @@
 import {EventOrderedHandler} from '../EventOrderedHandler'
 import {LogHandler, MapOfArray, isBoolean, isNode, assert} from 'flexio-jshelpers'
 import {WithIDBase} from './WithIDBase'
+import {StoresParameters} from '../storeBases/StoresParameters'
 
 class ViewContainerBase extends WithIDBase {
   /**
    *
    * @param {String} id
+   * @param {StoresParameters} stores
    */
-  constructor(id) {
+  constructor(id, stores = new StoresParameters()) {
     super(id)
 
     var _mounted = false
     var _rendered = false
     var _tokenEvent = new MapOfArray()
     var _Views = new Map()
-    var _Stores = new Map()
     var parentNode
 
     Object.defineProperties(this, {
@@ -28,7 +29,7 @@ class ViewContainerBase extends WithIDBase {
         configurable: false,
         enumerable: true,
         writable: false,
-        value: _Stores
+        value: stores
       },
       /**
        * @property {boolean}

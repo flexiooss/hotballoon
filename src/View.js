@@ -74,9 +74,10 @@ class View extends ViewContainerBase {
   /**
    * @constructor
    * @param {ViewParameters} viewParameters
+   * @param {StoresParameters} stores
    */
-  constructor(viewParameters) {
-    super(viewParameters.id)
+  constructor(viewParameters, stores) {
+    super(viewParameters.id, stores)
     this.debug.color = 'blue'
 
     var _node = null
@@ -240,24 +241,22 @@ class View extends ViewContainerBase {
 
   /**
    * @static
-   * @param {string} id
-   * @param {ViewContainerBase} container
+   * @param {ViewParameters} viewParameters
    * @return View
    */
-  static create(id, container) {
-    return new this(id, container)
+  static create(viewParameters) {
+    return new this(viewParameters)
   }
 
   /**
    *
    * @static
-   * @param {string} id
-   * @param {ViewContainerBase} container
+   * @param {ViewParameters} viewParameters
    * @param {Node} parentNode
    * @return View
    */
-  static createWithParentNode(id, container, parentNode) {
-    const inst = new this(id, container)
+  static createWithParentNode(viewParameters, parentNode) {
+    const inst = new this(viewParameters)
     inst.parentNode = parentNode
     return inst
   }
