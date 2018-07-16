@@ -2,7 +2,6 @@
 import {CLASS_TAG_NAME} from './CLASS_TAG_NAME'
 import {isNode, isString, assert, isIterable} from 'flexio-jshelpers'
 import {
-  View,
   STORE_CHANGED as VIEW_STORE_CHANGED
 } from './View'
 import {
@@ -29,31 +28,31 @@ export class ViewContainerParameters {
     )
 
     Object.defineProperties(this, {
-        /**
+      /**
          * @property {Component} component
          * @name ViewContainerParameters#component
          */
-        component: {
-          value: componentInst
-        },
-        /**
+      component: {
+        value: componentInst
+      },
+      /**
          * @property {String}
          * @name ViewContainerParameters#id
          */
-        id: {
-          configurable: false,
-          enumerable: false,
-          writable: false,
-          value: id
-        },
-        /**
+      id: {
+        configurable: false,
+        enumerable: false,
+        writable: false,
+        value: id
+      },
+      /**
          * @property {Node}
          * @name ViewContainerParameters#parentNode
          */
-        parentNode: {
-          value: parentNode
-        }
+      parentNode: {
+        value: parentNode
       }
+    }
     )
   }
 }
@@ -147,6 +146,11 @@ export class ViewContainer extends ViewContainerBase {
    * @private
    */
   _registerStores() {
+    console.log(this.debug)
+    this.debug.log('registerStores : ' + this._ID)
+    this.debug.object(this._Stores)
+    this.debug.print()
+
     this._Stores.forEach((store, key, map) => {
       this.subscribeToStore(store)
     })

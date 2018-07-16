@@ -242,21 +242,23 @@ class View extends ViewContainerBase {
   /**
    * @static
    * @param {ViewParameters} viewParameters
+   * @param {StoresParameters} stores
    * @return View
    */
-  static create(viewParameters) {
-    return new this(viewParameters)
+  static create(viewParameters, stores) {
+    return new this(viewParameters, stores)
   }
 
   /**
    *
    * @static
    * @param {ViewParameters} viewParameters
+   * @param {StoresParameters} stores
    * @param {Node} parentNode
    * @return View
    */
-  static createWithParentNode(viewParameters, parentNode) {
-    const inst = new this(viewParameters)
+  static createWithParentNode(viewParameters, stores, parentNode) {
+    const inst = new this(viewParameters, stores)
     inst.parentNode = parentNode
     return inst
   }

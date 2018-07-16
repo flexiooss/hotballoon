@@ -29,7 +29,7 @@ class ViewContainerBase extends WithIDBase {
         configurable: false,
         enumerable: true,
         writable: false,
-        value: stores
+        value: stores._Stores
       },
       /**
        * @property {boolean}
