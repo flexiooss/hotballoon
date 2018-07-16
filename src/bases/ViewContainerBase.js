@@ -1,7 +1,6 @@
 'use strict'
 import {EventOrderedHandler} from '../EventOrderedHandler'
-import {View} from '../View'
-import {LogHandler, MapOfArray, MapOfInstance, isBoolean, isNode, assert} from 'flexio-jshelpers'
+import {LogHandler, MapOfArray, isBoolean, isNode, assert} from 'flexio-jshelpers'
 import {WithIDBase} from './WithIDBase'
 
 class ViewContainerBase extends WithIDBase {
@@ -15,7 +14,7 @@ class ViewContainerBase extends WithIDBase {
     var _mounted = false
     var _rendered = false
     var _tokenEvent = new MapOfArray()
-    var _Views = new MapOfInstance(View)
+    var _Views = new Map()
     var _Stores = new Map()
     var parentNode
 
@@ -88,7 +87,7 @@ class ViewContainerBase extends WithIDBase {
         value: _tokenEvent
       },
       /**
-       * @property {MapOfInstance<View>
+       * @property {Map<View>
        * @name ViewContainerBase#_Views
        * @protected
        */
@@ -98,7 +97,7 @@ class ViewContainerBase extends WithIDBase {
         value: _Views
       },
       /**
-       * @property {Node}
+       * @type {Node}
        * @name ViewContainerBase#parentNode
        * @protected
        */
@@ -116,7 +115,7 @@ class ViewContainerBase extends WithIDBase {
         }
       },
       /**
-       * @property {LogHandler}
+       * @type {LogHandler}
        * @name ViewContainerBase#debug
        */
       debug: {
@@ -152,7 +151,7 @@ class ViewContainerBase extends WithIDBase {
    * @return {View}
    */
   addView(view) {
-    this._Views.add(view._ID, view)
+    this._Views.set(view._ID, view)
     return view
   }
 

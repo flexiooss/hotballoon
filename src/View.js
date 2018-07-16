@@ -513,6 +513,13 @@ class View extends ViewContainerBase {
     this._node = this.view()
     return this._node
   }
+
+  /**
+   * @return {ViewContainerBase}
+   */
+  Container() {
+    return this._container
+  }
 }
 
 export {View}
