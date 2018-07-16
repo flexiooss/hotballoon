@@ -20,7 +20,7 @@ class ViewContainerBase extends WithIDBase {
 
     Object.defineProperties(this, {
       /**
-       * @property {Map}
+       * @property {Map<Store>}
        * @name ViewContainerBase#_Stores
        * @protected
        */

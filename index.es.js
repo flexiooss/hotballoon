@@ -8,6 +8,7 @@ import {EventHandler} from './src/EventHandler'
 import {EventOrderedHandler} from './src/EventOrderedHandler'
 import {Action} from './src/Action'
 import {
+  ViewParameters,
   View,
   ATTRIBUTE_NODEREF,
   INIT as VIEW_INIT,
@@ -74,6 +75,7 @@ export {
   ViewContainer,
   ViewContainerParameters,
   View,
+  ViewParameters,
   ATTRIBUTE_NODEREF,
   MapOfState,
   PrivateStateMixin,

@@ -1,15 +1,56 @@
 'use strict'
 import {CoreException} from './CoreException'
 import {CLASS_TAG_NAME} from './CLASS_TAG_NAME'
-import {MapOfArray, MapOfInstance, assert, isBoolean, isNode, LogHandler} from 'flexio-jshelpers'
+import {MapOfArray, MapOfInstance, assert, isBoolean, isNode, isString, LogHandler} from 'flexio-jshelpers'
 import {$} from './HotballoonElement/HotBalloonAttributeHandler'
 import {reconcile} from 'flexio-nodes-reconciliation'
-import {EventOrderedHandler} from './EventOrderedHandler'
 import {RequireIDMixin} from './mixins/RequireIDMixin'
 import {PrivateStateMixin} from './mixins/PrivateStateMixin'
 import {ViewContainerContextMixin} from './mixins/ViewContainerContextMixin'
 import {html} from './HotballoonElement/CreateHotBalloonElement'
 import {ViewContainerBase} from './bases/ViewContainerBase'
+
+export class ViewParameters {
+  /**
+   * @constructor
+   * @param {string} id
+   * @param {ViewContainerBase} container
+   */
+  constructor(id, container) {
+    assert(!!isString(id),
+      'hotballoon:View:ViewParameters: `id` argument assert be a String'
+    )
+    assert(container instanceof ViewContainerBase,
+      'hotballoon:View:ViewParameters: `container` argument should be an instance of `ViewContainerBase`'
+    )
+
+    Object.defineProperties(this, {
+
+      id: {
+        configurable: false,
+        enumerable: false,
+        writable: false,
+        /**
+           * @property {String} id
+           * @type {String}
+           * @name ViewParameters#id
+           */
+        value: id
+      },
+      container: {
+        configurable: false,
+        enumerable: false,
+        writable: false,
+        /**
+           * @property {ViewContainerBase}
+           * @name ViewParameters#container
+           */
+        value: container
+      }
+    }
+    )
+  }
+}
 
 export const INIT = 'INIT'
 export const UPDATE = 'UPDATE'
@@ -27,20 +68,15 @@ export const ATTRIBUTE_NODEREF = '_hb_noderef'
 /**
  * @class
  * @description View describe a fragment of DOM
- * @extends ViewContainerContextMixin
- * @extends ViewContainerContextMixin
- * @extends PrivateStateMixin
- * @extends RequireIDMixin
- *
+ * @extends ViewContainerBase
  */
 class View extends ViewContainerBase {
   /**
    * @constructor
-   * @param {string} id
-   * @param {ViewContainerBase} container
+   * @param {ViewParameters} viewParameters
    */
-  constructor(id, container) {
-    super(id)
+  constructor(viewParameters) {
+    super(viewParameters.id)
     this.debug.color = 'blue'
 
     var _node = null
@@ -70,7 +106,7 @@ class View extends ViewContainerBase {
       _container: {
         enumerable: false,
         configurable: false,
-        value: container
+        value: viewParameters.container
       },
       /**
        * @property {Node} _node
