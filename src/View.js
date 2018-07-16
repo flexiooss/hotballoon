@@ -1,13 +1,12 @@
 'use strict'
 import {CoreException} from './CoreException'
 import {CLASS_TAG_NAME} from './CLASS_TAG_NAME'
-import {MapOfArray, MapOfInstance, assert, isBoolean, isNode} from 'flexio-jshelpers'
+import {MapOfArray, MapOfInstance, assert, isBoolean, isNode, LogHandler} from 'flexio-jshelpers'
 import {$} from './HotballoonElement/HotBalloonAttributeHandler'
 import {reconcile} from 'flexio-nodes-reconciliation'
 import {EventOrderedHandler} from './EventOrderedHandler'
 import {RequireIDMixin} from './mixins/RequireIDMixin'
 import {PrivateStateMixin} from './mixins/PrivateStateMixin'
-import {LogHandler} from './LogHandler'
 import {ViewContainerContextMixin} from './mixins/ViewContainerContextMixin'
 import {html} from './HotballoonElement/CreateHotBalloonElement'
 
@@ -74,7 +73,7 @@ class View extends ViewContainerContextMixin(PrivateStateMixin(RequireIDMixin(cl
     Object.defineProperties(this, {
       /**
        * @property {Node} _node
-       * @member
+       * @name View#_node
        * @private
        */
       _node: {
@@ -284,11 +283,12 @@ class View extends ViewContainerContextMixin(PrivateStateMixin(RequireIDMixin(cl
       },
       /**
        * @property {LogHandler} View#debug
+       * @name View#debug
        */
       debug: {
         configurable: false,
         enumerable: false,
-        value: new LogHandler()
+        value: new LogHandler(this.constructor.name, 'blue')
       }
     })
 
@@ -438,7 +438,8 @@ class View extends ViewContainerContextMixin(PrivateStateMixin(RequireIDMixin(cl
    * @public
    */
   updateNode() {
-    this.debug.log('%c updateNode ' + this.constructor.name, 'background: #222; color: #bada55')
+    this.debug.log('updateNode').background()
+    this.debug.print()
 
     this._EventHandler.dispatch(UPDATE, {})
 
@@ -469,7 +470,8 @@ class View extends ViewContainerContextMixin(PrivateStateMixin(RequireIDMixin(cl
    * @return {Node} _node
    */
   render() {
-    this.debug.log('%c View:render: ' + this.constructor.name, 'background: #222; color: white; width:100%;font-size:15px;')
+    this.debug.log('render').size(2)
+    this.debug.print()
 
     this._EventHandler.dispatch(RENDER, {})
 
@@ -591,20 +593,7 @@ class View extends ViewContainerContextMixin(PrivateStateMixin(RequireIDMixin(cl
     return this._setNodeRef(key, node)
   }
 
-  /**
-   * @private
-   * @param {String} key
-   * @param {View} view
-   * @return {View} view
-   * @memberOf NodesHandlerMixin
-   * @instance
-   */
-  _addView(key, view) {
-    assert(key,
-      'hoballoon:View:_addView: `key` argument assert not be undefined')
-    this._views.set(key, view)
-    return view
-  }
+
 
   /**
    * @param {String} key

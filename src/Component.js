@@ -221,7 +221,7 @@ class Component extends ApplicationContextMixin(RequireIDMixin(PrivateStateMixin
   /**
    *
    * @param {string} key token registered into storesKeyRegister
-   * @returns {hotballoon/Store} Store
+   * @return {Store} Store
    */
   StoreByRegister(key) {
     return this.Store(this.storesKeyRegister.get(key))

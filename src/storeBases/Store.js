@@ -1,8 +1,8 @@
 'use strict'
-import { EventOrderedHandler } from '../EventOrderedHandler'
-import { assert, staticClassName } from 'flexio-jshelpers'
-import { RequireIDMixin } from '../mixins/RequireIDMixin'
-import { Storage } from './Storage'
+import {EventOrderedHandler} from '../EventOrderedHandler'
+import {assert, staticClassName, LogHandler} from 'flexio-jshelpers'
+import {RequireIDMixin} from '../mixins/RequireIDMixin'
+import {Storage} from './Storage'
 
 export const INIT = 'INIT'
 export const CHANGED = 'CHANGED'
@@ -12,7 +12,8 @@ export const CHANGED = 'CHANGED'
  * @description Store is the instance for store data from Component
  * @extends RequireIDMixin
  */
-export class Store extends RequireIDMixin(class { }) {
+export class Store extends RequireIDMixin(class {
+}) {
   /**
    * @constructor
    * @param {String} id
@@ -35,6 +36,11 @@ export class Store extends RequireIDMixin(class { }) {
         enumerable: true,
         value: '__HB__STORE__'
       },
+      /**
+       * @property {Storage}
+       * @name Store#_store
+       * @protected
+       */
       _store: {
         enumerable: false,
         configurable: false,
@@ -46,82 +52,103 @@ export class Store extends RequireIDMixin(class { }) {
           this._updated()
         }
       },
+      /**
+       * @property {EventOrderedHandler}
+       * @name Store#_EventHandler
+       * @protected
+       */
       _EventHandler: {
         enumerable: false,
         configurable: false,
         value: EVENT_HANDLER
+      },
+      /**
+       * @property {LogHandler}
+       * @name Store#debug
+       */
+      debug: {
+        configurable: false,
+        enumerable: false,
+        value: new LogHandler(this.constructor.name, 'magentaDark')
       }
     })
 
     this._dispatch(INIT)
   }
 
+  /**
+   *
+   * @param {Component} component
+   * @param storeInit
+   * @return {Store}
+   */
   static create(component, storeInit) {
     return new this(staticClassName(this) + '-' + component.nextID(), storeInit)
   }
 
   /**
-     *
-     * @param {String} type
-     * @param {Function} callback
-     * @param {Object} scope
-     * @param {Integer} priority
-     */
+   *
+   * @param {String} type
+   * @param {Function} callback
+   * @param {Object} scope
+   * @param {Integer} priority
+   */
   subscribe(type, callback, scope, priority) {
     return this._EventHandler.addEventListener(type, callback, scope, priority)
   }
 
   /**
-     * @returns {Object} state frozen
-     */
+   * @returns {Object} state frozen
+   */
   state() {
     return this._get()
   }
 
   /**
-     * @returns {Object} state frozen
-     */
+   * @returns {Object} state frozen
+   */
   data() {
     return this._get().data
   }
 
   /**
-     * @returns {Object} state cloned
-     */
+   * @returns {Object} state cloned
+   */
   clone() {
     return this._store.clone().data
   }
 
   /**
-     * @private
-     */
+   * @private
+   */
   _get() {
     return this._store.get()
   }
 
   /**
-     *
-     * @param {Object} state
-     */
+   *
+   * @param {Object} state
+   */
   set(state) {
     this._store = this._store.set(this._ID, state)
   }
 
   /**
-     * @private
-     * @param {String} eventType
-     * @param {Object} payload
-     */
+   * @private
+   * @param {String} eventType
+   * @param {Object} payload
+   */
   _dispatch(eventType, payload = this.state()) {
     this._EventHandler.dispatch(eventType, payload)
   }
 
   /**
-     * @private
-     */
+   * @private
+   */
   _updated() {
-    console.log('%c STORE CHANGED: ' + this.constructor.name + ' : ' + this._ID, 'background: #eee; color: blue')
-    console.log(this.state())
+    this.debug.log('STORE CHANGED : ' + this._ID).size(2).background()
+    this.debug.object(this.state())
+    this.debug.print()
 
     this._dispatch(CHANGED)
   }
