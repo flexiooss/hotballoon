@@ -13,10 +13,11 @@ class CoreException extends HBException {
     return {
       UNKNOW: 'Unknow error',
       BAD_INHERIT_CLASS: 'Bad instance of Class',
-      METHOD_NOT_OVERIDED: 'This Method should be overided'
+      METHOD_NOT_OVERRIDE: 'This Method should be override'
     }
   }
 }
+
 export {
   CoreException
 }

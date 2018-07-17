@@ -1,9 +1,10 @@
 import {Dispatcher} from './src/Dispatcher'
 import {
   Store,
-  INIT as STORE_INIT,
-  CHANGED
+  INIT as STORE_INIT
 } from './src/storeBases/Store'
+import {CHANGED} from './src/storeBases/StoreInterface'
+import {ProxyStore} from './src/storeBases/ProxyStore'
 import {EventHandler} from './src/EventHandler'
 import {EventOrderedHandler} from './src/EventOrderedHandler'
 import {Action} from './src/Action'
@@ -73,6 +74,7 @@ export {
   Component,
   ViewStoresParameters,
   Store,
+  ProxyStore,
   Action,
   ViewContainer,
   ViewContainerParameters,

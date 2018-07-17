@@ -1,22 +1,20 @@
 'use strict'
 import {EventOrderedHandler} from '../EventOrderedHandler'
 import {assert, staticClassName, LogHandler} from 'flexio-jshelpers'
-import {RequireIDMixin} from '../mixins/RequireIDMixin'
 import {Storage} from './Storage'
 import {CLASS_TAG_NAME} from '../CLASS_TAG_NAME'
-import {WithIDBase} from '../bases/WithIDBase'
+import {StoreInterface, CHANGED} from './StoreInterface'
 
 export const CLASS_TAG_NAME_STORE = Symbol('__HB__STORE__')
 
 export const INIT = 'INIT'
-export const CHANGED = 'CHANGED'
 
 /**
  * @class
  * @description Store is the instance for store data from Component
  * @extends RequireIDMixin
  */
-export class Store extends WithIDBase {
+export class Store extends StoreInterface {
   /**
    * @constructor
    * @param {String} id
@@ -28,7 +26,6 @@ export class Store extends WithIDBase {
     this.debug.color = 'magentaDark'
 
     var _storage = Storage.create(this._ID, storeInit)
-    const EVENT_HANDLER = Object.seal(new EventOrderedHandler())
 
     // assert(storage instanceof Storage,
     //   'hotballoon:StoreHandler:constructor: `storage` argument should be a `Storage` instance')
@@ -64,7 +61,7 @@ export class Store extends WithIDBase {
       _EventHandler: {
         enumerable: false,
         configurable: false,
-        value: EVENT_HANDLER
+        value: Object.seal(new EventOrderedHandler())
       }
     })
 

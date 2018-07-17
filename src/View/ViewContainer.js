@@ -4,10 +4,8 @@ import {isNode, isString, assert, isIterable} from 'flexio-jshelpers'
 import {
   STORE_CHANGED as VIEW_STORE_CHANGED
 } from './View'
-import {
-  Store,
-  CHANGED as STORE_CHANGED
-} from '../storeBases/Store'
+import { Store } from '../storeBases/Store'
+import {CHANGED as STORE_CHANGED} from '../storeBases/StoreInterface'
 import {ViewContainerBase} from '../bases/ViewContainerBase'
 import {CoreException} from '../CoreException'
 
@@ -111,7 +109,7 @@ export class ViewContainer extends ViewContainerBase {
   }
 
   registerViews() {
-    throw new CoreException('registerViews should be overided', 'METHOD_NOT_OVERIDED')
+    throw new CoreException('registerViews should be override', 'METHOD_NOT_OVERRIDE')
   }
 
   /**

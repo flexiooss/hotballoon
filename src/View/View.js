@@ -270,7 +270,7 @@ class View extends ViewContainerBase {
    * @return {Node}
    */
   view() {
-    throw new CoreException('view should be override', 'METHOD_NOT_OVERIDED')
+    throw new CoreException('view should be override', 'METHOD_NOT_OVERRIDE')
   }
 
   /**
