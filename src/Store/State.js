@@ -1,4 +1,9 @@
 export class State {
+  /**
+   *
+   * @param {string} storeId
+   * @param {any} data
+   */
   constructor(storeId, data) {
     Object.defineProperties(this, {
       storeID: {
@@ -17,6 +22,11 @@ export class State {
     Object.freeze(Object.seal(this))
   }
 
+  /**
+   *
+   * @return {State}
+   * @static
+   */
   static createEmpty() {
     return new State('', {})
   }

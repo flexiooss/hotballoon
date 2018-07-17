@@ -12,7 +12,7 @@ export const INIT = 'INIT'
 /**
  * @class
  * @description Store is the instance for store data from Component
- * @extends RequireIDMixin
+ * @extends StoreInterface
  */
 export class Store extends StoreInterface {
   /**
@@ -97,7 +97,7 @@ export class Store extends StoreInterface {
   }
 
   /**
-   * @returns {Object} state frozen
+   * @returns {State#data} state frozen
    */
   data() {
     return this._get().data

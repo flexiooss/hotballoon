@@ -2,7 +2,14 @@
 import {assert} from 'flexio-jshelpers'
 import {Debugable} from './Debugable'
 
+/**
+ * @extends Debugable
+ */
 class WithIDBase extends Debugable {
+  /**
+   *
+   * @param {String} id
+   */
   constructor(id) {
     super()
     assert(!!id,

@@ -26,7 +26,7 @@ class ViewContainerBase extends WithIDBase {
         enumerable: true,
         writable: false,
         /**
-         * @property {Map<Store>}
+         * @property {Map<StoreInterface>}
          * @name ViewContainerBase#_Stores
          * @protected
          */
@@ -171,7 +171,7 @@ class ViewContainerBase extends WithIDBase {
   /**
    *
    * @param key
-   * @return {Store}
+   * @return {StoreInterface}
    * @protected
    */
   _Store(key) {

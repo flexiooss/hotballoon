@@ -7,6 +7,9 @@ import {State} from './State'
 
 export const CLASS_TAG_NAME_PROXYSTORE = Symbol('__HB__PROXYSTORE__')
 
+/**
+ * @extends StoreInterface
+ */
 export class ProxyStore extends StoreInterface {
   /**
    * @constructor
@@ -94,6 +97,20 @@ export class ProxyStore extends StoreInterface {
       20
     )
     return this._EventHandler.addEventListener(type, callback, scope, priority)
+  }
+
+  /**
+   * @returns {State#data} state#data frozen
+   */
+  data() {
+    return this.state().data
+  }
+
+  /**
+   * @returns {State} state frozen
+   */
+  state() {
+    return new State(this._ID, this._mapper(this._Store.data()))
   }
 
   /**
