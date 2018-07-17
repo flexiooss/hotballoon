@@ -4,7 +4,7 @@ import {
 } from './Action'
 import {
   Store
-} from './storeBases/Store'
+} from './Store/Store'
 import {
   ViewContainer,
   WILL_REMOVE as VIEWCONTAINER_WILL_REMOVE

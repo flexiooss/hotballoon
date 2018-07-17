@@ -1,14 +1,12 @@
 'use strict'
 import {CoreException} from '../CoreException'
 import {CLASS_TAG_NAME} from '../CLASS_TAG_NAME'
-import {MapOfArray, MapOfInstance, assert, isBoolean, isNode, isString, LogHandler} from 'flexio-jshelpers'
+import {assert, isBoolean, isFunction, isNode, isString} from 'flexio-jshelpers'
 import {$} from '../HotballoonElement/HotBalloonAttributeHandler'
 import {reconcile} from 'flexio-nodes-reconciliation'
-import {RequireIDMixin} from '../mixins/RequireIDMixin'
-import {PrivateStateMixin} from '../mixins/PrivateStateMixin'
-import {ViewContainerContextMixin} from '../mixins/ViewContainerContextMixin'
 import {html} from '../HotballoonElement/CreateHotBalloonElement'
-import {ViewContainerBase} from '../bases/ViewContainerBase'
+import {ViewContainerBase} from './ViewContainerBase'
+import {CHANGED as STORE_CHANGED} from '../Store/StoreInterface'
 
 export class ViewParameters {
   /**
@@ -51,17 +49,6 @@ export class ViewParameters {
   }
 }
 
-export const INIT = 'INIT'
-export const UPDATE = 'UPDATE'
-export const UPDATED = 'UPDATED'
-export const RENDER = 'RENDER'
-export const RENDERED = 'RENDERED'
-export const MOUNT = 'MOUNT'
-export const MOUNTED = 'MOUNTED'
-export const STATE_CHANGE = 'STATE_CHANGE'
-export const STATE_CHANGED = 'STATE_CHANGED'
-export const STORE_CHANGED = 'STORE_CHANGED'
-
 export const ATTRIBUTE_NODEREF = '_hb_noderef'
 export const CLASS_TAG_NAME_VIEW = Symbol('__HB__VIEW__')
 
@@ -84,11 +71,10 @@ class View extends ViewContainerBase {
 
     var _node = null
     var _shouldInit = true
-    var _shouldUpdate = true
     var _shouldRender = true
     var _shouldMount = true
-    var _shouldChangeState = true
     const _nodeRefs = new Map()
+    const _state = new Map()
 
     /**
      * @property {string} CLASS_TAG_NAME
@@ -149,24 +135,6 @@ class View extends ViewContainerBase {
         }
       },
       /**
-       * @property {boolean} _shouldUpdate
-       * @name View#_shouldUpdate
-       * @private
-       */
-      _shouldUpdate: {
-        configurable: false,
-        enumerable: false,
-        get: () => {
-          return _shouldUpdate
-        },
-        set: (v) => {
-          assert(!!isBoolean(v),
-            'hotballoon:View:constructor: `_shouldUpdate` argument should be a boolean'
-          )
-          _shouldUpdate = v
-        }
-      },
-      /**
        * @property {boolean} _shouldRender
        * @name View#_shouldRender
        * @private
@@ -203,24 +171,6 @@ class View extends ViewContainerBase {
         }
       },
       /**
-       * @property {boolean} _shouldChangeState
-       * @name View#_shouldChangeState
-       * @private
-       */
-      _shouldChangeState: {
-        configurable: false,
-        enumerable: false,
-        get: () => {
-          return _shouldChangeState
-        },
-        set: (v) => {
-          assert(!!isBoolean(v),
-            'hotballoon:View:constructor: `_shouldChangeState` argument should be a boolean'
-          )
-          _shouldChangeState = v
-        }
-      },
-      /**
        * @property {Map} _nodeRefs
        * @name View#_nodeRefs
        * @private
@@ -234,11 +184,19 @@ class View extends ViewContainerBase {
         set: (v) => {
           return false
         }
+      },
+      _state: {
+        configurable: false,
+        enumerable: false,
+        /**
+         * @property {Map} _state
+         * @name View#_state
+         * @private
+         */
+        value: _state
       }
 
     })
-
-    this._initListeners()
   }
 
   /**
@@ -286,68 +244,32 @@ class View extends ViewContainerBase {
   /**
    *
    * @private
-   * @description suscribe subView an event of this view
-   * @param {String} key
-   * @param {View} subView
-   * @param {String} event : event name
+   * @description subscribe subView an event of this view
+   * @param {String} keyStore
+   * @param {StoreInterface} store
+   * @param {updateCallback} clb : event name
    */
-  _suscribeToEvent(key, subView, event = STORE_CHANGED) {
-    let token = this.addEventListener(
-      event,
-      (payload, type) => {
-        subView.dispatch(event, payload)
-      },
-      subView, 100)
-
-    this._tokenEvent.add(key, token)
-  }
-
-  /**
-   * @private
-   * @description register all events for private listeners
-   * Internal event property with callable value
-   */
-  _initListeners() {
-    this.addEventListener(
-      STORE_CHANGED,
-      (payload, type) => {
-        this.updateNode(payload)
-      },
-      this,
-      100
+  _suscribeToStore(keyStore, store, clb = (oldState, newState) => true) {
+    assert(isFunction(clb), 'hotballoon:View:_suscribeToStore: `clb` argument should be callable')
+    this._tokenEvent.add(
+      store._ID,
+      store.subscribe(
+        STORE_CHANGED,
+        (payload, type) => {
+          const oldState = this._state.get(keyStore)
+          this._state.set(keyStore, payload.data)
+          if (clb(oldState, payload.data)) {
+            this.updateNode()
+          }
+        },
+        this, 100)
     )
-  }
-
-  /**
-   * @private
-   * @param {String} key
-   * @param {any} val
-   */
-  _setPrivateStateProp(key, val) {
-    this.dispatch(STATE_CHANGE, {
-      key,
-      val
-    })
-    if (this._shouldChangeState) {
-      let oldStateProp = this._privateState.get(key)
-      this._privateState.set(key, val)
-      this.dispatch(STATE_CHANGED, {
-        key,
-        val: oldStateProp
-      })
-      this.updateNode()
-    }
-    this._shouldChangeState = true
-  }
-
-  /**
-   *
-   * @param {string} key
-   * @param {any} defaultValue
-   * @returns any
-   */
-  _getPrivateStateProp(key, defaultValue = undefined) {
-    return (this._privateState.has(key)) ? this._privateState.get(key) : defaultValue
+    /**
+     *
+     * @callback updateCallback
+     * @param {Object} oldState
+     * @param {Object} newState
+     */
   }
 
   /**
@@ -364,22 +286,7 @@ class View extends ViewContainerBase {
   updateNode() {
     this.debug.log('updateNode').background()
     this.debug.print()
-
-    this._EventHandler.dispatch(UPDATE, {})
-
-    if (this._shouldUpdate) {
-      this._update()
-      this._EventHandler.dispatch(UPDATED, {})
-    }
-
-    this._shouldUpdate = true
-  }
-
-  /**
-   * Set `_shouldUpdate` to false
-   */
-  shouldNotUpdate() {
-    this._shouldUpdate = false
+    this._update()
   }
 
   /**
@@ -397,12 +304,9 @@ class View extends ViewContainerBase {
     this.debug.log('render').size(2)
     this.debug.print()
 
-    this._EventHandler.dispatch(RENDER, {})
-
     if (this._shouldRender) {
       this._render()
       this._rendered = true
-      this._EventHandler.dispatch(RENDERED, {})
     }
 
     this._shouldRender = true
@@ -430,12 +334,9 @@ class View extends ViewContainerBase {
    * @param {Node} parentNode
    */
   mount() {
-    this._EventHandler.dispatch(MOUNT, {})
-
     if (this._shouldMount) {
       this._mount()
       this._mounted = true
-      this._EventHandler.dispatch(MOUNTED, {})
     }
 
     this._shouldMount = true
@@ -453,24 +354,6 @@ class View extends ViewContainerBase {
   renderAndMount() {
     this.render()
     this.mount()
-  }
-
-  /**
-   * @param {View} view
-   * @param {iterable<Store>} stores
-   */
-  registerView(view, stores = new Set()) {
-    view.ViewContainer().suscribeToStoreEvent(view, stores)
-    this.addView(view)
-    this.addEventListener(
-      STATE_CHANGED,
-      (state) => {
-        this._setPrivateStateProp(state.key, state.val)
-      },
-      this,
-      100
-    )
-    return view
   }
 
   /**
@@ -567,9 +450,10 @@ class View extends ViewContainerBase {
   APP() {
     return this.Component().APP()
   }
+
   /**
    *
-   * @return {HotBalloonApplication}
+   * @return {Component}
    */
   Component() {
     return this.Container().Component()

@@ -1,8 +1,9 @@
 'use strict'
 import {EventOrderedHandler} from '../EventOrderedHandler'
-import {LogHandler, MapOfArray, isBoolean, isNode, assert} from 'flexio-jshelpers'
-import {WithIDBase} from './WithIDBase'
-import {ViewStoresParameters} from '../View/ViewStoresParameters'
+import {MapOfArray, isBoolean, isNode, assert} from 'flexio-jshelpers'
+import {WithIDBase} from '../bases/WithIDBase'
+import {ViewStoresParameters} from './ViewStoresParameters'
+import {CHANGED, StoreInterface} from '../Store/StoreInterface'
 
 class ViewContainerBase extends WithIDBase {
   /**
@@ -154,6 +155,17 @@ class ViewContainerBase extends WithIDBase {
    */
   View(key) {
     return this._Views.get(key)
+  }
+
+  /**
+   * @description Format an Event name
+   * @param {StoreInterface} store
+   * @return {string} event name formated
+   * @static
+   */
+  static uniqueNameStoreChanged(store) {
+    assert(store instanceof StoreInterface, 'hotballoon:ViewContainerBase:uniqueNameStoreChanged: `store` argument should be an instance of StoreInterface')
+    return store._ID + '_' + CHANGED
   }
 }
 

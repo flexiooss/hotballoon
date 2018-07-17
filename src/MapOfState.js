@@ -1,5 +1,5 @@
 import { MapOfInstance } from 'flexio-jshelpers'
-import { State } from './storeBases/State'
+import { State } from './Store/State'
 
 export class MapOfState extends MapOfInstance {
   constructor() {

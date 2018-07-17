@@ -1,12 +1,9 @@
 'use strict'
 import {CLASS_TAG_NAME} from '../CLASS_TAG_NAME'
-import {isNode, isString, assert, isIterable} from 'flexio-jshelpers'
-import {
-  STORE_CHANGED as VIEW_STORE_CHANGED
-} from './View'
-import { Store } from '../storeBases/Store'
-import {CHANGED as STORE_CHANGED} from '../storeBases/StoreInterface'
-import {ViewContainerBase} from '../bases/ViewContainerBase'
+import {isNode, isString, assert} from 'flexio-jshelpers'
+import {Store} from '../Store/Store'
+import {CHANGED as STORE_CHANGED} from '../Store/StoreInterface'
+import {ViewContainerBase} from './ViewContainerBase'
 import {CoreException} from '../CoreException'
 
 export class ViewContainerParameters {
@@ -57,8 +54,6 @@ export class ViewContainerParameters {
 
 export const CLASS_TAG_NAME_VIEWCONTAINER = Symbol('__HB__VIEWCONTAINER__')
 
-export const INIT = 'INIT'
-export const STORE_CHANGE = 'STORE_CHANGE'
 export const WILL_REMOVE = 'WILL_REMOVE'
 
 /**
@@ -113,29 +108,21 @@ export class ViewContainer extends ViewContainerBase {
   }
 
   /**
-   * @description Format an Event name
-   * @private
-   * @param {String} storeKey : store token
-   * @param {String}  event : event types
-   * @return {string} event name formated
-   */
-  _formatStoreEventName(storeKey, type) {
-    return storeKey + '_' + type
-  }
-
-  /**
    *
-   * @param {String} storeKey : store token
-   * @param {String}  event : event types
+   * @param {StoreInterface} store
+   * @return {String} token
+   * @protected
    */
-  subscribeToStore(store, event = STORE_CHANGED) {
-    assert(store instanceof Store,
-      'hotballoon:ViewContainer:subscribeToStore: `store` const should be an instance of StoreBase ')
+  _subscribeToStore(store) {
+    assert(store instanceof Store, 'hotballoon:ViewContainer:subscribeToStore: `store` const should be an instance of StoreBase ')
 
-    store.subscribe(
-      event,
+    return store.subscribe(
+      STORE_CHANGED,
       (payload, type) => {
-        this.dispatch(this._formatStoreEventName(store._ID, type), payload)
+        this.debug.log('dispatch : ' + store.constructor.name)
+        this.debug.object(payload)
+        this.debug.print()
+        this.dispatch(ViewContainer.uniqueNameStoreChanged(store), payload)
       },
       this,
       100
@@ -146,63 +133,63 @@ export class ViewContainer extends ViewContainerBase {
    * @private
    */
   _registerStores() {
-    this.debug.log('registerStores : ' + this._ID)
+    this.debug.log('registerStores')
     this.debug.object(this._Stores)
     this.debug.print()
 
     this._Stores.forEach((store, key, map) => {
-      this.subscribeToStore(store)
+      this._subscribeToStore(store)
     })
   }
 
-  /**
-   * @param {hotballoon/View} view
-   * @param {iterable<Store>} stores : stores instances
-   */
-  suscribeToStoreEvent(view, stores) {
-    assert(isIterable(stores),
-      'hotballoon:ViewContainer:addView: `stores` argument should be iterable')
-    stores.forEach((store) => {
-      assert(store instanceof Store,
-        'hotballoon:ViewContainer:_suscribeToStoreEvent: `store` argument should be qan instance of Hotballoon/Store')
-      this._suscribeToEvent(view, store, STORE_CHANGED)
-    })
-  }
+  // /**
+  //  * @param {hotballoon/View} view
+  //  * @param {iterable<Store>} stores : stores instances
+  //  */
+  // suscribeToStoreEvent(view, stores) {
+  //   assert(isIterable(stores),
+  //     'hotballoon:ViewContainer:addView: `stores` argument should be iterable')
+  //   stores.forEach((store) => {
+  //     assert(store instanceof Store,
+  //       'hotballoon:ViewContainer:_suscribeToStoreEvent: `store` argument should be qan instance of Hotballoon/Store')
+  //     this._suscribeToEvent(view, store, STORE_CHANGED)
+  //   })
+  // }
+  //
+  // /**
+  //  *
+  //  * @private
+  //  * @param {String} key : event token
+  //  * @param {String} storeKey : store token
+  //  * @param {String} storeEvent : event name
+  //  * @param {hotballoon/View} view
+  //  * @param {Integer} priority
+  //  */
+  // _suscribeToEvent(view, store, event, priority = 0) {
+  //   this.debug.log('_suscribeToEvent')
+  //   this.debug.log(this._formatStoreEventName(store._ID, event))
+  //   this.debug.print()
+  //
+  //   const token = this.addEventListener(
+  //     this._formatStoreEventName(store._ID, event),
+  //     (payload, type) => {
+  //       view.dispatch(VIEW_STORE_CHANGED, payload)
+  //     },
+  //     view,
+  //     priority
+  //   )
+  //   this._tokenEvent.add(store._ID + '-' + view._ID, token)
+  // }
 
-  /**
-   *
-   * @private
-   * @param {String} key : event token
-   * @param {String} storeKey : store token
-   * @param {String} storeEvent : event name
-   * @param {hotballoon/View} view
-   * @param {Integer} priority
-   */
-  _suscribeToEvent(view, store, event, priority = 0) {
-    this.debug.log('_suscribeToEvent')
-    this.debug.log(this._formatStoreEventName(store._ID, event))
-    this.debug.print()
-
-    const token = this.addEventListener(
-      this._formatStoreEventName(store._ID, event),
-      (payload, type) => {
-        view.dispatch(VIEW_STORE_CHANGED, payload)
-      },
-      view,
-      priority
-    )
-    this._tokenEvent.add(store._ID + '-' + view._ID, token)
-  }
-
-  /**
-   * @private
-   * @param {Node} parentNode
-   */
-  _renderViewsAndMount(parentNode) {
-    this._Views.forEach((view, key, map) => {
-      view.renderAndMount(parentNode)
-    })
-  }
+  // /**
+  //  * @private
+  //  * @param {Node} parentNode
+  //  */
+  // _renderViewsAndMount(parentNode) {
+  //   this._Views.forEach((view, key, map) => {
+  //     view.renderAndMount(parentNode)
+  //   })
+  // }
 
   /**
    * @private
@@ -315,7 +302,7 @@ export class ViewContainer extends ViewContainerBase {
   /**
    *
    * @param {string} key token registered into storesKey
-   * @returns {hStore} Store
+   * @returns {Store} Store
    */
   StoreByRegister(key) {
     return this.Component().StoreByRegister(key)

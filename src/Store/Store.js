@@ -1,6 +1,6 @@
 'use strict'
 import {EventOrderedHandler} from '../EventOrderedHandler'
-import {assert, staticClassName, LogHandler} from 'flexio-jshelpers'
+import {assert, staticClassName} from 'flexio-jshelpers'
 import {Storage} from './Storage'
 import {CLASS_TAG_NAME} from '../CLASS_TAG_NAME'
 import {StoreInterface, CHANGED} from './StoreInterface'

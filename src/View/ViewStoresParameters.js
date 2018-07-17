@@ -8,7 +8,7 @@ export class ViewStoresParameters {
         enumerable: true,
         writable: false,
         /**
-         * @property {Map<Store>}
+         * @property {Map<StoreInterface>}
          * @name ViewStoresParameters#_Stores
          * @protected
          */

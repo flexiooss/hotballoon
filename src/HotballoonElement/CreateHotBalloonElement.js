@@ -3,7 +3,6 @@ import {HotballoonElementParams} from './HotballoonElementParams'
 import {assert, isObject, isNode} from 'flexio-jshelpers'
 import {HyperFlex} from 'flexio-hyperflex'
 import {$} from './HotBalloonAttributeHandler'
-import {KEY_RECONCILIATE_RULES} from 'flexio-nodes-reconciliation'
 
 /**
  * @class

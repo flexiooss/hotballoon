@@ -1,5 +1,5 @@
 'use strict'
-import {assert, deepFreezeSeal, cloneObject, isObject} from 'flexio-jshelpers'
+import {assert, deepFreezeSeal, cloneObject} from 'flexio-jshelpers'
 import {State} from './State'
 
 /**
@@ -57,28 +57,4 @@ export class Storage {
   clone() {
     return cloneObject(this._state, true)
   }
-
-  // _cloneState(obj) {
-  //   if (!isObject(obj)) {
-  //     return obj
-  //   }
-  //   if (obj instanceof Date) {
-  //     return new Date(obj.getTime())
-  //   }
-  //   if (Array.isArray(obj)) {
-  //     var clonedArr = []
-  //     obj.forEach((element) => {
-  //       clonedArr.push(this._cloneState(element))
-  //     })
-  //     return clonedArr
-  //   }
-  //
-  //   let clonedObj = new obj.constructor()
-  //   for (var prop in obj) {
-  //     if (obj.hasOwnProperty(prop)) {
-  //       clonedObj[prop] = this._cloneState(obj[prop])
-  //     }
-  //   }
-  //   return clonedObj
-  // }
 }

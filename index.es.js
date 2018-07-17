@@ -2,24 +2,16 @@ import {Dispatcher} from './src/Dispatcher'
 import {
   Store,
   INIT as STORE_INIT
-} from './src/storeBases/Store'
-import {CHANGED} from './src/storeBases/StoreInterface'
-import {ProxyStore} from './src/storeBases/ProxyStore'
+} from './src/Store/Store'
+import {CHANGED} from './src/Store/StoreInterface'
+import {ProxyStore} from './src/Store/ProxyStore'
 import {EventHandler} from './src/EventHandler'
 import {EventOrderedHandler} from './src/EventOrderedHandler'
 import {Action} from './src/Action'
 import {
   ViewParameters,
   View,
-  ATTRIBUTE_NODEREF,
-  INIT as VIEW_INIT,
-  UPDATE,
-  UPDATED,
-  RENDER,
-  RENDERED, MOUNT,
-  MOUNTED, STATE_CHANGE,
-  STATE_CHANGED,
-  STORE_CHANGED
+  ATTRIBUTE_NODEREF
 } from './src/View/View'
 import {MapOfState} from './src/MapOfState'
 import {ViewContainer, ViewContainerParameters} from './src/View/ViewContainer'
@@ -34,9 +26,9 @@ import {
   select as $
 } from './src/HotballoonElement/HotBalloonAttributeHandler'
 
-import {State} from './src/storeBases/State'
-import {Storage} from './src/storeBases/Storage'
-import {StoreModel} from './src/storeBases/StoreModel'
+import {State} from './src/Store/State'
+import {Storage} from './src/Store/Storage'
+import {StoreModel} from './src/Store/StoreModel'
 import {ViewStoresParameters} from './src/View/ViewStoresParameters'
 
 export const hotballoonElement = {
@@ -53,19 +45,6 @@ export const storeBases = {
 export const STORE_EVENTS = {
   STORE_INIT,
   CHANGED
-}
-
-export const VIEW_EVENTS = {
-  VIEW_INIT,
-  UPDATE,
-  UPDATED,
-  RENDER,
-  RENDERED,
-  MOUNT,
-  MOUNTED,
-  STATE_CHANGE,
-  STATE_CHANGED,
-  STORE_CHANGED
 }
 
 export {
