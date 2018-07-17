@@ -1,14 +1,14 @@
 'use strict'
-import {CoreException} from './CoreException'
-import {CLASS_TAG_NAME} from './CLASS_TAG_NAME'
+import {CoreException} from '../CoreException'
+import {CLASS_TAG_NAME} from '../CLASS_TAG_NAME'
 import {MapOfArray, MapOfInstance, assert, isBoolean, isNode, isString, LogHandler} from 'flexio-jshelpers'
-import {$} from './HotballoonElement/HotBalloonAttributeHandler'
+import {$} from '../HotballoonElement/HotBalloonAttributeHandler'
 import {reconcile} from 'flexio-nodes-reconciliation'
-import {RequireIDMixin} from './mixins/RequireIDMixin'
-import {PrivateStateMixin} from './mixins/PrivateStateMixin'
-import {ViewContainerContextMixin} from './mixins/ViewContainerContextMixin'
-import {html} from './HotballoonElement/CreateHotBalloonElement'
-import {ViewContainerBase} from './bases/ViewContainerBase'
+import {RequireIDMixin} from '../mixins/RequireIDMixin'
+import {PrivateStateMixin} from '../mixins/PrivateStateMixin'
+import {ViewContainerContextMixin} from '../mixins/ViewContainerContextMixin'
+import {html} from '../HotballoonElement/CreateHotBalloonElement'
+import {ViewContainerBase} from '../bases/ViewContainerBase'
 
 export class ViewParameters {
   /**
@@ -74,7 +74,7 @@ class View extends ViewContainerBase {
   /**
    * @constructor
    * @param {ViewParameters} viewParameters
-   * @param {StoresParameters} stores
+   * @param {ViewStoresParameters} stores
    */
   constructor(viewParameters, stores) {
     super(viewParameters.id, stores)
@@ -244,7 +244,7 @@ class View extends ViewContainerBase {
   /**
    * @static
    * @param {ViewParameters} viewParameters
-   * @param {StoresParameters} stores
+   * @param {ViewStoresParameters} stores
    * @return View
    */
   static create(viewParameters, stores) {
@@ -255,7 +255,7 @@ class View extends ViewContainerBase {
    *
    * @static
    * @param {ViewParameters} viewParameters
-   * @param {StoresParameters} stores
+   * @param {ViewStoresParameters} stores
    * @param {Node} parentNode
    * @return View
    */

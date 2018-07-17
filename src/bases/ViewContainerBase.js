@@ -2,15 +2,15 @@
 import {EventOrderedHandler} from '../EventOrderedHandler'
 import {LogHandler, MapOfArray, isBoolean, isNode, assert} from 'flexio-jshelpers'
 import {WithIDBase} from './WithIDBase'
-import {StoresParameters} from '../storeBases/StoresParameters'
+import {ViewStoresParameters} from '../View/ViewStoresParameters'
 
 class ViewContainerBase extends WithIDBase {
   /**
    *
    * @param {String} id
-   * @param {StoresParameters} stores
+   * @param {ViewStoresParameters} stores
    */
-  constructor(id, stores = new StoresParameters()) {
+  constructor(id, stores = new ViewStoresParameters()) {
     super(id)
 
     var _mounted = false

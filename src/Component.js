@@ -8,7 +8,7 @@ import {
 import {
   ViewContainer,
   WILL_REMOVE as VIEWCONTAINER_WILL_REMOVE
-} from './ViewContainer'
+} from './View/ViewContainer'
 import {
   MapOfInstance,
   Sequence

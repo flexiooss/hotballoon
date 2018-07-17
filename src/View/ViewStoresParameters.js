@@ -1,4 +1,4 @@
-export class StoresParameters {
+export class ViewStoresParameters {
   constructor() {
     const _Stores = new Map()
 
@@ -9,7 +9,7 @@ export class StoresParameters {
         writable: false,
         /**
          * @property {Map<Store>}
-         * @name StoresParameters#_Stores
+         * @name ViewStoresParameters#_Stores
          * @protected
          */
         value: _Stores

@@ -1,5 +1,5 @@
 'use strict'
-import {CLASS_TAG_NAME} from './CLASS_TAG_NAME'
+import {CLASS_TAG_NAME} from '../CLASS_TAG_NAME'
 import {isNode, isString, assert, isIterable} from 'flexio-jshelpers'
 import {
   STORE_CHANGED as VIEW_STORE_CHANGED
@@ -7,9 +7,9 @@ import {
 import {
   Store,
   CHANGED as STORE_CHANGED
-} from './storeBases/Store'
-import {ViewContainerBase} from './bases/ViewContainerBase'
-import {CoreException} from './CoreException'
+} from '../storeBases/Store'
+import {ViewContainerBase} from '../bases/ViewContainerBase'
+import {CoreException} from '../CoreException'
 
 export class ViewContainerParameters {
   /**
@@ -74,7 +74,7 @@ export class ViewContainer extends ViewContainerBase {
   /**
    *
    * @param {ViewContainerParameters} viewContainerParameters
-   * @param {StoresParameters} stores
+   * @param {ViewStoresParameters} stores
    */
   constructor(viewContainerParameters, stores) {
     assert(viewContainerParameters instanceof ViewContainerParameters,

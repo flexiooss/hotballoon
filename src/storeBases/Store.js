@@ -4,6 +4,7 @@ import {assert, staticClassName, LogHandler} from 'flexio-jshelpers'
 import {RequireIDMixin} from '../mixins/RequireIDMixin'
 import {Storage} from './Storage'
 import {CLASS_TAG_NAME} from '../CLASS_TAG_NAME'
+import {WithIDBase} from '../bases/WithIDBase'
 
 export const CLASS_TAG_NAME_STORE = Symbol('__HB__STORE__')
 
@@ -15,16 +16,16 @@ export const CHANGED = 'CHANGED'
  * @description Store is the instance for store data from Component
  * @extends RequireIDMixin
  */
-export class Store extends RequireIDMixin(class {
-}) {
+export class Store extends WithIDBase {
   /**
    * @constructor
    * @param {String} id
    * @param {Store} storage
    */
   constructor(id, storeInit) {
-    super()
-    this.RequireIDMixinInit(id)
+    super(id)
+
+    this.debug.color = 'magentaDark'
 
     var _storage = Storage.create(this._ID, storeInit)
     const EVENT_HANDLER = Object.seal(new EventOrderedHandler())
@@ -64,15 +65,6 @@ export class Store extends RequireIDMixin(class {
         enumerable: false,
         configurable: false,
         value: EVENT_HANDLER
-      },
-      /**
-       * @property {LogHandler}
-       * @name Store#debug
-       */
-      debug: {
-        configurable: false,
-        enumerable: false,
-        value: new LogHandler(this.constructor.name, 'magentaDark')
       }
     })
 

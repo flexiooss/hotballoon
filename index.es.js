@@ -19,9 +19,9 @@ import {
   MOUNTED, STATE_CHANGE,
   STATE_CHANGED,
   STORE_CHANGED
-} from './src/View'
+} from './src/View/View'
 import {MapOfState} from './src/MapOfState'
-import {ViewContainer, ViewContainerParameters} from './src/ViewContainer'
+import {ViewContainer, ViewContainerParameters} from './src/View/ViewContainer'
 import {HotBalloonApplication} from './src/HotBalloonApplication'
 import {PrivateStateMixin} from './src/mixins/PrivateStateMixin'
 import {Component} from './src/Component'
@@ -36,7 +36,7 @@ import {
 import {State} from './src/storeBases/State'
 import {Storage} from './src/storeBases/Storage'
 import {StoreModel} from './src/storeBases/StoreModel'
-import {StoresParameters} from './src/storeBases/StoresParameters'
+import {ViewStoresParameters} from './src/View/ViewStoresParameters'
 
 export const hotballoonElement = {
   html,
@@ -71,7 +71,7 @@ export {
   HotBalloonApplication,
   Dispatcher,
   Component,
-  StoresParameters,
+  ViewStoresParameters,
   Store,
   Action,
   ViewContainer,
