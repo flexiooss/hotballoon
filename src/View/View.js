@@ -1,12 +1,13 @@
 'use strict'
 import {CoreException} from '../CoreException'
 import {CLASS_TAG_NAME} from '../CLASS_TAG_NAME'
-import {assert, isBoolean, isFunction, isNode, isString} from 'flexio-jshelpers'
+import {assert, isBoolean, isFunction, isNode, isString, valueByKeys} from 'flexio-jshelpers'
 import {$} from '../HotballoonElement/HotBalloonAttributeHandler'
 import {reconcile} from 'flexio-nodes-reconciliation'
 import {html} from '../HotballoonElement/CreateHotBalloonElement'
 import {ViewContainerBase} from './ViewContainerBase'
-import {CHANGED as STORE_CHANGED} from '../Store/StoreInterface'
+import {CHANGED as STORE_CHANGED, StoreInterface} from '../Store/StoreInterface'
+import {ViewStoresParameters} from './ViewStoresParameters'
 
 export class ViewParameters {
   /**
@@ -65,6 +66,8 @@ class View extends ViewContainerBase {
    */
   constructor(viewParameters, stores) {
     super(viewParameters.id, stores)
+    assert(viewParameters instanceof ViewParameters, 'hotballoon:' + this.constructor.name + ':constructor: `viewParameters` should be an instance of ViewParameters')
+    assert(stores instanceof ViewStoresParameters, 'hotballoon:' + this.constructor.name + ':constructor: `stores` should be an instance of ViewStoresParameters')
 
     this.debug.color = 'blue'
     this.parentNode = viewParameters.container.parentNode
@@ -205,7 +208,7 @@ class View extends ViewContainerBase {
    * @param {ViewStoresParameters} stores
    * @return View
    */
-  static create(viewParameters, stores) {
+  static create(viewParameters, stores = new ViewStoresParameters()) {
     return new this(viewParameters, stores)
   }
 
@@ -243,14 +246,14 @@ class View extends ViewContainerBase {
 
   /**
    *
-   * @private
    * @description subscribe subView an event of this view
    * @param {String} keyStore
-   * @param {StoreInterface} store
    * @param {updateCallback} clb : event name
    */
-  _suscribeToStore(keyStore, store, clb = (oldState, newState) => true) {
-    assert(isFunction(clb), 'hotballoon:View:_suscribeToStore: `clb` argument should be callable')
+  _suscribeToStore(keyStore, clb = (oldState, newState) => true) {
+    assert(isFunction(clb), 'hotballoon:' + this.constructor.name + ':_suscribeToStore: `clb` argument should be callable')
+    const store = this._Store(keyStore)
+    assert(store instanceof StoreInterface, 'hotballoon:' + this.constructor.name + ':_suscribeToStore: `keyStore : %s` not reference an instance of StoreInterface', keyStore)
     this._tokenEvent.add(
       store._ID,
       store.subscribe(
@@ -457,6 +460,30 @@ class View extends ViewContainerBase {
    */
   Component() {
     return this.Container().Component()
+  }
+
+  /**
+   *
+   * @param key
+   * @param defaultValue
+   * @protected
+   */
+  _stateValue(key, defaultValue = null) {
+    return (this._state.has(key)) ? this._state.get(key) : defaultValue
+  }
+
+  /**
+   *
+   * @param {array<string>} keys
+   * @param defaultValue
+   * @protected
+   */
+  _stateValueByKeys(keys, defaultValue = null) {
+    const keyStore = keys.shift()
+    if (this._state.has(keyStore)) {
+      return (keys.length) ? valueByKeys(this._state.get(keyStore), keys, defaultValue) : this._state.get(keyStore)
+    }
+    return defaultValue
   }
 }
 

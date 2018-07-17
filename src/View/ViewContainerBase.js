@@ -167,6 +167,16 @@ class ViewContainerBase extends WithIDBase {
     assert(store instanceof StoreInterface, 'hotballoon:ViewContainerBase:uniqueNameStoreChanged: `store` argument should be an instance of StoreInterface')
     return store._ID + '_' + CHANGED
   }
+
+  /**
+   *
+   * @param key
+   * @return {Store}
+   * @protected
+   */
+  _Store(key) {
+    return this._Stores.get(key)
+  }
 }
 
 export {ViewContainerBase}
