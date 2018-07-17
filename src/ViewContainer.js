@@ -35,27 +35,29 @@ export class ViewContainerParameters {
       component: {
         value: componentInst
       },
-      /**
-         * @property {String}
-         * @name ViewContainerParameters#id
-         */
       id: {
         configurable: false,
         enumerable: false,
         writable: false,
+        /**
+           * @property {String}
+           * @name ViewContainerParameters#id
+           */
         value: id
       },
-      /**
-         * @property {Node}
-         * @name ViewContainerParameters#parentNode
-         */
       parentNode: {
+        /**
+           * @property {Node}
+           * @name ViewContainerParameters#parentNode
+           */
         value: parentNode
       }
     }
     )
   }
 }
+
+export const CLASS_TAG_NAME_VIEWCONTAINER = Symbol('__HB__VIEWCONTAINER__')
 
 export const INIT = 'INIT'
 export const STORE_CHANGE = 'STORE_CHANGE'
@@ -87,19 +89,19 @@ export class ViewContainer extends ViewContainerBase {
       configurable: false,
       writable: false,
       enumerable: true,
-      value: '__HB__VIEWCONTAINER__'
+      value: CLASS_TAG_NAME_VIEWCONTAINER
     })
 
     Object.defineProperties(this, {
-      /**
-       * @property {Component}
-       * @name ViewContainer#_Component
-       * @protected
-       */
       _Component: {
         configurable: false,
         enumerable: false,
         writable: false,
+        /**
+         * @type {Component}
+         * @name ViewContainer#_Component
+         * @protected
+         */
         value: viewContainerParameters.component
       }
     })
@@ -146,7 +148,6 @@ export class ViewContainer extends ViewContainerBase {
    * @private
    */
   _registerStores() {
-    console.log(this.debug)
     this.debug.log('registerStores : ' + this._ID)
     this.debug.object(this._Stores)
     this.debug.print()

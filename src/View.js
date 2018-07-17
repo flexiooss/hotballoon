@@ -31,7 +31,6 @@ export class ViewParameters {
         enumerable: false,
         writable: false,
         /**
-           * @property {String} id
            * @type {String}
            * @name ViewParameters#id
            */
@@ -42,7 +41,7 @@ export class ViewParameters {
         enumerable: false,
         writable: false,
         /**
-           * @property {ViewContainerBase}
+           * @type {ViewContainerBase}
            * @name ViewParameters#container
            */
         value: container
@@ -64,6 +63,7 @@ export const STATE_CHANGED = 'STATE_CHANGED'
 export const STORE_CHANGED = 'STORE_CHANGED'
 
 export const ATTRIBUTE_NODEREF = '_hb_noderef'
+export const CLASS_TAG_NAME_VIEW = Symbol('__HB__VIEW__')
 
 /**
  * @class
@@ -78,7 +78,9 @@ class View extends ViewContainerBase {
    */
   constructor(viewParameters, stores) {
     super(viewParameters.id, stores)
+
     this.debug.color = 'blue'
+    this.parentNode = viewParameters.container.parentNode
 
     var _node = null
     var _shouldInit = true
@@ -95,29 +97,29 @@ class View extends ViewContainerBase {
       configurable: false,
       writable: false,
       enumerable: true,
-      value: '__HB__VIEW__'
+      value: CLASS_TAG_NAME_VIEW
     })
 
     Object.defineProperties(this, {
-      /**
-       * @property {ViewContainerBase}
-       * @name View#_container
-       * @protected
-       */
       _container: {
         enumerable: false,
         configurable: false,
+        /**
+         * @property {ViewContainerBase}
+         * @name View#_container
+         * @protected
+         */
         value: viewParameters.container
       },
-      /**
-       * @property {Node} _node
-       * @name View#_node
-       * @private
-       */
       _node: {
         enumerable: false,
         configurable: false,
         get: () => {
+          /**
+           * @property {Node} _node
+           * @name View#_node
+           * @private
+           */
           return _node
         },
         set: (node) => {
@@ -556,6 +558,21 @@ class View extends ViewContainerBase {
    */
   Container() {
     return this._container
+  }
+
+  /**
+   *
+   * @return {HotBalloonApplication}
+   */
+  APP() {
+    return this.Component().APP()
+  }
+  /**
+   *
+   * @return {HotBalloonApplication}
+   */
+  Component() {
+    return this.Container().Component()
   }
 }
 

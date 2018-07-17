@@ -22,6 +22,10 @@ import {
 import {
   PrivateStateMixin
 } from './mixins/PrivateStateMixin'
+import {Debugable} from './bases/Debugable'
+import {CLASS_TAG_NAME} from './CLASS_TAG_NAME'
+
+export const CLASS_TAG_NAME_COMPONENT = Symbol('__HB__COMPONENT__')
 
 /**
  * @class
@@ -29,11 +33,13 @@ import {
  * @extends ApplicationContextMixin
  * @extends RequireIDMixin
  * @extends PrivateStateMixin
+ * @extends Debugable
  *
  */
-class Component extends ApplicationContextMixin(RequireIDMixin(PrivateStateMixin(class { }))) {
+class Component extends ApplicationContextMixin(RequireIDMixin(PrivateStateMixin(Debugable))) {
   constructor(hotBallonApplication) {
     super()
+    this.debug.color = 'green'
 
     /**
      * @description Mixinis init
@@ -51,13 +57,14 @@ class Component extends ApplicationContextMixin(RequireIDMixin(PrivateStateMixin
     const _viewContainers = new MapOfInstance(ViewContainer)
     const viewContainersKey = new Map()
 
+    Object.defineProperty(this, CLASS_TAG_NAME, {
+      configurable: false,
+      writable: false,
+      enumerable: true,
+      value: CLASS_TAG_NAME_COMPONENT
+    })
+
     Object.defineProperties(this, {
-      '__HB__CLASSNAME__': {
-        configurable: false,
-        writable: false,
-        enumerable: true,
-        value: '__HB__COMPONENT__'
-      },
       _sequenceId: {
         configurable: false,
         enumerable: false,

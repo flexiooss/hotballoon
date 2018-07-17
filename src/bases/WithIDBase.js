@@ -1,8 +1,10 @@
 'use strict'
 import {assert} from 'flexio-jshelpers'
+import {Debugable} from './Debugable'
 
-class WithIDBase {
+class WithIDBase extends Debugable {
   constructor(id) {
+    super()
     assert(!!id,
       'hotballoon:WithIDBase:constructor: `id` argument assert not be empty')
     /**

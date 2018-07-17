@@ -1,10 +1,9 @@
 'use strict'
-import {
-  EventHandlerBase
-} from './bases/EventHandlerBase'
-import {
-  assert
-} from 'flexio-jshelpers'
+import {EventHandlerBase} from './bases/EventHandlerBase'
+import {assert} from 'flexio-jshelpers'
+import {CLASS_TAG_NAME} from './CLASS_TAG_NAME'
+
+export const CLASS_TAG_NAME_DISPATCHER = Symbol('__HB__DISPATCHER__')
 
 /**
  * @class
@@ -12,6 +11,16 @@ import {
  * @extends EventHandlerBase
  */
 class Dispatcher extends EventHandlerBase {
+  constructor() {
+    super()
+    Object.defineProperty(this, CLASS_TAG_NAME, {
+      configurable: false,
+      writable: false,
+      enumerable: true,
+      value: CLASS_TAG_NAME_DISPATCHER
+    })
+  }
+
   /**
    * @description Ensure that a Listener already called
    * @param {String} type of Listener

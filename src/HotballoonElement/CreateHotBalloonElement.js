@@ -65,7 +65,7 @@ class CreateHotBalloonElement extends HyperFlex {
   _generateIdFromScope(id) {
     return this._scope.APP()._ID +
       '-' + this._scope.Component()._ID +
-      '-' + this._scope.ViewContainer()._ID +
+      '-' + this._scope.Container()._ID +
       '-' + id
   }
 

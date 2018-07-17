@@ -2,6 +2,9 @@
 import {Dispatcher} from './Dispatcher'
 import {assert, isFunction} from 'flexio-jshelpers'
 import {CoreException} from './CoreException'
+import {CLASS_TAG_NAME} from './CLASS_TAG_NAME'
+
+export const CLASS_TAG_NAME_ACTION = Symbol('__HB__ACTION__')
 
 /**
  * @class
@@ -22,16 +25,14 @@ class Action {
     )
     const _actions = new Map()
 
+    Object.defineProperty(this, CLASS_TAG_NAME, {
+      configurable: false,
+      writable: false,
+      enumerable: true,
+      value: CLASS_TAG_NAME_ACTION
+    })
+
     Object.defineProperties(this, {
-      /**
-       * @property {string} __HB__CLASSNAME__
-       */
-      '__HB__CLASSNAME__': {
-        configurable: false,
-        writable: false,
-        enumerable: true,
-        value: '__HB__ACTION__'
-      },
       /**
        * @property {hotballoon:Dispatcher} _dispatcher
        * @private

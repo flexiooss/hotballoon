@@ -3,6 +3,9 @@ import {EventOrderedHandler} from '../EventOrderedHandler'
 import {assert, staticClassName, LogHandler} from 'flexio-jshelpers'
 import {RequireIDMixin} from '../mixins/RequireIDMixin'
 import {Storage} from './Storage'
+import {CLASS_TAG_NAME} from '../CLASS_TAG_NAME'
+
+export const CLASS_TAG_NAME_STORE = Symbol('__HB__STORE__')
 
 export const INIT = 'INIT'
 export const CHANGED = 'CHANGED'
@@ -28,14 +31,14 @@ export class Store extends RequireIDMixin(class {
 
     // assert(storage instanceof Storage,
     //   'hotballoon:StoreHandler:constructor: `storage` argument should be a `Storage` instance')
+    Object.defineProperty(this, CLASS_TAG_NAME, {
+      configurable: false,
+      writable: false,
+      enumerable: true,
+      value: CLASS_TAG_NAME_STORE
+    })
 
     Object.defineProperties(this, {
-      '__HB__CLASSNAME__': {
-        configurable: false,
-        writable: false,
-        enumerable: true,
-        value: '__HB__STORE__'
-      },
       /**
        * @property {Storage}
        * @name Store#_store

@@ -20,26 +20,26 @@ class ViewContainerBase extends WithIDBase {
     var parentNode
 
     Object.defineProperties(this, {
-      /**
-       * @property {Map<Store>}
-       * @name ViewContainerBase#_Stores
-       * @protected
-       */
       _Stores: {
         configurable: false,
         enumerable: true,
         writable: false,
+        /**
+         * @property {Map<Store>}
+         * @name ViewContainerBase#_Stores
+         * @protected
+         */
         value: stores._Stores
       },
-      /**
-       * @property {boolean}
-       * @name ViewContainerBase#_mounted
-       * @protected
-       */
       _mounted: {
         configurable: false,
         enumerable: false,
         get: () => {
+          /**
+           * @property {boolean}
+           * @name ViewContainerBase#_mounted
+           * @protected
+           */
           return _mounted
         },
         set: (v) => {
@@ -67,34 +67,34 @@ class ViewContainerBase extends WithIDBase {
           _rendered = v
         }
       },
-      /**
-       * @property {EventOrderedHandler}
-       * @name ViewContainerBase#_EventHandler
-       * @protected
-       */
       _EventHandler: {
         enumerable: false,
         configurable: false,
+        /**
+         * @property {EventOrderedHandler}
+         * @name ViewContainerBase#_EventHandler
+         * @protected
+         */
         value: Object.seal(new EventOrderedHandler())
       },
-      /**
-       * @property {MapOfArray}
-       * @name ViewContainerBase#_tokenEvent
-       * @protected
-       */
       _tokenEvent: {
         enumerable: false,
         configurable: false,
+        /**
+         * @property {MapOfArray}
+         * @name ViewContainerBase#_tokenEvent
+         * @protected
+         */
         value: _tokenEvent
       },
-      /**
-       * @property {Map<View>
-       * @name ViewContainerBase#_Views
-       * @protected
-       */
       _Views: {
         enumerable: false,
         configurable: false,
+        /**
+         * @property {Map<View>
+         * @name ViewContainerBase#_Views
+         * @protected
+         */
         value: _Views
       },
       /**
@@ -114,15 +114,6 @@ class ViewContainerBase extends WithIDBase {
           )
           parentNode = v
         }
-      },
-      /**
-       * @type {LogHandler}
-       * @name ViewContainerBase#debug
-       */
-      debug: {
-        configurable: false,
-        enumerable: false,
-        value: new LogHandler(this.constructor.name)
       }
     })
   }

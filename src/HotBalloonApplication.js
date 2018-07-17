@@ -1,15 +1,19 @@
 'use strict'
-import { Dispatcher } from './Dispatcher'
-import { MapExtended, MapOfInstance, Sequence, assert } from 'flexio-jshelpers'
-import { RequireIDMixin } from './mixins/RequireIDMixin'
-import { Component } from './Component'
+import {Dispatcher} from './Dispatcher'
+import {MapExtended, MapOfInstance, Sequence, assert} from 'flexio-jshelpers'
+import {RequireIDMixin} from './mixins/RequireIDMixin'
+import {Component} from './Component'
+import {CLASS_TAG_NAME} from './CLASS_TAG_NAME'
+
+export const CLASS_TAG_NAME_HOTBALLOON_APPLICATION = Symbol('__HB__APPLICATION__')
 
 /**
  *
  * @class
  * @description HotBalloonApplication is the container for a loop hotballoon
  */
-class HotBalloonApplication extends RequireIDMixin(class { }) {
+class HotBalloonApplication extends RequireIDMixin(class {
+}) {
   /**
    * @constructor
    * @param {Dispatcher} dispatcher
@@ -26,13 +30,14 @@ class HotBalloonApplication extends RequireIDMixin(class { }) {
     const _services = new MapExtended()
     const _sequenceId = new Sequence('hb_')
 
+    Object.defineProperty(this, CLASS_TAG_NAME, {
+      configurable: false,
+      writable: false,
+      enumerable: true,
+      value: CLASS_TAG_NAME_HOTBALLOON_APPLICATION
+    })
+
     Object.defineProperties(this, {
-      '__HB__CLASSNAME__': {
-        configurable: false,
-        writable: false,
-        enumerable: true,
-        value: '__HB__APPLICATION__'
-      },
       '_dispatcher': {
         configurable: false,
         enumerable: false,
