@@ -2,11 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c13bbe00-65c0-403d-a96b-410248228156" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/node_modules/flexio-hyperflex/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/flexio-hyperflex/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/node_modules/flexio-jshelpers/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/flexio-jshelpers/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/node_modules/flexio-jshelpers/src/LogHandler.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/flexio-jshelpers/src/LogHandler.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/node_modules/flexio-jshelpers/src/objectHelpers.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/flexio-jshelpers/src/objectHelpers.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/node_modules/flexio-jshelpers/src/types/Enum.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/flexio-jshelpers/src/types/Enum.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/node_modules/flexio-nodes-reconciliation/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/flexio-nodes-reconciliation/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/bases/Debugable.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/bases/Debugable.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -20,11 +22,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="CreateHotBalloonElement.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="CreateHotBalloonElement.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/HotballoonElement/CreateHotBalloonElement.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="1431">
-              <caret line="53" column="5" lean-forward="true" selection-start-line="53" selection-start-column="5" selection-end-line="53" selection-end-column="5" />
+              <caret line="53" column="5" selection-start-line="53" selection-start-column="5" selection-end-line="53" selection-end-column="5" />
               <folding>
                 <element signature="e#13#78#0" expanded="true" />
               </folding>
@@ -44,27 +46,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Store.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Store/Store.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="648">
-              <caret line="24" column="30" selection-start-line="24" selection-start-column="30" selection-end-line="24" selection-end-column="30" />
-              <folding>
-                <element signature="e#13#71#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="HotballoonElementParams.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/HotballoonElement/HotballoonElementParams.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="162">
-              <caret line="6" column="39" selection-start-line="6" selection-start-column="39" selection-end-line="6" selection-end-column="39" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="HotBalloonAttributeHandler.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/HotballoonElement/HotBalloonAttributeHandler.js">
           <provider selected="true" editor-type-id="text-editor">
@@ -74,11 +55,41 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DataStoreInterface.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Store/DataStoreInterface.js">
+      <file leaf-file-name="package.json" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/package.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="10" column="34" selection-start-line="10" selection-start-column="34" selection-end-line="10" selection-end-column="34" />
+            <state relative-caret-position="108">
+              <caret line="4" column="19" selection-start-line="4" selection-start-column="19" selection-end-line="4" selection-end-column="19" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Debugable.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/bases/Debugable.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="432">
+              <caret line="16" column="35" lean-forward="true" selection-start-line="16" selection-start-column="35" selection-end-line="16" selection-end-column="35" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="EventHandlerBase.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/bases/EventHandlerBase.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="189">
+              <caret line="12" column="6" selection-start-line="12" selection-start-column="6" selection-end-line="12" selection-end-column="6" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="WithIDBase.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/bases/WithIDBase.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="540">
+              <caret line="20" column="7" lean-forward="true" selection-start-line="20" selection-start-column="7" selection-end-line="20" selection-end-column="7" />
+              <folding>
+                <element signature="e#13#52#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -96,7 +107,7 @@
         <entry file="file://$PROJECT_DIR$/src/Action.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="101">
-              <caret line="63" column="7" lean-forward="true" selection-start-line="63" selection-start-column="7" selection-end-line="63" selection-end-column="7" />
+              <caret line="63" column="7" selection-start-line="63" selection-start-column="7" selection-end-line="63" selection-end-column="7" />
               <folding>
                 <element signature="e#13#52#0" expanded="true" />
               </folding>
@@ -173,7 +184,6 @@
         <option value="$PROJECT_DIR$/src/mixins/ComponentContextMixin.js" />
         <option value="$PROJECT_DIR$/src/storeBases/StoresParameters.js" />
         <option value="$PROJECT_DIR$/src/bases/ViewContainerBase.js" />
-        <option value="$PROJECT_DIR$/src/bases/Debugable.js" />
         <option value="$PROJECT_DIR$/src/CLASS_TAG_NAME.js" />
         <option value="$PROJECT_DIR$/src/HotBalloonApplication.js" />
         <option value="$PROJECT_DIR$/src/Component.js" />
@@ -206,6 +216,7 @@
         <option value="$PROJECT_DIR$/src/Store/StoreInterface.js" />
         <option value="$PROJECT_DIR$/src/View/View.js" />
         <option value="$PROJECT_DIR$/src/Action.js" />
+        <option value="$PROJECT_DIR$/src/bases/Debugable.js" />
       </list>
     </option>
   </component>
@@ -372,24 +383,25 @@
       <workItem from="1531767118272" duration="4992000" />
       <workItem from="1531808487992" duration="25207000" />
       <workItem from="1531852490148" duration="5098000" />
-      <workItem from="1531895169092" duration="14218000" />
+      <workItem from="1531895169092" duration="14469000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="132218000" />
+    <option name="totallyTimeSpent" value="132469000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1920" height="2160" extended-state="4" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.228125" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.228125" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.31188118" side_tool="true" weight="0.27254707" />
       <window_info anchor="bottom" id="Version Control" order="9" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="8" sideWeight="0.6881188" visible="true" weight="0.13590361" />
+      <window_info anchor="bottom" id="Terminal" order="8" sideWeight="0.6881188" visible="true" weight="0.13590361" />
       <window_info id="Favorites" order="3" side_tool="true" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.24973205" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -571,13 +583,6 @@
     <entry file="file://$PROJECT_DIR$/docs/View.html">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/bases/EventHandlerBase.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="12" column="6" selection-start-line="12" selection-start-column="6" selection-end-line="12" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/HotBalloonApplication.js">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -599,13 +604,6 @@
           <folding>
             <element signature="e#13#48#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/bases/Debugable.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="2" column="7" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
         </state>
       </provider>
     </entry>
@@ -650,16 +648,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/bases/WithIDBase.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
-          <caret line="20" column="7" lean-forward="true" selection-start-line="20" selection-start-column="7" selection-end-line="20" selection-end-column="7" />
-          <folding>
-            <element signature="e#13#52#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/View/ViewContainerBase.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="648">
@@ -698,13 +686,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="459">
           <caret line="17" lean-forward="true" selection-start-line="17" selection-end-line="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/package.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="108">
-          <caret line="4" column="19" selection-start-line="4" selection-start-column="19" selection-end-line="4" selection-end-column="19" />
         </state>
       </provider>
     </entry>
@@ -776,7 +757,7 @@
     <entry file="file://$PROJECT_DIR$/src/Action.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="101">
-          <caret line="63" column="7" lean-forward="true" selection-start-line="63" selection-start-column="7" selection-end-line="63" selection-end-column="7" />
+          <caret line="63" column="7" selection-start-line="63" selection-start-column="7" selection-end-line="63" selection-end-column="7" />
           <folding>
             <element signature="e#13#52#0" expanded="true" />
           </folding>
@@ -786,10 +767,41 @@
     <entry file="file://$PROJECT_DIR$/src/HotballoonElement/CreateHotBalloonElement.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1431">
-          <caret line="53" column="5" lean-forward="true" selection-start-line="53" selection-start-column="5" selection-end-line="53" selection-end-column="5" />
+          <caret line="53" column="5" selection-start-line="53" selection-start-column="5" selection-end-line="53" selection-end-column="5" />
           <folding>
             <element signature="e#13#78#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="108">
+          <caret line="4" column="19" selection-start-line="4" selection-start-column="19" selection-end-line="4" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/bases/WithIDBase.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="540">
+          <caret line="20" column="7" lean-forward="true" selection-start-line="20" selection-start-column="7" selection-end-line="20" selection-end-column="7" />
+          <folding>
+            <element signature="e#13#52#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/bases/EventHandlerBase.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="189">
+          <caret line="12" column="6" selection-start-line="12" selection-start-column="6" selection-end-line="12" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/bases/Debugable.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="432">
+          <caret line="16" column="35" lean-forward="true" selection-start-line="16" selection-start-column="35" selection-end-line="16" selection-end-column="35" />
         </state>
       </provider>
     </entry>

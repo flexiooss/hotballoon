@@ -1,5 +1,8 @@
 import {LogHandler} from 'flexio-jshelpers'
 
+/**
+ * @class
+ */
 export class Debugable {
   constructor() {
     Object.defineProperties(this, {
@@ -8,6 +11,7 @@ export class Debugable {
         enumerable: false,
         /**
          * @type {LogHandler}
+         * @property {LogHandler} debug
          * @name Debugable#debug
          */
         value: new LogHandler(this.constructor.name)
