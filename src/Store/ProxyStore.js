@@ -9,6 +9,7 @@ export const CLASS_TAG_NAME_PROXYSTORE = Symbol('__HB__PROXYSTORE__')
 
 /**
  * @extends StoreInterface
+ * @implements StoreInterface
  */
 export class ProxyStore extends StoreInterface {
   /**

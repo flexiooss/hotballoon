@@ -13,6 +13,7 @@ export const INIT = 'INIT'
  * @class
  * @description Store is the instance for store data from Component
  * @extends StoreInterface
+ * @implements StoreInterface
  */
 export class Store extends StoreInterface {
   /**
