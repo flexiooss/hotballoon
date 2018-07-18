@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: RequireIDMixin</title>
+    <title>JSDoc: Source: Store/StoreInterface.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,225 +17,69 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: RequireIDMixin</h1>
+    <h1 class="page-title">Source: Store/StoreInterface.js</h1>
 
     
 
 
 
-
-<section>
-
-<header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>RequireIDMixin<span class="signature">()</span><span class="type-signature"></span></h2>
-        
-    
-</header>
-
-<article>
-    <div class="container-overview">
-    
-        
-
-    
-
-    
-    <h4 class="name" id="RequireIDMixin"><span class="type-signature"></span>new RequireIDMixin<span class="signature">()</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    Mixin - handle a required ID
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mixins_RequireIDMixin.js.html">mixins/RequireIDMixin.js</a>, <a href="mixins_RequireIDMixin.js.html#line9">line 9</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-    </div>
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <h3 class="subsection-title">Methods</h3>
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="RequireIDMixinInit"><span class="type-signature"></span>RequireIDMixinInit<span class="signature">()</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    Mixin - init
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mixins_RequireIDMixin.js.html">mixins/RequireIDMixin.js</a>, <a href="mixins_RequireIDMixin.js.html#line15">line 15</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-    
-
-    
-
-    
-</article>
-
-</section>
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import {WithIDBase} from '../bases/WithIDBase'
+import {CoreException} from '../CoreException'
+
+export const CHANGED = 'CHANGED'
+
+/**
+ * @interface
+ * @extends WithIDBase
+ */
+export class StoreInterface extends WithIDBase {
+  /**
+   * @param {String} type
+   * @param {Function} callback
+   * @param {Object} scope
+   * @param {Integer} priority
+   * @return {String} token
+   */
+  subscribe(type, callback, scope, priority) {
+    throw new CoreException(`subscribe should be override with this signature :
+   /**
+   * @param {String} type
+   * @param {Function} callback
+   * @param {Object} scope
+   * @param {Integer} priority
+   * @return {String} token
+   */
+   `, 'METHOD_NOT_OVERRIDE')
+  }
+
+  /**
+   * @return {State#data} state#data frozen
+   */
+  data() {
+    throw new CoreException(`data should be override with this signature :
+   /**
+   * @return {State#data} state#data frozen
+   */
+   `, 'METHOD_NOT_OVERRIDE')
+  }
+
+  /**
+   * @returns {State} state frozen
+   */
+  state() {
+    throw new CoreException(`state should be override with this signature :
+   /**
+   * @return {State} state frozen
+   */
+   `, 'METHOD_NOT_OVERRIDE')
+  }
+}
+</code></pre>
+        </article>
+    </section>
 
 
 

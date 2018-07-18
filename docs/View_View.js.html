@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: View/View.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: View/View.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict'
+import {CoreException} from '../CoreException'
+import {CLASS_TAG_NAME} from '../CLASS_TAG_NAME'
+import {assert, isBoolean, isFunction, isNode, isString, valueByKeys} from 'flexio-jshelpers'
+import {$} from '../HotballoonElement/HotBalloonAttributeHandler'
+import {reconcile} from 'flexio-nodes-reconciliation'
+import {html} from '../HotballoonElement/CreateHotBalloonElement'
+import {ViewContainerBase} from './ViewContainerBase'
+import {CHANGED as STORE_CHANGED, StoreInterface} from '../Store/StoreInterface'
+import {ViewStoresParameters} from './ViewStoresParameters'
+
+export class ViewParameters {
+  /**
+   * @constructor
+   * @param {string} id
+   * @param {ViewContainerBase} container
+   */
+  constructor(id, container) {
+    assert(!!isString(id),
+      'hotballoon:View:ViewParameters: `id` argument assert be a String'
+    )
+    assert(container instanceof ViewContainerBase,
+      'hotballoon:View:ViewParameters: `container` argument should be an instance of `ViewContainerBase`'
+    )
+
+    Object.defineProperties(this, {
+
+      id: {
+        configurable: false,
+        enumerable: false,
+        writable: false,
+        /**
+           * @type {String}
+           * @name ViewParameters#id
+           */
+        value: id
+      },
+      container: {
+        configurable: false,
+        enumerable: false,
+        writable: false,
+        /**
+           * @type {ViewContainerBase}
+           * @name ViewParameters#container
+           */
+        value: container
+      }
+    }
+    )
+  }
+}
+
+export const ATTRIBUTE_NODEREF = '_hb_noderef'
+export const CLASS_TAG_NAME_VIEW = Symbol('__HB__VIEW__')
+
+/**
+ * @class
+ * @description View describe a fragment of DOM
+ * @extends ViewContainerBase
+ */
+class View extends ViewContainerBase {
+  /**
+   * @constructor
+   * @param {ViewParameters} viewParameters
+   * @param {ViewStoresParameters} stores
+   */
+  constructor(viewParameters, stores) {
+    super(viewParameters.id, stores)
+    assert(viewParameters instanceof ViewParameters, 'hotballoon:' + this.constructor.name + ':constructor: `viewParameters` should be an instance of ViewParameters')
+    assert(stores instanceof ViewStoresParameters, 'hotballoon:' + this.constructor.name + ':constructor: `stores` should be an instance of ViewStoresParameters')
+
+    this.debug.color = 'blue'
+    this.parentNode = viewParameters.container.parentNode
+
+    var _node = null
+    var _shouldInit = true
+    var _shouldRender = true
+    var _shouldMount = true
+    const _nodeRefs = new Map()
+    const _state = new Map()
+
+    /**
+     * @property {string} CLASS_TAG_NAME
+     */
+    Object.defineProperty(this, CLASS_TAG_NAME, {
+      configurable: false,
+      writable: false,
+      enumerable: true,
+      value: CLASS_TAG_NAME_VIEW
+    })
+
+    Object.defineProperties(this, {
+      _container: {
+        enumerable: false,
+        configurable: false,
+        /**
+         * @property {ViewContainerBase}
+         * @name View#_container
+         * @protected
+         */
+        value: viewParameters.container
+      },
+      _node: {
+        enumerable: false,
+        configurable: false,
+        get: () => {
+          /**
+           * @property {Node} _node
+           * @name View#_node
+           * @private
+           */
+          return _node
+        },
+        set: (node) => {
+          assert(isNode(node),
+            'View:_node:set: `node` argument assert be a Node, `%s` given',
+            typeof node
+          )
+          _node = node
+        }
+      },
+      /**
+       * @property {boolean} _shouldInit
+       * @name View#_shouldInit
+       * @private
+       */
+      _shouldInit: {
+        configurable: false,
+        enumerable: false,
+        get: () => {
+          return _shouldInit
+        },
+        set: (v) => {
+          assert(!!isBoolean(v),
+            'hotballoon:View:constructor: `_shouldInit` argument should be a boolean'
+          )
+          _shouldInit = v
+        }
+      },
+      /**
+       * @property {boolean} _shouldRender
+       * @name View#_shouldRender
+       * @private
+       */
+      _shouldRender: {
+        configurable: false,
+        enumerable: false,
+        get: () => {
+          return _shouldRender
+        },
+        set: (v) => {
+          assert(!!isBoolean(v),
+            'hotballoon:View:constructor: `_shouldRender` argument should be a boolean'
+          )
+          _shouldRender = v
+        }
+      },
+      /**
+       * @property {boolean} _shouldMount
+       * @name View#_shouldMount
+       * @private
+       */
+      _shouldMount: {
+        configurable: false,
+        enumerable: false,
+        get: () => {
+          return _shouldMount
+        },
+        set: (v) => {
+          assert(!!isBoolean(v),
+            'hotballoon:View:constructor: `_shouldMount` argument should be a boolean'
+          )
+          _shouldMount = v
+        }
+      },
+      /**
+       * @property {Map} _nodeRefs
+       * @name View#_nodeRefs
+       * @private
+       */
+      _nodeRefs: {
+        configurable: false,
+        enumerable: false,
+        get: () => {
+          return _nodeRefs
+        },
+        set: (v) => {
+          return false
+        }
+      },
+      _state: {
+        configurable: false,
+        enumerable: false,
+        /**
+         * @property {Map} _state
+         * @name View#_state
+         * @private
+         */
+        value: _state
+      }
+
+    })
+  }
+
+  /**
+   * @static
+   * @param {ViewParameters} viewParameters
+   * @param {ViewStoresParameters} stores
+   * @return View
+   */
+  static create(viewParameters, stores = new ViewStoresParameters()) {
+    return new this(viewParameters, stores)
+  }
+
+  /**
+   *
+   * @static
+   * @param {ViewParameters} viewParameters
+   * @param {ViewStoresParameters} stores
+   * @param {Node} parentNode
+   * @return View
+   */
+  static createWithParentNode(viewParameters, stores, parentNode) {
+    const inst = new this(viewParameters, stores)
+    inst.parentNode = parentNode
+    return inst
+  }
+
+  /**
+   * Main method
+   * @return {Node}
+   */
+  view() {
+    throw new CoreException('view should be override', 'METHOD_NOT_OVERRIDE')
+  }
+
+  /**
+   *
+   * @param {String} querySelector
+   * @param {HotballoonElementParams} [hotballoonElementParams]
+   * @return {Node}
+   */
+  html(querySelector, hotballoonElementParams) {
+    return html(this, querySelector, hotballoonElementParams)
+  }
+
+  /**
+   *
+   * @description subscribe subView an event of this view
+   * @param {String} keyStore
+   * @param {updateCallback} clb : event name
+   */
+  _suscribeToStore(keyStore, clb = (oldState, newState) => true) {
+    assert(isFunction(clb), 'hotballoon:' + this.constructor.name + ':_suscribeToStore: `clb` argument should be callable')
+    const store = this._Store(keyStore)
+    assert(store instanceof StoreInterface, 'hotballoon:' + this.constructor.name + ':_suscribeToStore: `keyStore : %s` not reference an instance of StoreInterface', keyStore)
+
+    this._state.set(keyStore, store.data())
+
+    this._tokenEvent.add(
+      store._ID,
+      store.subscribe(
+        STORE_CHANGED,
+        (payload, type) => {
+          const oldState = this._state.get(keyStore)
+          this._state.set(keyStore, payload.data)
+          if (clb(oldState, payload.data)) {
+            this.updateNode()
+          }
+        },
+        this, 100)
+    )
+    /**
+     *
+     * @callback updateCallback
+     * @param {Object} oldState
+     * @param {Object} newState
+     */
+  }
+
+  /**
+   * @private
+   * @description update the node reference of this View
+   */
+  _update() {
+    reconcile(this.node, this.view(), this.parentNode)
+  }
+
+  /**
+   * @public
+   */
+  updateNode() {
+    this.debug.log('updateNode').background()
+    this.debug.print()
+    this._update()
+  }
+
+  /**
+   * @private
+   */
+  _render() {
+    this._replaceNode()
+    this._setNodeViewRef()
+  }
+
+  /**
+   * @return {Node} _node
+   */
+  render() {
+    this.debug.log('render').size(2)
+    this.debug.print()
+
+    if (this._shouldRender) {
+      this._render()
+      this._rendered = true
+    }
+
+    this._shouldRender = true
+    return this.node
+  }
+
+  /**
+   * Set `_shouldRender` to false
+   */
+  shouldNotRender() {
+    this._shouldRender = false
+  }
+
+  /**
+   * @private
+   * @description mount `_node` property into `parentNode` argument
+   */
+  _mount() {
+    this.parentNode.appendChild(this.node)
+  }
+
+  /**
+   * @public
+   * @see _mount()
+   * @param {Node} parentNode
+   */
+  mount() {
+    if (this._shouldMount) {
+      this._mount()
+      this._mounted = true
+    }
+
+    this._shouldMount = true
+  }
+
+  shouldNotMount() {
+    this._shouldMount = false
+  }
+
+  /**
+   * @public
+   * @description Render the View() into `_node` property and mount this into the `parentNode` argument
+   * @param {Node} parentNode
+   */
+  renderAndMount() {
+    this.render()
+    this.mount()
+  }
+
+  /**
+   * @param {String} key
+   * @param {View} view
+   */
+  addNodeView(key, view) {
+    this._setNodeViewRef()
+  }
+
+  /**
+   * @param {String} key
+   * @return {Node} Node
+   */
+  nodeRef(key) {
+    return this._nodeRefs.get(key)
+  }
+
+  /**
+   * @alias nodeRef
+   * @param {String} key
+   * @return {HotBalloonAttributeHandler}
+   */
+  $(key) {
+    return $(this._nodeRefs.get(key))
+  }
+
+  /**
+   * @param {String} key
+   * @param {Node} node
+   * @return {Node} Node
+   * @memberOf NodesHandlerMixin
+   * @instance
+   */
+  addNodeRef(key, node) {
+    return this._setNodeRef(key, node)
+  }
+
+  /**
+   * @param {String} key
+   * @param {Node} node
+   * @return {Node} Node
+   */
+  replaceNodeRef(key, node) {
+    return this._setNodeRef(key, node)
+  }
+
+  /**
+   * @private
+   * @param {String} key
+   * @param {Node} node
+   * @return {Node} node
+   */
+  _setNodeRef(key, node) {
+    $(node).setNodeRef(key)
+    this._nodeRefs.set(key, node)
+    node.setAttribute(ATTRIBUTE_NODEREF, key)
+    return node
+  }
+
+  /**
+   * @private
+   */
+  _setNodeViewRef() {
+    $(this.node).setViewRef(this._ID)
+  }
+
+  /**
+   * @return {Node} node
+   */
+  get node() {
+    return this._node
+  }
+
+  /**
+   * @return {Node} node
+   */
+  _replaceNode() {
+    this._node = this.view()
+    return this._node
+  }
+
+  /**
+   * @return {ViewContainerBase}
+   */
+  Container() {
+    return this._container
+  }
+
+  /**
+   *
+   * @return {HotBalloonApplication}
+   */
+  APP() {
+    return this.Component().APP()
+  }
+
+  /**
+   *
+   * @return {Component}
+   */
+  Component() {
+    return this.Container().Component()
+  }
+
+  /**
+   *
+   * @param key
+   * @param defaultValue
+   * @protected
+   */
+  _stateValue(key, defaultValue = null) {
+    return (this._state.has(key)) ? this._state.get(key) : defaultValue
+  }
+
+  /**
+   *
+   * @param {array&lt;string>} keys
+   * @param defaultValue
+   * @protected
+   */
+  _stateValueByKeys(keys, defaultValue = null) {
+    const keyStore = keys.shift()
+    if (this._state.has(keyStore)) {
+      return (keys.length) ? valueByKeys(this._state.get(keyStore), keys, defaultValue) : this._state.get(keyStore)
+    }
+    return defaultValue
+  }
+}
+
+export {View}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Action.html">Action</a></li><li><a href="ApplicationContextMixin.html">ApplicationContextMixin</a></li><li><a href="Component.html">Component</a></li><li><a href="CreateHotBalloonElement.html">CreateHotBalloonElement</a></li><li><a href="Dispatcher.html">Dispatcher</a></li><li><a href="EventHandlerBase.html">EventHandlerBase</a></li><li><a href="EventOrderedHandler.html">EventOrderedHandler</a></li><li><a href="HotBalloonApplication.html">HotBalloonApplication</a></li><li><a href="HotBalloonAttributeHandler.html">HotBalloonAttributeHandler</a></li><li><a href="HotballoonElementParams.html">HotballoonElementParams</a></li><li><a href="PrivateStateMixin.html">PrivateStateMixin</a></li><li><a href="ProxyStore.html">ProxyStore</a></li><li><a href="RequireIDMixin.html">RequireIDMixin</a></li><li><a href="State_State.html">State</a></li><li><a href="Storage.html">Storage</a></li><li><a href="Store.html">Store</a></li><li><a href="StoreModel.html">StoreModel</a></li><li><a href="View.html">View</a></li><li><a href="ViewContainer.html">ViewContainer</a></li><li><a href="ViewContainer_Component.html">Component</a></li><li><a href="ViewContainerBase.html">ViewContainerBase</a></li><li><a href="ViewContainerContextMixin.html">ViewContainerContextMixin</a></li><li><a href="ViewContainerParameters_ViewContainerParameters.html">ViewContainerParameters</a></li><li><a href="ViewParameters_ViewParameters.html">ViewParameters</a></li><li><a href="WithIDBase.html">WithIDBase</a></li></ul><h3>Interfaces</h3><ul><li><a href="DataStoreHandlerInterface.html">DataStoreHandlerInterface</a></li><li><a href="DataStoreInterface.html">DataStoreInterface</a></li><li><a href="StoreInterface.html">StoreInterface</a></li></ul><h3>Global</h3><ul><li><a href="global.html#_componentId">_componentId</a></li><li><a href="global.html#nodeRef">nodeRef</a></li><li><a href="global.html#ROOT,">ROOT,</a></li><li><a href="global.html#StoreByRegister">StoreByRegister</a></li><li><a href="global.html#StoreDataByRegister">StoreDataByRegister</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Jul 18 2018 17:15:53 GMT+0200 (CEST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

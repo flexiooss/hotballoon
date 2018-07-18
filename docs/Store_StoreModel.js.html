@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: bases/EventHandlerBase.js</title>
+    <title>JSDoc: Source: Store/StoreModel.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: bases/EventHandlerBase.js</h1>
+    <h1 class="page-title">Source: Store/StoreModel.js</h1>
 
     
 
@@ -27,146 +27,65 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>'use strict'
-
 import {
-  isFunction,
-  isBoolean,
   assert,
-  Sequence
+  filterObject
 } from 'flexio-jshelpers'
 
 /**
  * @class
  */
-class EventHandlerBase {
+class StoreModel {
   constructor() {
-    this._listeners = new Map()
-    this._pendingPayload = new Map()
-    this._isHandled = new Set()
-    this._isPending = new Set()
-    this._sequenceId = new Sequence(this._ID)
+    this._schema = new Map()
+  }
 
-    this._lastID = 0
+  /**
+     * @returns {Map}
+     */
+  get() {
+    return this._schema
+  }
 
-    var _isDispatching = false
-    Object.defineProperty(this, '_isDispatching', {
-      enumerable: false,
-      configurable: false,
-      get: () => _isDispatching,
-      set: (newIsDispatching) => {
-        assert(isBoolean(newIsDispatching),
-          'hotballoonView:Dispatcher: `newIsDispatching` argument assert be a Boolean'
-        )
-        _isDispatching = newIsDispatching
-      }
+  /**
+     *
+     * @param {Object} schemaProperty
+     * { id: &lt;string>,name: &lt;string>, type: &lt;string> text|number|...  }
+     */
+  addSchemaProp(schemaProperty) {
+    assert(
+      ('id' in schemaProperty) &amp;&amp; ('name' in schemaProperty) &amp;&amp; ('type' in schemaProperty),
+      'hotballoon:Model:setSchemaProp: `schemaProperty` argument assert be an Object : {id:id, name:name, type:type}'
+    )
+    this._schema.set(schemaProperty.id, {
+      name: schemaProperty.name,
+      type: schemaProperty.type
     })
   }
 
   /**
-   *
-   * @param {String} type of Listener
-   * @param {Object} payload
-   */
-  dispatch(type, payload) {
-    this._beforeDispatching(type, payload)
-    if (this._listeners.has(type)) {
-      try {
-        for (let id in this._listeners.get(type)) {
-          if (this._isPending.has(id)) {
-            continue
-          }
-          this._invokeCallback(type, id)
-        }
-      } finally {
-        this._stopDispatching()
-      }
-    }
+     *
+     * @param {Object} state
+     */
+  fillState(state) {
+    return this._inModel(state)
   }
 
   /**
-   *
-   * @private
-   * @param {String} type of Listener
-   * @param {String} id : token of listener
-   */
-  _invokeCallback(type, id) {
-    this._isPending.add(id)
-    this._listeners.get(type)[id].callback(this._pendingPayload.get(type), type)
-    this._isHandled.add(id)
-  }
-
-  /**
-   *
-   * @param {String} type of Listener
-   * @param {Function} callback
-   * @returns {String} token
-   */
-  addEventListener(type, callback) {
-    assert(!!type,
-      'hotballoon:EventHandler:addEventListener: ̀`type` argument assert not be empty'
-    )
-    assert(isFunction(callback),
-      'hotballoon:EventHandler:addEventListener: ̀`callback` argument assert be Callable'
-    )
-
-    if (!(this._listeners.has(type))) {
-      this._listeners.set(type, {})
+     * @private
+     * @param {Object} object
+     */
+  _inModel(object) {
+    if (this.hasModel) {
+      filterObject(object, (value, key, scope) => {
+        return this.get().has(key)
+      })
     }
-    let id = this._sequenceId.nextID().toString()
-
-    this._listeners.get(type)[id] = {
-      callback: callback
-    }
-
-    return id
-  }
-
-  /**
-   *
-   * @param {String} type of Listener
-   * @param {String} id : token
-   */
-  removeEventListener(type, id) {
-    if (this._listeners.has(type)) {
-      assert(id in this._listeners.get(type),
-        'hotballoon:EventHandlerBase:removeEventListener: ̀`id` argument not in _listeners : `%s`',
-        type
-      )
-      delete this._listeners.get(type)[id]
-    }
-  }
-
-  /**
-   *
-   * @param {String} type of Listener
-   * @param {String} id : token
-   * @returns {boolean}
-   */
-  hasEventListener(type, id) {
-    return (this._listeners.has(type)) &amp;&amp; (id in this._listeners.get(type))
-  }
-
-  _beforeDispatching(type, payload) {
-    for (let id in this._listeners.get(type)) {
-      this._isPending.delete(id)
-      this._isHandled.delete(id)
-    }
-    this._pendingPayload.set(type, payload)
-    this._isDispatching = true
-  }
-
-  _stopDispatching(type) {
-    this._pendingPayload.delete(type)
-    this._isDispatching = false
-  }
-
-  isDispatching() {
-    return this._isDispatching
+    return object
   }
 }
-
 export {
-  EventHandlerBase
+  StoreModel
 }
 </code></pre>
         </article>

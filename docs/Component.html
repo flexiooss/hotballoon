@@ -93,7 +93,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Component.js.html">Component.js</a>, <a href="Component.js.html#line34">line 34</a>
+        <a href="Component.js.html">Component.js</a>, <a href="Component.js.html#line39">line 39</a>
     </li></ul></dd>
     
 
@@ -136,6 +136,8 @@
         <li><a href="RequireIDMixin.html">RequireIDMixin</a></li>
     
         <li><a href="PrivateStateMixin.html">PrivateStateMixin</a></li>
+    
+        <li><a href="Debugable.html">Debugable</a></li>
     </ul>
 
 
@@ -151,6 +153,83 @@
 
     
 
+    
+        <h3 class="subsection-title">Members</h3>
+
+        
+            
+<h4 class="name" id="debug"><span class="type-signature"></span>debug<span class="type-signature"> :LogHandler</span></h4>
+
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">LogHandler</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Debugable.html#debug">Debugable#debug</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="bases_Debugable.js.html">bases/Debugable.js</a>, <a href="bases_Debugable.js.html#line9">line 9</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
     
 
     
@@ -346,7 +425,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Component.js.html">Component.js</a>, <a href="Component.js.html#line150">line 150</a>
+        <a href="Component.js.html">Component.js</a>, <a href="Component.js.html#line157">line 157</a>
     </li></ul></dd>
     
 
@@ -442,7 +521,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Component.js.html">Component.js</a>, <a href="Component.js.html#line163">line 163</a>
+        <a href="Component.js.html">Component.js</a>, <a href="Component.js.html#line170">line 170</a>
     </li></ul></dd>
     
 
@@ -1055,7 +1134,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Component.js.html">Component.js</a>, <a href="Component.js.html#line199">line 199</a>
+        <a href="Component.js.html">Component.js</a>, <a href="Component.js.html#line206">line 206</a>
     </li></ul></dd>
     
 
@@ -1209,7 +1288,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Component.js.html">Component.js</a>, <a href="Component.js.html#line188">line 188</a>
+        <a href="Component.js.html">Component.js</a>, <a href="Component.js.html#line195">line 195</a>
     </li></ul></dd>
     
 
@@ -1385,7 +1464,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Component.js.html">Component.js</a>, <a href="Component.js.html#line179">line 179</a>
+        <a href="Component.js.html">Component.js</a>, <a href="Component.js.html#line186">line 186</a>
     </li></ul></dd>
     
 
@@ -1538,7 +1617,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Component.js.html">Component.js</a>, <a href="Component.js.html#line207">line 207</a>
+        <a href="Component.js.html">Component.js</a>, <a href="Component.js.html#line214">line 214</a>
     </li></ul></dd>
     
 
@@ -1691,7 +1770,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Component.js.html">Component.js</a>, <a href="Component.js.html#line243">line 243</a>
+        <a href="Component.js.html">Component.js</a>, <a href="Component.js.html#line250">line 250</a>
     </li></ul></dd>
     
 
@@ -1992,6 +2071,180 @@
     
 
     
+    <h4 class="name" id="debugable"><span class="type-signature"></span>debugable<span class="signature">(value<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="Debugable.html">Debugable</a>}</span></h4>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    true
+                
+                </td>
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Debugable.html#debugable">Debugable#debugable</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="bases_Debugable.js.html">bases/Debugable.js</a>, <a href="bases_Debugable.js.html#line23">line 23</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="Debugable.html">Debugable</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
     <h4 class="name" id="Dispatcher"><span class="type-signature"></span>Dispatcher<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="Dispatcher.html">Dispatcher</a>}</span></h4>
     
 
@@ -2194,7 +2447,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Component.js.html">Component.js</a>, <a href="Component.js.html#line274">line 274</a>
+        <a href="Component.js.html">Component.js</a>, <a href="Component.js.html#line281">line 281</a>
     </li></ul></dd>
     
 
@@ -2434,7 +2687,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Component.js.html">Component.js</a>, <a href="Component.js.html#line253">line 253</a>
+        <a href="Component.js.html">Component.js</a>, <a href="Component.js.html#line260">line 260</a>
     </li></ul></dd>
     
 
@@ -2543,7 +2796,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mixins_RequireIDMixin.js.html">mixins/RequireIDMixin.js</a>, <a href="mixins_RequireIDMixin.js.html#line17">line 17</a>
+        <a href="mixins_RequireIDMixin.js.html">mixins/RequireIDMixin.js</a>, <a href="mixins_RequireIDMixin.js.html#line15">line 15</a>
     </li></ul></dd>
     
 
@@ -2779,7 +3032,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Component.js.html">Component.js</a>, <a href="Component.js.html#line217">line 217</a>
+        <a href="Component.js.html">Component.js</a>, <a href="Component.js.html#line224">line 224</a>
     </li></ul></dd>
     
 
@@ -2835,7 +3088,7 @@
     
 
     
-    <h4 class="name" id="StoreByRegister"><span class="type-signature"></span>StoreByRegister<span class="signature">(key)</span><span class="type-signature"> &rarr; {hotballoon/Store}</span></h4>
+    <h4 class="name" id="StoreByRegister"><span class="type-signature"></span>StoreByRegister<span class="signature">(key)</span><span class="type-signature"> &rarr; {<a href="Store.html">Store</a>}</span></h4>
     
 
     
@@ -2932,7 +3185,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Component.js.html">Component.js</a>, <a href="Component.js.html#line226">line 226</a>
+        <a href="Component.js.html">Component.js</a>, <a href="Component.js.html#line233">line 233</a>
     </li></ul></dd>
     
 
@@ -2970,7 +3223,7 @@
     </dt>
     <dd>
         
-<span class="param-type">hotballoon/Store</span>
+<span class="param-type"><a href="Store.html">Store</a></span>
 
 
     </dd>
@@ -3085,7 +3338,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Component.js.html">Component.js</a>, <a href="Component.js.html#line234">line 234</a>
+        <a href="Component.js.html">Component.js</a>, <a href="Component.js.html#line241">line 241</a>
     </li></ul></dd>
     
 
@@ -3238,7 +3491,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Component.js.html">Component.js</a>, <a href="Component.js.html#line265">line 265</a>
+        <a href="Component.js.html">Component.js</a>, <a href="Component.js.html#line272">line 272</a>
     </li></ul></dd>
     
 
@@ -3346,7 +3599,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Component.js.html">Component.js</a>, <a href="Component.js.html#line171">line 171</a>
+        <a href="Component.js.html">Component.js</a>, <a href="Component.js.html#line178">line 178</a>
     </li></ul></dd>
     
 
@@ -3390,13 +3643,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Action.html">Action</a></li><li><a href="ApplicationContextMixin.html">ApplicationContextMixin</a></li><li><a href="Component.html">Component</a></li><li><a href="ComponentContextMixin.html">ComponentContextMixin</a></li><li><a href="CreateHotBalloonElement.html">CreateHotBalloonElement</a></li><li><a href="DebugableMixin.html">DebugableMixin</a></li><li><a href="Dispatcher.html">Dispatcher</a></li><li><a href="EventHandlerBase.html">EventHandlerBase</a></li><li><a href="EventOrderedHandler.html">EventOrderedHandler</a></li><li><a href="HotBalloonApplication.html">HotBalloonApplication</a></li><li><a href="HotBalloonAttributeHandler.html">HotBalloonAttributeHandler</a></li><li><a href="HotballoonElementParams.html">HotballoonElementParams</a></li><li><a href="PrivateStateMixin.html">PrivateStateMixin</a></li><li><a href="RequireIDMixin.html">RequireIDMixin</a></li><li><a href="Storage.html">Storage</a></li><li><a href="Store.html">Store</a></li><li><a href="StoreModel.html">StoreModel</a></li><li><a href="View.html">View</a></li><li><a href="ViewContainer.html">ViewContainer</a></li><li><a href="ViewContainerContextMixin.html">ViewContainerContextMixin</a></li><li><a href="ViewContainerParameters_ViewContainerParameters.html">ViewContainerParameters</a></li></ul><h3>Global</h3><ul><li><a href="global.html#__HB__CLASSNAME__">__HB__CLASSNAME__</a></li><li><a href="global.html#_actions">_actions</a></li><li><a href="global.html#_componentId">_componentId</a></li><li><a href="global.html#_dispatcher">_dispatcher</a></li><li><a href="global.html#_EventHandler">_EventHandler</a></li><li><a href="global.html#_isMounted">_isMounted</a></li><li><a href="global.html#_isRendered">_isRendered</a></li><li><a href="global.html#_log">_log</a></li><li><a href="global.html#_node">_node</a></li><li><a href="global.html#_nodeRefs">_nodeRefs</a></li><li><a href="global.html#_shouldChangeState">_shouldChangeState</a></li><li><a href="global.html#_shouldInit">_shouldInit</a></li><li><a href="global.html#_shouldMount">_shouldMount</a></li><li><a href="global.html#_shouldRender">_shouldRender</a></li><li><a href="global.html#_shouldUpdate">_shouldUpdate</a></li><li><a href="global.html#_subViews">_subViews</a></li><li><a href="global.html#_tokenEvent">_tokenEvent</a></li><li><a href="global.html#component">component</a></li><li><a href="global.html#nodeRef">nodeRef</a></li><li><a href="global.html#parentNode">parentNode</a></li><li><a href="global.html#ROOT,">ROOT,</a></li><li><a href="global.html#StoreByRegister">StoreByRegister</a></li><li><a href="global.html#StoreDataByRegister">StoreDataByRegister</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Action.html">Action</a></li><li><a href="ApplicationContextMixin.html">ApplicationContextMixin</a></li><li><a href="Component.html">Component</a></li><li><a href="CreateHotBalloonElement.html">CreateHotBalloonElement</a></li><li><a href="Dispatcher.html">Dispatcher</a></li><li><a href="EventHandlerBase.html">EventHandlerBase</a></li><li><a href="EventOrderedHandler.html">EventOrderedHandler</a></li><li><a href="HotBalloonApplication.html">HotBalloonApplication</a></li><li><a href="HotBalloonAttributeHandler.html">HotBalloonAttributeHandler</a></li><li><a href="HotballoonElementParams.html">HotballoonElementParams</a></li><li><a href="PrivateStateMixin.html">PrivateStateMixin</a></li><li><a href="ProxyStore.html">ProxyStore</a></li><li><a href="RequireIDMixin.html">RequireIDMixin</a></li><li><a href="State_State.html">State</a></li><li><a href="Storage.html">Storage</a></li><li><a href="Store.html">Store</a></li><li><a href="StoreModel.html">StoreModel</a></li><li><a href="View.html">View</a></li><li><a href="ViewContainer.html">ViewContainer</a></li><li><a href="ViewContainer_Component.html">Component</a></li><li><a href="ViewContainerBase.html">ViewContainerBase</a></li><li><a href="ViewContainerContextMixin.html">ViewContainerContextMixin</a></li><li><a href="ViewContainerParameters_ViewContainerParameters.html">ViewContainerParameters</a></li><li><a href="ViewParameters_ViewParameters.html">ViewParameters</a></li><li><a href="WithIDBase.html">WithIDBase</a></li></ul><h3>Interfaces</h3><ul><li><a href="DataStoreHandlerInterface.html">DataStoreHandlerInterface</a></li><li><a href="DataStoreInterface.html">DataStoreInterface</a></li><li><a href="StoreInterface.html">StoreInterface</a></li></ul><h3>Global</h3><ul><li><a href="global.html#_componentId">_componentId</a></li><li><a href="global.html#nodeRef">nodeRef</a></li><li><a href="global.html#ROOT,">ROOT,</a></li><li><a href="global.html#StoreByRegister">StoreByRegister</a></li><li><a href="global.html#StoreDataByRegister">StoreDataByRegister</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Jul 12 2018 15:38:49 GMT+0200 (CEST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Jul 18 2018 17:15:53 GMT+0200 (CEST)
 </footer>
 
 <script> prettyPrint(); </script>
