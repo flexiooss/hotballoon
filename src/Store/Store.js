@@ -4,6 +4,7 @@ import {assert, staticClassName} from 'flexio-jshelpers'
 import {Storage} from './Storage'
 import {CLASS_TAG_NAME} from '../CLASS_TAG_NAME'
 import {StoreInterface, CHANGED} from './StoreInterface'
+import {DataStoreInterface} from './DataStoreInterface'
 
 export const CLASS_TAG_NAME_STORE = Symbol('__HB__STORE__')
 
@@ -19,17 +20,18 @@ export class Store extends StoreInterface {
   /**
    * @constructor
    * @param {String} id
-   * @param {Store} storage
+   * @param {DataStoreInterface} dataStore
    */
-  constructor(id, storeInit) {
+  constructor(id, dataStore) {
     super(id)
+
+    assert(dataStore instanceof DataStoreInterface,
+      'hotballoon:' + this.constructor.name + ':constructor: `dataStore` argument should be an instance of `DataStoreInterface`')
 
     this.debug.color = 'magentaDark'
 
-    var _storage = Storage.create(this._ID, storeInit)
+    var _storage = Storage.create(this._ID, dataStore.model())
 
-    // assert(storage instanceof Storage,
-    //   'hotballoon:StoreHandler:constructor: `storage` argument should be a `Storage` instance')
     Object.defineProperty(this, CLASS_TAG_NAME, {
       configurable: false,
       writable: false,
@@ -47,10 +49,10 @@ export class Store extends StoreInterface {
         enumerable: false,
         configurable: false,
         get: () => _storage,
-        set: (storageCandidate) => {
-          assert(storageCandidate instanceof Storage,
+        set: (v) => {
+          assert(v instanceof Storage,
             'hotballoon:Store:update: _store property assert be an instance of hotballoon/Storage ')
-          _storage = storageCandidate
+          _storage = v
           this._updated()
         }
       },

@@ -1,6 +1,6 @@
 'use strict'
 import {Dispatcher} from './Dispatcher'
-import {assert, isFunction} from 'flexio-jshelpers'
+import {assert, isFunction, deepFreezeSeal} from 'flexio-jshelpers'
 import {CoreException} from './CoreException'
 import {CLASS_TAG_NAME} from './CLASS_TAG_NAME'
 
@@ -33,13 +33,14 @@ class Action {
     })
 
     Object.defineProperties(this, {
-      /**
-       * @property {hotballoon:Dispatcher} _dispatcher
-       * @private
-       */
       _dispatcher: {
         configurable: false,
         enumerable: false,
+        /**
+         * @property {hotballoon:Dispatcher} _dispatcher
+         * @name Action#_dispatcher
+         * @private
+         */
         value: dispatcher
       },
       /**
@@ -52,12 +53,13 @@ class Action {
         writable: false,
         value: componentId
       },
-      /**
-       * @property {Map<string, Function>} _actions
-       * @private
-       */
       _actions: {
         configurable: false,
+        /**
+         * @property {Map<string, Function>} _actions
+         * @name Action#_actions
+         * @private
+         */
         value: _actions
       }
     })
@@ -66,17 +68,17 @@ class Action {
 
   /**
    * Call on construct
-   * @private
+   * @protected
    */
   _registerActions() {
-    throw new CoreException('_registerActions should be overiderd', 'METHOD_NOT_OVERIDED')
+    throw new CoreException('_registerActions should be override', 'METHOD_NOT_OVERRIDE')
   }
 
   /**
    *
    * @param {string} type
    * @param {Function} callback
-   * @private
+   * @protected
    */
   _registerAction(type, callback = (payload) => {
     return {
@@ -119,7 +121,7 @@ class Action {
    * @return void
    */
   _dispatch(type, payload) {
-    this._dispatcher.dispatch(type, payload)
+    this._dispatcher.dispatch(type, deepFreezeSeal(payload))
   }
 }
 

@@ -7,8 +7,8 @@ export class DataStoreInterface {
   /**
    * @return {any} data init
    */
-  data() {
-    throw new CoreException(`data should be override with this signature :
+  model() {
+    throw new CoreException(`model should be override with this signature :
    /**
    * @return {any} data init
    */

@@ -1,6 +1,5 @@
 import {WithIDBase} from '../bases/WithIDBase'
 import {CoreException} from '../CoreException'
-import {State} from './State'
 
 export const CHANGED = 'CHANGED'
 

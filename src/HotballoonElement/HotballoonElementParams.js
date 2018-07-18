@@ -1,6 +1,9 @@
 'use strict'
 import {HyperFlexParams} from 'flexio-hyperflex'
 
+/**
+ * @extends HyperFlexParams
+ */
 class HotballoonElementParams extends HyperFlexParams {
   /**
    * @return {HotballoonElementParams}
@@ -40,7 +43,7 @@ class HotballoonElementParams extends HyperFlexParams {
   /**
    * @static
    * @param {Array<View>} views
-   * @return {HyperFlexParams}
+   * @return {HotballoonElementParams}
    */
   static withViews(views) {
     const i = new this()
@@ -51,7 +54,7 @@ class HotballoonElementParams extends HyperFlexParams {
   /**
    * @static
    * @param {Array<String>} rules
-   * @return {HyperFlexParams}
+   * @return {HotballoonElementParams}
    */
   static withReconciliationRules(rules) {
     return new this().addReconciliationRules(rules)

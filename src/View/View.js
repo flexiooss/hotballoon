@@ -381,10 +381,10 @@ class View extends ViewContainerBase {
   /**
    * @alias nodeRef
    * @param {String} key
-   * @return {Node} Node
+   * @return {HotBalloonAttributeHandler}
    */
   $(key) {
-    return this._nodeRefs.get(key)
+    return $(this._nodeRefs.get(key))
   }
 
   /**
