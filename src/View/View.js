@@ -193,8 +193,9 @@ class View extends ViewContainerBase {
         enumerable: false,
         /**
          * @property {Map} _state
+         * @type {Map<string, any}
          * @name View#_state
-         * @private
+         * @protected
          */
         value: _state
       }
@@ -264,7 +265,7 @@ class View extends ViewContainerBase {
         (payload, type) => {
           const oldState = this._state.get(keyStore)
           this._state.set(keyStore, payload.data)
-          if (clb(oldState, payload.data)) {
+          if (clb(oldState, payload.data) === true) {
             this.updateNode()
           }
         },

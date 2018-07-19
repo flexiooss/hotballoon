@@ -1,3 +1,6 @@
+'use strict'
+import {deepFreezeSeal} from 'flexio-jshelpers'
+
 export class State {
   /**
    *
@@ -19,7 +22,7 @@ export class State {
         value: data
       }
     })
-    Object.freeze(Object.seal(this))
+    deepFreezeSeal(this)
   }
 
   /**

@@ -37,7 +37,7 @@ class CreateHotBalloonElement extends HyperFlex {
   static html(scope, querySelector, hotballoonElementParams) {
     return new CreateHotBalloonElement(scope, querySelector, hotballoonElementParams)
       .createHtmlElement()
-      ._changeIdAndSetNodeRef()
+      .__changeIdAndSetNodeRef()
       ._element
   }
 
@@ -46,10 +46,10 @@ class CreateHotBalloonElement extends HyperFlex {
    * @private
    * @return {CreateHotBalloonElement}
    */
-  _changeIdAndSetNodeRef() {
+  __changeIdAndSetNodeRef() {
     const shortId = this._element.id
     if (shortId) {
-      this._element.id = this._generateIdFromScope(shortId)
+      this._element.id = this.__generateIdFromScope(shortId)
       this._setNodeRef(shortId, this._element)
     }
     return this
@@ -61,7 +61,7 @@ class CreateHotBalloonElement extends HyperFlex {
    * @param {String} id
    * @return {String}
    */
-  _generateIdFromScope(id) {
+  __generateIdFromScope(id) {
     return this._scope.APP()._ID +
       '-' + this._scope.Component()._ID +
       '-' + this._scope.Container()._ID +
@@ -87,8 +87,9 @@ class CreateHotBalloonElement extends HyperFlex {
    */
   _setParams() {
     super._setParams()
-    return this._setViews(this._hyperFlexParams.views)
-      ._setReconciliationRule(this._hyperFlexParams.reconciliationRules)
+    return this._setViews(this._params.views)
+      .__setReconciliationRule(this._params.reconciliationRules)
+      .__setReconciliationProperties(Object.keys(this._params.properties))
   }
 
   /**
@@ -111,8 +112,18 @@ class CreateHotBalloonElement extends HyperFlex {
    * @param {Array<string>} rules
    * @return {CreateHotBalloonElement}
    */
-  _setReconciliationRule(rules) {
+  __setReconciliationRule(rules) {
     $(this._element).addReconcileRules(rules)
+    return this
+  }
+
+  /**
+   * @private
+   * @param {Array<string>} propertiesToReconciliate
+   * @return {CreateHotBalloonElement}
+   */
+  __setReconciliationProperties(propertiesToReconciliate) {
+    $(this._element).addReconcileProperties(propertiesToReconciliate)
     return this
   }
 }

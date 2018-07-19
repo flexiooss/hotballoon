@@ -1,11 +1,11 @@
 'use strict'
-import { ListenerAttributeHandler } from 'flexio-nodes-reconciliation'
-import { KEY } from './constantes'
+import {AttributeHandler} from 'flexio-nodes-reconciliation'
+import {KEY} from './constantes'
 
 /**
- * @extends ListenerAttributeHandler
+ * @extends AttributeHandler
  */
-class HotBalloonAttributeHandler extends ListenerAttributeHandler {
+class HotBalloonAttributeHandler extends AttributeHandler {
   /**
    * @static
    * @param {Node} element
@@ -57,6 +57,7 @@ class HotBalloonAttributeHandler extends ListenerAttributeHandler {
     return (KEY.NODE_REF in this.privateAttribute) ? this.privateAttribute[KEY.NODE_REF] : null
   }
 }
+
 export const select = HotBalloonAttributeHandler.select
 export const $ = HotBalloonAttributeHandler.select
 export {
