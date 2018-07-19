@@ -19,16 +19,16 @@
 
     <h1 class="page-title">Source: ViewContainer.js</h1>
 
-    
 
 
 
-    
+
+
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>'use strict'
 import { CLASS_TAG_NAME } from './CLASS_TAG_NAME'
-import { EventOrderedHandler } from './EventOrderedHandler'
+import { EventOrderedHandlerOld } from './EventOrderedHandlerOld'
 import { MapOfInstance, MapOfArray, isNode, isString, isBoolean, assert, isIterable } from 'flexio-jshelpers'
 import { ComponentContextMixin } from './mixins/ComponentContextMixin'
 import { RequireIDMixin } from './mixins/RequireIDMixin'
@@ -113,7 +113,7 @@ export class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateS
     this.RequireIDMixinInit(viewContainerParameters.id)
     this.PrivateStateMixinInit()
 
-    const EVENT_HANDLER = Object.seal(new EventOrderedHandler())
+    const EVENT_HANDLER = Object.seal(new EventOrderedHandlerOld())
     var _mounted = false
     var _rendered = false
     var _tokenEvent = new MapOfArray()
@@ -391,7 +391,7 @@ export class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateS
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Action.html">Action</a></li><li><a href="ApplicationContextMixin.html">ApplicationContextMixin</a></li><li><a href="Component.html">Component</a></li><li><a href="ComponentContextMixin.html">ComponentContextMixin</a></li><li><a href="CreateHotBalloonElement.html">CreateHotBalloonElement</a></li><li><a href="DebugableMixin.html">DebugableMixin</a></li><li><a href="Dispatcher.html">Dispatcher</a></li><li><a href="EventHandlerBase.html">EventHandlerBase</a></li><li><a href="EventOrderedHandler.html">EventOrderedHandler</a></li><li><a href="HotBalloonApplication.html">HotBalloonApplication</a></li><li><a href="HotBalloonAttributeHandler.html">HotBalloonAttributeHandler</a></li><li><a href="HotballoonElementParams.html">HotballoonElementParams</a></li><li><a href="PrivateStateMixin.html">PrivateStateMixin</a></li><li><a href="RequireIDMixin.html">RequireIDMixin</a></li><li><a href="Storage.html">Storage</a></li><li><a href="Store.html">Store</a></li><li><a href="StoreModel.html">StoreModel</a></li><li><a href="View.html">View</a></li><li><a href="ViewContainer.html">ViewContainer</a></li><li><a href="ViewContainerContextMixin.html">ViewContainerContextMixin</a></li><li><a href="ViewContainerParameters_ViewContainerParameters.html">ViewContainerParameters</a></li></ul><h3>Global</h3><ul><li><a href="global.html#__HB__CLASSNAME__">__HB__CLASSNAME__</a></li><li><a href="global.html#_actions">_actions</a></li><li><a href="global.html#_componentId">_componentId</a></li><li><a href="global.html#_dispatcher">_dispatcher</a></li><li><a href="global.html#_EventHandler">_EventHandler</a></li><li><a href="global.html#_isMounted">_isMounted</a></li><li><a href="global.html#_isRendered">_isRendered</a></li><li><a href="global.html#_log">_log</a></li><li><a href="global.html#_node">_node</a></li><li><a href="global.html#_nodeRefs">_nodeRefs</a></li><li><a href="global.html#_shouldChangeState">_shouldChangeState</a></li><li><a href="global.html#_shouldInit">_shouldInit</a></li><li><a href="global.html#_shouldMount">_shouldMount</a></li><li><a href="global.html#_shouldRender">_shouldRender</a></li><li><a href="global.html#_shouldUpdate">_shouldUpdate</a></li><li><a href="global.html#_subViews">_subViews</a></li><li><a href="global.html#_tokenEvent">_tokenEvent</a></li><li><a href="global.html#component">component</a></li><li><a href="global.html#nodeRef">nodeRef</a></li><li><a href="global.html#parentNode">parentNode</a></li><li><a href="global.html#ROOT,">ROOT,</a></li><li><a href="global.html#StoreByRegister">StoreByRegister</a></li><li><a href="global.html#StoreDataByRegister">StoreDataByRegister</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Action.html">Action</a></li><li><a href="ApplicationContextMixin.html">ApplicationContextMixin</a></li><li><a href="Component.html">Component</a></li><li><a href="ComponentContextMixin.html">ComponentContextMixin</a></li><li><a href="CreateHotBalloonElement.html">CreateHotBalloonElement</a></li><li><a href="DebugableMixin.html">DebugableMixin</a></li><li><a href="Dispatcher.html">Dispatcher</a></li><li><a href="EventHandlerBase.html">EventHandlerBase</a></li><li><a href="EventOrderedHandler.html">EventOrderedHandlerOld</a></li><li><a href="HotBalloonApplication.html">HotBalloonApplication</a></li><li><a href="HotBalloonAttributeHandler.html">HotBalloonAttributeHandler</a></li><li><a href="HotballoonElementParams.html">HotballoonElementParams</a></li><li><a href="PrivateStateMixin.html">PrivateStateMixin</a></li><li><a href="RequireIDMixin.html">RequireIDMixin</a></li><li><a href="Storage.html">Storage</a></li><li><a href="Store.html">Store</a></li><li><a href="StoreModel.html">StoreModel</a></li><li><a href="View.html">View</a></li><li><a href="ViewContainer.html">ViewContainer</a></li><li><a href="ViewContainerContextMixin.html">ViewContainerContextMixin</a></li><li><a href="ViewContainerParameters_ViewContainerParameters.html">ViewContainerParameters</a></li></ul><h3>Global</h3><ul><li><a href="global.html#__HB__CLASSNAME__">__HB__CLASSNAME__</a></li><li><a href="global.html#_actions">_actions</a></li><li><a href="global.html#_componentId">_componentId</a></li><li><a href="global.html#_dispatcher">_dispatcher</a></li><li><a href="global.html#_EventHandler">_EventHandler</a></li><li><a href="global.html#_isMounted">_isMounted</a></li><li><a href="global.html#_isRendered">_isRendered</a></li><li><a href="global.html#_log">_log</a></li><li><a href="global.html#_node">_node</a></li><li><a href="global.html#_nodeRefs">_nodeRefs</a></li><li><a href="global.html#_shouldChangeState">_shouldChangeState</a></li><li><a href="global.html#_shouldInit">_shouldInit</a></li><li><a href="global.html#_shouldMount">_shouldMount</a></li><li><a href="global.html#_shouldRender">_shouldRender</a></li><li><a href="global.html#_shouldUpdate">_shouldUpdate</a></li><li><a href="global.html#_subViews">_subViews</a></li><li><a href="global.html#_tokenEvent">_tokenEvent</a></li><li><a href="global.html#component">component</a></li><li><a href="global.html#nodeRef">nodeRef</a></li><li><a href="global.html#parentNode">parentNode</a></li><li><a href="global.html#ROOT,">ROOT,</a></li><li><a href="global.html#StoreByRegister">StoreByRegister</a></li><li><a href="global.html#StoreDataByRegister">StoreDataByRegister</a></li></ul>
 </nav>
 
 <br class="clear">

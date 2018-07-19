@@ -1,12 +1,12 @@
-import {Dispatcher} from './src/Dispatcher'
+import {Dispatcher} from './src/Event/Dispatcher'
 import {
   Store,
   INIT as STORE_INIT
 } from './src/Store/Store'
 import {CHANGED} from './src/Store/StoreInterface'
 import {ProxyStore} from './src/Store/ProxyStore'
-import {EventHandler} from './src/EventHandler'
-import {EventOrderedHandler} from './src/EventOrderedHandler'
+import {EventHandler} from './src/Event/EventHandler'
+import {EventOrderedHandlerOld} from './src/Event/EventOrderedHandlerOld'
 import {Action} from './src/Action'
 import {
   ViewParameters,
@@ -65,7 +65,7 @@ export {
   MapOfState,
   PrivateStateMixin,
   EventHandler,
-  EventOrderedHandler,
+  EventOrderedHandlerOld,
   html,
   HotballoonElementParams as HtmlParams,
   $,

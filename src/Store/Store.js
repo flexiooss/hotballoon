@@ -1,5 +1,5 @@
 'use strict'
-import {EventOrderedHandler} from '../EventOrderedHandler'
+import {EventOrderedHandlerOld} from '../Event/EventOrderedHandlerOld'
 import {assert, staticClassName} from 'flexio-jshelpers'
 import {Storage} from './Storage'
 import {CLASS_TAG_NAME} from '../CLASS_TAG_NAME'
@@ -57,14 +57,14 @@ export class Store extends StoreInterface {
         }
       },
       /**
-       * @property {EventOrderedHandler}
+       * @property {EventOrderedHandlerOld}
        * @name Store#_EventHandler
        * @protected
        */
       _EventHandler: {
         enumerable: false,
         configurable: false,
-        value: Object.seal(new EventOrderedHandler())
+        value: Object.seal(new EventOrderedHandlerOld())
       }
     })
 

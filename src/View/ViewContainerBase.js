@@ -1,9 +1,10 @@
 'use strict'
-import {EventOrderedHandler} from '../EventOrderedHandler'
 import {MapOfArray, isBoolean, isNode, assert} from 'flexio-jshelpers'
 import {WithIDBase} from '../bases/WithIDBase'
 import {ViewStoresParameters} from './ViewStoresParameters'
 import {CHANGED, StoreInterface} from '../Store/StoreInterface'
+import {EventOrderedHandler} from '../Event/EventOrderedHandler'
+import {EventListenerParam} from '../Event/EventListenerParam'
 
 class ViewContainerBase extends WithIDBase {
   /**
@@ -72,7 +73,7 @@ class ViewContainerBase extends WithIDBase {
         enumerable: false,
         configurable: false,
         /**
-         * @property {EventOrderedHandler}
+         * @property {EventOrderedHandlerOld}
          * @name ViewContainerBase#_EventHandler
          * @protected
          */
@@ -120,14 +121,11 @@ class ViewContainerBase extends WithIDBase {
   }
 
   /**
-   * @param {String} event
-   * @param {Function} callback
-   * @param {Object} scope
-   * @param {Number} priority
+   * @param {EventListenerParam} eventListenerParam
    * @return {String} token
    */
-  addEventListener(type, callback, scope, priority) {
-    return this._EventHandler.addEventListener(type, callback, scope, priority)
+  on(eventListenerParam) {
+    return this._EventHandler.on(eventListenerParam)
   }
 
   /**

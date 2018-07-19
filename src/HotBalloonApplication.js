@@ -1,5 +1,5 @@
 'use strict'
-import {Dispatcher} from './Dispatcher'
+import {Dispatcher} from './Event/Dispatcher'
 import {MapExtended, MapOfInstance, Sequence, assert} from 'flexio-jshelpers'
 import {RequireIDMixin} from './mixins/RequireIDMixin'
 import {Component} from './Component'

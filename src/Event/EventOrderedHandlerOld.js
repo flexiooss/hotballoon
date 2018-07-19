@@ -9,13 +9,14 @@ import {
 } from 'flexio-jshelpers'
 import {
   EventHandlerBase
-} from './bases/EventHandlerBase'
+} from './EventHandlerBase'
 
 /**
  * @class
  * @extends EventHandlerBase
+ * @deprecated
  */
-class EventOrderedHandler extends EventHandlerBase {
+class EventOrderedHandlerOld extends EventHandlerBase {
   /**
    *
    * @param {String} type
@@ -73,5 +74,5 @@ class EventOrderedHandler extends EventHandlerBase {
 }
 
 export {
-  EventOrderedHandler
+  EventOrderedHandlerOld
 }

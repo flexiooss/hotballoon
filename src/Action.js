@@ -1,5 +1,5 @@
 'use strict'
-import {Dispatcher} from './Dispatcher'
+import {Dispatcher} from './Event/Dispatcher'
 import {assert, isFunction, deepFreezeSeal} from 'flexio-jshelpers'
 import {CoreException} from './CoreException'
 import {CLASS_TAG_NAME} from './CLASS_TAG_NAME'

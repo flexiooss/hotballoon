@@ -1,7 +1,7 @@
 'use strict'
-import {EventHandlerBase} from './bases/EventHandlerBase'
+import {EventHandlerBase} from './EventHandlerBase'
 import {assert} from 'flexio-jshelpers'
-import {CLASS_TAG_NAME} from './CLASS_TAG_NAME'
+import {CLASS_TAG_NAME} from '../CLASS_TAG_NAME'
 
 export const CLASS_TAG_NAME_DISPATCHER = Symbol('__HB__DISPATCHER__')
 

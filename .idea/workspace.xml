@@ -2,14 +2,181 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c13bbe00-65c0-403d-a96b-410248228156" name="Default" comment="">
+      <change afterPath="$PROJECT_DIR$/node_modules/hotballoon/src/Event/EventListenerFactory.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/node_modules/hotballoon/src/Event/EventOrderedHandler.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Event/EventListenerFactory.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Event/EventListenerParam.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Event/EventOrderedHandler.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/Action.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Action.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/Action.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Action.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/ApplicationContextMixin.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/ApplicationContextMixin.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/Component.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/Component.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Component.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/ComponentContextMixin.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/ComponentContextMixin.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/CreateHotBalloonElement.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/CreateHotBalloonElement.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/DataStoreHandlerInterface.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/DataStoreHandlerInterface.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/DataStoreInterface.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/DataStoreInterface.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/Debugable.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Debugable.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/DebugableMixin.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/DebugableMixin.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/Dispatcher.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Dispatcher.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/Dispatcher.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Dispatcher.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/EventHandlerBase.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/EventHandlerBase.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/EventOrderedHandler.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/EventOrderedHandler.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/EventOrderedHandler.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/EventOrderedHandler.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/HotBalloonApplication.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/HotBalloonApplication.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/HotBalloonApplication.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/HotBalloonApplication.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/HotBalloonAttributeHandler.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/HotBalloonAttributeHandler.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/HotballoonElementParams.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/HotballoonElementParams.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/HotballoonElement_CreateHotBalloonElement.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/HotballoonElement_CreateHotBalloonElement.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/HotballoonElement_HotBalloonAttributeHandler.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/HotballoonElement_HotBalloonAttributeHandler.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/HotballoonElement_HotballoonElementParams.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/HotballoonElement_HotballoonElementParams.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/HotballoonElement_constantes.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/HotballoonElement_constantes.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/NodesHandlerMixin.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/NodesHandlerMixin.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/PrivateStateMixin.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/PrivateStateMixin.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/ProxyStore.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/ProxyStore.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/RequireIDMixin.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/RequireIDMixin.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/State_State.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/State_State.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/Storage.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Storage.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/Store.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Store.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/StoreInterface.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/StoreInterface.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/StoreModel.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/StoreModel.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/Store_DataStoreHandlerInterface.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Store_DataStoreHandlerInterface.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/Store_DataStoreInterface.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Store_DataStoreInterface.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/Store_ProxyStore.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Store_ProxyStore.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/Store_State.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Store_State.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/Store_Storage.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Store_Storage.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/Store_Store.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Store_Store.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/Store_StoreInterface.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Store_StoreInterface.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/Store_StoreModel.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Store_StoreModel.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/View.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/View.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/View.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/View.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/ViewContainer.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/ViewContainer.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/ViewContainer.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/ViewContainer.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/ViewContainerBase.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/ViewContainerBase.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/ViewContainerContextMixin.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/ViewContainerContextMixin.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/ViewContainerParameters_ViewContainerParameters.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/ViewContainerParameters_ViewContainerParameters.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/ViewContainer_Component.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/ViewContainer_Component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/ViewParameters_ViewParameters.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/ViewParameters_ViewParameters.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/View_View.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/View_View.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/View_ViewContainer.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/View_ViewContainer.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/View_ViewContainerBase.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/View_ViewContainerBase.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/View_ViewStoresParameters.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/View_ViewStoresParameters.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/WithIDBase.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/WithIDBase.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/bases_Debugable.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/bases_Debugable.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/bases_EventHandlerBase.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/bases_EventHandlerBase.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/bases_WithIDBase.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/bases_WithIDBase.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/global.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/global.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/global.html#Dispatcher" beforeDir="false" afterPath="$PROJECT_DIR$/docs/global.html#Dispatcher" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/mixins_ApplicationContextMixin.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/mixins_ApplicationContextMixin.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/mixins_ComponentContextMixin.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/mixins_ComponentContextMixin.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/mixins_DebugableMixin.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/mixins_DebugableMixin.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/mixins_NodesHandlerMixin.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/mixins_NodesHandlerMixin.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/mixins_PrivateStateMixin.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/mixins_PrivateStateMixin.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/mixins_RequireIDMixin.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/mixins_RequireIDMixin.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/mixins_ViewContainerContextMixin.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/mixins_ViewContainerContextMixin.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/storeBases_Storage.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/storeBases_Storage.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/storeBases_Store.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/storeBases_Store.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/storeBases_StoreModel.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/storeBases_StoreModel.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/node_modules/flexio-hyperflex/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/flexio-hyperflex/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node_modules/flexio-hyperflex/src/HyperFlex.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/flexio-hyperflex/src/HyperFlex.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/node_modules/flexio-jshelpers/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/flexio-jshelpers/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/node_modules/flexio-jshelpers/src/LogHandler.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/flexio-jshelpers/src/LogHandler.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/node_modules/flexio-jshelpers/src/objectHelpers.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/flexio-jshelpers/src/objectHelpers.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/node_modules/flexio-jshelpers/src/types/Enum.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/flexio-jshelpers/src/types/Enum.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/node_modules/flexio-nodes-reconciliation/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/flexio-nodes-reconciliation/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/ViewContainer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/ViewContainer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/Action.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/Action.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/Action.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/Action.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/ApplicationContextMixin.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/ApplicationContextMixin.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/Component.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/Component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/Component.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/Component.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/ComponentContextMixin.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/ComponentContextMixin.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/CreateHotBalloonElement.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/CreateHotBalloonElement.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/DataStoreHandlerInterface.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/DataStoreHandlerInterface.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/DataStoreInterface.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/DataStoreInterface.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/Debugable.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/Debugable.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/DebugableMixin.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/DebugableMixin.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/Dispatcher.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/Dispatcher.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/Dispatcher.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/Dispatcher.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/EventHandlerBase.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/EventHandlerBase.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/EventOrderedHandler.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/EventOrderedHandler.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/EventOrderedHandler.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/EventOrderedHandler.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/HotBalloonApplication.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/HotBalloonApplication.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/HotBalloonApplication.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/HotBalloonApplication.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/HotBalloonAttributeHandler.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/HotBalloonAttributeHandler.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/HotballoonElementParams.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/HotballoonElementParams.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/HotballoonElement_CreateHotBalloonElement.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/HotballoonElement_CreateHotBalloonElement.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/HotballoonElement_HotBalloonAttributeHandler.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/HotballoonElement_HotBalloonAttributeHandler.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/HotballoonElement_HotballoonElementParams.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/HotballoonElement_HotballoonElementParams.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/HotballoonElement_constantes.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/HotballoonElement_constantes.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/NodesHandlerMixin.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/NodesHandlerMixin.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/PrivateStateMixin.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/PrivateStateMixin.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/ProxyStore.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/ProxyStore.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/RequireIDMixin.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/RequireIDMixin.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/State_State.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/State_State.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/Storage.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/Storage.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/Store.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/Store.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/StoreInterface.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/StoreInterface.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/StoreModel.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/StoreModel.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/Store_DataStoreHandlerInterface.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/Store_DataStoreHandlerInterface.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/Store_DataStoreInterface.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/Store_DataStoreInterface.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/Store_ProxyStore.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/Store_ProxyStore.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/Store_State.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/Store_State.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/Store_Storage.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/Store_Storage.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/Store_Store.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/Store_Store.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/Store_StoreInterface.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/Store_StoreInterface.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/Store_StoreModel.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/Store_StoreModel.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/View.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/View.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/View.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/View.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/ViewContainer.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/ViewContainer.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/ViewContainer.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/ViewContainer.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/ViewContainerBase.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/ViewContainerBase.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/ViewContainerContextMixin.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/ViewContainerContextMixin.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/ViewContainerParameters_ViewContainerParameters.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/ViewContainerParameters_ViewContainerParameters.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/ViewContainer_Component.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/ViewContainer_Component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/ViewParameters_ViewParameters.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/ViewParameters_ViewParameters.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/View_View.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/View_View.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/View_ViewContainer.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/View_ViewContainer.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/View_ViewContainerBase.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/View_ViewContainerBase.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/View_ViewStoresParameters.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/View_ViewStoresParameters.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/WithIDBase.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/WithIDBase.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/bases_Debugable.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/bases_Debugable.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/bases_EventHandlerBase.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/bases_EventHandlerBase.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/bases_WithIDBase.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/bases_WithIDBase.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/global.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/global.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/global.html#Dispatcher" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/global.html#Dispatcher" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/mixins_ApplicationContextMixin.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/mixins_ApplicationContextMixin.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/mixins_ComponentContextMixin.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/mixins_ComponentContextMixin.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/mixins_DebugableMixin.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/mixins_DebugableMixin.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/mixins_NodesHandlerMixin.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/mixins_NodesHandlerMixin.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/mixins_PrivateStateMixin.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/mixins_PrivateStateMixin.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/mixins_RequireIDMixin.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/mixins_RequireIDMixin.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/mixins_ViewContainerContextMixin.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/mixins_ViewContainerContextMixin.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/storeBases_Storage.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/storeBases_Storage.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/storeBases_Store.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/storeBases_Store.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/docs/storeBases_StoreModel.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/docs/storeBases_StoreModel.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/src/Action.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/src/Action.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/src/Dispatcher.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/src/Event/Dispatcher.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/src/EventHandler.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/src/Event/EventHandler.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/src/EventOrderedHandler.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/src/Event/EventOrderedHandlerOld.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/src/HotBalloonApplication.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/src/HotBalloonApplication.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/src/Store/ProxyStore.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/src/Store/ProxyStore.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/src/Store/Store.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/src/Store/Store.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/src/View/ViewContainerBase.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/src/View/ViewContainerBase.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hotballoon/src/bases/EventHandlerBase.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/hotballoon/src/Event/EventHandlerBase.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Action.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Action.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Dispatcher.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Event/Dispatcher.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/EventHandler.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Event/EventHandler.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/EventOrderedHandler.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Event/EventOrderedHandlerOld.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/HotBalloonApplication.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/HotBalloonApplication.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Store/ProxyStore.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Store/ProxyStore.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Store/Store.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Store/Store.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/View/ViewContainerBase.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/ViewContainerBase.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/bases/EventHandlerBase.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Event/EventHandlerBase.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -26,8 +193,8 @@
       <file leaf-file-name="CreateHotBalloonElement.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/HotballoonElement/CreateHotBalloonElement.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="757">
-              <caret line="101" column="37" lean-forward="true" selection-start-line="101" selection-start-column="37" selection-end-line="101" selection-end-column="37" />
+            <state relative-caret-position="741">
+              <caret line="38" column="20" lean-forward="true" selection-start-line="38" selection-start-column="20" selection-end-line="38" selection-end-column="20" />
               <folding>
                 <element signature="e#13#78#0" expanded="true" />
               </folding>
@@ -35,20 +202,20 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="HotballoonElementParams.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/HotballoonElement/HotballoonElementParams.js">
+      <file leaf-file-name="constantes.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/HotballoonElement/constantes.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="162">
-              <caret line="6" column="48" lean-forward="true" selection-start-line="6" selection-start-column="48" selection-end-line="6" selection-end-column="48" />
+            <state relative-caret-position="135">
+              <caret line="5" column="17" selection-start-line="5" selection-start-column="17" selection-end-line="5" selection-end-column="17" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ViewContainer.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ViewContainer.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/View/ViewContainer.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="81">
-              <caret line="3" selection-start-line="3" selection-end-line="3" />
+            <state relative-caret-position="243">
+              <caret line="13" column="36" selection-start-line="13" selection-start-column="36" selection-end-line="13" selection-end-column="36" />
             </state>
           </provider>
         </entry>
@@ -56,8 +223,8 @@
       <file leaf-file-name="View.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/View/View.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1585">
-              <caret line="279" column="3" lean-forward="true" selection-start-line="247" selection-start-column="2" selection-end-line="279" selection-end-column="3" />
+            <state relative-caret-position="7242">
+              <caret line="279" column="3" selection-start-line="247" selection-start-column="2" selection-end-line="279" selection-end-column="3" />
               <folding>
                 <element signature="e#13#59#0" expanded="true" />
               </folding>
@@ -65,11 +232,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="HotBalloonAttributeHandler.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/HotballoonElement/HotBalloonAttributeHandler.js">
+      <file leaf-file-name="ViewContainerBase.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/View/ViewContainerBase.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="100">
-              <caret line="7" column="37" selection-start-line="7" selection-start-column="37" selection-end-line="7" selection-end-column="37" />
+            <state relative-caret-position="341">
+              <caret line="128" column="3" lean-forward="true" selection-start-line="128" selection-start-column="3" selection-end-line="128" selection-end-column="3" />
               <folding>
                 <element signature="e#13#83#0" expanded="true" />
               </folding>
@@ -77,50 +244,53 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="State.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Store/State.js">
+      <file leaf-file-name="EventOrderedHandlerOld.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Event/EventOrderedHandlerOld.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="729">
-              <caret line="27" column="5" lean-forward="true" selection-start-line="27" selection-start-column="5" selection-end-line="27" selection-end-column="5" />
+            <state relative-caret-position="189">
+              <caret line="16" column="14" selection-start-line="16" selection-start-column="14" selection-end-line="16" selection-end-column="14" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Storage.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Store/Storage.js">
+      <file leaf-file-name="EventOrderedHandler.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Event/EventOrderedHandler.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret selection-end-line="1" selection-end-column="68" />
+            <state relative-caret-position="93">
+              <caret line="14" column="25" selection-start-line="14" selection-start-column="6" selection-end-line="14" selection-end-column="25" />
               <folding>
-                <element signature="e#13#81#0" expanded="true" />
+                <element signature="e#13#108#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="package.json" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/package.json">
+      <file leaf-file-name="EventListenerFactory.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Event/EventListenerFactory.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="378">
-              <caret line="14" column="40" selection-start-line="14" selection-start-column="40" selection-end-line="14" selection-end-column="40" />
+            <state relative-caret-position="-1793">
+              <caret line="6" column="6" lean-forward="true" selection-start-line="6" selection-start-column="6" selection-end-line="6" selection-end-column="6" />
+              <folding>
+                <element signature="e#0#87#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Debugable.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/bases/Debugable.js">
+      <file leaf-file-name="EventListenerParam.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Event/EventListenerParam.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="594">
-              <caret line="22" column="4" selection-start-line="22" selection-start-column="4" selection-end-line="22" selection-end-column="4" />
+            <state relative-caret-position="54">
+              <caret line="2" column="31" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="31" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="EventHandlerBase.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/bases/EventHandlerBase.js">
+      <file leaf-file-name="HotBalloonAttributeHandler.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/HotballoonElement/HotBalloonAttributeHandler.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="189">
-              <caret line="12" column="6" selection-start-line="12" selection-start-column="6" selection-end-line="12" selection-end-column="6" />
+            <state relative-caret-position="190">
+              <caret line="14" column="37" selection-start-line="14" selection-start-column="37" selection-end-line="14" selection-end-column="37" />
             </state>
           </provider>
         </entry>
@@ -198,7 +368,6 @@
         <option value="$PROJECT_DIR$/src/Store/Storage.js" />
         <option value="$PROJECT_DIR$/src/bases/WithIDBase.js" />
         <option value="$PROJECT_DIR$/package.json" />
-        <option value="$PROJECT_DIR$/src/View/ViewContainerBase.js" />
         <option value="$PROJECT_DIR$/src/Store/ProxyStore.js" />
         <option value="$PROJECT_DIR$/src/Store/DataStoreHandlerInterafce.js" />
         <option value="$PROJECT_DIR$/src/Store/DataStoreInterafce.js" />
@@ -215,6 +384,15 @@
         <option value="$PROJECT_DIR$/src/HotballoonElement/HotBalloonAttributeHandler.js" />
         <option value="$PROJECT_DIR$/src/HotballoonElement/CreateHotBalloonElement.js" />
         <option value="$PROJECT_DIR$/src/View/ViewContainer.js" />
+        <option value="$PROJECT_DIR$/src/EventOrderedHandlerOld.js" />
+        <option value="$PROJECT_DIR$/src/EventOrderedHandler.js" />
+        <option value="$PROJECT_DIR$/src/Event/EventHandler.js" />
+        <option value="$PROJECT_DIR$/src/Event/EventListener.js" />
+        <option value="$PROJECT_DIR$/src/Event/EventOrderedHandlerOld.js" />
+        <option value="$PROJECT_DIR$/src/Event/EventListenerParam.js" />
+        <option value="$PROJECT_DIR$/src/Event/EventListenerFactory.js" />
+        <option value="$PROJECT_DIR$/src/Event/EventOrderedHandler.js" />
+        <option value="$PROJECT_DIR$/src/View/ViewContainerBase.js" />
       </list>
     </option>
   </component>
@@ -234,9 +412,10 @@
       <path value="$PROJECT_DIR$/package.json" />
     </packageJsonPaths>
   </component>
-  <component name="ProjectFrameBounds" extendedState="4">
-    <option name="width" value="1910" />
-    <option name="height" value="2160" />
+  <component name="ProjectFrameBounds" extendedState="7">
+    <option name="y" value="27" />
+    <option name="width" value="1890" />
+    <option name="height" value="1053" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -246,6 +425,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -263,6 +443,12 @@
               <item name="hotballoon" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="bases" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="hotballoon" type="b2602c69:ProjectViewProjectNode" />
+              <item name="hotballoon" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="Event" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="hotballoon" type="b2602c69:ProjectViewProjectNode" />
@@ -292,7 +478,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -310,16 +495,18 @@
     <property name="settings.editor.selected.configurable" value="Errors" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/Event" />
+      <recent name="$PROJECT_DIR$/src/View" />
+      <recent name="$PROJECT_DIR$/src" />
+      <recent name="$PROJECT_DIR$" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src" />
       <recent name="$PROJECT_DIR$/src/Store" />
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/src/storeBases" />
       <recent name="$PROJECT_DIR$/src/mixins" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/src/View" />
-      <recent name="$PROJECT_DIR$/src" />
-      <recent name="$PROJECT_DIR$" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -382,25 +569,28 @@
       <workItem from="1531808487992" duration="25207000" />
       <workItem from="1531852490148" duration="5098000" />
       <workItem from="1531895169092" duration="15008000" />
-      <workItem from="1531987374913" duration="7033000" />
+      <workItem from="1531987374913" duration="10614000" />
+      <workItem from="1532024426831" duration="613000" />
+      <workItem from="1532025051591" duration="4844000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="140041000" />
+    <option name="totallyTimeSpent" value="149079000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1910" height="2160" extended-state="4" />
+    <frame x="0" y="-1" width="1920" height="1081" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.22774869" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2234375" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.31188118" side_tool="true" weight="0.27254707" />
-      <window_info id="npm" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32831326" />
       <window_info anchor="bottom" id="Version Control" order="9" />
+      <window_info id="npm" order="2" side_tool="true" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Terminal" order="8" sideWeight="0.6881188" visible="true" weight="0.13596915" />
+      <window_info anchor="bottom" id="Terminal" order="8" sideWeight="0.6881188" weight="0.13253012" />
       <window_info id="Favorites" order="3" side_tool="true" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.24973205" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -410,7 +600,6 @@
       <window_info anchor="bottom" id="Debug" order="3" weight="0.3993808" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32877383" />
     </layout>
     <layout-to-restore>
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.24973205" />
@@ -455,35 +644,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/HotballoonElement/HotBalloonAttributeHandler.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="891">
-          <caret line="34" column="29" selection-start-line="34" selection-start-column="29" selection-end-line="34" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="108">
-          <caret line="4" column="6" selection-start-line="4" selection-start-column="6" selection-end-line="4" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/ViewContainer.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="6" column="35" selection-start-line="6" selection-end-line="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/flexio-hyperflex/src/HyperFlex.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="972">
-          <caret line="42" column="46" selection-start-line="42" selection-start-column="46" selection-end-line="42" selection-end-column="46" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/index.es.js" />
     <entry file="file://$PROJECT_DIR$/src/HotballoonElement/HotballoonElementParams.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="405">
@@ -522,9 +682,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/node_modules/flexio-jshelpers/src/domHelpers/HyperFlex.js" />
-    <entry file="file://$PROJECT_DIR$/src/HotballoonElement/constantes.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external/lib.dom.d.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1685">
@@ -535,13 +692,6 @@
     <entry file="file://$PROJECT_DIR$/src/mixins/NodesHandlerMixin.js" />
     <entry file="file://$PROJECT_DIR$/.yarnclean">
       <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/flexio-nodes-reconciliation/src/ReconciliationAttributeHandler.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1377">
-          <caret line="58" column="2" selection-start-line="58" selection-start-column="2" selection-end-line="58" selection-end-column="2" />
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/LogHandler.js" />
     <entry file="file://$PROJECT_DIR$/src/mixins/ComponentContextMixin.js" />
@@ -576,7 +726,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Dispatcher.js">
+    <entry file="file://$PROJECT_DIR$/src/Event/Dispatcher.js">
       <provider selected="true" editor-type-id="text-editor">
         <state>
           <caret line="5" column="21" selection-start-line="5" selection-end-line="6" />
@@ -587,9 +737,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state>
           <caret line="27" column="19" selection-start-line="27" selection-end-line="28" />
-          <folding>
-            <element signature="e#13#48#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -615,16 +762,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/index.es.js" />
-    <entry file="file://$PROJECT_DIR$/src/View/ViewContainerBase.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="648">
-          <caret line="28" column="40" selection-start-line="28" selection-start-column="40" selection-end-line="28" selection-end-column="40" />
-          <folding>
-            <element signature="e#13#71#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Store/ProxyStore.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
@@ -650,9 +787,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="648">
           <caret line="24" column="30" selection-start-line="24" selection-start-column="30" selection-end-line="24" selection-end-column="30" />
-          <folding>
-            <element signature="e#13#71#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -660,9 +794,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="189">
           <caret line="8" column="3" selection-start-line="8" selection-start-column="3" selection-end-line="8" selection-end-column="3" />
-          <folding>
-            <element signature="e#0#46#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -673,20 +804,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/flexio-hyperflex/src/HyperFlex.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="945">
-          <caret line="39" column="7" lean-forward="true" selection-start-line="39" selection-start-column="7" selection-end-line="39" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Action.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1620">
           <caret line="63" column="7" selection-start-line="63" selection-start-column="7" selection-end-line="63" selection-end-column="7" />
-          <folding>
-            <element signature="e#13#52#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -694,13 +815,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="513">
           <caret line="20" column="7" selection-start-line="20" selection-start-column="7" selection-end-line="20" selection-end-column="7" />
-          <folding>
-            <element signature="e#13#52#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/bases/EventHandlerBase.js">
+    <entry file="file://$PROJECT_DIR$/src/Event/EventHandlerBase.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="189">
           <caret line="12" column="6" selection-start-line="12" selection-start-column="6" selection-end-line="12" selection-end-column="6" />
@@ -724,36 +842,16 @@
     <entry file="file://$PROJECT_DIR$/src/Store/State.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="729">
-          <caret line="27" column="5" lean-forward="true" selection-start-line="27" selection-start-column="5" selection-end-line="27" selection-end-column="5" />
+          <caret line="27" column="5" selection-start-line="27" selection-start-column="5" selection-end-line="27" selection-end-column="5" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Store/Storage.js">
       <provider selected="true" editor-type-id="text-editor">
         <state>
-          <caret selection-end-line="1" selection-end-column="68" />
+          <caret selection-end-line="2" selection-end-column="29" />
           <folding>
             <element signature="e#13#81#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/HotballoonElement/HotBalloonAttributeHandler.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="100">
-          <caret line="7" column="37" selection-start-line="7" selection-start-column="37" selection-end-line="7" selection-end-column="37" />
-          <folding>
-            <element signature="e#13#83#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/HotballoonElement/CreateHotBalloonElement.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="757">
-          <caret line="101" column="37" lean-forward="true" selection-start-line="101" selection-start-column="37" selection-end-line="101" selection-end-column="37" />
-          <folding>
-            <element signature="e#13#78#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -768,24 +866,113 @@
     <entry file="file://$PROJECT_DIR$/src/HotballoonElement/HotballoonElementParams.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="162">
-          <caret line="6" column="48" lean-forward="true" selection-start-line="6" selection-start-column="48" selection-end-line="6" selection-end-column="48" />
+          <caret line="6" column="48" selection-start-line="6" selection-start-column="48" selection-end-line="6" selection-end-column="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/ViewContainer.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="243">
+          <caret line="13" column="36" selection-start-line="13" selection-start-column="36" selection-end-line="13" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/flexio-nodes-reconciliation/src/ReconciliationAttributeHandler.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2145">
+          <caret line="98" column="2" selection-start-line="98" selection-start-column="2" selection-end-line="98" selection-end-column="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/HotballoonElement/constantes.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="5" column="17" selection-start-line="5" selection-start-column="17" selection-end-line="5" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/HotballoonElement/HotBalloonAttributeHandler.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="190">
+          <caret line="14" column="37" selection-start-line="14" selection-start-column="37" selection-end-line="14" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Event/EventHandler.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="41" selection-start-column="41" selection-end-column="41" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/View/View.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1585">
-          <caret line="279" column="3" lean-forward="true" selection-start-line="247" selection-start-column="2" selection-end-line="279" selection-end-column="3" />
+        <state relative-caret-position="7242">
+          <caret line="279" column="3" selection-start-line="247" selection-start-column="2" selection-end-line="279" selection-end-column="3" />
           <folding>
             <element signature="e#13#59#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/ViewContainer.js">
+    <entry file="file://$PROJECT_DIR$/node_modules/flexio-hyperflex/src/HyperFlex.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="81">
-          <caret line="3" selection-start-line="3" selection-end-line="3" />
+        <state relative-caret-position="565">
+          <caret line="57" column="2" selection-start-line="57" selection-start-column="2" selection-end-line="57" selection-end-column="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/HotballoonElement/CreateHotBalloonElement.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="741">
+          <caret line="38" column="20" lean-forward="true" selection-start-line="38" selection-start-column="20" selection-end-line="38" selection-end-column="20" />
+          <folding>
+            <element signature="e#13#78#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Event/EventOrderedHandlerOld.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="189">
+          <caret line="16" column="14" selection-start-line="16" selection-start-column="14" selection-end-line="16" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Event/EventListenerFactory.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1793">
+          <caret line="6" column="6" lean-forward="true" selection-start-line="6" selection-start-column="6" selection-end-line="6" selection-end-column="6" />
+          <folding>
+            <element signature="e#0#87#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Event/EventOrderedHandler.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="93">
+          <caret line="14" column="25" selection-start-line="14" selection-start-column="6" selection-end-line="14" selection-end-column="25" />
+          <folding>
+            <element signature="e#13#108#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Event/EventListenerParam.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="54">
+          <caret line="2" column="31" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/ViewContainerBase.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="341">
+          <caret line="128" column="3" lean-forward="true" selection-start-line="128" selection-start-column="3" selection-end-line="128" selection-end-column="3" />
+          <folding>
+            <element signature="e#13#83#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

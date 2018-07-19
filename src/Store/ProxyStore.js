@@ -1,5 +1,5 @@
 'use strict'
-import {EventOrderedHandler} from '../EventOrderedHandler'
+import {EventOrderedHandlerOld} from '../Event/EventOrderedHandlerOld'
 import {assert, isFunction, UID} from 'flexio-jshelpers'
 import {CLASS_TAG_NAME} from '../CLASS_TAG_NAME'
 import {StoreInterface} from './StoreInterface'
@@ -38,11 +38,11 @@ export class ProxyStore extends StoreInterface {
         enumerable: false,
         configurable: false,
         /**
-         * @property {EventOrderedHandler}
+         * @property {EventOrderedHandlerOld}
          * @name ProxyStore#_EventHandler
          * @protected
          */
-        value: Object.seal(new EventOrderedHandler())
+        value: Object.seal(new EventOrderedHandlerOld())
       },
       _Store: {
         enumerable: false,
