@@ -1,8 +1,7 @@
 'use strict'
 import {CLASS_TAG_NAME} from '../CLASS_TAG_NAME'
-import {isNode, isString, assert} from 'flexio-jshelpers'
-import {Store} from '../Store/Store'
-import {CHANGED as STORE_CHANGED} from '../Store/StoreInterface'
+import {isNode, isString, assert, isFunction} from 'flexio-jshelpers'
+import {CHANGED as STORE_CHANGED, StoreInterface} from '../Store/StoreInterface'
 import {ViewContainerBase} from './ViewContainerBase'
 import {CoreException} from '../CoreException'
 
@@ -99,7 +98,6 @@ export class ViewContainer extends ViewContainerBase {
       }
     })
 
-    this._registerStores()
     this.registerViews()
   }
 
@@ -109,37 +107,33 @@ export class ViewContainer extends ViewContainerBase {
 
   /**
    *
-   * @param {StoreInterface} store
-   * @return {String} token
-   * @protected
+   * @description subscribe subView an event of this view
+   * @param {String} keyStore
+   * @param {updateCallback} clb : event name
    */
-  _subscribeToStore(store) {
-    assert(store instanceof Store, 'hotballoon:ViewContainer:subscribeToStore: `store` const should be an instance of StoreBase ')
+  _suscribeToStore(keyStore, clb = (payload) => {
+  }) {
+    assert(isFunction(clb), 'hotballoon:' + this.constructor.name + ':_suscribeToStore: `clb` argument should be callable')
+    const store = this._Store(keyStore)
+    assert(store instanceof StoreInterface, 'hotballoon:' + this.constructor.name + ':_suscribeToStore: `keyStore : %s` not reference an instance of StoreInterface', keyStore)
 
-    return store.subscribe(
-      STORE_CHANGED,
-      (payload, type) => {
-        this.debug.log('dispatch : ' + store.constructor.name)
-        this.debug.object(payload)
-        this.debug.print()
-        this.dispatch(ViewContainer.uniqueNameStoreChanged(store), payload)
-      },
-      this,
-      100
+    this._tokenEvent.add(
+      store._ID,
+      store.subscribe(
+        STORE_CHANGED,
+        (payload, type) => {
+          clb(payload)
+        },
+        this,
+        100
+      )
     )
-  }
-
-  /**
-   * @private
-   */
-  _registerStores() {
-    this.debug.log('registerStores')
-    this.debug.object(this._Stores)
-    this.debug.print()
-
-    this._Stores.forEach((store, key, map) => {
-      this._subscribeToStore(store)
-    })
+    /**
+     *
+     * @callback updateCallback
+     * @param {Object} oldState
+     * @param {Object} newState
+     */
   }
 
   // /**
