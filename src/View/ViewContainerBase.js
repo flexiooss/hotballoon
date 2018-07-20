@@ -148,7 +148,7 @@ class ViewContainerBase extends WithIDBase {
 
   /**
    *
-   * @param {String} key : View._ID
+   * @param {String} key
    * @return {View}
    */
   View(key) {

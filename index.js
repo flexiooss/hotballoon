@@ -32,6 +32,8 @@ import {StoreModel} from './src/Store/StoreModel'
 import {ViewStoresParameters} from './src/View/ViewStoresParameters'
 import {DataStoreInterface} from './src/Store/DataStoreInterface'
 import {DataStoreHandlerInterface} from './src/Store/DataStoreHandlerInterface'
+import {EventListenerFactory} from './src/Event/EventListenerFactory'
+import {ViewEventListenerFactory} from './src/Event/ViewEventListenerFactory'
 
 export const hotballoonElement = {
   html,
@@ -70,5 +72,7 @@ export {
   HotballoonElementParams as HtmlParams,
   $,
   DataStoreInterface,
-  DataStoreHandlerInterface
+  DataStoreHandlerInterface,
+  EventListenerFactory,
+  ViewEventListenerFactory
 }

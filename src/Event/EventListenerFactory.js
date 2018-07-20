@@ -2,51 +2,46 @@ import {assert, isFunction, isNumber, isObject} from 'flexio-jshelpers'
 import {EventListenerParam} from './EventListenerParam'
 
 export class EventListenerFactory {
-  constructor() {
+  /**
+   *
+   * @param {String} event
+   */
+  constructor(event = '') {
     /**
      *
      * @type {string}
-     * @private
+     * @protected
      */
-    this._event = ''
+    this._event = event
     /**
      *
      * @type {Function}
      * @callback
-     * @private
+     * @protected
      */
     this._callback = () => true
     /**
      *
      * @type {scope}
-     * @private
+     * @protected
      */
     this._scope = null
     /**
      *
      * @type {number}
-     * @private
+     * @protected
      */
     this._priority = 100
   }
 
   /**
    *
+   * @param {String} event
    * @return {EventListenerFactory}
    * @constructor
    */
-  static EventListener() {
-    return new this.EventListenerFactory()
-  }
-
-  /**
-   *
-   * @param {String} event
-   * @return {EventListenerFactory}
-   */
-  listen(event) {
-    this._event = event
-    return this
+  static listen(event) {
+    return new this(event)
   }
 
   /**
@@ -76,15 +71,15 @@ export class EventListenerFactory {
    */
   build(scope) {
     this._scope = scope
-    this.__checkProperty()
+    this._checkProperty()
     return EventListenerParam.create(this._event, this._callback, this._scope, this._priority)
   }
 
   /**
    * @throws Error
-   * @private
+   * @protected
    */
-  __checkProperty() {
+  _checkProperty() {
     assert(!!this._event,
       'hotballoon:EventListenerFactory:build: ̀`event` property assert be not empty'
     )
