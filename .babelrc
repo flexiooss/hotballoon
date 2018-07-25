@@ -1,0 +1,28 @@
+{
+  "presets": [
+    [
+      "env",
+      {
+        "exclude": [
+          "transform-es2015-classes"
+        ]
+      }
+    ]
+  ],
+  "env": {
+    "test": {
+      "presets": [
+        "jest",
+        [
+          "env",
+          {
+            "exclude": [
+              "transform-es2015-classes"
+            ]
+          }
+        ]
+      ]
+    }
+  },
+  "ignore": []
+}

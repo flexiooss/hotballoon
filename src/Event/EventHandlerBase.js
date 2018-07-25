@@ -1,23 +1,26 @@
 'use strict'
-
-import {
-  isFunction,
-  isBoolean,
-  assert,
-  Sequence
-} from 'flexio-jshelpers'
+import {isFunction, isBoolean, assert, Sequence} from 'flexio-jshelpers'
 
 /**
  * @class
  */
-class EventHandlerBase {
+export class EventHandlerBase {
   constructor() {
+    /**
+     *
+     * @type {Map<any, any>}
+     * @protected
+     */
     this._listeners = new Map()
     this._pendingPayload = new Map()
     this._isHandled = new Set()
     this._isPending = new Set()
     this._sequenceId = new Sequence(this._ID)
-
+    /**
+     *
+     * @type {number}
+     * @protected
+     */
     this._lastID = 0
 
     var _isDispatching = false
@@ -96,15 +99,15 @@ class EventHandlerBase {
   /**
    *
    * @param {String} type of Listener
-   * @param {String} id : token
+   * @param {String} token : token
    */
-  removeEventListener(type, id) {
+  removeEventListener(type, token) {
     if (this._listeners.has(type)) {
-      assert(id in this._listeners.get(type),
+      assert(token in this._listeners.get(type),
         'hotballoon:EventHandlerBase:removeEventListener: ̀`id` argument not in _listeners : `%s`',
         type
       )
-      delete this._listeners.get(type)[id]
+      delete this._listeners.get(type)[token]
     }
   }
 
@@ -135,8 +138,4 @@ class EventHandlerBase {
   isDispatching() {
     return this._isDispatching
   }
-}
-
-export {
-  EventHandlerBase
 }
