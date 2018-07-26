@@ -1,5 +1,6 @@
 'use strict'
-import {EventOrderedHandlerOld} from '../Event/EventOrderedHandlerOld'
+import {EventOrderedHandler} from '../Event/EventOrderedHandler'
+import {EventListenerOrderedFactory} from '../Event/EventListenerOrderedFactory'
 import {assert, isFunction, UID} from 'flexio-jshelpers'
 import {CLASS_TAG_NAME} from '../CLASS_TAG_NAME'
 import {StoreInterface} from './StoreInterface'
@@ -38,11 +39,11 @@ export class ProxyStore extends StoreInterface {
         enumerable: false,
         configurable: false,
         /**
-         * @property {EventOrderedHandlerOld}
+         * @property {EventOrderedHandler}
          * @name ProxyStore#_EventHandler
          * @protected
          */
-        value: Object.seal(new EventOrderedHandlerOld())
+        value: Object.seal(new EventOrderedHandler())
       },
       _Store: {
         enumerable: false,
@@ -79,25 +80,22 @@ export class ProxyStore extends StoreInterface {
   }
 
   /**
-   *
-   * @param {String} type
-   * @param {Function} callback
-   * @param {Object} scope
-   * @param {Integer} priority
+   * @param {EventListenerOrderedParam} eventListenerOrderedParam
+   * @return {String} token
    */
-  subscribe(type, callback, scope, priority) {
+  subscribe(eventListenerOrderedParam) {
     this._Store.subscribe(
-      type,
-      (eventType, payload) => {
-        this._dispatch(
-          eventType,
-          new State(this._ID, this._mapper(payload.data))
-        )
-      },
-      this,
-      20
+      EventListenerOrderedFactory.listen(eventListenerOrderedParam.event)
+        .callback((eventType, payload) => {
+          this._dispatch(
+            eventType,
+            new State(this._ID, this._mapper(payload.data))
+          )
+        })
+        .priority(20)
+        .build(this)
     )
-    return this._EventHandler.addEventListener(type, callback, scope, priority)
+    return this._EventHandler.on(eventListenerOrderedParam)
   }
 
   /**

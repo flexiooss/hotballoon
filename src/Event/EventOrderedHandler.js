@@ -1,42 +1,38 @@
 'use strict'
-import {
-  assert,
-  sortObject
-} from 'flexio-jshelpers'
-import {
-  EventHandlerBase
-} from './EventHandlerBase'
-import {EventListenerParam} from './EventListenerParam'
+import {assert, sortObject} from 'flexio-jshelpers'
+import {EventHandlerBase} from './EventHandlerBase'
+import {EventListenerOrderedParam} from './EventListenerOrderedParam'
 
 /**
  * @class
  * @extends EventHandlerBase
  */
-class EventOrderedHandler extends EventHandlerBase {
+export class EventOrderedHandler extends EventHandlerBase {
   /**
    *
-   * @param {EventListenerParam} eventListenerParam
+   * @param {EventListenerOrderedParam} eventListenerOrderedParam
    * @return {String} token
+   * @throws AssertionError
    */
-  on(eventListenerParam) {
-    assert(eventListenerParam instanceof EventListenerParam,
-      'hotballoon:EventHandler:on: ̀`eventListenerFactory` argument assert be an instance of EventListenerFactory'
+  on(eventListenerOrderedParam) {
+    assert(eventListenerOrderedParam instanceof EventListenerOrderedParam,
+      'hotballoon:EventHandler:on: ̀`eventListenerOrderedParam` argument assert be an instance of EventListenerOrderedParam'
     )
 
-    if (!(this._listeners.has(eventListenerParam.event))) {
-      this._listeners.set(eventListenerParam.event, {})
+    if (!(this._listeners.has(eventListenerOrderedParam.event))) {
+      this._listeners.set(eventListenerOrderedParam.event, {})
     }
 
-    let id = this._sequenceId.nextID().toString()
+    const id = this._sequenceId.nextID().toString()
 
-    this._listeners.get(eventListenerParam.event)[id] = {
-      scope: eventListenerParam.scope,
-      callback: eventListenerParam.callback,
-      priority: eventListenerParam.priority
+    this._listeners.get(eventListenerOrderedParam.event)[id] = {
+      scope: eventListenerOrderedParam.scope,
+      callback: eventListenerOrderedParam.callback,
+      priority: eventListenerOrderedParam.priority
     }
 
-    this._listeners.set(eventListenerParam.event,
-      sortObject(this._listeners.get(eventListenerParam.event),
+    this._listeners.set(eventListenerOrderedParam.event,
+      sortObject(this._listeners.get(eventListenerOrderedParam.event),
         (a, b) => {
           return a.priority - b.priority
         }))
@@ -55,8 +51,4 @@ class EventOrderedHandler extends EventHandlerBase {
     listener.callback.call(listener.scope, this._pendingPayload.get(type), type)
     this._isHandled.add(id)
   }
-}
-
-export {
-  EventOrderedHandler
 }

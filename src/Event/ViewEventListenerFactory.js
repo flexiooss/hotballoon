@@ -1,12 +1,12 @@
-import {EventListenerFactory} from './EventListenerFactory'
-import {EventListenerParam} from './EventListenerParam'
+import {EventListenerOrderedFactory} from './EventListenerOrderedFactory'
 import {ViewContainerBase} from '../View/ViewContainerBase'
 import {assert} from 'flexio-jshelpers'
+import {EventListenerOrderedParam} from './EventListenerOrderedParam'
 
 /**
  * @extends EventListenerFactory
  */
-export class ViewEventListenerFactory extends EventListenerFactory {
+export class ViewEventListenerFactory extends EventListenerOrderedFactory {
   /**
    *
    * @param {String} event
@@ -60,11 +60,11 @@ export class ViewEventListenerFactory extends EventListenerFactory {
 
   /**
    *
-   * @param {ViewContainerBase}
-   * @throws Error
+   * @param {ViewContainerBase} [scope = null]
+   * @throws AssertionError
    * @return {EventListenerParam}
    */
-  build(scope) {
+  build(scope = null) {
     this._scope = scope
     if (this._isBubble) {
       assert(scope instanceof ViewContainerBase,
@@ -73,7 +73,6 @@ export class ViewEventListenerFactory extends EventListenerFactory {
         this._scope.dispatch(this._eventToDispatch, payload)
       }
     }
-    this._checkProperty()
-    return EventListenerParam.create(this._event, this._callback, this._scope, this._priority)
+    return EventListenerOrderedParam.create(this._event, this._callback, this._scope, this._priority)
   }
 }

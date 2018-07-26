@@ -19,11 +19,11 @@
 
     <h1 class="page-title">Source: View/View.js</h1>
 
+    
 
 
 
-
-
+    
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>'use strict'
@@ -36,6 +36,7 @@ import {html} from '../HotballoonElement/CreateHotBalloonElement'
 import {ViewContainerBase} from './ViewContainerBase'
 import {CHANGED as STORE_CHANGED, StoreInterface} from '../Store/StoreInterface'
 import {ViewStoresParameters} from './ViewStoresParameters'
+import {EventListenerOrderedFactory} from '../Event/EventListenerOrderedFactory'
 
 export class ViewParameters {
   /**
@@ -221,8 +222,9 @@ class View extends ViewContainerBase {
         enumerable: false,
         /**
          * @property {Map} _state
+         * @type {Map&lt;string, *>}
          * @name View#_state
-         * @private
+         * @protected
          */
         value: _state
       }
@@ -288,15 +290,16 @@ class View extends ViewContainerBase {
     this._tokenEvent.add(
       store._ID,
       store.subscribe(
-        STORE_CHANGED,
-        (payload, type) => {
-          const oldState = this._state.get(keyStore)
-          this._state.set(keyStore, payload.data)
-          if (clb(oldState, payload.data)) {
-            this.updateNode()
-          }
-        },
-        this, 100)
+        EventListenerOrderedFactory.listen(STORE_CHANGED)
+          .callback((payload, type) => {
+            const oldState = this._state.get(keyStore)
+            this._state.set(keyStore, payload.data)
+            if (clb(oldState, payload.data) === true) {
+              this.updateNode()
+            }
+          })
+          .build(this)
+      )
     )
     /**
      *
@@ -529,13 +532,13 @@ export {View}
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Action.html">Action</a></li><li><a href="ApplicationContextMixin.html">ApplicationContextMixin</a></li><li><a href="Component.html">Component</a></li><li><a href="CreateHotBalloonElement.html">CreateHotBalloonElement</a></li><li><a href="Debugable.html">Debugable</a></li><li><a href="Dispatcher.html">Dispatcher</a></li><li><a href="EventHandlerBase.html">EventHandlerBase</a></li><li><a href="EventOrderedHandler.html">EventOrderedHandlerOld</a></li><li><a href="HotBalloonApplication.html">HotBalloonApplication</a></li><li><a href="HotBalloonAttributeHandler.html">HotBalloonAttributeHandler</a></li><li><a href="HotballoonElementParams.html">HotballoonElementParams</a></li><li><a href="PrivateStateMixin.html">PrivateStateMixin</a></li><li><a href="ProxyStore.html">ProxyStore</a></li><li><a href="RequireIDMixin.html">RequireIDMixin</a></li><li><a href="State_State.html">State</a></li><li><a href="Storage.html">Storage</a></li><li><a href="Store.html">Store</a></li><li><a href="StoreModel.html">StoreModel</a></li><li><a href="View.html">View</a></li><li><a href="ViewContainer.html">ViewContainer</a></li><li><a href="ViewContainer_Component.html">Component</a></li><li><a href="ViewContainerBase.html">ViewContainerBase</a></li><li><a href="ViewContainerContextMixin.html">ViewContainerContextMixin</a></li><li><a href="ViewContainerParameters_ViewContainerParameters.html">ViewContainerParameters</a></li><li><a href="ViewParameters_ViewParameters.html">ViewParameters</a></li><li><a href="WithIDBase.html">WithIDBase</a></li></ul><h3>Interfaces</h3><ul><li><a href="DataStoreHandlerInterface.html">DataStoreHandlerInterface</a></li><li><a href="DataStoreInterface.html">DataStoreInterface</a></li><li><a href="StoreInterface.html">StoreInterface</a></li></ul><h3>Global</h3><ul><li><a href="global.html#_componentId">_componentId</a></li><li><a href="global.html#nodeRef">nodeRef</a></li><li><a href="global.html#ROOT,">ROOT,</a></li><li><a href="global.html#StoreByRegister">StoreByRegister</a></li><li><a href="global.html#StoreDataByRegister">StoreDataByRegister</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Action.html">Action</a></li><li><a href="ApplicationContextMixin.html">ApplicationContextMixin</a></li><li><a href="Component.html">Component</a></li><li><a href="CreateHotBalloonElement.html">CreateHotBalloonElement</a></li><li><a href="Debugable.html">Debugable</a></li><li><a href="Dispatcher.html">Dispatcher</a></li><li><a href="EventHandlerBase.html">EventHandlerBase</a></li><li><a href="EventListenerFactory.listen.html">listen</a></li><li><a href="EventListenerFactory_EventListenerFactory.html">EventListenerFactory</a></li><li><a href="EventListenerOrderedFactory.html">EventListenerOrderedFactory</a></li><li><a href="EventListenerOrderedFactory_EventListenerFactory.html">EventListenerFactory</a></li><li><a href="EventListenerOrderedParam.html">EventListenerOrderedParam</a></li><li><a href="EventListenerOrderedParam.create.html">create</a></li><li><a href="EventListenerOrderedParam_EventListenerParam.html">EventListenerParam</a></li><li><a href="EventListenerParam.create.html">create</a></li><li><a href="EventListenerParam_EventListenerParam.html">EventListenerParam</a></li><li><a href="EventOrderedHandler.html">EventOrderedHandler</a></li><li><a href="HotBalloonApplication.html">HotBalloonApplication</a></li><li><a href="HotBalloonAttributeHandler.html">HotBalloonAttributeHandler</a></li><li><a href="HotballoonElementParams.html">HotballoonElementParams</a></li><li><a href="PrivateStateMixin.html">PrivateStateMixin</a></li><li><a href="ProxyStore.html">ProxyStore</a></li><li><a href="RequireIDMixin.html">RequireIDMixin</a></li><li><a href="State_State.html">State</a></li><li><a href="Storage.html">Storage</a></li><li><a href="Store.html">Store</a></li><li><a href="StoreModel.html">StoreModel</a></li><li><a href="View.html">View</a></li><li><a href="ViewContainer.html">ViewContainer</a></li><li><a href="ViewContainer_Component.html">Component</a></li><li><a href="ViewContainerBase.html">ViewContainerBase</a></li><li><a href="ViewContainerContextMixin.html">ViewContainerContextMixin</a></li><li><a href="ViewContainerParameters_ViewContainerParameters.html">ViewContainerParameters</a></li><li><a href="ViewEventListenerFactory.html">ViewEventListenerFactory</a></li><li><a href="ViewEventListenerFactory.bubble.html">bubble</a></li><li><a href="ViewEventListenerFactory_EventListenerFactory.html">EventListenerFactory</a></li><li><a href="ViewParameters_ViewParameters.html">ViewParameters</a></li><li><a href="WithIDBase.html">WithIDBase</a></li></ul><h3>Interfaces</h3><ul><li><a href="DataStoreHandlerInterface.html">DataStoreHandlerInterface</a></li><li><a href="DataStoreInterface.html">DataStoreInterface</a></li><li><a href="StoreInterface.html">StoreInterface</a></li></ul><h3>Global</h3><ul><li><a href="global.html#_componentId">_componentId</a></li><li><a href="global.html#nodeRef">nodeRef</a></li><li><a href="global.html#ROOT,">ROOT,</a></li><li><a href="global.html#StoreByRegister">StoreByRegister</a></li><li><a href="global.html#StoreDataByRegister">StoreDataByRegister</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Jul 18 2018 17:20:15 GMT+0200 (CEST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Jul 26 2018 10:12:01 GMT+0200 (CEST)
 </footer>
 
 <script> prettyPrint(); </script>

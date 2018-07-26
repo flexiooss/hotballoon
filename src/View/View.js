@@ -8,6 +8,7 @@ import {html} from '../HotballoonElement/CreateHotBalloonElement'
 import {ViewContainerBase} from './ViewContainerBase'
 import {CHANGED as STORE_CHANGED, StoreInterface} from '../Store/StoreInterface'
 import {ViewStoresParameters} from './ViewStoresParameters'
+import {EventListenerOrderedFactory} from '../Event/EventListenerOrderedFactory'
 
 export class ViewParameters {
   /**
@@ -193,7 +194,7 @@ class View extends ViewContainerBase {
         enumerable: false,
         /**
          * @property {Map} _state
-         * @type {Map<string, any}
+         * @type {Map<string, *>}
          * @name View#_state
          * @protected
          */
@@ -261,15 +262,16 @@ class View extends ViewContainerBase {
     this._tokenEvent.add(
       store._ID,
       store.subscribe(
-        STORE_CHANGED,
-        (payload, type) => {
-          const oldState = this._state.get(keyStore)
-          this._state.set(keyStore, payload.data)
-          if (clb(oldState, payload.data) === true) {
-            this.updateNode()
-          }
-        },
-        this, 100)
+        EventListenerOrderedFactory.listen(STORE_CHANGED)
+          .callback((payload, type) => {
+            const oldState = this._state.get(keyStore)
+            this._state.set(keyStore, payload.data)
+            if (clb(oldState, payload.data) === true) {
+              this.updateNode()
+            }
+          })
+          .build(this)
+      )
     )
     /**
      *

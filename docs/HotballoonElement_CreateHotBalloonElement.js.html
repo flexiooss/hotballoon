@@ -19,11 +19,11 @@
 
     <h1 class="page-title">Source: HotballoonElement/CreateHotBalloonElement.js</h1>
 
+    
 
 
 
-
-
+    
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>'use strict'
@@ -65,7 +65,7 @@ class CreateHotBalloonElement extends HyperFlex {
   static html(scope, querySelector, hotballoonElementParams) {
     return new CreateHotBalloonElement(scope, querySelector, hotballoonElementParams)
       .createHtmlElement()
-      ._changeIdAndSetNodeRef()
+      .__changeIdAndSetNodeRef()
       ._element
   }
 
@@ -74,10 +74,10 @@ class CreateHotBalloonElement extends HyperFlex {
    * @private
    * @return {CreateHotBalloonElement}
    */
-  _changeIdAndSetNodeRef() {
+  __changeIdAndSetNodeRef() {
     const shortId = this._element.id
     if (shortId) {
-      this._element.id = this._generateIdFromScope(shortId)
+      this._element.id = this.__generateIdFromScope(shortId)
       this._setNodeRef(shortId, this._element)
     }
     return this
@@ -89,7 +89,7 @@ class CreateHotBalloonElement extends HyperFlex {
    * @param {String} id
    * @return {String}
    */
-  _generateIdFromScope(id) {
+  __generateIdFromScope(id) {
     return this._scope.APP()._ID +
       '-' + this._scope.Component()._ID +
       '-' + this._scope.Container()._ID +
@@ -115,8 +115,9 @@ class CreateHotBalloonElement extends HyperFlex {
    */
   _setParams() {
     super._setParams()
-    return this._setViews(this._hyperFlexParams.views)
-      ._setReconciliationRule(this._hyperFlexParams.reconciliationRules)
+    return this._setViews(this._params.views)
+      .__setReconciliationRule(this._params.reconciliationRules)
+      .__setReconciliationProperties(Object.keys(this._params.properties))
   }
 
   /**
@@ -139,8 +140,18 @@ class CreateHotBalloonElement extends HyperFlex {
    * @param {Array&lt;string>} rules
    * @return {CreateHotBalloonElement}
    */
-  _setReconciliationRule(rules) {
+  __setReconciliationRule(rules) {
     $(this._element).addReconcileRules(rules)
+    return this
+  }
+
+  /**
+   * @private
+   * @param {Array&lt;string>} propertiesToReconciliate
+   * @return {CreateHotBalloonElement}
+   */
+  __setReconciliationProperties(propertiesToReconciliate) {
+    $(this._element).addReconcileProperties(propertiesToReconciliate)
     return this
   }
 }
@@ -156,13 +167,13 @@ export const html = CreateHotBalloonElement.html
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Action.html">Action</a></li><li><a href="ApplicationContextMixin.html">ApplicationContextMixin</a></li><li><a href="Component.html">Component</a></li><li><a href="CreateHotBalloonElement.html">CreateHotBalloonElement</a></li><li><a href="Debugable.html">Debugable</a></li><li><a href="Dispatcher.html">Dispatcher</a></li><li><a href="EventHandlerBase.html">EventHandlerBase</a></li><li><a href="EventOrderedHandler.html">EventOrderedHandlerOld</a></li><li><a href="HotBalloonApplication.html">HotBalloonApplication</a></li><li><a href="HotBalloonAttributeHandler.html">HotBalloonAttributeHandler</a></li><li><a href="HotballoonElementParams.html">HotballoonElementParams</a></li><li><a href="PrivateStateMixin.html">PrivateStateMixin</a></li><li><a href="ProxyStore.html">ProxyStore</a></li><li><a href="RequireIDMixin.html">RequireIDMixin</a></li><li><a href="State_State.html">State</a></li><li><a href="Storage.html">Storage</a></li><li><a href="Store.html">Store</a></li><li><a href="StoreModel.html">StoreModel</a></li><li><a href="View.html">View</a></li><li><a href="ViewContainer.html">ViewContainer</a></li><li><a href="ViewContainer_Component.html">Component</a></li><li><a href="ViewContainerBase.html">ViewContainerBase</a></li><li><a href="ViewContainerContextMixin.html">ViewContainerContextMixin</a></li><li><a href="ViewContainerParameters_ViewContainerParameters.html">ViewContainerParameters</a></li><li><a href="ViewParameters_ViewParameters.html">ViewParameters</a></li><li><a href="WithIDBase.html">WithIDBase</a></li></ul><h3>Interfaces</h3><ul><li><a href="DataStoreHandlerInterface.html">DataStoreHandlerInterface</a></li><li><a href="DataStoreInterface.html">DataStoreInterface</a></li><li><a href="StoreInterface.html">StoreInterface</a></li></ul><h3>Global</h3><ul><li><a href="global.html#_componentId">_componentId</a></li><li><a href="global.html#nodeRef">nodeRef</a></li><li><a href="global.html#ROOT,">ROOT,</a></li><li><a href="global.html#StoreByRegister">StoreByRegister</a></li><li><a href="global.html#StoreDataByRegister">StoreDataByRegister</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Action.html">Action</a></li><li><a href="ApplicationContextMixin.html">ApplicationContextMixin</a></li><li><a href="Component.html">Component</a></li><li><a href="CreateHotBalloonElement.html">CreateHotBalloonElement</a></li><li><a href="Debugable.html">Debugable</a></li><li><a href="Dispatcher.html">Dispatcher</a></li><li><a href="EventHandlerBase.html">EventHandlerBase</a></li><li><a href="EventListenerFactory.listen.html">listen</a></li><li><a href="EventListenerFactory_EventListenerFactory.html">EventListenerFactory</a></li><li><a href="EventListenerOrderedFactory.html">EventListenerOrderedFactory</a></li><li><a href="EventListenerOrderedFactory_EventListenerFactory.html">EventListenerFactory</a></li><li><a href="EventListenerOrderedParam.html">EventListenerOrderedParam</a></li><li><a href="EventListenerOrderedParam.create.html">create</a></li><li><a href="EventListenerOrderedParam_EventListenerParam.html">EventListenerParam</a></li><li><a href="EventListenerParam.create.html">create</a></li><li><a href="EventListenerParam_EventListenerParam.html">EventListenerParam</a></li><li><a href="EventOrderedHandler.html">EventOrderedHandler</a></li><li><a href="HotBalloonApplication.html">HotBalloonApplication</a></li><li><a href="HotBalloonAttributeHandler.html">HotBalloonAttributeHandler</a></li><li><a href="HotballoonElementParams.html">HotballoonElementParams</a></li><li><a href="PrivateStateMixin.html">PrivateStateMixin</a></li><li><a href="ProxyStore.html">ProxyStore</a></li><li><a href="RequireIDMixin.html">RequireIDMixin</a></li><li><a href="State_State.html">State</a></li><li><a href="Storage.html">Storage</a></li><li><a href="Store.html">Store</a></li><li><a href="StoreModel.html">StoreModel</a></li><li><a href="View.html">View</a></li><li><a href="ViewContainer.html">ViewContainer</a></li><li><a href="ViewContainer_Component.html">Component</a></li><li><a href="ViewContainerBase.html">ViewContainerBase</a></li><li><a href="ViewContainerContextMixin.html">ViewContainerContextMixin</a></li><li><a href="ViewContainerParameters_ViewContainerParameters.html">ViewContainerParameters</a></li><li><a href="ViewEventListenerFactory.html">ViewEventListenerFactory</a></li><li><a href="ViewEventListenerFactory.bubble.html">bubble</a></li><li><a href="ViewEventListenerFactory_EventListenerFactory.html">EventListenerFactory</a></li><li><a href="ViewParameters_ViewParameters.html">ViewParameters</a></li><li><a href="WithIDBase.html">WithIDBase</a></li></ul><h3>Interfaces</h3><ul><li><a href="DataStoreHandlerInterface.html">DataStoreHandlerInterface</a></li><li><a href="DataStoreInterface.html">DataStoreInterface</a></li><li><a href="StoreInterface.html">StoreInterface</a></li></ul><h3>Global</h3><ul><li><a href="global.html#_componentId">_componentId</a></li><li><a href="global.html#nodeRef">nodeRef</a></li><li><a href="global.html#ROOT,">ROOT,</a></li><li><a href="global.html#StoreByRegister">StoreByRegister</a></li><li><a href="global.html#StoreDataByRegister">StoreDataByRegister</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Jul 18 2018 17:20:15 GMT+0200 (CEST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Jul 26 2018 10:12:01 GMT+0200 (CEST)
 </footer>
 
 <script> prettyPrint(); </script>

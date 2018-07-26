@@ -8,10 +8,7 @@
     "testMatch": [
       "<rootDir>/__tests__/**/?(*.)+(test).js"
     ],
-    "testEnvironment": "jsdom",
-    "testPathIgnorePatterns": [
-      "/node_modules/flexio-jshelpers/index.js"
-    ]
+    "testEnvironment": "jsdom"
   },
   "description": "Small JavaScript library for building interfaces by Flexio",
   "main": "index.js",

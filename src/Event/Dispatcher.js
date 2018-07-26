@@ -49,22 +49,21 @@ class Dispatcher extends EventHandlerBase {
 
   /**
    *
-   * @param {String} type
-   * @param {Function} callback
+   * @param {EventListenerParam} eventListenerParam
    * @returns {String} token
    */
-  addActionListener(type, callback) {
-    return this.addEventListener(type, callback)
+  addActionListener(eventListenerParam) {
+    return this.addEventListener(eventListenerParam)
   }
 
   /**
    *
-   * @param {String} type
+   * @param {String} event
    * @param {String} id
    * @returns void
    */
-  removeActionListener(type, id) {
-    this.removeEventListener(type, id)
+  removeActionListener(event, id) {
+    this.removeEventListener(event, id)
   }
 }
 

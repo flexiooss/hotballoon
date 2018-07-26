@@ -5,6 +5,7 @@ import {ViewStoresParameters} from './ViewStoresParameters'
 import {CHANGED, StoreInterface} from '../Store/StoreInterface'
 import {EventOrderedHandler} from '../Event/EventOrderedHandler'
 import {EventListenerParam} from '../Event/EventListenerParam'
+import {EventListenerOrderedParam} from '../Event/EventListenerOrderedParam'
 
 class ViewContainerBase extends WithIDBase {
   /**
@@ -121,11 +122,11 @@ class ViewContainerBase extends WithIDBase {
   }
 
   /**
-   * @param {EventListenerParam} eventListenerParam
+   * @param {EventListenerOrderedParam} eventListenerOrderedParam
    * @return {String} token
    */
-  on(eventListenerParam) {
-    return this._EventHandler.on(eventListenerParam)
+  on(eventListenerOrderedParam) {
+    return this._EventHandler.on(eventListenerOrderedParam)
   }
 
   /**

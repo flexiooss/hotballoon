@@ -6,7 +6,7 @@ import {
 import {CHANGED} from './src/Store/StoreInterface'
 import {ProxyStore} from './src/Store/ProxyStore'
 import {EventHandler} from './src/Event/EventHandler'
-import {EventOrderedHandlerOld} from './src/Event/EventOrderedHandlerOld'
+import {EventListenerOrderedFactory} from './src/Event/EventListenerOrderedFactory'
 import {Action} from './src/Action'
 import {
   ViewParameters,
@@ -67,12 +67,12 @@ export {
   MapOfState,
   PrivateStateMixin,
   EventHandler,
-  EventOrderedHandlerOld,
   html,
   HotballoonElementParams as HtmlParams,
   $,
   DataStoreInterface,
   DataStoreHandlerInterface,
   EventListenerFactory,
-  ViewEventListenerFactory
+  ViewEventListenerFactory,
+  EventListenerOrderedFactory
 }

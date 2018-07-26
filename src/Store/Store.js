@@ -1,5 +1,5 @@
 'use strict'
-import {EventOrderedHandlerOld} from '../Event/EventOrderedHandlerOld'
+import {EventOrderedHandler} from '../Event/EventOrderedHandler'
 import {assert, staticClassName} from 'flexio-jshelpers'
 import {Storage} from './Storage'
 import {CLASS_TAG_NAME} from '../CLASS_TAG_NAME'
@@ -64,7 +64,7 @@ export class Store extends StoreInterface {
       _EventHandler: {
         enumerable: false,
         configurable: false,
-        value: Object.seal(new EventOrderedHandlerOld())
+        value: Object.seal(new EventOrderedHandler())
       }
     })
 
@@ -82,14 +82,11 @@ export class Store extends StoreInterface {
   }
 
   /**
-   *
-   * @param {String} type
-   * @param {Function} callback
-   * @param {Object} scope
-   * @param {Integer} priority
+   * @param {EventListenerOrderedParam} eventListenerOrderedParam
+   * @return {String} token
    */
-  subscribe(type, callback, scope, priority) {
-    return this._EventHandler.addEventListener(type, callback, scope, priority)
+  subscribe(eventListenerOrderedParam) {
+    return this._EventHandler.on(eventListenerOrderedParam)
   }
 
   /**

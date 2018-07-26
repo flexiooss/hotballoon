@@ -1,1 +1,5 @@
-export {EventHandlerBase as EventHandler} from './EventHandlerBase'
+import {EventHandlerBase} from './EventHandlerBase'
+
+export class EventHandler extends EventHandlerBase {
+
+}
