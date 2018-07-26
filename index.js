@@ -19,12 +19,12 @@ import {HotBalloonApplication} from './src/HotBalloonApplication'
 import {PrivateStateMixin} from './src/mixins/PrivateStateMixin'
 import {Component} from './src/Component'
 
-import {html} from './src/HotballoonElement/CreateHotBalloonElement'
-import {HotballoonElementParams} from './src/HotballoonElement/HotballoonElementParams'
+import {html} from './src/HotballoonNodeElement/CreateHotBalloonElement'
+import {HotballoonElementParams} from './src/HotballoonNodeElement/HotballoonElementParams'
 import {
   HotBalloonAttributeHandler,
   select as $
-} from './src/HotballoonElement/HotBalloonAttributeHandler'
+} from './src/HotballoonNodeElement/HotBalloonAttributeHandler'
 
 import {State} from './src/Store/State'
 import {Storage} from './src/Store/Storage'
@@ -34,6 +34,7 @@ import {DataStoreInterface} from './src/Store/DataStoreInterface'
 import {DataStoreHandlerInterface} from './src/Store/DataStoreHandlerInterface'
 import {EventListenerFactory} from './src/Event/EventListenerFactory'
 import {ViewEventListenerFactory} from './src/Event/ViewEventListenerFactory'
+import {NodeEventListenerFactory} from './src/HotballoonNodeElement/NodeEventListenerFactory'
 
 export const hotballoonElement = {
   html,
@@ -74,5 +75,6 @@ export {
   DataStoreHandlerInterface,
   EventListenerFactory,
   ViewEventListenerFactory,
-  EventListenerOrderedFactory
+  EventListenerOrderedFactory,
+  NodeEventListenerFactory
 }

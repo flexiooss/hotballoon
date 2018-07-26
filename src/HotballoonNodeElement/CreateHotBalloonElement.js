@@ -24,6 +24,12 @@ class CreateHotBalloonElement extends HyperFlex {
      * @private
      */
     this._scope = scope
+    /**
+     *
+     * @type {HotBalloonAttributeHandler | null}
+     * @private
+     */
+    this._$element = null
   }
 
   /**
@@ -86,10 +92,12 @@ class CreateHotBalloonElement extends HyperFlex {
    * @return {CreateHotBalloonElement}
    */
   _setParams() {
+    this._$element = $(this._element)
     super._setParams()
     return this._setViews(this._params.views)
       .__setReconciliationRule(this._params.reconciliationRules)
       .__setReconciliationProperties(Object.keys(this._params.properties))
+      .__setEventListeners(this._params.eventListeners)
   }
 
   /**
@@ -113,7 +121,19 @@ class CreateHotBalloonElement extends HyperFlex {
    * @return {CreateHotBalloonElement}
    */
   __setReconciliationRule(rules) {
-    $(this._element).addReconcileRules(rules)
+    this._$element.addReconcileRules(rules)
+    return this
+  }
+
+  /**
+   * @private
+   * @param {Array<NodeEventListenerParam>} listeners
+   * @return {CreateHotBalloonElement}
+   */
+  __setEventListeners(listeners) {
+    listeners.forEach((v) => {
+      this._$element.on(v.event, v.callback, v.options)
+    })
     return this
   }
 
@@ -123,7 +143,7 @@ class CreateHotBalloonElement extends HyperFlex {
    * @return {CreateHotBalloonElement}
    */
   __setReconciliationProperties(propertiesToReconciliate) {
-    $(this._element).addReconcileProperties(propertiesToReconciliate)
+    this._$element.addReconcileProperties(propertiesToReconciliate)
     return this
   }
 }

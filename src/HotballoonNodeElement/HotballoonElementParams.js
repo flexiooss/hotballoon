@@ -1,5 +1,6 @@
 'use strict'
 import {HyperFlexParams} from 'flexio-hyperflex'
+import {NodeEventListenerParam} from './NodeEventListenerParam'
 
 /**
  * @extends HyperFlexParams
@@ -22,6 +23,12 @@ class HotballoonElementParams extends HyperFlexParams {
      * @private
      */
     this._reconciliationRules = []
+    /**
+     *
+     * @type {Array<String>}
+     * @private
+     */
+    this._eventListeners = []
   }
 
   /**
@@ -38,6 +45,14 @@ class HotballoonElementParams extends HyperFlexParams {
    */
   get views() {
     return this._views
+  }
+
+  /**
+   *
+   * @return {Array<NodeEventListenerParam>}
+   */
+  get eventListeners() {
+    return this._eventListeners
   }
 
   /**
@@ -67,6 +82,25 @@ class HotballoonElementParams extends HyperFlexParams {
    */
   addReconciliationRules(reconciliationRules) {
     this._reconciliationRules = reconciliationRules
+    return this
+  }
+
+  /**
+   * @static
+   * @param {Array<String>} rules
+   * @return {HotballoonElementParams}
+   */
+  static withEventListener(nodeEventListenerParam) {
+    return new this().addEventListener(nodeEventListenerParam)
+  }
+
+  /**
+   *
+   * @param {NodeEventListenerParam} nodeEventListenerParam
+   * @return {HotballoonElementParams}
+   */
+  addEventListener(nodeEventListenerParam) {
+    this._eventListeners.push(nodeEventListenerParam)
     return this
   }
 }
