@@ -1,5 +1,5 @@
 'use strict'
-import {isBoolean, assert, Sequence, sortObject} from 'flexio-jshelpers'
+import {isBoolean, assert, Sequence} from 'flexio-jshelpers'
 import {EventListenerParam} from './EventListenerParam'
 
 /**
@@ -28,11 +28,11 @@ export class EventHandlerBase {
      */
     this._isPending = new Set()
     this._sequenceId = new Sequence(this._ID)
-    /**
-     *
-     * @type {number}
-     * @protected
-     */
+    // /**
+    //  *
+    //  * @type {number}
+    //  * @protected
+    //  */
     // this._lastID = 0
 
     var _isDispatching = false
@@ -40,11 +40,11 @@ export class EventHandlerBase {
       enumerable: false,
       configurable: false,
       get: () => _isDispatching,
-      set: (newIsDispatching) => {
-        assert(isBoolean(newIsDispatching),
+      set: (v) => {
+        assert(isBoolean(v),
           'hotballoonView:Dispatcher: `newIsDispatching` argument assert be a Boolean'
         )
-        _isDispatching = newIsDispatching
+        _isDispatching = v
       }
     })
   }
@@ -55,15 +55,14 @@ export class EventHandlerBase {
    * @param {Object} payload
    */
   dispatch(event, payload) {
-    this._beforeDispatching(event, payload)
     if (this._listeners.has(event)) {
+      this._beforeDispatching(event, payload)
       try {
-        for (let id in this._listeners.get(event)) {
-          if (this._isPending.has(id)) {
-            continue
+        this._listeners.get(event).forEach((v, k) => {
+          if (!this._isPending.has(k)) {
+            this._invokeCallback(event, k)
           }
-          this._invokeCallback(event, id)
-        }
+        })
       } finally {
         this._stopDispatching(event)
       }
@@ -72,14 +71,32 @@ export class EventHandlerBase {
 
   /**
    *
-   * @private
-   * @param {String} type of Listener
-   * @param {String} id : token of listener
+   * @param {string} event
+   * @protected
    */
-  _invokeCallback(type, id) {
-    this._isPending.add(id)
-    this._listeners.get(type)[id].callback(this._pendingPayload.get(type), type)
-    this._isHandled.add(id)
+  _mayInitListeners(event) {
+    if (!(this._listeners.has(event))) {
+      this._listeners.set(event, new Map())
+    }
+  }
+
+  /**
+   *
+   * @private
+   * @param {String} event of Listener
+   * @param {String} token : token of listener
+   */
+  _invokeCallback(event, token) {
+    this._isPending.add(token)
+    try {
+      this._listeners.get(event)
+        .get(token)
+        .callback(this._pendingPayload.get(event), event)
+    } catch (e) {
+      console.log(e)
+    } finally {
+      this._isHandled.add(token)
+    }
   }
 
   /**
@@ -92,14 +109,13 @@ export class EventHandlerBase {
       'hotballoon:EventHandlerBase:addEventListener: ̀`eventListenerParam` argument assert be an instance of EventListenerParam'
     )
 
-    if (!(this._listeners.has(eventListenerParam.event))) {
-      this._listeners.set(eventListenerParam.event, {})
-    }
+    this._mayInitListeners(eventListenerParam.event)
     const id = this._sequenceId.nextID().toString()
 
-    this._listeners.get(eventListenerParam.event)[id] = {
-      callback: eventListenerParam.callback
-    }
+    this._listeners.get(eventListenerParam.event)
+      .set(id, {
+        callback: eventListenerParam.callback
+      })
 
     return id
   }
@@ -112,29 +128,29 @@ export class EventHandlerBase {
    */
   removeEventListener(event, token) {
     if (this._listeners.has(event)) {
-      assert(token in this._listeners.get(event),
+      assert(this._listeners.get(event).has(token),
         'hotballoon:EventHandlerBase:removeEventListener: ̀`id` argument not in _listeners : `%s`',
         event
       )
-      delete this._listeners.get(event)[token]
+      this._listeners.get(event).delete(token)
     }
   }
 
   /**
    *
    * @param {String} event of Listener
-   * @param {String} id : token
+   * @param {String} token : token
    * @returns {boolean}
    */
-  hasEventListener(event, id) {
-    return (this._listeners.has(event)) && (id in this._listeners.get(event))
+  hasEventListener(event, token) {
+    return (this._listeners.has(event)) && (this._listeners.get(event).has(token))
   }
 
   _beforeDispatching(event, payload) {
-    for (let id in this._listeners.get(event)) {
-      this._isPending.delete(id)
-      this._isHandled.delete(id)
-    }
+    this._listeners.get(event).forEach((v, k) => {
+      this._isPending.delete(k)
+      this._isHandled.delete(k)
+    })
     this._pendingPayload.set(event, payload)
     this._isDispatching = true
   }

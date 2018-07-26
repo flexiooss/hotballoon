@@ -76,6 +76,8 @@ export class Store extends StoreInterface {
    * @param {Component} component
    * @param storeInit
    * @return {Store}
+   * @static
+   * @constructor
    */
   static create(component, storeInit) {
     return new this(staticClassName(this) + '-' + component.nextID(), storeInit)

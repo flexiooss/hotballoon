@@ -27,6 +27,18 @@ export class State {
 
   /**
    *
+   * @param {string} storeId
+   * @param {*} data
+   * @return {State}
+   * @constructor
+   * @static
+   */
+  static create(storeId, data) {
+    return this(storeId, data)
+  }
+
+  /**
+   *
    * @return {State}
    * @static
    */

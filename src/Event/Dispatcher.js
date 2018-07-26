@@ -39,7 +39,7 @@ class Dispatcher extends EventHandlerBase {
         assert(!this._isHandled.has(id),
           'hotballoon:Dispatcher:waitFor: `id` : `%s` already handled',
           id)
-        assert((id in this._listeners.get(type)),
+        assert(this._listeners.get(type).has(id),
           'hotballoon:Dispatcher:waitFor: `id` : `%s` not defined',
           id)
         this._invokeCallback(type, id)

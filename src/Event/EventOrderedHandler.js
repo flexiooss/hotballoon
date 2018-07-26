@@ -1,5 +1,5 @@
 'use strict'
-import {assert, sortObject} from 'flexio-jshelpers'
+import {assert, sortMap} from 'flexio-jshelpers'
 import {EventHandlerBase} from './EventHandlerBase'
 import {EventListenerOrderedParam} from './EventListenerOrderedParam'
 
@@ -19,36 +19,46 @@ export class EventOrderedHandler extends EventHandlerBase {
       'hotballoon:EventHandler:on: ̀`eventListenerOrderedParam` argument assert be an instance of EventListenerOrderedParam'
     )
 
-    if (!(this._listeners.has(eventListenerOrderedParam.event))) {
-      this._listeners.set(eventListenerOrderedParam.event, {})
-    }
+    this._mayInitListeners(eventListenerOrderedParam.event)
 
     const id = this._sequenceId.nextID().toString()
 
-    this._listeners.get(eventListenerOrderedParam.event)[id] = {
+    this._listeners.get(eventListenerOrderedParam.event).set(id, {
       scope: eventListenerOrderedParam.scope,
       callback: eventListenerOrderedParam.callback,
       priority: eventListenerOrderedParam.priority
-    }
+    })
 
     this._listeners.set(eventListenerOrderedParam.event,
-      sortObject(this._listeners.get(eventListenerOrderedParam.event),
+      sortMap(
+        this._listeners.get(eventListenerOrderedParam.event),
         (a, b) => {
-          return a.priority - b.priority
-        }))
+          return a.value.priority - b.value.priority
+        }
+      )
+    )
 
     return id
   }
 
   /**
    * @private
-   * @param {String} type
-   * @param {String} id
+   * @param {String} event
+   * @param {String} token
    */
-  _invokeCallback(type, id) {
-    this._isPending.add(id)
-    let listener = this._listeners.get(type)[id]
-    listener.callback.call(listener.scope, this._pendingPayload.get(type), type)
-    this._isHandled.add(id)
+  _invokeCallback(event, token) {
+    this._isPending.add(token)
+    try {
+      const listener = this._listeners.get(event).get(token)
+      listener.callback.call(
+        listener.scope,
+        this._pendingPayload.get(event),
+        event
+      )
+    } catch (e) {
+      console.log(e)
+    } finally {
+      this._isHandled.add(token)
+    }
   }
 }

@@ -17,7 +17,8 @@
   "license": "Apache-2.0",
   "scripts": {
     "doc": "yarn jsdoc -d ./docs/ -p -r ./src/ ",
-    "test": "jest"
+    "test": "jest",
+    "test:output": "jest --clearCache --json --outputFile=__tests__/results.json"
   },
   "bugs": {
     "url": "https://github.com/flexiooss/hotballoon/issues"
