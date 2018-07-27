@@ -1,35 +1,7 @@
-import {assert, deepFreezeSeal, isFunction, isObject, mergeWithoutPrototype} from 'flexio-jshelpers'
+import {deepFreezeSeal} from 'flexio-jshelpers'
+import {EventListenerParam} from 'flexio-nodes-reconciliation'
 
-export class NodeEventListenerParam {
-  /**
-   *
-   * @param {String} event
-   * @param {function(payload<Object>, type<string>)} callback
-   * @param {{capture: boolean, once: boolean, passive: boolean} | null} options
-   * @throws AssertionError
-   */
-  constructor(event, callback, options = {}) {
-    assert(!!event,
-      'hotballoon:EventListenerParam:constructor: ̀`event` property assert be not empty'
-    )
-    assert(isFunction(callback),
-      'hotballoon:EventListenerParam:constructor: ̀`callback` property assert be Callable'
-    )
-    assert(isObject(options),
-      'hotballoon:EventListenerParam:constructor: ̀`options` property assert be an Object or null'
-    )
-    this.event = event
-    this.callback = callback
-    /**
-     * @type {capture: boolean, once: boolean, passive: boolean}
-     */
-    this.options = mergeWithoutPrototype({
-      capture: false,
-      once: false,
-      passive: false
-    }, options)
-  }
-
+export class NodeEventListenerParam extends EventListenerParam {
   /**
    *
    * @param {String} event

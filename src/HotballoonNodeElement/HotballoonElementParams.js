@@ -1,6 +1,5 @@
 'use strict'
 import {HyperFlexParams} from 'flexio-hyperflex'
-import {NodeEventListenerParam} from './NodeEventListenerParam'
 
 /**
  * @extends HyperFlexParams

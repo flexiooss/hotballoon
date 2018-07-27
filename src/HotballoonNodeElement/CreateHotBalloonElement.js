@@ -1,6 +1,5 @@
 'use strict'
 import {HotballoonElementParams} from './HotballoonElementParams'
-import {assert, isObject, isNode} from 'flexio-jshelpers'
 import {HyperFlex} from 'flexio-hyperflex'
 import {$} from './HotBalloonAttributeHandler'
 
@@ -131,8 +130,8 @@ class CreateHotBalloonElement extends HyperFlex {
    * @return {CreateHotBalloonElement}
    */
   __setEventListeners(listeners) {
-    listeners.forEach((v) => {
-      this._$element.on(v.event, v.callback, v.options)
+    listeners.forEach((nodeEventListenerParam) => {
+      this._$element.on(nodeEventListenerParam)
     })
     return this
   }

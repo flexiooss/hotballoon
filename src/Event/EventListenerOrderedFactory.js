@@ -1,4 +1,3 @@
-import {assert, isNumber} from 'flexio-jshelpers'
 import {EventListenerOrderedParam} from './EventListenerOrderedParam'
 import {EventListenerFactory} from './EventListenerFactory'
 

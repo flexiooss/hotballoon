@@ -4,8 +4,6 @@ import {WithIDBase} from '../bases/WithIDBase'
 import {ViewStoresParameters} from './ViewStoresParameters'
 import {CHANGED, StoreInterface} from '../Store/StoreInterface'
 import {EventOrderedHandler} from '../Event/EventOrderedHandler'
-import {EventListenerParam} from '../Event/EventListenerParam'
-import {EventListenerOrderedParam} from '../Event/EventListenerOrderedParam'
 
 class ViewContainerBase extends WithIDBase {
   /**

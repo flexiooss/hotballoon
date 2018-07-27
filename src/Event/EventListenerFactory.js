@@ -1,4 +1,3 @@
-import {assert, isFunction, isNumber, isObject} from 'flexio-jshelpers'
 import {EventListenerParam} from './EventListenerParam'
 
 export class EventListenerFactory {
