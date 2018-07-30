@@ -1,9 +1,10 @@
 'use strict'
-import {CLASS_TAG_NAME} from '../CLASS_TAG_NAME'
+import {CLASS_TAG_NAME, CLASS_TAG_NAME_VIEWCONTAINER} from '../CLASS_TAG_NAME'
 import {isNode, isString, assert, isFunction} from 'flexio-jshelpers'
 import {CHANGED as STORE_CHANGED, StoreInterface} from '../Store/StoreInterface'
 import {ViewContainerBase} from './ViewContainerBase'
 import {CoreException} from '../CoreException'
+import {Action} from '../Action/Action'
 
 export class ViewContainerParameters {
   /**
@@ -50,8 +51,6 @@ export class ViewContainerParameters {
     )
   }
 }
-
-export const CLASS_TAG_NAME_VIEWCONTAINER = Symbol('__HB__VIEWCONTAINER__')
 
 export const WILL_REMOVE = 'WILL_REMOVE'
 
@@ -242,6 +241,16 @@ export class ViewContainer extends ViewContainerBase {
   }
 
   /**
+   * @param {Action} action
+   */
+  dispatchAction(action) {
+    assert(action instanceof Action,
+      'hotballoon:' + this.constructor.name + ':addAction: `action` argument should be an instance of Action'
+    )
+    action.dispatchWith(this.Dispatcher())
+  }
+
+  /**
    *
    * @return {Component}
    * @constructor
@@ -273,15 +282,6 @@ export class ViewContainer extends ViewContainerBase {
    */
   Service(key) {
     return this.APP().Service(key)
-  }
-
-  /**
-   * @param {String} key
-   * @return {Action} action
-   * @instance
-   */
-  Action(key) {
-    return this.Component().Action(key)
   }
 
   /**

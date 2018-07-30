@@ -4,7 +4,11 @@ import {WithIDBase} from '../bases/WithIDBase'
 import {ViewStoresParameters} from './ViewStoresParameters'
 import {CHANGED, StoreInterface} from '../Store/StoreInterface'
 import {EventOrderedHandler} from '../Event/EventOrderedHandler'
+import {CLASS_TAG_NAME} from '../CLASS_TAG_NAME/HasTagClassNameInterface'
 
+/**
+ * @implements HasTagClassNameInterface
+ */
 class ViewContainerBase extends WithIDBase {
   /**
    *
@@ -117,6 +121,24 @@ class ViewContainerBase extends WithIDBase {
         }
       }
     })
+  }
+
+  /**
+   *
+   * @param {HasTagClassNameInterface} instance
+   * @return {boolean}
+   */
+  hasSameTagClassName(instance) {
+    return this.testTagClassName(instance[CLASS_TAG_NAME])
+  }
+
+  /**
+   *
+   * @param {Symbol} tag
+   * @return {boolean}
+   */
+  testTagClassName(tag) {
+    return this[CLASS_TAG_NAME] === tag
   }
 
   /**

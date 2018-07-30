@@ -27,7 +27,7 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>'use strict'
-import { CLASS_TAG_NAME } from './CLASS_TAG_NAME'
+import { ClassTagName } from './ClassTagName'
 import { EventOrderedHandlerOld } from './EventOrderedHandlerOld'
 import { MapOfInstance, MapOfArray, isNode, isString, isBoolean, assert, isIterable } from 'flexio-jshelpers'
 import { ComponentContextMixin } from './mixins/ComponentContextMixin'
@@ -119,7 +119,7 @@ export class ViewContainer extends ComponentContextMixin(RequireIDMixin(PrivateS
     var _tokenEvent = new MapOfArray()
     var _views = new MapOfInstance(View)
 
-    Object.defineProperty(this, CLASS_TAG_NAME, {
+    Object.defineProperty(this, ClassTagName, {
       configurable: false,
       writable: false,
       enumerable: true,

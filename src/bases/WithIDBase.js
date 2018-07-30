@@ -14,15 +14,16 @@ class WithIDBase extends Debugable {
     super()
     assert(!!id,
       'hotballoon:WithIDBase:constructor: `id` argument assert not be empty')
-    /**
-     * @property {String}
-     * @name  WithIDBase#_ID
-     * @protected
-     */
     Object.defineProperty(this, '_ID', {
       enumerable: true,
       configurable: false,
       writable: false,
+      /**
+       * @property {String}
+       * @type {string}
+       * @name  WithIDBase#_ID
+       * @protected
+       */
       value: id
     })
   }

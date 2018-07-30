@@ -19,15 +19,15 @@
 
     <h1 class="page-title">Source: View/ViewContainer.js</h1>
 
-    
 
 
 
-    
+
+
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>'use strict'
-import {CLASS_TAG_NAME} from '../CLASS_TAG_NAME'
+import {ClassTagName} from '../ClassTagName'
 import {isNode, isString, assert, isFunction} from 'flexio-jshelpers'
 import {CHANGED as STORE_CHANGED, StoreInterface} from '../Store/StoreInterface'
 import {ViewContainerBase} from './ViewContainerBase'
@@ -105,7 +105,7 @@ export class ViewContainer extends ViewContainerBase {
     this.parentNode = viewContainerParameters.parentNode
     this.debug.color = 'blueDark'
 
-    Object.defineProperty(this, CLASS_TAG_NAME, {
+    Object.defineProperty(this, ClassTagName, {
       configurable: false,
       writable: false,
       enumerable: true,

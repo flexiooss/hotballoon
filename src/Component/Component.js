@@ -1,61 +1,42 @@
 'use strict'
-import {
-  Action
-} from './Action'
-import {
-  Store
-} from './Store/Store'
+import {Action} from '../Action/Action'
+import {Store} from '../Store/Store'
 import {
   ViewContainer,
   WILL_REMOVE as VIEWCONTAINER_WILL_REMOVE
-} from './View/ViewContainer'
+} from '../View/ViewContainer'
+import {MapOfInstance, Sequence, assert} from 'flexio-jshelpers'
+import {WithIDBase} from '../bases/WithIDBase'
 import {
-  MapOfInstance,
-  Sequence
-} from 'flexio-jshelpers'
-import {
-  RequireIDMixin
-} from './mixins/RequireIDMixin'
-import {
-  ApplicationContextMixin
-} from './mixins/ApplicationContextMixin'
-import {
-  PrivateStateMixin
-} from './mixins/PrivateStateMixin'
-import {Debugable} from './bases/Debugable'
-import {CLASS_TAG_NAME} from './CLASS_TAG_NAME'
-
-export const CLASS_TAG_NAME_COMPONENT = Symbol('__HB__COMPONENT__')
+  CLASS_TAG_NAME,
+  CLASS_TAG_NAME_COMPONENT,
+  CLASS_TAG_NAME_HOTBALLOON_APPLICATION,
+  testClassTagName
+} from '../CLASS_TAG_NAME'
 
 /**
  * @class
  * @description The Component is the entry point of the module
- * @extends ApplicationContextMixin
- * @extends RequireIDMixin
- * @extends PrivateStateMixin
- * @extends Debugable
+ * @extends WithIDBase
  *
  */
-class Component extends ApplicationContextMixin(RequireIDMixin(PrivateStateMixin(Debugable))) {
+class Component extends WithIDBase {
   constructor(hotBallonApplication) {
-    super()
+    assert(testClassTagName(hotBallonApplication, CLASS_TAG_NAME_HOTBALLOON_APPLICATION),
+      'hotballoon:ApplicationContextMixin:__setAPP require an argument instance of ̀ hotballoon/HotBalloonApplication`, `%s` given',
+      typeof hotBallonApplication
+    )
+    super(hotBallonApplication.nextID())
+
     this.debug.color = 'green'
 
-    /**
-     * @description Mixinis init
-     */
-    this.ApplicationContextMixinInit(hotBallonApplication)
-    this.RequireIDMixinInit(hotBallonApplication.nextID())
-    this.PrivateStateMixinInit()
-
     const _sequenceId = new Sequence(this._ID + '_')
-    const dispatcherListenerTokens = new Map()
-    const _actions = new MapOfInstance(Action)
-    const actionsKey = new Map()
+    const actionsListenerTokens = new Map()
     const _stores = new MapOfInstance(Store)
     const storesKeyRegister = new Map()
     const _viewContainers = new MapOfInstance(ViewContainer)
     const viewContainersKey = new Map()
+    const _privateState = new Map()
 
     Object.defineProperty(this, CLASS_TAG_NAME, {
       configurable: false,
@@ -65,6 +46,19 @@ class Component extends ApplicationContextMixin(RequireIDMixin(PrivateStateMixin
     })
 
     Object.defineProperties(this, {
+      _APP: {
+        configurable: false,
+        enumerable: false,
+        get: () => {
+          return hotBallonApplication
+        },
+        set: (v) => {
+          assert(false,
+            `hotballoon:${this.constructor.name}: _APP property already defined`
+          )
+          return false
+        }
+      },
       _sequenceId: {
         configurable: false,
         enumerable: false,
@@ -75,31 +69,11 @@ class Component extends ApplicationContextMixin(RequireIDMixin(PrivateStateMixin
           return false
         }
       },
-      dispatcherListenerTokens: {
+      actionsListenerTokens: {
         configurable: false,
         enumerable: true,
         get: () => {
-          return dispatcherListenerTokens
-        },
-        set: (v) => {
-          return false
-        }
-      },
-      _actions: {
-        configurable: false,
-        enumerable: false,
-        get: () => {
-          return _actions
-        },
-        set: (v) => {
-          return false
-        }
-      },
-      actionsKey: {
-        configurable: false,
-        enumerable: true,
-        get: () => {
-          return actionsKey
+          return actionsListenerTokens
         },
         set: (v) => {
           return false
@@ -144,10 +118,34 @@ class Component extends ApplicationContextMixin(RequireIDMixin(PrivateStateMixin
         set: (v) => {
           return false
         }
+      },
+      _privateState: {
+        configurable: false,
+        enumerable: false,
+        value: _privateState
       }
-    })
+    }
+    )
 
     this._init()
+  }
+
+  /**
+   *
+   * @param {HasTagClassNameInterface} instance
+   * @return {boolean}
+   */
+  hasSameTagClassName(instance) {
+    return this.testTagClassName(instance[CLASS_TAG_NAME])
+  }
+
+  /**
+   *
+   * @param {Symbol} tag
+   * @return {boolean}
+   */
+  testTagClassName(tag) {
+    return this[CLASS_TAG_NAME] === tag
   }
 
   /**
@@ -166,21 +164,17 @@ class Component extends ApplicationContextMixin(RequireIDMixin(PrivateStateMixin
    * @returns void
    */
   _init() {
-    this._initActions()
     this._initStores()
     this._initDispatcherListeners()
     this._initViewContainers()
   }
 
   /**
-   * @private
+   * @protected
    * @description called by the constructor for int Actrions, Stores, Listeners, ViewContainers
    * @returns void
    *
    */
-  _initActions() {
-  }
-
   _initStores() {
   }
 
@@ -197,33 +191,48 @@ class Component extends ApplicationContextMixin(RequireIDMixin(PrivateStateMixin
   }
 
   /**
+   * @private
+   * @param {String} key
+   * @param {mixed}
+   */
+  _setState(key, value) {
+    this._privateState.set(key, value)
+  }
+
+  /**
+   * @private
+   * @param {String} key
+   * @returns {mixed}
+   */
+  _state(key) {
+    return this._privateState.get(key)
+  }
+
+  /**
+   * @private
+   * @param {String} key
+   */
+  _delete(key) {
+    this._privateState.delete(key)
+  }
+
+  /**
    *
-   * @param {String} type : action type
-   * @param {Function} callback
+   * @param {EventListenerParam} eventListenerParam
    * @returns {String} token
    */
-  addActionListener(type, callback) {
-    return this.Dispatcher().addActionListener(type, callback)
+  listenAction(eventListenerParam) {
+    return this.Dispatcher().addActionListener(eventListenerParam)
   }
 
   /**
-   * @param {String}  tokenAction
-   * @param {hotballoon/Action}
-   * @returns {String} tokenAction
+   * @param {Action} action
    */
-  addAction(tokenAction, Action) {
-    this._actions.add(tokenAction, Action)
-    return tokenAction
-  }
-
-  /**
-   *
-   * @param {String} tokenAction
-   * @param {hotballoon/Action} Action
-   *
-   */
-  Action(tokenAction) {
-    return this._actions.get(tokenAction)
+  dispatchAction(action) {
+    assert(action instanceof Action,
+      'hotballoon:' + this.constructor.name + ':addAction: `action` argument should be an instance of Action'
+    )
+    action.dispatchWith(this.Dispatcher())
   }
 
   /**
@@ -300,6 +309,27 @@ class Component extends ApplicationContextMixin(RequireIDMixin(PrivateStateMixin
    */
   nextID(prefix = '') {
     return prefix + this._sequenceId.nextID()
+  }
+
+  /**
+   * @return {HotBalloonApplication}
+   */
+  APP() {
+    return this._APP
+  }
+
+  /**
+   * @return {Dispatcher}
+   */
+  Dispatcher() {
+    return this.APP().Dispatcher()
+  }
+
+  /**
+   * @return {Service}
+   */
+  Service(key) {
+    return this.APP().Service(key)
   }
 }
 

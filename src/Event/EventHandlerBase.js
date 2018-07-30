@@ -63,6 +63,8 @@ export class EventHandlerBase {
             this._invokeCallback(event, k)
           }
         })
+      } catch (e) {
+        console.log(e)
       } finally {
         this._stopDispatching(event)
       }

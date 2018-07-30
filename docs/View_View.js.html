@@ -19,16 +19,16 @@
 
     <h1 class="page-title">Source: View/View.js</h1>
 
-    
 
 
 
-    
+
+
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>'use strict'
 import {CoreException} from '../CoreException'
-import {CLASS_TAG_NAME} from '../CLASS_TAG_NAME'
+import {ClassTagName} from '../ClassTagName'
 import {assert, isBoolean, isFunction, isNode, isString, valueByKeys} from 'flexio-jshelpers'
 import {$} from '../HotballoonElement/HotBalloonAttributeHandler'
 import {reconcile} from 'flexio-nodes-reconciliation'
@@ -109,9 +109,9 @@ class View extends ViewContainerBase {
     const _state = new Map()
 
     /**
-     * @property {string} CLASS_TAG_NAME
+     * @property {string} ClassTagName
      */
-    Object.defineProperty(this, CLASS_TAG_NAME, {
+    Object.defineProperty(this, ClassTagName, {
       configurable: false,
       writable: false,
       enumerable: true,

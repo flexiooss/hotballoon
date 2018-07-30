@@ -19,11 +19,11 @@
 
     <h1 class="page-title">Source: HotBalloonApplication.js</h1>
 
-    
 
 
 
-    
+
+
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>'use strict'
@@ -31,7 +31,7 @@ import {Dispatcher} from './Event/Dispatcher'
 import {MapExtended, MapOfInstance, Sequence, assert} from 'flexio-jshelpers'
 import {RequireIDMixin} from './mixins/RequireIDMixin'
 import {Component} from './Component'
-import {CLASS_TAG_NAME} from './CLASS_TAG_NAME'
+import {ClassTagName} from './ClassTagName'
 
 export const CLASS_TAG_NAME_HOTBALLOON_APPLICATION = Symbol('__HB__APPLICATION__')
 
@@ -58,7 +58,7 @@ class HotBalloonApplication extends RequireIDMixin(class {
     const _services = new MapExtended()
     const _sequenceId = new Sequence('hb_')
 
-    Object.defineProperty(this, CLASS_TAG_NAME, {
+    Object.defineProperty(this, ClassTagName, {
       configurable: false,
       writable: false,
       enumerable: true,

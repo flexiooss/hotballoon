@@ -1,6 +1,6 @@
 'use strict'
 import {CoreException} from '../CoreException'
-import {CLASS_TAG_NAME} from '../CLASS_TAG_NAME'
+import {CLASS_TAG_NAME, CLASS_TAG_NAME_VIEW, CLASS_TAG_NAME_STORE} from '../CLASS_TAG_NAME'
 import {assert, isBoolean, isFunction, isNode, isString, valueByKeys} from 'flexio-jshelpers'
 import {$} from '../HotballoonNodeElement/HotBalloonAttributeHandler'
 import {reconcile} from 'flexio-nodes-reconciliation'
@@ -52,12 +52,12 @@ export class ViewParameters {
 }
 
 export const ATTRIBUTE_NODEREF = '_hb_noderef'
-export const CLASS_TAG_NAME_VIEW = Symbol('__HB__VIEW__')
 
 /**
  * @class
  * @description View describe a fragment of DOM
  * @extends ViewContainerBase
+ * @implements HasTagClassNameInterface
  */
 class View extends ViewContainerBase {
   /**
@@ -80,9 +80,6 @@ class View extends ViewContainerBase {
     const _nodeRefs = new Map()
     const _state = new Map()
 
-    /**
-     * @property {string} CLASS_TAG_NAME
-     */
     Object.defineProperty(this, CLASS_TAG_NAME, {
       configurable: false,
       writable: false,

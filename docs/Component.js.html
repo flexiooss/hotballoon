@@ -19,11 +19,11 @@
 
     <h1 class="page-title">Source: Component.js</h1>
 
-    
 
 
 
-    
+
+
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>'use strict'
@@ -51,7 +51,7 @@ import {
   PrivateStateMixin
 } from './mixins/PrivateStateMixin'
 import {Debugable} from './bases/Debugable'
-import {CLASS_TAG_NAME} from './CLASS_TAG_NAME'
+import {ClassTagName} from './ClassTagName'
 
 export const CLASS_TAG_NAME_COMPONENT = Symbol('__HB__COMPONENT__')
 
@@ -85,7 +85,7 @@ class Component extends ApplicationContextMixin(RequireIDMixin(PrivateStateMixin
     const _viewContainers = new MapOfInstance(ViewContainer)
     const viewContainersKey = new Map()
 
-    Object.defineProperty(this, CLASS_TAG_NAME, {
+    Object.defineProperty(this, ClassTagName, {
       configurable: false,
       writable: false,
       enumerable: true,

@@ -19,18 +19,18 @@
 
     <h1 class="page-title">Source: Action.js</h1>
 
-    
 
 
 
-    
+
+
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>'use strict'
 import {Dispatcher} from './Event/Dispatcher'
 import {assert, isFunction, deepFreezeSeal} from 'flexio-jshelpers'
 import {CoreException} from './CoreException'
-import {CLASS_TAG_NAME} from './CLASS_TAG_NAME'
+import {ClassTagName} from './ClassTagName'
 
 export const CLASS_TAG_NAME_ACTION = Symbol('__HB__ACTION__')
 
@@ -53,7 +53,7 @@ class Action {
     )
     const _actions = new Map()
 
-    Object.defineProperty(this, CLASS_TAG_NAME, {
+    Object.defineProperty(this, ClassTagName, {
       configurable: false,
       writable: false,
       enumerable: true,

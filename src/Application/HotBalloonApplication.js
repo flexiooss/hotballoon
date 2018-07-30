@@ -1,26 +1,26 @@
 'use strict'
-import {Dispatcher} from './Event/Dispatcher'
+import {Dispatcher} from '../Dispatcher/Dispatcher'
 import {MapExtended, MapOfInstance, Sequence, assert} from 'flexio-jshelpers'
-import {RequireIDMixin} from './mixins/RequireIDMixin'
-import {Component} from './Component'
-import {CLASS_TAG_NAME} from './CLASS_TAG_NAME'
+import {Component} from '../Component/Component'
+import {WithIDBase} from '../bases/WithIDBase'
+import {CLASS_TAG_NAME, CLASS_TAG_NAME_HOTBALLOON_APPLICATION} from '../CLASS_TAG_NAME'
 
-export const CLASS_TAG_NAME_HOTBALLOON_APPLICATION = Symbol('__HB__APPLICATION__')
+// export const CLASS_TAG_NAME_HOTBALLOON_APPLICATION = Symbol('__HB__APPLICATION__')
 
 /**
  *
  * @class
  * @description HotBalloonApplication is the container for a loop hotballoon
+ * @extends WithIDBase
+ * @extends HasTagClassNameInterface
  */
-class HotBalloonApplication extends RequireIDMixin(class {
-}) {
+class HotBalloonApplication extends WithIDBase {
   /**
    * @constructor
    * @param {Dispatcher} dispatcher
    */
   constructor(id, dispatcher) {
-    super()
-    this.RequireIDMixinInit(id)
+    super(id)
 
     assert(dispatcher instanceof Dispatcher,
       'hotballoon:HotBalloonApplication:constructor: `dispatcher` argument should be an instance of hotballoon/Dispatcher'

@@ -29,7 +29,7 @@
             <pre class="prettyprint source linenums"><code>'use strict'
 import {EventHandlerBase} from './bases/EventHandlerBase'
 import {assert} from 'flexio-jshelpers'
-import {CLASS_TAG_NAME} from './CLASS_TAG_NAME'
+import {ClassTagName} from './ClassTagName'
 
 export const CLASS_TAG_NAME_DISPATCHER = Symbol('__HB__DISPATCHER__')
 
@@ -41,7 +41,7 @@ export const CLASS_TAG_NAME_DISPATCHER = Symbol('__HB__DISPATCHER__')
 class Dispatcher extends EventHandlerBase {
   constructor() {
     super()
-    Object.defineProperty(this, CLASS_TAG_NAME, {
+    Object.defineProperty(this, ClassTagName, {
       configurable: false,
       writable: false,
       enumerable: true,

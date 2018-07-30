@@ -2,11 +2,9 @@
 import {EventOrderedHandler} from '../Event/EventOrderedHandler'
 import {assert, staticClassName} from 'flexio-jshelpers'
 import {Storage} from './Storage'
-import {CLASS_TAG_NAME} from '../CLASS_TAG_NAME'
+import {CLASS_TAG_NAME, CLASS_TAG_NAME_STORE} from '../CLASS_TAG_NAME'
 import {StoreInterface, CHANGED} from './StoreInterface'
 import {DataStoreInterface} from './DataStoreInterface'
-
-export const CLASS_TAG_NAME_STORE = Symbol('__HB__STORE__')
 
 export const INIT = 'INIT'
 
@@ -15,6 +13,7 @@ export const INIT = 'INIT'
  * @description Store is the instance for store data from Component
  * @extends StoreInterface
  * @implements StoreInterface
+ * @implements HasTagClassNameInterface
  */
 export class Store extends StoreInterface {
   /**
@@ -69,6 +68,24 @@ export class Store extends StoreInterface {
     })
 
     this._dispatch(INIT)
+  }
+
+  /**
+   *
+   * @param {HasTagClassNameInterface} instance
+   * @return {boolean}
+   */
+  hasSameTagClassName(instance) {
+    return this.testTagClassName(instance[CLASS_TAG_NAME])
+  }
+
+  /**
+   *
+   * @param {Symbol} tag
+   * @return {boolean}
+   */
+  testTagClassName(tag) {
+    return this[CLASS_TAG_NAME] === tag
   }
 
   /**

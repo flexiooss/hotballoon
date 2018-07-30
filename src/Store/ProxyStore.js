@@ -2,11 +2,9 @@
 import {EventOrderedHandler} from '../Event/EventOrderedHandler'
 import {EventListenerOrderedFactory} from '../Event/EventListenerOrderedFactory'
 import {assert, isFunction, UID} from 'flexio-jshelpers'
-import {CLASS_TAG_NAME} from '../CLASS_TAG_NAME'
+import {CLASS_TAG_NAME, CLASS_TAG_NAME_PROXYSTORE} from '../CLASS_TAG_NAME'
 import {StoreInterface} from './StoreInterface'
 import {State} from './State'
-
-export const CLASS_TAG_NAME_PROXYSTORE = Symbol('__HB__PROXYSTORE__')
 
 /**
  * @extends StoreInterface
@@ -76,7 +74,7 @@ export class ProxyStore extends StoreInterface {
    * @static
    */
   static create(store, mapper) {
-    return new this(UID('proxy_' + store.constructor.name + '_' + store._ID + '_'), store, mapper)
+    return new this(UID(`proxy_${store.constructor.name}_${store._ID}_`), store, mapper)
   }
 
   /**

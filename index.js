@@ -1,4 +1,4 @@
-import {Dispatcher} from './src/Event/Dispatcher'
+import {Dispatcher} from './src/Dispatcher/Dispatcher'
 import {
   Store,
   INIT as STORE_INIT
@@ -7,7 +7,7 @@ import {CHANGED} from './src/Store/StoreInterface'
 import {ProxyStore} from './src/Store/ProxyStore'
 import {EventHandler} from './src/Event/EventHandler'
 import {EventListenerOrderedFactory} from './src/Event/EventListenerOrderedFactory'
-import {Action} from './src/Action'
+import {Action} from './src/Action/Action'
 import {
   ViewParameters,
   View,
@@ -15,9 +15,9 @@ import {
 } from './src/View/View'
 import {MapOfState} from './src/MapOfState'
 import {ViewContainer, ViewContainerParameters} from './src/View/ViewContainer'
-import {HotBalloonApplication} from './src/HotBalloonApplication'
+import {HotBalloonApplication} from './src/Application/HotBalloonApplication'
 import {PrivateStateMixin} from './src/mixins/PrivateStateMixin'
-import {Component} from './src/Component'
+import {Component} from './src/Component/Component'
 
 import {html} from './src/HotballoonNodeElement/CreateHotBalloonElement'
 import {HotballoonElementParams} from './src/HotballoonNodeElement/HotballoonElementParams'
@@ -35,6 +35,9 @@ import {DataStoreHandlerInterface} from './src/Store/DataStoreHandlerInterface'
 import {EventListenerFactory} from './src/Event/EventListenerFactory'
 import {ViewEventListenerFactory} from './src/Event/ViewEventListenerFactory'
 import {NodeEventListenerFactory} from './src/HotballoonNodeElement/NodeEventListenerFactory'
+import {ActionPayload} from './src/Action/ActionPayload'
+import {ActionParams} from './src/Action/ActionParams'
+import {DispatcherEventListenerFactory} from './src/Dispatcher/DispatcherEventListenerFactory'
 
 export const hotballoonElement = {
   html,
@@ -60,6 +63,8 @@ export {
   Store,
   ProxyStore,
   Action,
+  ActionParams,
+  ActionPayload,
   ViewContainer,
   ViewContainerParameters,
   View,
@@ -74,6 +79,7 @@ export {
   DataStoreInterface,
   DataStoreHandlerInterface,
   EventListenerFactory,
+  DispatcherEventListenerFactory,
   ViewEventListenerFactory,
   EventListenerOrderedFactory,
   NodeEventListenerFactory

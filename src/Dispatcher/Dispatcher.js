@@ -1,16 +1,16 @@
 'use strict'
-import {EventHandlerBase} from './EventHandlerBase'
 import {assert} from 'flexio-jshelpers'
-import {CLASS_TAG_NAME} from '../CLASS_TAG_NAME'
-
-export const CLASS_TAG_NAME_DISPATCHER = Symbol('__HB__DISPATCHER__')
+import {CLASS_TAG_NAME, CLASS_TAG_NAME_DISPATCHER} from '../CLASS_TAG_NAME'
+import {EventHandlerBase} from '../Event/EventHandlerBase'
+import {EventAction} from '../Action/EventAction'
 
 /**
  * @class
  * @description Dispatcher is the event handler between Actions and Component
  * @extends EventHandlerBase
+ * @implements HasTagClassNameInterface
  */
-class Dispatcher extends EventHandlerBase {
+export class Dispatcher extends EventHandlerBase {
   constructor() {
     super()
     Object.defineProperty(this, CLASS_TAG_NAME, {
@@ -19,6 +19,24 @@ class Dispatcher extends EventHandlerBase {
       enumerable: true,
       value: CLASS_TAG_NAME_DISPATCHER
     })
+  }
+
+  /**
+   *
+   * @param {HasTagClassNameInterface} instance
+   * @return {boolean}
+   */
+  hasSameTagClassName(instance) {
+    return this.testTagClassName(instance[CLASS_TAG_NAME])
+  }
+
+  /**
+   *
+   * @param {Symbol} tag
+   * @return {boolean}
+   */
+  testTagClassName(tag) {
+    return this[CLASS_TAG_NAME] === tag
   }
 
   /**
@@ -65,8 +83,15 @@ class Dispatcher extends EventHandlerBase {
   removeActionListener(event, id) {
     this.removeEventListener(event, id)
   }
-}
 
-export {
-  Dispatcher
+  /**
+   *
+   * @param {EventAction} actionPayload
+   */
+  dispatch(actionPayload) {
+    assert(actionPayload instanceof EventAction,
+      'hotballoon:Dispatcher:dispatch "actionPayload" argument should be an instance of EventAction'
+    )
+    super.dispatch(actionPayload.name, actionPayload.payload)
+  }
 }
