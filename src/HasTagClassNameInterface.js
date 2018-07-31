@@ -36,3 +36,15 @@ export const testClassTagName = (object, tag) => hasClassTagName(object) && (obj
 export const isEqualClassTagName = (object1, object2) => {
   return isObject(object1) && isObject(object2) && hasClassTagName(object1) && hasClassTagName(object2) && (object1[CLASS_TAG_NAME] === object2[CLASS_TAG_NAME])
 }
+
+/**
+ * @interface
+ */
+export class HasTagClassNameInterface {
+
+  /**
+   * @property {Symbol} Symbol('__HB__CLASSNAME__')
+   * @name HasTagClassNameInterface#Symbol('__HB__CLASSNAME__')
+   */
+
+}

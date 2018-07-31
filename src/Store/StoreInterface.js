@@ -1,7 +1,7 @@
 import {WithIDBase} from '../bases/WithIDBase'
 import {CoreException} from '../CoreException'
 
-export const CHANGED = 'CHANGED'
+export const STORE_CHANGED = Symbol('STORE.CHANGED')
 
 /**
  * @interface

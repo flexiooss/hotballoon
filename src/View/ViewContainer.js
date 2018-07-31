@@ -1,7 +1,7 @@
 'use strict'
-import {CLASS_TAG_NAME, CLASS_TAG_NAME_VIEWCONTAINER} from '../CLASS_TAG_NAME'
+import {CLASS_TAG_NAME, CLASS_TAG_NAME_VIEWCONTAINER} from '../HasTagClassNameInterface'
 import {isNode, isString, assert, isFunction} from 'flexio-jshelpers'
-import {CHANGED as STORE_CHANGED, StoreInterface} from '../Store/StoreInterface'
+import {STORE_CHANGED, StoreInterface} from '../Store/StoreInterface'
 import {ViewContainerBase} from './ViewContainerBase'
 import {CoreException} from '../CoreException'
 import {Action} from '../Action/Action'
@@ -59,7 +59,7 @@ export const WILL_REMOVE = 'WILL_REMOVE'
  * @class
  * @description ViewContainer is a Views container who can suscribe to Stores to dispatch state to Views
  * @extends ViewContainerBase
- *
+ * @implements HasTagClassNameInterface
  */
 export class ViewContainer extends ViewContainerBase {
   /**
@@ -134,55 +134,6 @@ export class ViewContainer extends ViewContainerBase {
      * @param {Object} newState
      */
   }
-
-  // /**
-  //  * @param {hotballoon/View} view
-  //  * @param {iterable<Store>} stores : stores instances
-  //  */
-  // suscribeToStoreEvent(view, stores) {
-  //   assert(isIterable(stores),
-  //     'hotballoon:ViewContainer:addView: `stores` argument should be iterable')
-  //   stores.forEach((store) => {
-  //     assert(store instanceof Store,
-  //       'hotballoon:ViewContainer:_suscribeToStoreEvent: `store` argument should be qan instance of Hotballoon/Store')
-  //     this._suscribeToEvent(view, store, STORE_CHANGED)
-  //   })
-  // }
-  //
-  // /**
-  //  *
-  //  * @private
-  //  * @param {String} key : event token
-  //  * @param {String} storeKey : store token
-  //  * @param {String} storeEvent : event name
-  //  * @param {hotballoon/View} view
-  //  * @param {Integer} priority
-  //  */
-  // _suscribeToEvent(view, store, event, priority = 0) {
-  //   this.debug.log('_suscribeToEvent')
-  //   this.debug.log(this._formatStoreEventName(store._ID, event))
-  //   this.debug.print()
-  //
-  //   const token = this.addEventListener(
-  //     this._formatStoreEventName(store._ID, event),
-  //     (payload, type) => {
-  //       view.dispatch(VIEW_STORE_CHANGED, payload)
-  //     },
-  //     view,
-  //     priority
-  //   )
-  //   this._tokenEvent.add(store._ID + '-' + view._ID, token)
-  // }
-
-  // /**
-  //  * @private
-  //  * @param {Node} parentNode
-  //  */
-  // _renderViewsAndMount(parentNode) {
-  //   this._Views.forEach((view, key, map) => {
-  //     view.renderAndMount(parentNode)
-  //   })
-  // }
 
   /**
    * @private

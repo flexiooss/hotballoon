@@ -2,13 +2,14 @@
 import {EventOrderedHandler} from '../Event/EventOrderedHandler'
 import {EventListenerOrderedFactory} from '../Event/EventListenerOrderedFactory'
 import {assert, isFunction, UID} from 'flexio-jshelpers'
-import {CLASS_TAG_NAME, CLASS_TAG_NAME_PROXYSTORE} from '../CLASS_TAG_NAME'
+import {CLASS_TAG_NAME, CLASS_TAG_NAME_PROXYSTORE} from '../HasTagClassNameInterface'
 import {StoreInterface} from './StoreInterface'
 import {State} from './State'
 
 /**
  * @extends StoreInterface
  * @implements StoreInterface
+ * @implements HasTagClassNameInterface
  */
 export class ProxyStore extends StoreInterface {
   /**

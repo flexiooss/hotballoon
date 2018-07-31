@@ -3,7 +3,7 @@ import {Dispatcher} from '../Dispatcher/Dispatcher'
 import {MapExtended, MapOfInstance, Sequence, assert} from 'flexio-jshelpers'
 import {Component} from '../Component/Component'
 import {WithIDBase} from '../bases/WithIDBase'
-import {CLASS_TAG_NAME, CLASS_TAG_NAME_HOTBALLOON_APPLICATION} from '../CLASS_TAG_NAME'
+import {CLASS_TAG_NAME, CLASS_TAG_NAME_HOTBALLOON_APPLICATION} from '../HasTagClassNameInterface'
 
 // export const CLASS_TAG_NAME_HOTBALLOON_APPLICATION = Symbol('__HB__APPLICATION__')
 
@@ -12,9 +12,9 @@ import {CLASS_TAG_NAME, CLASS_TAG_NAME_HOTBALLOON_APPLICATION} from '../CLASS_TA
  * @class
  * @description HotBalloonApplication is the container for a loop hotballoon
  * @extends WithIDBase
- * @extends HasTagClassNameInterface
+ * @implements HasTagClassNameInterface
  */
-class HotBalloonApplication extends WithIDBase {
+export class HotBalloonApplication extends WithIDBase {
   /**
    * @constructor
    * @param {Dispatcher} dispatcher
@@ -177,8 +177,4 @@ class HotBalloonApplication extends WithIDBase {
   Service(serviceName) {
     return this._services.get(serviceName)
   }
-}
-
-export {
-  HotBalloonApplication
 }

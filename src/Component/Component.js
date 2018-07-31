@@ -12,13 +12,13 @@ import {
   CLASS_TAG_NAME_COMPONENT,
   CLASS_TAG_NAME_HOTBALLOON_APPLICATION,
   testClassTagName
-} from '../CLASS_TAG_NAME'
+} from '../HasTagClassNameInterface'
 
 /**
  * @class
  * @description The Component is the entry point of the module
  * @extends WithIDBase
- *
+ * @implements HasTagClassNameInterface
  */
 class Component extends WithIDBase {
   constructor(hotBallonApplication) {
@@ -132,7 +132,7 @@ class Component extends WithIDBase {
 
   /**
    *
-   * @param {HasTagClassNameInterface} instance
+   * @param {CLASS_TAG_NAME} instance
    * @return {boolean}
    */
   hasSameTagClassName(instance) {

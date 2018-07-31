@@ -1,4 +1,4 @@
-import {deepFreezeSeal, assert, isString} from 'flexio-jshelpers'
+import {deepFreezeSeal, assert, isPrimitive} from 'flexio-jshelpers'
 
 export class EventAction {
   /**
@@ -7,7 +7,7 @@ export class EventAction {
    * @param {*} payload
    */
   constructor(name, payload) {
-    assert(!!name,
+    assert(!!name && isPrimitive(name),
       'hotballoon:EventAction:constructor "name" property should notbe empty'
     )
     assert(!!payload,

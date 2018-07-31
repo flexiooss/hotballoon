@@ -1,6 +1,6 @@
 'use strict'
 import {assert} from 'flexio-jshelpers'
-import {CLASS_TAG_NAME, CLASS_TAG_NAME_DISPATCHER} from '../CLASS_TAG_NAME'
+import {CLASS_TAG_NAME, CLASS_TAG_NAME_DISPATCHER} from '../HasTagClassNameInterface'
 import {EventHandlerBase} from '../Event/EventHandlerBase'
 import {EventAction} from '../Action/EventAction'
 
@@ -19,24 +19,6 @@ export class Dispatcher extends EventHandlerBase {
       enumerable: true,
       value: CLASS_TAG_NAME_DISPATCHER
     })
-  }
-
-  /**
-   *
-   * @param {HasTagClassNameInterface} instance
-   * @return {boolean}
-   */
-  hasSameTagClassName(instance) {
-    return this.testTagClassName(instance[CLASS_TAG_NAME])
-  }
-
-  /**
-   *
-   * @param {Symbol} tag
-   * @return {boolean}
-   */
-  testTagClassName(tag) {
-    return this[CLASS_TAG_NAME] === tag
   }
 
   /**

@@ -1,7 +1,10 @@
 'use strict'
 import {Dispatcher} from '../Dispatcher/Dispatcher'
 import {assert} from 'flexio-jshelpers'
-import {CLASS_TAG_NAME, CLASS_TAG_NAME_ACTION, CLASS_TAG_NAME_DISPATCHER} from '../CLASS_TAG_NAME'
+import {
+  CLASS_TAG_NAME,
+  CLASS_TAG_NAME_ACTION
+} from '../HasTagClassNameInterface'
 import {EventAction} from './EventAction'
 import {ActionParams} from './ActionParams'
 import {ActionPayload} from './ActionPayload'
@@ -41,7 +44,7 @@ export class Action {
          * @name Action#_name
          * @private
          */
-        value: Symbol(actionParams.name)
+        value: actionParams.name
       },
       _actionPayloadClass: {
         configurable: false,
@@ -94,7 +97,7 @@ export class Action {
 
   /**
    *
-   * @param {HasTagClassNameInterface} instance
+   * @param {CLASS_TAG_NAME} instance
    * @return {boolean}
    */
   hasSameTagClassName(instance) {

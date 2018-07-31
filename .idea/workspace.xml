@@ -2,45 +2,23 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c13bbe00-65c0-403d-a96b-410248228156" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/src/Action/ActionParams.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Action/ActionPayload.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Action/EventAction.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Application/AbstractApplicationContext.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/CLASS_TAG_NAME/HasTagClassNameInterface.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Dispatcher/DispatcherEventListenerFactory.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/__tests__/Action.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/__tests__/Action.test.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/Action.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Action.js.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/ApplicationContextMixin.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/ApplicationContextMixin.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/Component.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/Component.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Component.js.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/Dispatcher.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Dispatcher.js.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/Event_Dispatcher.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Event_Dispatcher.js.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/HotBalloonApplication.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/HotBalloonApplication.js.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/Store_ProxyStore.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Store_ProxyStore.js.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/Store_Store.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Store_Store.js.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/View.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/View.js.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/ViewContainer.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/ViewContainer.js.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/View_View.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/View_View.js.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/View_ViewContainer.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/View_ViewContainer.js.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/mixins_ApplicationContextMixin.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/mixins_ApplicationContextMixin.js.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Action.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Action/Action.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/CLASS_TAG_NAME.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/CLASS_TAG_NAME.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Component.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Component/Component.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Event/Dispatcher.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Dispatcher/Dispatcher.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Event/EventHandlerBase.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Event/EventHandlerBase.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/HotBalloonApplication.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Application/HotBalloonApplication.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Action/Action.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Action/Action.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Action/ActionParams.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Action/ActionParams.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Action/EventAction.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Action/EventAction.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Application/AbstractApplicationContext.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Application/HotBalloonApplication.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Application/HotBalloonApplication.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/CLASS_TAG_NAME.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/HasTagClassNameInterface.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/CLASS_TAG_NAME/HasTagClassNameInterface.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Component/Component.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Component/Component.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Dispatcher/Dispatcher.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Dispatcher/Dispatcher.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Store/ProxyStore.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Store/ProxyStore.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Store/Store.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Store/Store.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Store/StoreInterface.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Store/StoreInterface.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/View/View.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/View.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/View/ViewContainer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/ViewContainer.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/View/ViewContainerBase.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/ViewContainerBase.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/bases/WithIDBase.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/bases/WithIDBase.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/mixins/ApplicationContextMixin.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/mixins/PrivateStateMixin.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/mixins/PrivateStateMixin.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/mixins/RequireIDMixin.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/mixins/RequireIDMixin.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/mixins/ViewContainerContextMixin.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/mixins/ViewContainerContextMixin.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -57,65 +35,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Dispatcher.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Dispatcher/Dispatcher.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1026">
-              <caret line="38" column="30" selection-start-line="38" selection-start-column="30" selection-end-line="38" selection-end-column="30" />
-              <folding>
-                <element signature="e#13#52#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Action.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Action/Action.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="952">
-              <caret line="47" column="26" lean-forward="true" selection-start-line="47" selection-start-column="26" selection-end-line="47" selection-end-column="26" />
-              <folding>
-                <element signature="e#13#91#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CLASS_TAG_NAME.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/CLASS_TAG_NAME.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="702">
-              <caret line="26" column="29" selection-start-line="26" selection-start-column="13" selection-end-line="26" selection-end-column="29" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="EventAction.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/Action/EventAction.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="297">
-              <caret line="11" column="5" selection-start-line="11" selection-start-column="5" selection-end-line="11" selection-end-column="5" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="HotBalloonApplication.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Application/HotBalloonApplication.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1173">
-              <caret line="91" column="2" selection-start-line="91" selection-start-column="2" selection-end-line="91" selection-end-column="2" />
-              <folding>
-                <element signature="e#13#64#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="View.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/View/View.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="27">
-              <caret line="1" column="7" selection-start-line="1" selection-start-column="7" selection-end-line="1" selection-end-column="7" />
+            <state relative-caret-position="216">
+              <caret line="8" column="21" selection-start-line="8" selection-start-column="21" selection-end-line="8" selection-end-column="21" />
               <folding>
                 <element signature="n#ViewParameters#0" />
               </folding>
@@ -123,22 +47,23 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Component.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Component/Component.js">
+      <file leaf-file-name="StoreInterface.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Store/StoreInterface.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1107">
-              <caret line="53" column="10" lean-forward="true" selection-start-line="53" selection-start-column="10" selection-end-line="53" selection-end-column="10" />
+            <state relative-caret-position="243">
+              <caret line="10" column="5" selection-start-line="10" selection-start-column="5" selection-end-line="10" selection-end-column="5" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ViewContainer.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="ViewContainer.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/View/ViewContainer.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="720">
-              <caret line="71" column="58" selection-start-line="71" selection-start-column="58" selection-end-line="71" selection-end-column="58" />
+            <state relative-caret-position="681">
+              <caret line="167" column="30" selection-start-line="167" selection-start-column="30" selection-end-line="167" selection-end-column="30" />
               <folding>
-                <element signature="e#13#77#0" expanded="true" />
+                <element signature="e#13#101#0" expanded="true" />
+                <element signature="n#!!block;n#constructor#0;n#ViewContainerParameters#0" />
               </folding>
             </state>
           </provider>
@@ -147,8 +72,8 @@
       <file leaf-file-name="Store.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Store/Store.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="837">
-              <caret line="30" selection-start-line="30" selection-end-line="30" />
+            <state relative-caret-position="432">
+              <caret line="16" selection-start-line="16" selection-end-line="16" />
               <folding>
                 <element signature="e#13#77#0" expanded="true" />
               </folding>
@@ -156,13 +81,48 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="HasTagClassNameInterface.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/CLASS_TAG_NAME/HasTagClassNameInterface.js">
+      <file leaf-file-name="ActionParams.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Action/ActionParams.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="81">
-              <caret line="3" selection-start-line="3" selection-end-line="5" selection-end-column="1" />
+            <state relative-caret-position="243">
+              <caret line="9" column="14" lean-forward="true" selection-start-line="9" selection-end-line="10" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="EventAction.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Action/EventAction.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="486">
+              <caret line="18" lean-forward="true" selection-start-line="18" selection-end-line="18" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Debugable.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/bases/Debugable.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="189">
+              <caret line="7" selection-start-line="7" selection-end-line="7" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="index.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/index.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="432">
+              <caret line="15" selection-start-line="15" selection-end-line="15" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DispatcherEventListenerFactory.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Dispatcher/DispatcherEventListenerFactory.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
               <folding>
-                <element signature="e#0#41#0" expanded="true" />
+                <element signature="e#0#66#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -179,8 +139,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>view</find>
-      <find>returns</find>
       <find>src</find>
       <find>subView</find>
       <find>html(</find>
@@ -209,6 +167,8 @@
       <find>Component</find>
       <find>add</find>
       <find>action</find>
+      <find>PrivateStateMixin</find>
+      <find>ht</find>
     </findStrings>
     <replaceStrings>
       <replace>Node</replace>
@@ -219,6 +179,7 @@
       <replace>hotballoon</replace>
       <replace>EventListener</replace>
       <replace>Action</replace>
+      <replace>export</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -227,8 +188,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/.babelrc" />
-        <option value="$PROJECT_DIR$/__tests__/Action.test.js" />
         <option value="$PROJECT_DIR$/src/Event/EventHandler.js" />
         <option value="$PROJECT_DIR$/src/Event/EventListenerParam.js" />
         <option value="$PROJECT_DIR$/src/Event/ViewEventListenerFactory.js" />
@@ -253,31 +212,33 @@
         <option value="$PROJECT_DIR$/src/mixins/RequireIDMixin.js" />
         <option value="$PROJECT_DIR$/src/bases/HasTagClassName.js" />
         <option value="$PROJECT_DIR$/src/Event/DispatcherBase.js" />
-        <option value="$PROJECT_DIR$/src/View/ViewContainerBase.js" />
         <option value="$PROJECT_DIR$/src/bases/Debugable.js" />
         <option value="$PROJECT_DIR$/src/bases/WithIDBase.js" />
         <option value="$PROJECT_DIR$/src/Event/Dispatcher.js" />
         <option value="$PROJECT_DIR$/src/Action/ActionPayload.js" />
         <option value="$PROJECT_DIR$/src/Event/DispatcherEventListenerFactory.js" />
-        <option value="$PROJECT_DIR$/src/Action/ActionParams.js" />
-        <option value="$PROJECT_DIR$/index.js" />
         <option value="$PROJECT_DIR$/src/Dispatcher/DispatcherEventListenerFactory.js" />
         <option value="$PROJECT_DIR$/src/Event/EventHandlerBase.js" />
         <option value="$PROJECT_DIR$/src/Application/checker.js" />
         <option value="$PROJECT_DIR$/src/CLASS_TAG_NAME/CLASS_TAG_NAME_HOTBALLOON_APPLICATION.js" />
         <option value="$PROJECT_DIR$/src/CLASS_TAG_NAME/CLASS_TAG_NAME.js" />
         <option value="$PROJECT_DIR$/src/bases/HasTagClassNameInterface.js" />
-        <option value="$PROJECT_DIR$/src/Store/ProxyStore.js" />
-        <option value="$PROJECT_DIR$/src/Store/Store.js" />
-        <option value="$PROJECT_DIR$/src/View/View.js" />
-        <option value="$PROJECT_DIR$/src/View/ViewContainer.js" />
-        <option value="$PROJECT_DIR$/src/Dispatcher/Dispatcher.js" />
         <option value="$PROJECT_DIR$/src/ClassTagName.js" />
         <option value="$PROJECT_DIR$/src/CLASS_TAG_NAME.js" />
-        <option value="$PROJECT_DIR$/src/Application/HotBalloonApplication.js" />
+        <option value="$PROJECT_DIR$/src/HasTagClassNameInterface.js" />
+        <option value="$PROJECT_DIR$/src/Dispatcher/Dispatcher.js" />
+        <option value="$PROJECT_DIR$/src/Store/ProxyStore.js" />
+        <option value="$PROJECT_DIR$/src/Store/Store.js" />
         <option value="$PROJECT_DIR$/src/Component/Component.js" />
+        <option value="$PROJECT_DIR$/src/View/ViewContainerBase.js" />
+        <option value="$PROJECT_DIR$/src/Application/HotBalloonApplication.js" />
         <option value="$PROJECT_DIR$/src/Action/Action.js" />
+        <option value="$PROJECT_DIR$/src/Action/ActionParams.js" />
         <option value="$PROJECT_DIR$/src/Action/EventAction.js" />
+        <option value="$PROJECT_DIR$/index.js" />
+        <option value="$PROJECT_DIR$/src/Store/StoreInterface.js" />
+        <option value="$PROJECT_DIR$/src/View/View.js" />
+        <option value="$PROJECT_DIR$/src/View/ViewContainer.js" />
       </list>
     </option>
   </component>
@@ -309,7 +270,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -349,12 +309,6 @@
               <item name="hotballoon" type="b2602c69:ProjectViewProjectNode" />
               <item name="hotballoon" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="CLASS_TAG_NAME" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="hotballoon" type="b2602c69:ProjectViewProjectNode" />
-              <item name="hotballoon" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="Component" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -379,12 +333,6 @@
               <item name="hotballoon" type="b2602c69:ProjectViewProjectNode" />
               <item name="hotballoon" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="mixins" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="hotballoon" type="b2602c69:ProjectViewProjectNode" />
-              <item name="hotballoon" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="Store" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -397,6 +345,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -518,7 +467,8 @@
       <workItem from="1532691542603" duration="7204000" />
       <workItem from="1532930717577" duration="53000" />
       <workItem from="1532930804989" duration="235000" />
-      <workItem from="1532940532057" duration="10369000" />
+      <workItem from="1532940532057" duration="11389000" />
+      <workItem from="1532962114030" duration="3518000" />
     </task>
     <servers />
   </component>
@@ -531,7 +481,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="250549000" />
+    <option name="totallyTimeSpent" value="255087000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1920" height="2160" extended-state="4" />
@@ -541,11 +491,11 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.3857729" side_tool="true" weight="0.3291506" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.3273867" />
-      <window_info anchor="bottom" id="Version Control" order="9" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32642236" />
       <window_info id="npm" order="2" sideWeight="0.50024426" side_tool="true" weight="0.241944" />
+      <window_info anchor="bottom" id="Version Control" order="9" />
       <window_info id="Structure" order="1" sideWeight="0.50024426" side_tool="true" weight="0.241944" />
-      <window_info anchor="bottom" id="Terminal" order="8" sideWeight="0.6881188" weight="0.14561234" />
+      <window_info anchor="bottom" id="Terminal" order="8" sideWeight="0.6881188" weight="0.14572865" />
       <window_info id="Favorites" order="3" sideWeight="0.50048214" side_tool="true" weight="0.23854166" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.24973205" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -587,16 +537,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/Event/ViewEventListenerFactory.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="860">
-          <caret line="53" column="35" lean-forward="true" selection-start-line="53" selection-start-column="35" selection-end-line="53" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/ViewStoresParameters.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Store/StoreModel.js">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -712,70 +652,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/mixins/PrivateStateMixin.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1404">
-          <caret line="52" lean-forward="true" selection-start-line="52" selection-end-line="52" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/CLASS_TAG_NAME.js" />
-    <entry file="file://$PROJECT_DIR$/src/mixins/ViewContainerContextMixin.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="837">
-          <caret line="33" column="20" lean-forward="true" selection-end-line="114" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/mixins/RequireIDMixin.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="810">
-          <caret line="30" lean-forward="true" selection-start-line="30" selection-end-line="30" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/HasTagClassNameInterface.js" />
     <entry file="file://$PROJECT_DIR$/src/Event/DispatcherBase.js" />
-    <entry file="file://$PROJECT_DIR$/src/bases/Debugable.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="7" selection-start-line="7" selection-end-line="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Store/StoreInterface.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="9" column="46" selection-start-line="9" selection-start-column="36" selection-end-line="9" selection-end-column="46" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/bases/WithIDBase.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="702">
           <caret line="27" column="6" lean-forward="true" selection-start-line="27" selection-start-column="6" selection-end-line="27" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Action/ActionPayload.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="54">
-          <caret line="2" lean-forward="true" selection-start-line="2" selection-end-line="2" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Action/ActionParams.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="54">
-          <caret line="2" column="25" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Dispatcher/DispatcherEventListenerFactory.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#66#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -786,37 +668,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1026">
-          <caret line="38" column="53" selection-start-line="38" selection-start-column="53" selection-end-line="38" selection-end-column="53" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Application/checker.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="81">
-          <caret line="3" lean-forward="true" selection-start-line="3" selection-end-line="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Application/AbstractApplicationContext.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1404">
-          <caret line="51" column="3" lean-forward="true" selection-start-line="32" selection-start-column="2" selection-end-line="51" selection-end-column="3" />
-          <folding>
-            <element signature="e#13#76#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/CLASS_TAG_NAME/CLASS_TAG_NAME_HOTBALLOON_APPLICATION.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="18" lean-forward="true" selection-end-line="1" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Application/checker.js" />
+    <entry file="file://$PROJECT_DIR$/src/CLASS_TAG_NAME/CLASS_TAG_NAME_HOTBALLOON_APPLICATION.js" />
     <entry file="file://$PROJECT_DIR$/src/Event/EventHandlerBase.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1728">
@@ -831,60 +684,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/ViewContainerBase.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="54">
-          <caret line="2" column="46" lean-forward="true" selection-start-line="2" selection-start-column="46" selection-end-line="2" selection-end-column="46" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Store/ProxyStore.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="108">
-          <caret line="4" column="31" selection-start-line="4" selection-end-line="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/View.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="27">
-          <caret line="1" column="7" selection-start-line="1" selection-start-column="7" selection-end-line="1" selection-end-column="7" />
-          <folding>
-            <element signature="n#ViewParameters#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/ViewContainer.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="720">
-          <caret line="71" column="58" selection-start-line="71" selection-start-column="58" selection-end-line="71" selection-end-column="58" />
-          <folding>
-            <element signature="e#13#77#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Store/Store.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="837">
-          <caret line="30" selection-start-line="30" selection-end-line="30" />
-          <folding>
-            <element signature="e#13#77#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Dispatcher/Dispatcher.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1026">
-          <caret line="38" column="30" selection-start-line="38" selection-start-column="30" selection-end-line="38" selection-end-column="30" />
-          <folding>
-            <element signature="e#13#52#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/mixins/PrivateStateMixin.js" />
+    <entry file="file://$PROJECT_DIR$/src/mixins/RequireIDMixin.js" />
+    <entry file="file://$PROJECT_DIR$/src/mixins/ViewContainerContextMixin.js" />
     <entry file="file://$PROJECT_DIR$/src/CLASS_TAG_NAME/HasTagClassNameInterface.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="81">
@@ -895,44 +697,159 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/HasTagClassNameInterface.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="657">
+          <caret line="42" column="37" selection-start-line="42" selection-start-column="13" selection-end-line="42" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Dispatcher/Dispatcher.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="297">
+          <caret line="11" selection-start-line="11" selection-end-line="11" />
+          <folding>
+            <element signature="e#13#52#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Store/ProxyStore.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="324">
+          <caret line="12" selection-start-line="12" selection-end-line="12" />
+          <folding>
+            <element signature="e#13#77#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/ViewContainerBase.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="27">
+          <caret line="1" column="7" selection-start-line="1" selection-start-column="7" selection-end-line="1" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Component/Component.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="21" selection-start-line="21" selection-end-line="21" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/Application/HotBalloonApplication.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1173">
-          <caret line="91" column="2" selection-start-line="91" selection-start-column="2" selection-end-line="91" selection-end-column="2" />
+        <state relative-caret-position="432">
+          <caret line="16" column="7" selection-start-line="16" selection-start-column="7" selection-end-line="16" selection-end-column="7" />
           <folding>
             <element signature="e#13#64#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/CLASS_TAG_NAME.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="702">
-          <caret line="26" column="29" selection-start-line="26" selection-start-column="13" selection-end-line="26" selection-end-column="29" />
-        </state>
-      </provider>
+    <entry file="file://$PROJECT_DIR$/src/View/ViewStoresParameters.js">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Component/Component.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1107">
-          <caret line="53" column="10" lean-forward="true" selection-start-line="53" selection-start-column="10" selection-end-line="53" selection-end-column="10" />
-        </state>
-      </provider>
+    <entry file="file://$PROJECT_DIR$/src/HBException.js">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Action/Action.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="952">
-          <caret line="47" column="26" lean-forward="true" selection-start-line="47" selection-start-column="26" selection-end-line="47" selection-end-column="26" />
-          <folding>
-            <element signature="e#13#91#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="945">
+          <caret line="43" column="29" lean-forward="true" selection-start-line="43" selection-start-column="29" selection-end-line="43" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Action/ActionPayload.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="54">
+          <caret line="2" lean-forward="true" selection-start-line="2" selection-end-line="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Action/ActionParams.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="243">
+          <caret line="9" column="14" lean-forward="true" selection-start-line="9" selection-end-line="10" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Action/EventAction.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="297">
-          <caret line="11" column="5" selection-start-line="11" selection-start-column="5" selection-end-line="11" selection-end-column="5" />
+        <state relative-caret-position="486">
+          <caret line="18" lean-forward="true" selection-start-line="18" selection-end-line="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/bases/Debugable.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="189">
+          <caret line="7" selection-start-line="7" selection-end-line="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Dispatcher/DispatcherEventListenerFactory.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#66#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="432">
+          <caret line="15" selection-start-line="15" selection-end-line="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Store/Store.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="432">
+          <caret line="16" selection-start-line="16" selection-end-line="16" />
+          <folding>
+            <element signature="e#13#77#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Store/StoreInterface.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="243">
+          <caret line="10" column="5" selection-start-line="10" selection-start-column="5" selection-end-line="10" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/View.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="8" column="21" selection-start-line="8" selection-start-column="21" selection-end-line="8" selection-end-column="21" />
+          <folding>
+            <element signature="n#ViewParameters#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Application/AbstractApplicationContext.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1404">
+          <caret line="51" column="3" lean-forward="true" selection-start-line="32" selection-start-column="2" selection-end-line="51" selection-end-column="3" />
+          <folding>
+            <element signature="e#13#76#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/ViewContainer.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="681">
+          <caret line="167" column="30" selection-start-line="167" selection-start-column="30" selection-end-line="167" selection-end-column="30" />
+          <folding>
+            <element signature="e#13#101#0" expanded="true" />
+            <element signature="n#!!block;n#constructor#0;n#ViewContainerParameters#0" />
+          </folding>
         </state>
       </provider>
     </entry>

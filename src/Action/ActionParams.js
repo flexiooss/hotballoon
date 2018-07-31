@@ -1,4 +1,4 @@
-import {assert, isString} from 'flexio-jshelpers'
+import {assert, isPrimitive} from 'flexio-jshelpers'
 
 export class ActionParams {
   /**
@@ -7,7 +7,7 @@ export class ActionParams {
    * @param actionPayloadClass
    */
   constructor(name, actionPayloadClass) {
-    assert(!!name && isString(name),
+    assert(!!name && isPrimitive(name),
       'hotballoon:ActionParams:constructor "name" argument should not be empty'
     )
     // TODO isClass(actionPayloadClass)

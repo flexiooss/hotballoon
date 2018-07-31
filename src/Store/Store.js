@@ -2,8 +2,8 @@
 import {EventOrderedHandler} from '../Event/EventOrderedHandler'
 import {assert, staticClassName} from 'flexio-jshelpers'
 import {Storage} from './Storage'
-import {CLASS_TAG_NAME, CLASS_TAG_NAME_STORE} from '../CLASS_TAG_NAME'
-import {StoreInterface, CHANGED} from './StoreInterface'
+import {CLASS_TAG_NAME, CLASS_TAG_NAME_STORE} from '../HasTagClassNameInterface'
+import {StoreInterface, STORE_CHANGED} from './StoreInterface'
 import {DataStoreInterface} from './DataStoreInterface'
 
 export const INIT = 'INIT'
@@ -72,7 +72,7 @@ export class Store extends StoreInterface {
 
   /**
    *
-   * @param {HasTagClassNameInterface} instance
+   * @param {CLASS_TAG_NAME} instance
    * @return {boolean}
    */
   hasSameTagClassName(instance) {
@@ -157,10 +157,10 @@ export class Store extends StoreInterface {
    * @private
    */
   _updated() {
-    this.debug.log('STORE CHANGED : ' + this._ID).size(2).background()
+    this.debug.log('STORE STORE_CHANGED : ' + this._ID).size(2).background()
     this.debug.object(this.state())
     this.debug.print()
 
-    this._dispatch(CHANGED)
+    this._dispatch(STORE_CHANGED)
   }
 }
