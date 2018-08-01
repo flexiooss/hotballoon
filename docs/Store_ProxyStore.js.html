@@ -19,26 +19,30 @@
 
     <h1 class="page-title">Source: Store/ProxyStore.js</h1>
 
+    
 
 
 
-
-
+    
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>'use strict'
 import {EventOrderedHandler} from '../Event/EventOrderedHandler'
 import {EventListenerOrderedFactory} from '../Event/EventListenerOrderedFactory'
 import {assert, isFunction, UID} from 'flexio-jshelpers'
-import {ClassTagName} from '../ClassTagName'
+import {CLASS_TAG_NAME, CLASS_TAG_NAME_PROXYSTORE} from '../HasTagClassNameInterface'
 import {StoreInterface} from './StoreInterface'
 import {State} from './State'
 
-export const CLASS_TAG_NAME_PROXYSTORE = Symbol('__HB__PROXYSTORE__')
+const _EventHandler = Symbol('_EventHandler')
+const _Store = Symbol('_Store')
+const _mapper = Symbol('_mapper')
+const _dispatch = Symbol('_dispatch')
 
 /**
  * @extends StoreInterface
  * @implements StoreInterface
+ * @implements HasTagClassNameInterface
  */
 export class ProxyStore extends StoreInterface {
   /**
@@ -55,7 +59,7 @@ export class ProxyStore extends StoreInterface {
 
     this.debug.color = 'magenta'
 
-    Object.defineProperty(this, ClassTagName, {
+    Object.defineProperty(this, CLASS_TAG_NAME, {
       configurable: false,
       writable: false,
       enumerable: true,
@@ -63,7 +67,7 @@ export class ProxyStore extends StoreInterface {
     })
 
     Object.defineProperties(this, {
-      _EventHandler: {
+      [_EventHandler]: {
         enumerable: false,
         configurable: false,
         /**
@@ -73,7 +77,7 @@ export class ProxyStore extends StoreInterface {
          */
         value: Object.seal(new EventOrderedHandler())
       },
-      _Store: {
+      [_Store]: {
         enumerable: false,
         configurable: false,
         /**
@@ -83,7 +87,7 @@ export class ProxyStore extends StoreInterface {
          */
         value: store
       },
-      _mapper: {
+      [_mapper]: {
         enumerable: false,
         configurable: false,
         /**
@@ -104,7 +108,7 @@ export class ProxyStore extends StoreInterface {
    * @static
    */
   static create(store, mapper) {
-    return new this(UID('proxy_' + store.constructor.name + '_' + store._ID + '_'), store, mapper)
+    return new this(UID(`proxy_${store.constructor.name}_${store.ID}_`), store, mapper)
   }
 
   /**
@@ -112,18 +116,18 @@ export class ProxyStore extends StoreInterface {
    * @return {String} token
    */
   subscribe(eventListenerOrderedParam) {
-    this._Store.subscribe(
+    this[_Store].subscribe(
       EventListenerOrderedFactory.listen(eventListenerOrderedParam.event)
         .callback((eventType, payload) => {
-          this._dispatch(
+          this[_dispatch](
             eventType,
-            new State(this._ID, this._mapper(payload.data))
+            new State(this.ID, this._mapper(payload.data))
           )
         })
         .priority(20)
         .build(this)
     )
-    return this._EventHandler.on(eventListenerOrderedParam)
+    return this[_EventHandler].on(eventListenerOrderedParam)
   }
 
   /**
@@ -137,7 +141,7 @@ export class ProxyStore extends StoreInterface {
    * @returns {State} state frozen
    */
   state() {
-    return new State(this._ID, this._mapper(this._Store.data()))
+    return new State(this.ID, this[_mapper](this[_Store].data()))
   }
 
   /**
@@ -145,8 +149,8 @@ export class ProxyStore extends StoreInterface {
    * @param {String} eventType
    * @param {Object} payload
    */
-  _dispatch(eventType, payload) {
-    this._EventHandler.dispatch(eventType, payload)
+  [_dispatch](eventType, payload) {
+    this[_EventHandler].dispatch(eventType, payload)
   }
 }
 </code></pre>
@@ -159,13 +163,13 @@ export class ProxyStore extends StoreInterface {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Action.html">Action</a></li><li><a href="ApplicationContextMixin.html">ApplicationContextMixin</a></li><li><a href="Component.html">Component</a></li><li><a href="CreateHotBalloonElement.html">CreateHotBalloonElement</a></li><li><a href="Debugable.html">Debugable</a></li><li><a href="Dispatcher.html">Dispatcher</a></li><li><a href="EventHandlerBase.html">EventHandlerBase</a></li><li><a href="EventListenerFactory.listen.html">listen</a></li><li><a href="EventListenerFactory_EventListenerFactory.html">EventListenerFactory</a></li><li><a href="EventListenerOrderedFactory.html">EventListenerOrderedFactory</a></li><li><a href="EventListenerOrderedFactory_EventListenerFactory.html">EventListenerFactory</a></li><li><a href="EventListenerOrderedParam.html">EventListenerOrderedParam</a></li><li><a href="EventListenerOrderedParam.create.html">create</a></li><li><a href="EventListenerOrderedParam_EventListenerParam.html">EventListenerParam</a></li><li><a href="EventListenerParam.create.html">create</a></li><li><a href="EventListenerParam_EventListenerParam.html">EventListenerParam</a></li><li><a href="EventOrderedHandler.html">EventOrderedHandler</a></li><li><a href="HotBalloonApplication.html">HotBalloonApplication</a></li><li><a href="HotBalloonAttributeHandler.html">HotBalloonAttributeHandler</a></li><li><a href="HotballoonElementParams.html">HotballoonElementParams</a></li><li><a href="PrivateStateMixin.html">PrivateStateMixin</a></li><li><a href="ProxyStore.html">ProxyStore</a></li><li><a href="RequireIDMixin.html">RequireIDMixin</a></li><li><a href="State_State.html">State</a></li><li><a href="Storage.html">Storage</a></li><li><a href="Store.html">Store</a></li><li><a href="StoreModel.html">StoreModel</a></li><li><a href="View.html">View</a></li><li><a href="ViewContainer.html">ViewContainer</a></li><li><a href="ViewContainer_Component.html">Component</a></li><li><a href="ViewContainerBase.html">ViewContainerBase</a></li><li><a href="ViewContainerContextMixin.html">ViewContainerContextMixin</a></li><li><a href="ViewContainerParameters_ViewContainerParameters.html">ViewContainerParameters</a></li><li><a href="ViewEventListenerFactory.html">ViewEventListenerFactory</a></li><li><a href="ViewEventListenerFactory.bubble.html">bubble</a></li><li><a href="ViewEventListenerFactory_EventListenerFactory.html">EventListenerFactory</a></li><li><a href="ViewParameters_ViewParameters.html">ViewParameters</a></li><li><a href="WithIDBase.html">WithIDBase</a></li></ul><h3>Interfaces</h3><ul><li><a href="DataStoreHandlerInterface.html">DataStoreHandlerInterface</a></li><li><a href="DataStoreInterface.html">DataStoreInterface</a></li><li><a href="StoreInterface.html">StoreInterface</a></li></ul><h3>Global</h3><ul><li><a href="global.html#_componentId">_componentId</a></li><li><a href="global.html#nodeRef">nodeRef</a></li><li><a href="global.html#ROOT,">ROOT,</a></li><li><a href="global.html#StoreByRegister">StoreByRegister</a></li><li><a href="global.html#StoreDataByRegister">StoreDataByRegister</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Action.html">Action</a></li><li><a href="ActionParams_ActionParams.html">ActionParams</a></li><li><a href="Component.html">Component</a></li><li><a href="Component.create.html">create</a></li><li><a href="CreateHotBalloonElement.html">CreateHotBalloonElement</a></li><li><a href="Debugable.html">Debugable</a></li><li><a href="Dispatcher.html">Dispatcher</a></li><li><a href="DispatcherEventListenerFactory.html">DispatcherEventListenerFactory</a></li><li><a href="DispatcherEventListenerFactory.listen.html">listen</a></li><li><a href="DispatcherEventListenerFactory_EventListenerFactory.html">EventListenerFactory</a></li><li><a href="EventAction_EventAction.html">EventAction</a></li><li><a href="EventHandlerBase.html">EventHandlerBase</a></li><li><a href="EventListenerFactory.listen.html">listen</a></li><li><a href="EventListenerFactory_EventListenerFactory.html">EventListenerFactory</a></li><li><a href="EventListenerOrderedFactory.html">EventListenerOrderedFactory</a></li><li><a href="EventListenerOrderedFactory_EventListenerFactory.html">EventListenerFactory</a></li><li><a href="EventListenerOrderedParam.html">EventListenerOrderedParam</a></li><li><a href="EventListenerOrderedParam.create.html">create</a></li><li><a href="EventListenerOrderedParam_EventListenerParam.html">EventListenerParam</a></li><li><a href="EventListenerParam.create.html">create</a></li><li><a href="EventListenerParam_EventListenerParam.html">EventListenerParam</a></li><li><a href="EventOrderedHandler.html">EventOrderedHandler</a></li><li><a href="HotBalloonApplication.html">HotBalloonApplication</a></li><li><a href="HotBalloonAttributeHandler.html">HotBalloonAttributeHandler</a></li><li><a href="HotballoonElementParams.html">HotballoonElementParams</a></li><li><a href="NodeEventListenerParam.create.html">create</a></li><li><a href="NodeEventListenerParam.createWithOptions.html">createWithOptions</a></li><li><a href="ProxyStore.html">ProxyStore</a></li><li><a href="State.create.html">create</a></li><li><a href="State_State.html">State</a></li><li><a href="Storage.html">Storage</a></li><li><a href="Store.html">Store</a></li><li><a href="Store.create.html">create</a></li><li><a href="View.html">View</a></li><li><a href="ViewContainer.html">ViewContainer</a></li><li><a href="ViewContainer_Component.html">Component</a></li><li><a href="ViewContainerBase.html">ViewContainerBase</a></li><li><a href="ViewContainerParameters_ViewContainerParameters.html">ViewContainerParameters</a></li><li><a href="ViewEventListenerFactory.html">ViewEventListenerFactory</a></li><li><a href="ViewEventListenerFactory.bubble.html">bubble</a></li><li><a href="ViewEventListenerFactory_EventListenerFactory.html">EventListenerFactory</a></li><li><a href="ViewParameters_ViewParameters.html">ViewParameters</a></li><li><a href="WithIDBase.html">WithIDBase</a></li></ul><h3>Interfaces</h3><ul><li><a href="DataStoreHandlerInterface.html">DataStoreHandlerInterface</a></li><li><a href="DataStoreInterface.html">DataStoreInterface</a></li><li><a href="HasTagClassNameInterface.html">HasTagClassNameInterface</a></li><li><a href="StoreInterface.html">StoreInterface</a></li></ul><h3>Global</h3><ul><li><a href="global.html#hasClassTagName">hasClassTagName</a></li><li><a href="global.html#isEqualClassTagName">isEqualClassTagName</a></li><li><a href="global.html#nodeRef">nodeRef</a></li><li><a href="global.html#ROOT,">ROOT,</a></li><li><a href="global.html#testClassTagName">testClassTagName</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Jul 26 2018 10:12:01 GMT+0200 (CEST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Aug 01 2018 17:54:09 GMT+0200 (CEST)
 </footer>
 
 <script> prettyPrint(); </script>

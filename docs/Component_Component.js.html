@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: Component/Component.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: Component/Component.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict'
+import {Action} from '../Action/Action'
+import {Store} from '../Store/Store'
+import {
+  ViewContainer,
+  WILL_REMOVE as VIEWCONTAINER_WILL_REMOVE
+} from '../View/ViewContainer'
+import {MapOfInstance, Sequence, assert} from 'flexio-jshelpers'
+import {WithIDBase} from '../bases/WithIDBase'
+import {
+  CLASS_TAG_NAME,
+  CLASS_TAG_NAME_COMPONENT,
+  CLASS_TAG_NAME_HOTBALLOON_APPLICATION,
+  testClassTagName
+} from '../HasTagClassNameInterface'
+
+const _init = Symbol('_init')
+
+/**
+ * @class
+ * @description The Component is the entry point of the module
+ * @extends WithIDBase
+ * @implements HasTagClassNameInterface
+ */
+class Component extends WithIDBase {
+  constructor(hotBallonApplication) {
+    assert(testClassTagName(hotBallonApplication, CLASS_TAG_NAME_HOTBALLOON_APPLICATION),
+      'hotballoon:Component:constructor:  hotBallonApplication argument should be an instance of ̀ hotballoon/HotBalloonApplication`, `%s` given',
+      typeof hotBallonApplication
+    )
+    super(hotBallonApplication.nextID())
+
+    this.debug.color = 'green'
+
+    const _sequenceId = new Sequence(this.ID + '_')
+    const actionsListenerTokens = new Map()
+    const _stores = new MapOfInstance(Store)
+    const storesKeyRegister = new Map()
+    const _viewContainers = new MapOfInstance(ViewContainer)
+    const viewContainersKey = new Map()
+    const _privateState = new Map()
+
+    Object.defineProperty(this, CLASS_TAG_NAME, {
+      configurable: false,
+      writable: false,
+      enumerable: true,
+      value: CLASS_TAG_NAME_COMPONENT
+    })
+
+    Object.defineProperties(this, {
+      _APP: {
+        configurable: false,
+        enumerable: false,
+        get: () => {
+          return hotBallonApplication
+        },
+        set: (v) => {
+          assert(false,
+            `hotballoon:${this.constructor.name}: _APP property already defined`
+          )
+          return false
+        }
+      },
+      _sequenceId: {
+        configurable: false,
+        enumerable: false,
+        get: () => {
+          return _sequenceId
+        },
+        set: (v) => {
+          return false
+        }
+      },
+      actionsListenerTokens: {
+        configurable: false,
+        enumerable: true,
+        get: () => {
+          return actionsListenerTokens
+        },
+        set: (v) => {
+          return false
+        }
+      },
+      _stores: {
+        configurable: false,
+        enumerable: false,
+        get: () => {
+          return _stores
+        },
+        set: (v) => {
+          return false
+        }
+      },
+      storesKeyRegister: {
+        configurable: false,
+        enumerable: true,
+        get: () => {
+          return storesKeyRegister
+        },
+        set: (v) => {
+          return false
+        }
+      },
+      _viewContainers: {
+        configurable: false,
+        enumerable: false,
+        get: () => {
+          return _viewContainers
+        },
+        set: (v) => {
+          return false
+        }
+      },
+      viewContainersKey: {
+        configurable: false,
+        enumerable: true,
+        get: () => {
+          return viewContainersKey
+        },
+        set: (v) => {
+          return false
+        }
+      },
+      _privateState: {
+        configurable: false,
+        enumerable: false,
+        value: _privateState
+      }
+    }
+    )
+
+    this[_init]()
+  }
+
+  /**
+   *
+   * @param {HotballoonApplication} hotballoonApplication
+   * @return {Component}
+   * @constructor
+   * @static
+   */
+  static create(hotballoonApplication) {
+    return new this(hotballoonApplication)
+  }
+
+  /**
+   * @private
+   * @returns void
+   */
+  [_init]() {
+    this._initStores()
+    this._initDispatcherListeners()
+    this._initViewContainers()
+  }
+
+  /**
+   * @protected
+   * @description called by the constructor for int Actrions, Stores, Listeners, ViewContainers
+   * @returns void
+   *
+   */
+  _initStores() {
+  }
+
+  _initDispatcherListeners() {
+  }
+
+  _initViewContainers() {
+  }
+
+  /**
+   * @description called by the hotballoon Appliation before remove this Component
+   */
+  willRemove() {
+  }
+
+  /**
+   * @private
+   * @param {String} key
+   * @param {mixed}
+   */
+  _setState(key, value) {
+    this._privateState.set(key, value)
+  }
+
+  /**
+   * @private
+   * @param {String} key
+   * @returns {mixed}
+   */
+  _state(key) {
+    return this._privateState.get(key)
+  }
+
+  /**
+   * @private
+   * @param {String} key
+   */
+  _delete(key) {
+    this._privateState.delete(key)
+  }
+
+  /**
+   *
+   * @param {EventListenerParam} eventListenerParam
+   * @returns {String} token
+   */
+  listenAction(eventListenerParam) {
+    return this.Dispatcher().addActionListener(eventListenerParam)
+  }
+
+  /**
+   * @param {Action} action
+   */
+  dispatchAction(action) {
+    assert(action instanceof Action,
+      'hotballoon:' + this.constructor.name + ':addAction: `action` argument should be an instance of Action'
+    )
+    action.dispatchWith(this.Dispatcher())
+  }
+
+  /**
+   * @param {hotballoon/Store}
+   * @returns {String} tokenStore
+   */
+  addStore(store) {
+    this._stores.add(store.ID, store)
+    return store.ID
+  }
+
+  /**
+   *
+   * @param {String}  tokenStore
+   * @returns {StoreInterface} Store
+   */
+  Store(tokenStore) {
+    return this._stores.get(tokenStore)
+  }
+
+  /**
+   *
+   * @param {string} key token registered into storesKeyRegister
+   * @return {StoreInterface} Store
+   */
+  StoreByRegister(key) {
+    return this.Store(this.storesKeyRegister.get(key))
+  }
+
+  /**
+   *
+   * @param {string} key token registered into storesKeyRegister
+   * @returns {mixed} data of Store
+   */
+  StoreDataByRegister(key) {
+    return this.StoreByRegister(key).data()
+  }
+
+  /**
+   *
+   * @param {hotballoon/ViewContainer} viewContainer
+   * @returns {hotballoon/ViewContainer} ViewContainer
+   */
+  addViewContainer(ViewContainer) {
+    this._viewContainers.add(ViewContainer.ID, ViewContainer)
+    return ViewContainer
+  }
+
+  /**
+   *
+   * @param {String} tokenViewContainer
+   * @returns {void}
+   */
+  removeViewContainer(tokenViewContainer) {
+    if (this._viewContainers.has(tokenViewContainer)) {
+      this.ViewContainer(tokenViewContainer).dispatch(VIEWCONTAINER_WILL_REMOVE, {})
+      this._viewContainers.delete(tokenViewContainer)
+    }
+  }
+
+  /**
+   *
+   * @param {String} key
+   * @returns {hotballoon/ViewContainer} ViewContainer
+   */
+  ViewContainer(key) {
+    return this._viewContainers.get(key)
+  }
+
+  /**
+   *
+   * @param {String} prefix
+   * @returns {String}
+   */
+  nextID(prefix = '') {
+    return prefix + this._sequenceId.nextID()
+  }
+
+  /**
+   * @return {HotBalloonApplication}
+   */
+  APP() {
+    return this._APP
+  }
+
+  /**
+   * @return {Dispatcher}
+   */
+  Dispatcher() {
+    return this.APP().Dispatcher()
+  }
+
+  /**
+   * @return {Service}
+   */
+  Service(key) {
+    return this.APP().Service(key)
+  }
+}
+
+export {
+  Component
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Action.html">Action</a></li><li><a href="ActionParams_ActionParams.html">ActionParams</a></li><li><a href="Component.html">Component</a></li><li><a href="Component.create.html">create</a></li><li><a href="CreateHotBalloonElement.html">CreateHotBalloonElement</a></li><li><a href="Debugable.html">Debugable</a></li><li><a href="Dispatcher.html">Dispatcher</a></li><li><a href="DispatcherEventListenerFactory.html">DispatcherEventListenerFactory</a></li><li><a href="DispatcherEventListenerFactory.listen.html">listen</a></li><li><a href="DispatcherEventListenerFactory_EventListenerFactory.html">EventListenerFactory</a></li><li><a href="EventAction_EventAction.html">EventAction</a></li><li><a href="EventHandlerBase.html">EventHandlerBase</a></li><li><a href="EventListenerFactory.listen.html">listen</a></li><li><a href="EventListenerFactory_EventListenerFactory.html">EventListenerFactory</a></li><li><a href="EventListenerOrderedFactory.html">EventListenerOrderedFactory</a></li><li><a href="EventListenerOrderedFactory_EventListenerFactory.html">EventListenerFactory</a></li><li><a href="EventListenerOrderedParam.html">EventListenerOrderedParam</a></li><li><a href="EventListenerOrderedParam.create.html">create</a></li><li><a href="EventListenerOrderedParam_EventListenerParam.html">EventListenerParam</a></li><li><a href="EventListenerParam.create.html">create</a></li><li><a href="EventListenerParam_EventListenerParam.html">EventListenerParam</a></li><li><a href="EventOrderedHandler.html">EventOrderedHandler</a></li><li><a href="HotBalloonApplication.html">HotBalloonApplication</a></li><li><a href="HotBalloonAttributeHandler.html">HotBalloonAttributeHandler</a></li><li><a href="HotballoonElementParams.html">HotballoonElementParams</a></li><li><a href="NodeEventListenerParam.create.html">create</a></li><li><a href="NodeEventListenerParam.createWithOptions.html">createWithOptions</a></li><li><a href="ProxyStore.html">ProxyStore</a></li><li><a href="State.create.html">create</a></li><li><a href="State_State.html">State</a></li><li><a href="Storage.html">Storage</a></li><li><a href="Store.html">Store</a></li><li><a href="Store.create.html">create</a></li><li><a href="View.html">View</a></li><li><a href="ViewContainer.html">ViewContainer</a></li><li><a href="ViewContainer_Component.html">Component</a></li><li><a href="ViewContainerBase.html">ViewContainerBase</a></li><li><a href="ViewContainerParameters_ViewContainerParameters.html">ViewContainerParameters</a></li><li><a href="ViewEventListenerFactory.html">ViewEventListenerFactory</a></li><li><a href="ViewEventListenerFactory.bubble.html">bubble</a></li><li><a href="ViewEventListenerFactory_EventListenerFactory.html">EventListenerFactory</a></li><li><a href="ViewParameters_ViewParameters.html">ViewParameters</a></li><li><a href="WithIDBase.html">WithIDBase</a></li></ul><h3>Interfaces</h3><ul><li><a href="DataStoreHandlerInterface.html">DataStoreHandlerInterface</a></li><li><a href="DataStoreInterface.html">DataStoreInterface</a></li><li><a href="HasTagClassNameInterface.html">HasTagClassNameInterface</a></li><li><a href="StoreInterface.html">StoreInterface</a></li></ul><h3>Global</h3><ul><li><a href="global.html#hasClassTagName">hasClassTagName</a></li><li><a href="global.html#isEqualClassTagName">isEqualClassTagName</a></li><li><a href="global.html#nodeRef">nodeRef</a></li><li><a href="global.html#ROOT,">ROOT,</a></li><li><a href="global.html#testClassTagName">testClassTagName</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Aug 01 2018 17:54:09 GMT+0200 (CEST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
