@@ -2,13 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c13bbe00-65c0-403d-a96b-410248228156" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Store/StoreModel.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/View.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/View.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/ViewContainer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/ViewContainer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/ViewContainerBase.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/ViewContainerBase.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/bases/WithIDBase.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/bases/WithIDBase.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Action/Action.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Action/Action.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -52,18 +46,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Store.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Store/Store.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1322">
-              <caret line="161" column="53" selection-start-line="161" selection-start-column="51" selection-end-line="161" selection-end-column="53" />
-              <folding>
-                <element signature="e#13#77#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="EventHandlerBase.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Event/EventHandlerBase.js">
           <provider selected="true" editor-type-id="text-editor">
@@ -94,10 +76,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ViewContainerBase.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ViewContainerBase.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/View/ViewContainerBase.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="658">
+            <state relative-caret-position="-767">
               <caret line="68" column="17" selection-start-line="68" selection-start-column="17" selection-end-line="68" selection-end-column="17" />
               <folding>
                 <element signature="e#13#83#0" expanded="true" />
@@ -106,9 +88,25 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="constantes.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/HotballoonNodeElement/constantes.js">
-          <provider selected="true" editor-type-id="text-editor" />
+      <file leaf-file-name="ViewStoresParameters.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/View/ViewStoresParameters.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="984">
+              <caret line="47" lean-forward="true" selection-start-line="47" selection-end-line="47" />
+              <folding>
+                <element signature="e#0#54#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Action.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/Action/Action.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="54">
+              <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
+            </state>
+          </provider>
         </entry>
       </file>
       <file leaf-file-name="index.js" pinned="false" current-in-tab="false">
@@ -226,7 +224,6 @@
         <option value="$PROJECT_DIR$/src/CLASS_TAG_NAME.js" />
         <option value="$PROJECT_DIR$/src/HasTagClassNameInterface.js" />
         <option value="$PROJECT_DIR$/src/Dispatcher/Dispatcher.js" />
-        <option value="$PROJECT_DIR$/src/Action/Action.js" />
         <option value="$PROJECT_DIR$/src/Action/ActionParams.js" />
         <option value="$PROJECT_DIR$/src/Action/EventAction.js" />
         <option value="$PROJECT_DIR$/src/Store/StoreInterface.js" />
@@ -243,6 +240,7 @@
         <option value="$PROJECT_DIR$/src/View/View.js" />
         <option value="$PROJECT_DIR$/src/View/ViewContainer.js" />
         <option value="$PROJECT_DIR$/src/View/ViewContainerBase.js" />
+        <option value="$PROJECT_DIR$/src/Action/Action.js" />
       </list>
     </option>
   </component>
@@ -473,7 +471,7 @@
       <workItem from="1532930804989" duration="235000" />
       <workItem from="1532940532057" duration="11389000" />
       <workItem from="1532962114030" duration="6932000" />
-      <workItem from="1533123517788" duration="12996000" />
+      <workItem from="1533123517788" duration="13510000" />
     </task>
     <servers />
   </component>
@@ -486,13 +484,13 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="271497000" />
+    <option name="totallyTimeSpent" value="272011000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1920" height="2160" extended-state="4" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49951783" visible="true" weight="0.25416666" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49951783" visible="true" weight="0.25416666" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.3857729" side_tool="true" weight="0.3291506" />
@@ -500,7 +498,7 @@
       <window_info id="npm" order="2" sideWeight="0.50024426" side_tool="true" weight="0.241944" />
       <window_info anchor="bottom" id="Version Control" order="9" />
       <window_info id="Structure" order="1" sideWeight="0.50024426" side_tool="true" weight="0.241944" />
-      <window_info anchor="bottom" id="Terminal" order="8" sideWeight="0.6881188" weight="0.1460945" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="8" sideWeight="0.6881188" visible="true" weight="0.1509161" />
       <window_info id="Favorites" order="3" sideWeight="0.50048214" side_tool="true" weight="0.23854166" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.24973205" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -715,16 +713,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/ViewStoresParameters.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1080">
-          <caret line="40" column="44" lean-forward="true" selection-start-line="40" selection-start-column="44" selection-end-line="40" selection-end-column="44" />
-          <folding>
-            <element signature="e#0#54#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Application/HotBalloonApplication.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="790">
@@ -739,13 +727,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="611">
           <caret line="229" lean-forward="true" selection-start-line="229" selection-end-line="229" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Action/Action.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1404">
-          <caret line="60" column="21" selection-start-line="60" selection-start-column="21" selection-end-line="60" selection-end-column="21" />
         </state>
       </provider>
     </entry>
@@ -846,11 +827,28 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/View/ViewContainerBase.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="658">
+        <state relative-caret-position="-767">
           <caret line="68" column="17" selection-start-line="68" selection-start-column="17" selection-end-line="68" selection-end-column="17" />
           <folding>
             <element signature="e#13#83#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/ViewStoresParameters.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="984">
+          <caret line="47" lean-forward="true" selection-start-line="47" selection-end-line="47" />
+          <folding>
+            <element signature="e#0#54#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Action/Action.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="54">
+          <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
         </state>
       </provider>
     </entry>
