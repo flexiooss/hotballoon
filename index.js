@@ -1,6 +1,6 @@
 export {HotBalloonApplication} from './src/Application/HotBalloonApplication'
 export {Dispatcher} from './src/Dispatcher/Dispatcher'
-export {Store, INIT as STORE_INIT} from './src/Store/Store'
+export {Store, STORE_INIT} from './src/Store/Store'
 export {ProxyStore} from './src/Store/ProxyStore'
 export {STORE_CHANGED} from './src/Store/StoreInterface'
 export {EventHandler} from './src/Event/EventHandler'

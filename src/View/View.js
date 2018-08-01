@@ -1,7 +1,7 @@
 'use strict'
 import {CoreException} from '../CoreException'
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_VIEW} from '../HasTagClassNameInterface'
-import {assert, isBoolean, isFunction, isNode, isString, valueByKeys} from 'flexio-jshelpers'
+import {assert, isBoolean, isFunction, isNode, isPrimitive, valueByKeys} from 'flexio-jshelpers'
 import {$} from '../HotballoonNodeElement/HotBalloonAttributeHandler'
 import {reconcile} from 'flexio-nodes-reconciliation'
 import {html} from '../HotballoonNodeElement/CreateHotBalloonElement'
@@ -17,7 +17,7 @@ export class ViewParameters {
    * @param {ViewContainerBase} container
    */
   constructor(id, container) {
-    assert(!!isString(id),
+    assert(!!isPrimitive(id),
       'hotballoon:View:ViewParameters: `id` argument assert be a String'
     )
     assert(container instanceof ViewContainerBase,
@@ -52,6 +52,13 @@ export class ViewParameters {
 }
 
 export const ATTRIBUTE_NODEREF = '_hb_noderef'
+
+const _mount = Symbol('_mount')
+const _update = Symbol('_update')
+const _render = Symbol('_render')
+const _replaceNode = Symbol('_replaceNode')
+const _setNodeRef = Symbol('_setNodeRef')
+const _setNodeViewRef = Symbol('_setNodeViewRef')
 
 /**
  * @class
@@ -249,7 +256,7 @@ class View extends ViewContainerBase {
    * @param {String} keyStore
    * @param {updateCallback} clb : event name
    */
-  _suscribeToStore(keyStore, clb = (oldState, newState) => true) {
+  suscribeToStore(keyStore, clb = (oldState, newState) => true) {
     assert(isFunction(clb), 'hotballoon:' + this.constructor.name + ':_suscribeToStore: `clb` argument should be callable')
     const store = this._Store(keyStore)
     assert(store instanceof StoreInterface, 'hotballoon:' + this.constructor.name + ':_suscribeToStore: `keyStore : %s` not reference an instance of StoreInterface', keyStore)
@@ -282,7 +289,7 @@ class View extends ViewContainerBase {
    * @private
    * @description update the node reference of this View
    */
-  _update() {
+  [_update]() {
     reconcile(this.node, this.view(), this.parentNode)
   }
 
@@ -292,15 +299,15 @@ class View extends ViewContainerBase {
   updateNode() {
     this.debug.log('updateNode').background()
     this.debug.print()
-    this._update()
+    this[_update]()
   }
 
   /**
    * @private
    */
-  _render() {
-    this._replaceNode()
-    this._setNodeViewRef()
+  [_render]() {
+    this[_replaceNode]()
+    this[_setNodeViewRef]()
   }
 
   /**
@@ -311,7 +318,7 @@ class View extends ViewContainerBase {
     this.debug.print()
 
     if (this._shouldRender) {
-      this._render()
+      this[_render]()
       this._rendered = true
     }
 
@@ -330,7 +337,7 @@ class View extends ViewContainerBase {
    * @private
    * @description mount `_node` property into `parentNode` argument
    */
-  _mount() {
+  [_mount]() {
     this.parentNode.appendChild(this.node)
   }
 
@@ -341,7 +348,7 @@ class View extends ViewContainerBase {
    */
   mount() {
     if (this._shouldMount) {
-      this._mount()
+      this[_mount]()
       this._mounted = true
     }
 
@@ -367,7 +374,7 @@ class View extends ViewContainerBase {
    * @param {View} view
    */
   addNodeView(key, view) {
-    this._setNodeViewRef()
+    this[_setNodeViewRef]()
   }
 
   /**
@@ -395,7 +402,7 @@ class View extends ViewContainerBase {
    * @instance
    */
   addNodeRef(key, node) {
-    return this._setNodeRef(key, node)
+    return this[_setNodeRef](key, node)
   }
 
   /**
@@ -404,7 +411,7 @@ class View extends ViewContainerBase {
    * @return {Node} Node
    */
   replaceNodeRef(key, node) {
-    return this._setNodeRef(key, node)
+    return this[_setNodeRef](key, node)
   }
 
   /**
@@ -413,7 +420,7 @@ class View extends ViewContainerBase {
    * @param {Node} node
    * @return {Node} node
    */
-  _setNodeRef(key, node) {
+  [_setNodeRef](key, node) {
     $(node).setNodeRef(key)
     this._nodeRefs.set(key, node)
     node.setAttribute(ATTRIBUTE_NODEREF, key)
@@ -423,7 +430,7 @@ class View extends ViewContainerBase {
   /**
    * @private
    */
-  _setNodeViewRef() {
+  [_setNodeViewRef]() {
     $(this.node).setViewRef(this._ID)
   }
 
@@ -437,7 +444,7 @@ class View extends ViewContainerBase {
   /**
    * @return {Node} node
    */
-  _replaceNode() {
+  [_replaceNode]() {
     this._node = this.view()
     return this._node
   }
@@ -469,9 +476,8 @@ class View extends ViewContainerBase {
    *
    * @param key
    * @param defaultValue
-   * @protected
    */
-  _stateValue(key, defaultValue = null) {
+  stateValue(key, defaultValue = null) {
     return (this._state.has(key)) ? this._state.get(key) : defaultValue
   }
 
@@ -479,9 +485,8 @@ class View extends ViewContainerBase {
    *
    * @param {array<string>} keys
    * @param defaultValue
-   * @protected
    */
-  _stateValueByKeys(keys, defaultValue = null) {
+  stateValueByKeys(keys, defaultValue = null) {
     const keyStore = keys.shift()
     if (this._state.has(keyStore)) {
       return (keys.length) ? valueByKeys(this._state.get(keyStore), keys, defaultValue) : this._state.get(keyStore)

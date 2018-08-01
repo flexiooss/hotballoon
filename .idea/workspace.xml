@@ -4,21 +4,14 @@
     <list default="true" id="c13bbe00-65c0-403d-a96b-410248228156" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Action/Action.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Action/Action.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Action/ActionParams.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Action/ActionParams.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Action/EventAction.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Action/EventAction.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Application/AbstractApplicationContext.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Application/HotBalloonApplication.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Application/HotBalloonApplication.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/CLASS_TAG_NAME.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/HasTagClassNameInterface.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/CLASS_TAG_NAME/HasTagClassNameInterface.js" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Component/Component.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Component/Component.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Dispatcher/Dispatcher.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Dispatcher/Dispatcher.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Store/DataStoreInterface.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Store/DataStoreInterface.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Store/ProxyStore.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Store/ProxyStore.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Store/Store.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Store/Store.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Store/StoreInterface.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Store/StoreInterface.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/View/View.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/View.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/View/ViewContainer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/ViewContainer.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/View/ViewContainerBase.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/ViewContainerBase.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/View/ViewStoresParameters.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/ViewStoresParameters.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -38,32 +31,58 @@
       <file leaf-file-name="View.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/View/View.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="216">
-              <caret line="8" column="21" selection-start-line="8" selection-start-column="21" selection-end-line="8" selection-end-column="21" />
+            <state relative-caret-position="486">
+              <caret line="57" column="32" selection-start-line="57" selection-start-column="32" selection-end-line="57" selection-end-column="32" />
               <folding>
+                <element signature="e#13#59#0" expanded="true" />
                 <element signature="n#ViewParameters#0" />
+                <element signature="n#!!doc;n#constructor#0;n#ViewParameters#0" />
+                <element signature="n#!!block;n#constructor#0;n#View#0" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="StoreInterface.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Store/StoreInterface.js">
+      <file leaf-file-name="ViewContainer.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/View/ViewContainer.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="243">
-              <caret line="10" column="5" selection-start-line="10" selection-start-column="5" selection-end-line="10" selection-end-column="5" />
+            <state relative-caret-position="1105">
+              <caret line="100" lean-forward="true" selection-start-line="100" selection-end-line="100" />
+              <folding>
+                <element signature="n#!!block;n#constructor#0;n#ViewContainerParameters#0" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ViewContainer.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/View/ViewContainer.js">
+      <file leaf-file-name="ViewContainerBase.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/View/ViewContainerBase.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="681">
-              <caret line="167" column="30" selection-start-line="167" selection-start-column="30" selection-end-line="167" selection-end-column="30" />
+            <state relative-caret-position="414">
+              <caret line="28" column="25" lean-forward="true" selection-start-line="28" selection-start-column="25" selection-end-line="28" selection-end-column="25" />
               <folding>
-                <element signature="e#13#101#0" expanded="true" />
-                <element signature="n#!!block;n#constructor#0;n#ViewContainerParameters#0" />
+                <element signature="e#13#83#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Component.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Component/Component.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1026">
+              <caret line="51" column="28" lean-forward="true" selection-start-line="51" selection-start-column="28" selection-end-line="51" selection-end-column="28" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ViewStoresParameters.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/View/ViewStoresParameters.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="459">
+              <caret line="17" column="19" lean-forward="true" selection-start-line="17" selection-start-column="19" selection-end-line="17" selection-end-column="19" />
+              <folding>
+                <element signature="e#0#54#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -72,8 +91,8 @@
       <file leaf-file-name="Store.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Store/Store.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="432">
-              <caret line="16" selection-start-line="16" selection-end-line="16" />
+            <state relative-caret-position="3915">
+              <caret line="143" column="102" lean-forward="true" selection-start-line="143" selection-start-column="102" selection-end-line="143" selection-end-column="102" />
               <folding>
                 <element signature="e#13#77#0" expanded="true" />
               </folding>
@@ -81,51 +100,39 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ActionParams.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Action/ActionParams.js">
+      <file leaf-file-name="ProxyStore.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Store/ProxyStore.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="243">
-              <caret line="9" column="14" lean-forward="true" selection-start-line="9" selection-end-line="10" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="EventAction.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Action/EventAction.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="486">
-              <caret line="18" lean-forward="true" selection-start-line="18" selection-end-line="18" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Debugable.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/bases/Debugable.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="189">
-              <caret line="7" selection-start-line="7" selection-end-line="7" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="index.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/index.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="432">
-              <caret line="15" selection-start-line="15" selection-end-line="15" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DispatcherEventListenerFactory.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Dispatcher/DispatcherEventListenerFactory.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state>
+            <state relative-caret-position="1026">
+              <caret line="38" column="6" lean-forward="true" selection-start-line="38" selection-start-column="6" selection-end-line="38" selection-end-column="6" />
               <folding>
-                <element signature="e#0#66#0" expanded="true" />
+                <element signature="e#13#77#0" expanded="true" />
               </folding>
             </state>
           </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Action.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Action/Action.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="94">
+              <caret line="60" column="21" selection-start-line="60" selection-start-column="21" selection-end-line="60" selection-end-column="21" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DataStoreInterface.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Store/DataStoreInterface.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="108">
+              <caret line="4" selection-start-line="4" selection-end-line="4" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Storage.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Store/Storage.js">
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
     </leaf>
@@ -139,12 +146,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>src</find>
-      <find>subView</find>
-      <find>html(</find>
-      <find>log(</find>
-      <find>log</find>
-      <find>hoballoon</find>
       <find>_setState</find>
       <find>addView</find>
       <find>_addView</find>
@@ -154,7 +155,6 @@
       <find>view(</find>
       <find>_shouldChangeState</find>
       <find>_state</find>
-      <find>_setNodeViewRef</find>
       <find>EventListenerFactory</find>
       <find>moduleNameMapper</find>
       <find>jest</find>
@@ -169,6 +169,13 @@
       <find>action</find>
       <find>PrivateStateMixin</find>
       <find>ht</find>
+      <find>_mount</find>
+      <find>_update</find>
+      <find>_replaceNode</find>
+      <find>_setNodeViewRef</find>
+      <find>_render</find>
+      <find>StoreInterface</find>
+      <find>stores</find>
     </findStrings>
     <replaceStrings>
       <replace>Node</replace>
@@ -188,8 +195,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/Event/EventHandler.js" />
-        <option value="$PROJECT_DIR$/src/Event/EventListenerParam.js" />
         <option value="$PROJECT_DIR$/src/Event/ViewEventListenerFactory.js" />
         <option value="$PROJECT_DIR$/src/Event/EventListenerOrderedParam.js" />
         <option value="$PROJECT_DIR$/src/Store/State.js" />
@@ -227,18 +232,20 @@
         <option value="$PROJECT_DIR$/src/CLASS_TAG_NAME.js" />
         <option value="$PROJECT_DIR$/src/HasTagClassNameInterface.js" />
         <option value="$PROJECT_DIR$/src/Dispatcher/Dispatcher.js" />
-        <option value="$PROJECT_DIR$/src/Store/ProxyStore.js" />
-        <option value="$PROJECT_DIR$/src/Store/Store.js" />
-        <option value="$PROJECT_DIR$/src/Component/Component.js" />
-        <option value="$PROJECT_DIR$/src/View/ViewContainerBase.js" />
         <option value="$PROJECT_DIR$/src/Application/HotBalloonApplication.js" />
         <option value="$PROJECT_DIR$/src/Action/Action.js" />
         <option value="$PROJECT_DIR$/src/Action/ActionParams.js" />
         <option value="$PROJECT_DIR$/src/Action/EventAction.js" />
-        <option value="$PROJECT_DIR$/index.js" />
         <option value="$PROJECT_DIR$/src/Store/StoreInterface.js" />
-        <option value="$PROJECT_DIR$/src/View/View.js" />
+        <option value="$PROJECT_DIR$/index.js" />
+        <option value="$PROJECT_DIR$/src/Store/DataStoreInterface.js" />
         <option value="$PROJECT_DIR$/src/View/ViewContainer.js" />
+        <option value="$PROJECT_DIR$/src/View/View.js" />
+        <option value="$PROJECT_DIR$/src/Store/Store.js" />
+        <option value="$PROJECT_DIR$/src/Store/ProxyStore.js" />
+        <option value="$PROJECT_DIR$/src/Component/Component.js" />
+        <option value="$PROJECT_DIR$/src/View/ViewContainerBase.js" />
+        <option value="$PROJECT_DIR$/src/View/ViewStoresParameters.js" />
       </list>
     </option>
   </component>
@@ -362,7 +369,7 @@
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="nodejs_package_manager_path" value="yarn" />
-    <property name="settings.editor.selected.configurable" value="JavaScript.Libraries" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.folding" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -468,7 +475,8 @@
       <workItem from="1532930717577" duration="53000" />
       <workItem from="1532930804989" duration="235000" />
       <workItem from="1532940532057" duration="11389000" />
-      <workItem from="1532962114030" duration="3518000" />
+      <workItem from="1532962114030" duration="6932000" />
+      <workItem from="1533123517788" duration="7094000" />
     </task>
     <servers />
   </component>
@@ -481,13 +489,13 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="255087000" />
+    <option name="totallyTimeSpent" value="265595000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1920" height="2160" extended-state="4" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49951783" visible="true" weight="0.25572917" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49951783" visible="true" weight="0.25416666" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.3857729" side_tool="true" weight="0.3291506" />
@@ -495,7 +503,7 @@
       <window_info id="npm" order="2" sideWeight="0.50024426" side_tool="true" weight="0.241944" />
       <window_info anchor="bottom" id="Version Control" order="9" />
       <window_info id="Structure" order="1" sideWeight="0.50024426" side_tool="true" weight="0.241944" />
-      <window_info anchor="bottom" id="Terminal" order="8" sideWeight="0.6881188" weight="0.14572865" />
+      <window_info anchor="bottom" id="Terminal" order="8" sideWeight="0.6881188" weight="0.1460945" />
       <window_info id="Favorites" order="3" sideWeight="0.50048214" side_tool="true" weight="0.23854166" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.24973205" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -537,10 +545,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/Store/StoreModel.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/testResults.json" />
     <entry file="file://$PROJECT_DIR$/src/Store/State.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="891">
@@ -687,16 +691,7 @@
     <entry file="file://$PROJECT_DIR$/src/mixins/PrivateStateMixin.js" />
     <entry file="file://$PROJECT_DIR$/src/mixins/RequireIDMixin.js" />
     <entry file="file://$PROJECT_DIR$/src/mixins/ViewContainerContextMixin.js" />
-    <entry file="file://$PROJECT_DIR$/src/CLASS_TAG_NAME/HasTagClassNameInterface.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="81">
-          <caret line="3" selection-start-line="3" selection-end-line="5" selection-end-column="1" />
-          <folding>
-            <element signature="e#0#41#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/CLASS_TAG_NAME/HasTagClassNameInterface.js" />
     <entry file="file://$PROJECT_DIR$/src/HasTagClassNameInterface.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="657">
@@ -708,33 +703,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="297">
           <caret line="11" selection-start-line="11" selection-end-line="11" />
-          <folding>
-            <element signature="e#13#52#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Store/ProxyStore.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
-          <caret line="12" selection-start-line="12" selection-end-line="12" />
-          <folding>
-            <element signature="e#13#77#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/ViewContainerBase.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="27">
-          <caret line="1" column="7" selection-start-line="1" selection-start-column="7" selection-end-line="1" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Component/Component.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="21" selection-start-line="21" selection-end-line="21" />
         </state>
       </provider>
     </entry>
@@ -748,18 +716,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/ViewStoresParameters.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/HBException.js">
       <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Action/Action.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="945">
-          <caret line="43" column="29" lean-forward="true" selection-start-line="43" selection-start-column="29" selection-end-line="43" selection-end-column="29" />
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Action/ActionPayload.js">
       <provider selected="true" editor-type-id="text-editor">
@@ -798,23 +756,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="432">
-          <caret line="15" selection-start-line="15" selection-end-line="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Store/Store.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="432">
-          <caret line="16" selection-start-line="16" selection-end-line="16" />
-          <folding>
-            <element signature="e#13#77#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Store/StoreInterface.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="243">
@@ -822,33 +763,97 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/View.js">
+    <entry file="file://$PROJECT_DIR$/src/Application/AbstractApplicationContext.js" />
+    <entry file="file://$PROJECT_DIR$/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="8" column="21" selection-start-line="8" selection-start-column="21" selection-end-line="8" selection-end-column="21" />
-          <folding>
-            <element signature="n#ViewParameters#0" />
-          </folding>
+        <state relative-caret-position="702">
+          <caret line="26" column="39" selection-start-line="26" selection-start-column="39" selection-end-line="26" selection-end-column="39" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Application/AbstractApplicationContext.js">
+    <entry file="file://$PROJECT_DIR$/src/Store/Storage.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Store/DataStoreInterface.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1404">
-          <caret line="51" column="3" lean-forward="true" selection-start-line="32" selection-start-column="2" selection-end-line="51" selection-end-column="3" />
-          <folding>
-            <element signature="e#13#76#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="108">
+          <caret line="4" selection-start-line="4" selection-end-line="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Action/Action.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="94">
+          <caret line="60" column="21" selection-start-line="60" selection-start-column="21" selection-end-line="60" selection-end-column="21" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/View/ViewContainer.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="681">
-          <caret line="167" column="30" selection-start-line="167" selection-start-column="30" selection-end-line="167" selection-end-column="30" />
+        <state relative-caret-position="1105">
+          <caret line="100" lean-forward="true" selection-start-line="100" selection-end-line="100" />
           <folding>
-            <element signature="e#13#101#0" expanded="true" />
             <element signature="n#!!block;n#constructor#0;n#ViewContainerParameters#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Store/Store.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3915">
+          <caret line="143" column="102" lean-forward="true" selection-start-line="143" selection-start-column="102" selection-end-line="143" selection-end-column="102" />
+          <folding>
+            <element signature="e#13#77#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Store/ProxyStore.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1026">
+          <caret line="38" column="6" lean-forward="true" selection-start-line="38" selection-start-column="6" selection-end-line="38" selection-end-column="6" />
+          <folding>
+            <element signature="e#13#77#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/View.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="486">
+          <caret line="57" column="32" selection-start-line="57" selection-start-column="32" selection-end-line="57" selection-end-column="32" />
+          <folding>
+            <element signature="e#13#59#0" expanded="true" />
+            <element signature="n#ViewParameters#0" />
+            <element signature="n#!!doc;n#constructor#0;n#ViewParameters#0" />
+            <element signature="n#!!block;n#constructor#0;n#View#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Component/Component.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1026">
+          <caret line="51" column="28" lean-forward="true" selection-start-line="51" selection-start-column="28" selection-end-line="51" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/ViewStoresParameters.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="459">
+          <caret line="17" column="19" lean-forward="true" selection-start-line="17" selection-start-column="19" selection-end-line="17" selection-end-column="19" />
+          <folding>
+            <element signature="e#0#54#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/ViewContainerBase.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="414">
+          <caret line="28" column="25" lean-forward="true" selection-start-line="28" selection-start-column="25" selection-end-line="28" selection-end-column="25" />
+          <folding>
+            <element signature="e#13#83#0" expanded="true" />
           </folding>
         </state>
       </provider>

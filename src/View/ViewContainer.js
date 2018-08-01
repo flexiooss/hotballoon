@@ -53,6 +53,8 @@ export class ViewContainerParameters {
 }
 
 export const WILL_REMOVE = 'WILL_REMOVE'
+const _renderViews = Symbol('_renderViews')
+const _mountViews = Symbol('_mountViews')
 
 /**
  *
@@ -110,7 +112,7 @@ export class ViewContainer extends ViewContainerBase {
    * @param {String} keyStore
    * @param {updateCallback} clb : event name
    */
-  _suscribeToStore(keyStore, clb = (payload) => {
+  suscribeToStore(keyStore, clb = (payload) => {
   }) {
     assert(isFunction(clb), 'hotballoon:' + this.constructor.name + ':_suscribeToStore: `clb` argument should be callable')
     const store = this._Store(keyStore)
@@ -139,7 +141,7 @@ export class ViewContainer extends ViewContainerBase {
    * @private
    * @param {Node} parentNode
    */
-  _mountViews(parentNode) {
+  [_mountViews](parentNode) {
     this._Views.forEach((view, key, map) => {
       view.mount(parentNode)
     })
@@ -148,7 +150,7 @@ export class ViewContainer extends ViewContainerBase {
   /**
    * @private
    */
-  _renderViews() {
+  [_renderViews]() {
     this._Views.forEach((view, key, map) => {
       view.render()
     })
@@ -158,7 +160,7 @@ export class ViewContainer extends ViewContainerBase {
    * @description Render all views
    */
   render() {
-    this._renderViews()
+    this[_renderViews]()
     this._rendered = true
   }
 
@@ -171,7 +173,7 @@ export class ViewContainer extends ViewContainerBase {
     assert(isNode(parentNode),
       'hotballoon:ViewContainer:mount: `parentNode` arguement assert be a Node, %s given',
       typeof parentNode)
-    this._mountViews(parentNode)
+    this[_mountViews](parentNode)
     this._mounted = true
 
     return parentNode

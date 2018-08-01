@@ -2,13 +2,13 @@
 import {MapOfArray, isBoolean, isNode, assert} from 'flexio-jshelpers'
 import {WithIDBase} from '../bases/WithIDBase'
 import {ViewStoresParameters} from './ViewStoresParameters'
-import {STORE_CHANGED, StoreInterface} from '../Store/StoreInterface'
+// import {STORE_CHANGED, StoreInterface} from '../Store/StoreInterface'
 import {EventOrderedHandler} from '../Event/EventOrderedHandler'
 
 /**
  * @extends WithIDBase
  */
-class ViewContainerBase extends WithIDBase {
+export class ViewContainerBase extends WithIDBase {
   /**
    *
    * @param {String} id
@@ -33,7 +33,7 @@ class ViewContainerBase extends WithIDBase {
          * @name ViewContainerBase#_Stores
          * @protected
          */
-        value: stores._Stores
+        value: stores.getMap()
       },
       _mounted: {
         configurable: false,
@@ -157,26 +157,23 @@ class ViewContainerBase extends WithIDBase {
     return this._Views.get(key)
   }
 
-  /**
-   * @description Format an Event name
-   * @param {StoreInterface} store
-   * @return {string} event name formated
-   * @static
-   */
-  static uniqueNameStoreChanged(store) {
-    assert(store instanceof StoreInterface, 'hotballoon:ViewContainerBase:uniqueNameStoreChanged: `store` argument should be an instance of StoreInterface')
-    return store._ID + '_' + STORE_CHANGED
-  }
+  // /**
+  //  * @description Format an Event name
+  //  * @param {StoreInterface} store
+  //  * @return {string} event name formated
+  //  * @static
+  //  */
+  // static uniqueNameStoreChanged(store) {
+  //   assert(store instanceof StoreInterface, 'hotballoon:ViewContainerBase:uniqueNameStoreChanged: `store` argument should be an instance of StoreInterface')
+  //   return store._ID + '_' + STORE_CHANGED
+  // }
 
   /**
    *
-   * @param key
+   * @param {string} key
    * @return {StoreInterface}
-   * @protected
    */
-  _Store(key) {
+  Store(key) {
     return this._Stores.get(key)
   }
 }
-
-export {ViewContainerBase}

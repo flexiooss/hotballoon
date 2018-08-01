@@ -14,6 +14,8 @@ import {
   testClassTagName
 } from '../HasTagClassNameInterface'
 
+const _init = Symbol('_init')
+
 /**
  * @class
  * @description The Component is the entry point of the module
@@ -23,7 +25,7 @@ import {
 class Component extends WithIDBase {
   constructor(hotBallonApplication) {
     assert(testClassTagName(hotBallonApplication, CLASS_TAG_NAME_HOTBALLOON_APPLICATION),
-      'hotballoon:ApplicationContextMixin:__setAPP require an argument instance of ̀ hotballoon/HotBalloonApplication`, `%s` given',
+      'hotballoon:Component:constructor:  hotBallonApplication argument should be an instance of ̀ hotballoon/HotBalloonApplication`, `%s` given',
       typeof hotBallonApplication
     )
     super(hotBallonApplication.nextID())
@@ -127,25 +129,7 @@ class Component extends WithIDBase {
     }
     )
 
-    this._init()
-  }
-
-  /**
-   *
-   * @param {CLASS_TAG_NAME} instance
-   * @return {boolean}
-   */
-  hasSameTagClassName(instance) {
-    return this.testTagClassName(instance[CLASS_TAG_NAME])
-  }
-
-  /**
-   *
-   * @param {Symbol} tag
-   * @return {boolean}
-   */
-  testTagClassName(tag) {
-    return this[CLASS_TAG_NAME] === tag
+    this[_init]()
   }
 
   /**
@@ -163,7 +147,7 @@ class Component extends WithIDBase {
    * @private
    * @returns void
    */
-  _init() {
+  [_init]() {
     this._initStores()
     this._initDispatcherListeners()
     this._initViewContainers()
@@ -247,7 +231,7 @@ class Component extends WithIDBase {
   /**
    *
    * @param {String}  tokenStore
-   * @returns {hotballoon/Store} Store
+   * @returns {StoreInterface} Store
    */
   Store(tokenStore) {
     return this._stores.get(tokenStore)
@@ -256,7 +240,7 @@ class Component extends WithIDBase {
   /**
    *
    * @param {string} key token registered into storesKeyRegister
-   * @return {Store} Store
+   * @return {StoreInterface} Store
    */
   StoreByRegister(key) {
     return this.Store(this.storesKeyRegister.get(key))

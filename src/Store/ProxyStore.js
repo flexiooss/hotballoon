@@ -6,6 +6,11 @@ import {CLASS_TAG_NAME, CLASS_TAG_NAME_PROXYSTORE} from '../HasTagClassNameInter
 import {StoreInterface} from './StoreInterface'
 import {State} from './State'
 
+const _EventHandler = Symbol('_EventHandler')
+const _Store = Symbol('_Store')
+const _mapper = Symbol('_mapper')
+const _dispatch = Symbol('_dispatch')
+
 /**
  * @extends StoreInterface
  * @implements StoreInterface
@@ -34,7 +39,7 @@ export class ProxyStore extends StoreInterface {
     })
 
     Object.defineProperties(this, {
-      _EventHandler: {
+      [_EventHandler]: {
         enumerable: false,
         configurable: false,
         /**
@@ -44,7 +49,7 @@ export class ProxyStore extends StoreInterface {
          */
         value: Object.seal(new EventOrderedHandler())
       },
-      _Store: {
+      [_Store]: {
         enumerable: false,
         configurable: false,
         /**
@@ -54,7 +59,7 @@ export class ProxyStore extends StoreInterface {
          */
         value: store
       },
-      _mapper: {
+      [_mapper]: {
         enumerable: false,
         configurable: false,
         /**
@@ -83,10 +88,10 @@ export class ProxyStore extends StoreInterface {
    * @return {String} token
    */
   subscribe(eventListenerOrderedParam) {
-    this._Store.subscribe(
+    this[_Store].subscribe(
       EventListenerOrderedFactory.listen(eventListenerOrderedParam.event)
         .callback((eventType, payload) => {
-          this._dispatch(
+          this[_dispatch](
             eventType,
             new State(this._ID, this._mapper(payload.data))
           )
@@ -94,7 +99,7 @@ export class ProxyStore extends StoreInterface {
         .priority(20)
         .build(this)
     )
-    return this._EventHandler.on(eventListenerOrderedParam)
+    return this[_EventHandler].on(eventListenerOrderedParam)
   }
 
   /**
@@ -108,7 +113,7 @@ export class ProxyStore extends StoreInterface {
    * @returns {State} state frozen
    */
   state() {
-    return new State(this._ID, this._mapper(this._Store.data()))
+    return new State(this._ID, this[_mapper](this[_Store].data()))
   }
 
   /**
@@ -116,7 +121,7 @@ export class ProxyStore extends StoreInterface {
    * @param {String} eventType
    * @param {Object} payload
    */
-  _dispatch(eventType, payload) {
-    this._EventHandler.dispatch(eventType, payload)
+  [_dispatch](eventType, payload) {
+    this[_EventHandler].dispatch(eventType, payload)
   }
 }
