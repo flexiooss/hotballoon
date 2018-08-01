@@ -144,7 +144,7 @@ export class ViewContainerBase extends WithIDBase {
    * @return {View}
    */
   addView(view) {
-    this._Views.set(view._ID, view)
+    this._Views.set(view.ID, view)
     return view
   }
 
@@ -156,17 +156,6 @@ export class ViewContainerBase extends WithIDBase {
   View(key) {
     return this._Views.get(key)
   }
-
-  // /**
-  //  * @description Format an Event name
-  //  * @param {StoreInterface} store
-  //  * @return {string} event name formated
-  //  * @static
-  //  */
-  // static uniqueNameStoreChanged(store) {
-  //   assert(store instanceof StoreInterface, 'hotballoon:ViewContainerBase:uniqueNameStoreChanged: `store` argument should be an instance of StoreInterface')
-  //   return store._ID + '_' + STORE_CHANGED
-  // }
 
   /**
    *

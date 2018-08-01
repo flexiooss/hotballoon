@@ -27,6 +27,10 @@ class WithIDBase extends Debugable {
       value: id
     })
   }
+
+  get ID() {
+    return this._ID
+  }
 }
 
 export {WithIDBase}

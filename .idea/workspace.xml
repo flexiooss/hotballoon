@@ -2,11 +2,19 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c13bbe00-65c0-403d-a96b-410248228156" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Application/HotBalloonApplication.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Application/HotBalloonApplication.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Component/Component.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Component/Component.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Event/EventHandlerBase.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Event/EventHandlerBase.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/HotballoonNodeElement/CreateHotBalloonElement.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/HotballoonNodeElement/CreateHotBalloonElement.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MapOfState.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Store/ProxyStore.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Store/ProxyStore.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Store/Store.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Store/Store.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/View/View.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/View.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/View/ViewContainer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/ViewContainer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/ViewStoresParameters.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/ViewStoresParameters.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/View/ViewContainerBase.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/ViewContainerBase.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/bases/WithIDBase.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/bases/WithIDBase.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -26,8 +34,8 @@
       <file leaf-file-name="View.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/View/View.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="990">
-              <caret line="254" column="19" lean-forward="true" selection-start-line="254" selection-start-column="19" selection-end-line="254" selection-end-column="19" />
+            <state relative-caret-position="557">
+              <caret line="433" column="35" selection-start-line="433" selection-start-column="33" selection-end-line="433" selection-end-column="35" />
               <folding>
                 <element signature="e#13#59#0" expanded="true" />
                 <element signature="n#ViewParameters#0" />
@@ -38,67 +46,22 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="StoreInterface.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Store/StoreInterface.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="243">
+              <caret line="10" column="5" selection-start-line="10" selection-start-column="5" selection-end-line="10" selection-end-column="5" />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="ViewContainer.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/View/ViewContainer.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="466">
-              <caret line="176" column="24" lean-forward="true" selection-start-line="176" selection-start-column="24" selection-end-line="176" selection-end-column="24" />
+            <state relative-caret-position="557">
+              <caret line="105" column="83" selection-start-line="105" selection-start-column="81" selection-end-line="105" selection-end-column="83" />
               <folding>
                 <element signature="n#!!block;n#constructor#0;n#ViewContainerParameters#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ViewContainerBase.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/View/ViewContainerBase.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1268">
-              <caret line="170" column="5" lean-forward="true" selection-start-line="170" selection-start-column="5" selection-end-line="170" selection-end-column="5" />
-              <folding>
-                <element signature="e#13#83#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Component.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Component/Component.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1026">
-              <caret line="51" column="28" lean-forward="true" selection-start-line="51" selection-start-column="28" selection-end-line="51" selection-end-column="28" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ViewStoresParameters.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/View/ViewStoresParameters.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1080">
-              <caret line="40" column="44" lean-forward="true" selection-start-line="40" selection-start-column="44" selection-end-line="40" selection-end-column="44" />
-              <folding>
-                <element signature="e#0#54#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CreateHotBalloonElement.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/HotballoonNodeElement/CreateHotBalloonElement.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="486">
-              <caret line="21" column="22" lean-forward="true" selection-start-line="21" selection-start-column="22" selection-end-line="21" selection-end-column="22" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="HotBalloonApplication.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/Application/HotBalloonApplication.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="378">
-              <caret line="14" column="9" lean-forward="true" selection-start-line="14" selection-start-column="9" selection-end-line="14" selection-end-column="9" />
-              <folding>
-                <element signature="e#13#64#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -107,11 +70,29 @@
       <file leaf-file-name="Store.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Store/Store.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3915">
-              <caret line="143" column="102" lean-forward="true" selection-start-line="143" selection-start-column="102" selection-end-line="143" selection-end-column="102" />
+            <state relative-caret-position="1322">
+              <caret line="161" column="53" selection-start-line="161" selection-start-column="51" selection-end-line="161" selection-end-column="53" />
               <folding>
                 <element signature="e#13#77#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="EventHandlerBase.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Event/EventHandlerBase.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="557">
+              <caret line="114" column="38" selection-start-line="114" selection-start-column="36" selection-end-line="114" selection-end-column="38" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="WithIDBase.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/bases/WithIDBase.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="405">
+              <caret line="16" column="33" selection-start-line="16" selection-start-column="33" selection-end-line="16" selection-end-column="33" />
             </state>
           </provider>
         </entry>
@@ -119,8 +100,8 @@
       <file leaf-file-name="ProxyStore.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Store/ProxyStore.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1026">
-              <caret line="38" column="6" lean-forward="true" selection-start-line="38" selection-start-column="6" selection-end-line="38" selection-end-column="6" />
+            <state relative-caret-position="1052">
+              <caret line="110" lean-forward="true" selection-start-line="110" selection-end-line="110" />
               <folding>
                 <element signature="e#13#77#0" expanded="true" />
               </folding>
@@ -128,11 +109,28 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Action.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Action/Action.js">
+      <file leaf-file-name="ViewContainerBase.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/View/ViewContainerBase.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="94">
-              <caret line="60" column="21" selection-start-line="60" selection-start-column="21" selection-end-line="60" selection-end-column="21" />
+            <state relative-caret-position="998">
+              <caret line="149" lean-forward="true" selection-start-line="149" selection-end-line="149" />
+              <folding>
+                <element signature="e#13#83#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="constantes.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/HotballoonNodeElement/constantes.js">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file leaf-file-name="CreateHotBalloonElement.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/HotballoonNodeElement/CreateHotBalloonElement.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="584">
+              <caret line="88" column="3" lean-forward="true" selection-start-line="88" selection-start-column="3" selection-end-line="88" selection-end-column="3" />
             </state>
           </provider>
         </entry>
@@ -148,8 +146,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>_setState</find>
-      <find>addView</find>
       <find>_addView</find>
       <find>suscr</find>
       <find>viewContainer</find>
@@ -178,6 +174,8 @@
       <find>_render</find>
       <find>StoreInterface</find>
       <find>stores</find>
+      <find>ID</find>
+      <find>_ID</find>
     </findStrings>
     <replaceStrings>
       <replace>Node</replace>
@@ -190,6 +188,9 @@
       <replace>Action</replace>
       <replace>export</replace>
     </replaceStrings>
+    <dirStrings>
+      <dir>$PROJECT_DIR$/src</dir>
+    </dirStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -219,12 +220,10 @@
         <option value="$PROJECT_DIR$/src/bases/HasTagClassName.js" />
         <option value="$PROJECT_DIR$/src/Event/DispatcherBase.js" />
         <option value="$PROJECT_DIR$/src/bases/Debugable.js" />
-        <option value="$PROJECT_DIR$/src/bases/WithIDBase.js" />
         <option value="$PROJECT_DIR$/src/Event/Dispatcher.js" />
         <option value="$PROJECT_DIR$/src/Action/ActionPayload.js" />
         <option value="$PROJECT_DIR$/src/Event/DispatcherEventListenerFactory.js" />
         <option value="$PROJECT_DIR$/src/Dispatcher/DispatcherEventListenerFactory.js" />
-        <option value="$PROJECT_DIR$/src/Event/EventHandlerBase.js" />
         <option value="$PROJECT_DIR$/src/Application/checker.js" />
         <option value="$PROJECT_DIR$/src/CLASS_TAG_NAME/CLASS_TAG_NAME_HOTBALLOON_APPLICATION.js" />
         <option value="$PROJECT_DIR$/src/CLASS_TAG_NAME/CLASS_TAG_NAME.js" />
@@ -237,17 +236,19 @@
         <option value="$PROJECT_DIR$/src/Action/ActionParams.js" />
         <option value="$PROJECT_DIR$/src/Action/EventAction.js" />
         <option value="$PROJECT_DIR$/src/Store/StoreInterface.js" />
-        <option value="$PROJECT_DIR$/index.js" />
         <option value="$PROJECT_DIR$/src/Store/DataStoreInterface.js" />
-        <option value="$PROJECT_DIR$/src/Store/Store.js" />
-        <option value="$PROJECT_DIR$/src/Store/ProxyStore.js" />
-        <option value="$PROJECT_DIR$/src/Component/Component.js" />
-        <option value="$PROJECT_DIR$/src/View/ViewContainerBase.js" />
-        <option value="$PROJECT_DIR$/src/View/ViewContainer.js" />
-        <option value="$PROJECT_DIR$/src/View/View.js" />
         <option value="$PROJECT_DIR$/src/View/ViewStoresParameters.js" />
-        <option value="$PROJECT_DIR$/src/HotballoonNodeElement/CreateHotBalloonElement.js" />
+        <option value="$PROJECT_DIR$/src/bases/WithIDBase.js" />
         <option value="$PROJECT_DIR$/src/Application/HotBalloonApplication.js" />
+        <option value="$PROJECT_DIR$/index.js" />
+        <option value="$PROJECT_DIR$/src/Component/Component.js" />
+        <option value="$PROJECT_DIR$/src/View/View.js" />
+        <option value="$PROJECT_DIR$/src/View/ViewContainer.js" />
+        <option value="$PROJECT_DIR$/src/View/ViewContainerBase.js" />
+        <option value="$PROJECT_DIR$/src/Store/Store.js" />
+        <option value="$PROJECT_DIR$/src/Event/EventHandlerBase.js" />
+        <option value="$PROJECT_DIR$/src/Store/ProxyStore.js" />
+        <option value="$PROJECT_DIR$/src/HotballoonNodeElement/CreateHotBalloonElement.js" />
       </list>
     </option>
   </component>
@@ -478,7 +479,7 @@
       <workItem from="1532930804989" duration="235000" />
       <workItem from="1532940532057" duration="11389000" />
       <workItem from="1532962114030" duration="6932000" />
-      <workItem from="1533123517788" duration="10053000" />
+      <workItem from="1533123517788" duration="10697000" />
     </task>
     <servers />
   </component>
@@ -491,7 +492,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="268554000" />
+    <option name="totallyTimeSpent" value="269198000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1920" height="2160" extended-state="4" />
@@ -547,13 +548,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/Store/State.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="891">
-          <caret line="33" column="12" selection-start-line="33" selection-start-column="12" selection-end-line="33" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/node_modules/flexio-jshelpers/src/objectHelpers.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="54">
@@ -653,13 +647,6 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/HasTagClassNameInterface.js" />
     <entry file="file://$PROJECT_DIR$/src/Event/DispatcherBase.js" />
-    <entry file="file://$PROJECT_DIR$/src/bases/WithIDBase.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="702">
-          <caret line="27" column="6" lean-forward="true" selection-start-line="27" selection-start-column="6" selection-end-line="27" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Event/EventListenerFactory.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="486">
@@ -669,20 +656,6 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Application/checker.js" />
     <entry file="file://$PROJECT_DIR$/src/CLASS_TAG_NAME/CLASS_TAG_NAME_HOTBALLOON_APPLICATION.js" />
-    <entry file="file://$PROJECT_DIR$/src/Event/EventHandlerBase.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1728">
-          <caret line="65" column="19" lean-forward="true" selection-start-line="65" selection-start-column="19" selection-end-line="65" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Event/EventHandler.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="5" lean-forward="true" selection-start-line="5" selection-end-line="5" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/mixins/PrivateStateMixin.js" />
     <entry file="file://$PROJECT_DIR$/src/mixins/RequireIDMixin.js" />
     <entry file="file://$PROJECT_DIR$/src/mixins/ViewContainerContextMixin.js" />
@@ -698,6 +671,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="297">
           <caret line="11" selection-start-line="11" selection-end-line="11" />
+          <folding>
+            <element signature="e#13#52#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -741,21 +717,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Store/StoreInterface.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="243">
-          <caret line="10" column="5" selection-start-line="10" selection-start-column="5" selection-end-line="10" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Application/AbstractApplicationContext.js" />
-    <entry file="file://$PROJECT_DIR$/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="702">
-          <caret line="26" column="39" selection-start-line="26" selection-start-column="39" selection-end-line="26" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Store/Storage.js">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -763,73 +725,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="108">
           <caret line="4" selection-start-line="4" selection-end-line="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Action/Action.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="94">
-          <caret line="60" column="21" selection-start-line="60" selection-start-column="21" selection-end-line="60" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Store/Store.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3915">
-          <caret line="143" column="102" lean-forward="true" selection-start-line="143" selection-start-column="102" selection-end-line="143" selection-end-column="102" />
-          <folding>
-            <element signature="e#13#77#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Store/ProxyStore.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1026">
-          <caret line="38" column="6" lean-forward="true" selection-start-line="38" selection-start-column="6" selection-end-line="38" selection-end-column="6" />
-          <folding>
-            <element signature="e#13#77#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Component/Component.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1026">
-          <caret line="51" column="28" lean-forward="true" selection-start-line="51" selection-start-column="28" selection-end-line="51" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/ViewContainerBase.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1268">
-          <caret line="170" column="5" lean-forward="true" selection-start-line="170" selection-start-column="5" selection-end-line="170" selection-end-column="5" />
-          <folding>
-            <element signature="e#13#83#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/ViewContainer.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="466">
-          <caret line="176" column="24" lean-forward="true" selection-start-line="176" selection-start-column="24" selection-end-line="176" selection-end-column="24" />
-          <folding>
-            <element signature="n#!!block;n#constructor#0;n#ViewContainerParameters#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/View.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="990">
-          <caret line="254" column="19" lean-forward="true" selection-start-line="254" selection-start-column="19" selection-end-line="254" selection-end-column="19" />
-          <folding>
-            <element signature="e#13#59#0" expanded="true" />
-            <element signature="n#ViewParameters#0" />
-            <element signature="n#!!doc;n#constructor#0;n#ViewParameters#0" />
-            <element signature="n#!!block;n#constructor#0;n#View#0" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -843,20 +738,125 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/HotballoonNodeElement/CreateHotBalloonElement.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="486">
-          <caret line="21" column="22" lean-forward="true" selection-start-line="21" selection-start-column="22" selection-end-line="21" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Application/HotBalloonApplication.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="378">
-          <caret line="14" column="9" lean-forward="true" selection-start-line="14" selection-start-column="9" selection-end-line="14" selection-end-column="9" />
+        <state relative-caret-position="790">
+          <caret line="155" column="17" lean-forward="true" selection-start-line="155" selection-start-column="17" selection-end-line="155" selection-end-column="17" />
           <folding>
             <element signature="e#13#64#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="243">
+          <caret line="9" selection-start-line="9" selection-end-line="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Component/Component.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="611">
+          <caret line="229" lean-forward="true" selection-start-line="229" selection-end-line="229" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Action/Action.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1404">
+          <caret line="60" column="21" selection-start-line="60" selection-start-column="21" selection-end-line="60" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Store/StoreInterface.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="243">
+          <caret line="10" column="5" selection-start-line="10" selection-start-column="5" selection-end-line="10" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/View.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="557">
+          <caret line="433" column="35" selection-start-line="433" selection-start-column="33" selection-end-line="433" selection-end-column="35" />
+          <folding>
+            <element signature="e#13#59#0" expanded="true" />
+            <element signature="n#ViewParameters#0" />
+            <element signature="n#!!doc;n#constructor#0;n#ViewParameters#0" />
+            <element signature="n#!!block;n#constructor#0;n#View#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/ViewContainer.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="557">
+          <caret line="105" column="83" selection-start-line="105" selection-start-column="81" selection-end-line="105" selection-end-column="83" />
+          <folding>
+            <element signature="n#!!block;n#constructor#0;n#ViewContainerParameters#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/ViewContainerBase.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="998">
+          <caret line="149" lean-forward="true" selection-start-line="149" selection-end-line="149" />
+          <folding>
+            <element signature="e#13#83#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/HotballoonNodeElement/constantes.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Store/Store.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1322">
+          <caret line="161" column="53" selection-start-line="161" selection-start-column="51" selection-end-line="161" selection-end-column="53" />
+          <folding>
+            <element signature="e#13#77#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Event/EventHandler.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="5" lean-forward="true" selection-start-line="5" selection-end-line="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Event/EventHandlerBase.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="557">
+          <caret line="114" column="38" selection-start-line="114" selection-start-column="36" selection-end-line="114" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/bases/WithIDBase.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="405">
+          <caret line="16" column="33" selection-start-line="16" selection-start-column="33" selection-end-line="16" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Store/ProxyStore.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1052">
+          <caret line="110" lean-forward="true" selection-start-line="110" selection-end-line="110" />
+          <folding>
+            <element signature="e#13#77#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/HotballoonNodeElement/CreateHotBalloonElement.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="584">
+          <caret line="88" column="3" lean-forward="true" selection-start-line="88" selection-start-column="3" selection-end-line="88" selection-end-column="3" />
         </state>
       </provider>
     </entry>

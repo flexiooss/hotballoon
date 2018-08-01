@@ -85,7 +85,7 @@ class CreateHotBalloonElement extends HyperFlex {
    * @return {String}
    */
   [_generateIdFromScope](id) {
-    return `${toString(this._scope.APP()._ID)}-${toString(this._scope.Component()._ID)}-${toString(this._scope.Container()._ID)}-${toString(id)}`
+    return `${toString(this._scope.APP().ID)}-${toString(this._scope.Component().ID)}-${toString(this._scope.Container().ID)}-${toString(id)}`
   }
 
   /**

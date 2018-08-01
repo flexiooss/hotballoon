@@ -80,7 +80,7 @@ export class ProxyStore extends StoreInterface {
    * @static
    */
   static create(store, mapper) {
-    return new this(UID(`proxy_${store.constructor.name}_${store._ID}_`), store, mapper)
+    return new this(UID(`proxy_${store.constructor.name}_${store.ID}_`), store, mapper)
   }
 
   /**
@@ -93,7 +93,7 @@ export class ProxyStore extends StoreInterface {
         .callback((eventType, payload) => {
           this[_dispatch](
             eventType,
-            new State(this._ID, this._mapper(payload.data))
+            new State(this.ID, this._mapper(payload.data))
           )
         })
         .priority(20)
@@ -113,7 +113,7 @@ export class ProxyStore extends StoreInterface {
    * @returns {State} state frozen
    */
   state() {
-    return new State(this._ID, this[_mapper](this[_Store].data()))
+    return new State(this.ID, this[_mapper](this[_Store].data()))
   }
 
   /**

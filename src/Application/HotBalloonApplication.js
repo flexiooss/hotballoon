@@ -115,8 +115,8 @@ export class HotBalloonApplication extends WithIDBase {
     assert(component instanceof Component,
       'hotballoon:HotBalloonApplication:addComponent: `component` argument should be an instance of hotballoon:Component'
     )
-    this[_Components].add(component._ID, component)
-    return component._ID
+    this[_Components].add(component.ID, component)
+    return component.ID
   }
 
   /**
@@ -155,7 +155,7 @@ export class HotBalloonApplication extends WithIDBase {
       'hotballoon:HotBalloonApplication:addService: `serviceName` : `%s` is already set',
       serviceName
     )
-    return this._services.add(serviceName, service)
+    return this[_Services].add(serviceName, service)
   }
 
   /**

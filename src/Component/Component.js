@@ -32,7 +32,7 @@ class Component extends WithIDBase {
 
     this.debug.color = 'green'
 
-    const _sequenceId = new Sequence(this._ID + '_')
+    const _sequenceId = new Sequence(this.ID + '_')
     const actionsListenerTokens = new Map()
     const _stores = new MapOfInstance(Store)
     const storesKeyRegister = new Map()
@@ -224,8 +224,8 @@ class Component extends WithIDBase {
    * @returns {String} tokenStore
    */
   addStore(store) {
-    this._stores.add(store._ID, store)
-    return store._ID
+    this._stores.add(store.ID, store)
+    return store.ID
   }
 
   /**
@@ -261,7 +261,7 @@ class Component extends WithIDBase {
    * @returns {hotballoon/ViewContainer} ViewContainer
    */
   addViewContainer(ViewContainer) {
-    this._viewContainers.add(ViewContainer._ID, ViewContainer)
+    this._viewContainers.add(ViewContainer.ID, ViewContainer)
     return ViewContainer
   }
 

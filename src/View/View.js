@@ -264,7 +264,7 @@ class View extends ViewContainerBase {
     this._state.set(keyStore, store.data())
 
     this._tokenEvent.add(
-      store._ID,
+      store.ID,
       store.subscribe(
         EventListenerOrderedFactory.listen(STORE_CHANGED)
           .callback((payload, type) => {
@@ -431,7 +431,7 @@ class View extends ViewContainerBase {
    * @private
    */
   [_setNodeViewRef]() {
-    $(this.node).setViewRef(this._ID)
+    $(this.node).setViewRef(this.ID)
   }
 
   /**

@@ -27,7 +27,7 @@ export class EventHandlerBase {
      * @protected
      */
     this._isPending = new Set()
-    this._sequenceId = new Sequence(this._ID)
+    this._sequenceId = new Sequence(this.ID)
     // /**
     //  *
     //  * @type {number}

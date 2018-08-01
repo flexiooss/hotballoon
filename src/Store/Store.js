@@ -143,7 +143,7 @@ export class Store extends StoreInterface {
     assert(dataStore instanceof this[_dataStoreConstructor],
       `hotballoon:${this.constructor.name}:set: \`dataStore\` argument should be an instance of ${this[_dataStoreConstructor].name} `)
 
-    this[_store] = this[_store].set(this._ID, dataStore)
+    this[_store] = this[_store].set(this.ID, dataStore)
   }
 
   /**
@@ -159,7 +159,7 @@ export class Store extends StoreInterface {
    * @private
    */
   [_updated]() {
-    this.debug.log('STORE STORE_CHANGED : ' + this._ID).size(2).background()
+    this.debug.log('STORE STORE_CHANGED : ' + this.ID).size(2).background()
     this.debug.object(this.state())
     this.debug.print()
 

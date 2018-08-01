@@ -119,7 +119,7 @@ export class ViewContainer extends ViewContainerBase {
     assert(store instanceof StoreInterface, 'hotballoon:' + this.constructor.name + ':_suscribeToStore: `keyStore : %s` not reference an instance of StoreInterface', keyStore)
 
     this._tokenEvent.add(
-      store._ID,
+      store.ID,
       store.subscribe(
         STORE_CHANGED,
         (payload, type) => {
