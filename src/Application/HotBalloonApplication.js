@@ -5,7 +5,10 @@ import {Component} from '../Component/Component'
 import {WithIDBase} from '../bases/WithIDBase'
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_HOTBALLOON_APPLICATION} from '../HasTagClassNameInterface'
 
-// export const CLASS_TAG_NAME_HOTBALLOON_APPLICATION = Symbol('__HB__APPLICATION__')
+const _Dispatcher = Symbol('_Dispatcher')
+const _Components = Symbol('_Components')
+const _Services = Symbol('_Services')
+const _SequenceId = Symbol('_SequenceId')
 
 /**
  *
@@ -38,7 +41,7 @@ export class HotBalloonApplication extends WithIDBase {
     })
 
     Object.defineProperties(this, {
-      '_dispatcher': {
+      [_Dispatcher]: {
         configurable: false,
         enumerable: false,
         get: () => {
@@ -50,7 +53,7 @@ export class HotBalloonApplication extends WithIDBase {
           )
         }
       },
-      '_components': {
+      [_Components]: {
         configurable: false,
         enumerable: false,
         get: () => {
@@ -62,7 +65,7 @@ export class HotBalloonApplication extends WithIDBase {
           )
         }
       },
-      '_services': {
+      [_Services]: {
         configurable: false,
         enumerable: false,
         get: () => {
@@ -74,7 +77,7 @@ export class HotBalloonApplication extends WithIDBase {
           )
         }
       },
-      '_sequenceId': {
+      [_SequenceId]: {
         configurable: false,
         enumerable: false,
         get: () => {
@@ -93,14 +96,14 @@ export class HotBalloonApplication extends WithIDBase {
    * @returns {String} token :next sequence token
    */
   nextID() {
-    return this._sequenceId.nextID()
+    return this[_SequenceId].nextID()
   }
 
   /**
    * @returns {Dispatcher}
    */
   Dispatcher() {
-    return this._dispatcher
+    return this[_Dispatcher]
   }
 
   /**
@@ -112,7 +115,7 @@ export class HotBalloonApplication extends WithIDBase {
     assert(component instanceof Component,
       'hotballoon:HotBalloonApplication:addComponent: `component` argument should be an instance of hotballoon:Component'
     )
-    this._components.add(component._ID, component)
+    this[_Components].add(component._ID, component)
     return component._ID
   }
 
@@ -122,10 +125,10 @@ export class HotBalloonApplication extends WithIDBase {
    * @returns {boolean} removed ?
    */
   removeComponent(componentID) {
-    if (this._components.has(componentID)) {
+    if (this[_Components].has(componentID)) {
       const removable = this.Component(componentID).willRemove()
       if (removable !== false) {
-        this._components.delete(componentID)
+        this[_Components].delete(componentID)
         return true
       }
       return false
@@ -138,7 +141,7 @@ export class HotBalloonApplication extends WithIDBase {
    * @returns {Component}
    */
   Component(componentID) {
-    return this._components.get(componentID)
+    return this[_Components].get(componentID)
   }
 
   /**
@@ -148,7 +151,7 @@ export class HotBalloonApplication extends WithIDBase {
    * @returns {Service} service
    */
   addService(serviceName, service) {
-    assert(!this._services.has(serviceName),
+    assert(!this[_Services].has(serviceName),
       'hotballoon:HotBalloonApplication:addService: `serviceName` : `%s` is already set',
       serviceName
     )
@@ -160,12 +163,12 @@ export class HotBalloonApplication extends WithIDBase {
    * @param {String} serviceName
    */
   removeService(serviceName) {
-    if (this._services.has(serviceName)) {
+    if (this[_Services].has(serviceName)) {
       let service = this.Service(serviceName)
       if ('willRemove' in service) {
         service.willRemove()
       }
-      this._services.delete(serviceName)
+      this[_Services].delete(serviceName)
     }
   }
 
@@ -175,6 +178,6 @@ export class HotBalloonApplication extends WithIDBase {
    * @returns {Service}
    */
   Service(serviceName) {
-    return this._services.get(serviceName)
+    return this[_Services].get(serviceName)
   }
 }

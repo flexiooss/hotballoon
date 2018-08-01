@@ -2,6 +2,15 @@
 import {HotballoonElementParams} from './HotballoonElementParams'
 import {HyperFlex} from 'flexio-hyperflex'
 import {$} from './HotBalloonAttributeHandler'
+import {toString} from 'flexio-jshelpers'
+
+const _changeIdAndSetNodeRef = Symbol('_changeIdAndSetNodeRef')
+const _generateIdFromScope = Symbol('_generateIdFromScope')
+const _setNodeRef = Symbol('_setNodeRef')
+const _setReconciliationRule = Symbol('_setReconciliationRule')
+const _setViews = Symbol('_setViews')
+const _setReconciliationProperties = Symbol('_setReconciliationProperties')
+const _setEventListeners = Symbol('_setEventListeners')
 
 /**
  * @class
@@ -41,9 +50,18 @@ class CreateHotBalloonElement extends HyperFlex {
    */
   static html(scope, querySelector, hotballoonElementParams) {
     return new CreateHotBalloonElement(scope, querySelector, hotballoonElementParams)
-      .createHtmlElement()
-      .__changeIdAndSetNodeRef()
+      .createHtmlElement()[_changeIdAndSetNodeRef]()
       ._element
+  }
+
+  /**
+   * @override
+   * @return {CreateHotBalloonElement}
+   */
+  _setParams() {
+    this._$element = $(this._element)
+    super._setParams()
+    return this[_setViews](this._params.views)[_setReconciliationRule](this._params.reconciliationRules)[_setReconciliationProperties](Object.keys(this._params.properties))[_setEventListeners](this._params.eventListeners)
   }
 
   /**
@@ -51,11 +69,11 @@ class CreateHotBalloonElement extends HyperFlex {
    * @private
    * @return {CreateHotBalloonElement}
    */
-  __changeIdAndSetNodeRef() {
+  [_changeIdAndSetNodeRef]() {
     const shortId = this._element.id
     if (shortId) {
-      this._element.id = this.__generateIdFromScope(shortId)
-      this._setNodeRef(shortId, this._element)
+      this._element.id = this[_generateIdFromScope](shortId)
+      this[_setNodeRef](shortId, this._element)
     }
     return this
   }
@@ -66,11 +84,8 @@ class CreateHotBalloonElement extends HyperFlex {
    * @param {String} id
    * @return {String}
    */
-  __generateIdFromScope(id) {
-    return this._scope.APP()._ID +
-      '-' + this._scope.Component()._ID +
-      '-' + this._scope.Container()._ID +
-      '-' + id
+  [_generateIdFromScope](id) {
+    return `${toString(this._scope.APP()._ID)}-${toString(this._scope.Component()._ID)}-${toString(this._scope.Container()._ID)}-${toString(id)}`
   }
 
   /**
@@ -80,23 +95,9 @@ class CreateHotBalloonElement extends HyperFlex {
    * @return {CreateHotBalloonElement}
    * @private
    */
-  _setNodeRef(key, node) {
+  [_setNodeRef](key, node) {
     this._scope.addNodeRef(key, node)
     return this
-  }
-
-  /**
-   * @private
-   * @override
-   * @return {CreateHotBalloonElement}
-   */
-  _setParams() {
-    this._$element = $(this._element)
-    super._setParams()
-    return this._setViews(this._params.views)
-      .__setReconciliationRule(this._params.reconciliationRules)
-      .__setReconciliationProperties(Object.keys(this._params.properties))
-      .__setEventListeners(this._params.eventListeners)
   }
 
   /**
@@ -105,7 +106,7 @@ class CreateHotBalloonElement extends HyperFlex {
    * @return {CreateHotBalloonElement}
    * @private
    */
-  _setViews(views) {
+  [_setViews](views) {
     const countOfViews = views.length
     for (let i = 0; i < countOfViews; i++) {
       views[i].parentNode = this._element
@@ -119,7 +120,7 @@ class CreateHotBalloonElement extends HyperFlex {
    * @param {Array<string>} rules
    * @return {CreateHotBalloonElement}
    */
-  __setReconciliationRule(rules) {
+  [_setReconciliationRule](rules) {
     this._$element.addReconcileRules(rules)
     return this
   }
@@ -129,7 +130,7 @@ class CreateHotBalloonElement extends HyperFlex {
    * @param {Array<NodeEventListenerParam>} listeners
    * @return {CreateHotBalloonElement}
    */
-  __setEventListeners(listeners) {
+  [_setEventListeners](listeners) {
     listeners.forEach((nodeEventListenerParam) => {
       this._$element.on(nodeEventListenerParam)
     })
@@ -141,7 +142,7 @@ class CreateHotBalloonElement extends HyperFlex {
    * @param {Array<string>} propertiesToReconciliate
    * @return {CreateHotBalloonElement}
    */
-  __setReconciliationProperties(propertiesToReconciliate) {
+  [_setReconciliationProperties](propertiesToReconciliate) {
     this._$element.addReconcileProperties(propertiesToReconciliate)
     return this
   }

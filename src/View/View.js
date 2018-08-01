@@ -257,9 +257,9 @@ class View extends ViewContainerBase {
    * @param {updateCallback} clb : event name
    */
   suscribeToStore(keyStore, clb = (oldState, newState) => true) {
-    assert(isFunction(clb), 'hotballoon:' + this.constructor.name + ':_suscribeToStore: `clb` argument should be callable')
-    const store = this._Store(keyStore)
-    assert(store instanceof StoreInterface, 'hotballoon:' + this.constructor.name + ':_suscribeToStore: `keyStore : %s` not reference an instance of StoreInterface', keyStore)
+    assert(isFunction(clb), 'hotballoon:' + this.constructor.name + ':suscribeToStore: `clb` argument should be callable')
+    const store = this.Store(keyStore)
+    assert(store instanceof StoreInterface, 'hotballoon:' + this.constructor.name + ':suscribeToStore: `keyStore : %s` not reference an instance of StoreInterface', keyStore)
 
     this._state.set(keyStore, store.data())
 

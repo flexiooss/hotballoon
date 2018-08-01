@@ -236,31 +236,4 @@ export class ViewContainer extends ViewContainerBase {
   Service(key) {
     return this.APP().Service(key)
   }
-
-  /**
-   * @param {String} key
-   * @return {Store} store
-   * @instance
-   */
-  Store(key) {
-    return this.Component().Store(key)
-  }
-
-  /**
-   *
-   * @param {string} key token registered into storesKey
-   * @returns {Store} Store
-   */
-  StoreByRegister(key) {
-    return this.Component().StoreByRegister(key)
-  }
-
-  /**
-   *
-   * @param {string} key token registered into storesKey
-   * @returns {Store} Store
-   */
-  StoreDataByRegister(key) {
-    return this.Component().StoreDataByRegister(key)
-  }
 }
