@@ -142,7 +142,7 @@ export class ViewContainer extends ViewContainerBase {
    * @param {Node} parentNode
    */
   [_mountViews](parentNode) {
-    this._Views.forEach((view, key, map) => {
+    this.MapOfView().forEach((view, key, map) => {
       view.mount(parentNode)
     })
   }
@@ -151,7 +151,7 @@ export class ViewContainer extends ViewContainerBase {
    * @private
    */
   [_renderViews]() {
-    this._Views.forEach((view, key, map) => {
+    this.MapOfView().forEach((view, key, map) => {
       view.render()
     })
   }
@@ -161,7 +161,7 @@ export class ViewContainer extends ViewContainerBase {
    */
   render() {
     this[_renderViews]()
-    this._rendered = true
+    this.rendered = true
   }
 
   /**

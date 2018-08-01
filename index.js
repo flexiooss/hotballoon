@@ -14,7 +14,6 @@ export {HotballoonElementParams as HtmlParams} from './src/HotballoonNodeElement
 export {HotBalloonAttributeHandler, select as $} from './src/HotballoonNodeElement/HotBalloonAttributeHandler'
 export {State} from './src/Store/State'
 export {Storage} from './src/Store/Storage'
-export {StoreModel} from './src/Store/StoreModel'
 export {ViewStoresParameters} from './src/View/ViewStoresParameters'
 export {DataStoreInterface} from './src/Store/DataStoreInterface'
 export {DataStoreHandlerInterface} from './src/Store/DataStoreHandlerInterface'

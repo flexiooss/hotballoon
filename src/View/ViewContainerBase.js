@@ -5,6 +5,10 @@ import {ViewStoresParameters} from './ViewStoresParameters'
 // import {STORE_CHANGED, StoreInterface} from '../Store/StoreInterface'
 import {EventOrderedHandler} from '../Event/EventOrderedHandler'
 
+const _Stores = Symbol('_Stores')
+const _EventHandler = Symbol('_EventHandler')
+const _Views = Symbol('_Views')
+
 /**
  * @extends WithIDBase
  */
@@ -18,20 +22,20 @@ export class ViewContainerBase extends WithIDBase {
     super(id)
 
     var _mounted = false
-    var _rendered = false
+    var rendered = false
     var _tokenEvent = new MapOfArray()
-    var _Views = new Map()
+    var _views = new Map()
     var parentNode
 
     Object.defineProperties(this, {
-      _Stores: {
+      [_Stores]: {
         configurable: false,
         enumerable: true,
         writable: false,
         /**
          * @property {Map<StoreInterface>}
          * @name ViewContainerBase#_Stores
-         * @protected
+         * @private
          */
         value: stores.getMap()
       },
@@ -55,23 +59,23 @@ export class ViewContainerBase extends WithIDBase {
       },
       /**
        * @property {boolean}
-       * @name ViewContainerBase#_rendered
+       * @name ViewContainerBase#rendered
        * @protected
        */
-      _rendered: {
+      rendered: {
         configurable: false,
         enumerable: false,
         get: () => {
-          return _rendered
+          return rendered
         },
         set: (v) => {
           assert(!!isBoolean(v),
-            'hotballoon:ViewContainerBase:constructor: `_rendered` argument should be a boolean'
+            'hotballoon:ViewContainerBase:constructor: `rendered` argument should be a boolean'
           )
-          _rendered = v
+          rendered = v
         }
       },
-      _EventHandler: {
+      [_EventHandler]: {
         enumerable: false,
         configurable: false,
         /**
@@ -91,7 +95,7 @@ export class ViewContainerBase extends WithIDBase {
          */
         value: _tokenEvent
       },
-      _Views: {
+      [_Views]: {
         enumerable: false,
         configurable: false,
         /**
@@ -99,7 +103,7 @@ export class ViewContainerBase extends WithIDBase {
          * @name ViewContainerBase#_Views
          * @protected
          */
-        value: _Views
+        value: _views
       },
       /**
        * @type {Node}
@@ -127,7 +131,7 @@ export class ViewContainerBase extends WithIDBase {
    * @return {String} token
    */
   on(eventListenerOrderedParam) {
-    return this._EventHandler.on(eventListenerOrderedParam)
+    return this[_EventHandler].on(eventListenerOrderedParam)
   }
 
   /**
@@ -135,7 +139,7 @@ export class ViewContainerBase extends WithIDBase {
    * @param {Object} payload
    */
   dispatch(eventType, payload) {
-    this._EventHandler.dispatch(eventType, payload)
+    this[_EventHandler].dispatch(eventType, payload)
   }
 
   /**
@@ -144,7 +148,7 @@ export class ViewContainerBase extends WithIDBase {
    * @return {View}
    */
   addView(view) {
-    this._Views.set(view.ID, view)
+    this[_Views].set(view.ID, view)
     return view
   }
 
@@ -154,7 +158,16 @@ export class ViewContainerBase extends WithIDBase {
    * @return {View}
    */
   View(key) {
-    return this._Views.get(key)
+    return this[_Views].get(key)
+  }
+
+  /**
+   *
+   * @param {String} key
+   * @return {Map<String, View>}
+   */
+  MapOfView(key) {
+    return this[_Views]
   }
 
   /**
@@ -163,6 +176,6 @@ export class ViewContainerBase extends WithIDBase {
    * @return {StoreInterface}
    */
   Store(key) {
-    return this._Stores.get(key)
+    return this[_Stores].get(key)
   }
 }

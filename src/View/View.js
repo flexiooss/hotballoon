@@ -319,7 +319,7 @@ class View extends ViewContainerBase {
 
     if (this._shouldRender) {
       this[_render]()
-      this._rendered = true
+      this.rendered = true
     }
 
     this._shouldRender = true
