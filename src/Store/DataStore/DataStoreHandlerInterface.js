@@ -1,4 +1,4 @@
-import {CoreException} from '../CoreException'
+import {CoreException} from '../../CoreException'
 
 /**
  * @interface

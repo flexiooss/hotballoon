@@ -21,7 +21,7 @@ export class EventOrderedHandler extends EventHandlerBase {
 
     this._mayInitListeners(eventListenerOrderedParam.event)
 
-    const id = this._sequenceId.nextID().toString()
+    const id = this.nextID()
 
     this._listeners.get(eventListenerOrderedParam.event).set(id, {
       scope: eventListenerOrderedParam.scope,
@@ -55,8 +55,6 @@ export class EventOrderedHandler extends EventHandlerBase {
         this._pendingPayload.get(event),
         event
       )
-    } catch (e) {
-      console.log(e)
     } finally {
       this._isHandled.add(token)
     }

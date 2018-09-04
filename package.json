@@ -51,6 +51,7 @@
   "dependencies": {
     "flexio-hyperflex": "https://github.com/flexiooss/flexio-hyperflex.git",
     "flexio-jshelpers": "https://github.com/flexiooss/flexio-jshelpers.git",
-    "flexio-nodes-reconciliation": "https://github.com/flexiooss/flexio-nodes-reconciliation.git"
+    "flexio-nodes-reconciliation": "https://github.com/flexiooss/flexio-nodes-reconciliation.git",
+    "flexio-json-parser": "https://github.com/flexiooss/flexio-json-parser.git"
   }
 }

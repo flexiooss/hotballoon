@@ -2,6 +2,9 @@
 import {isBoolean, assert, Sequence} from 'flexio-jshelpers'
 import {EventListenerParam} from './EventListenerParam'
 
+const _isDispatching_ = Symbol('_isDispatching_')
+const _sequenceId_ = Symbol('_sequenceId_')
+
 /**
  * @class
  * @abstract
@@ -27,16 +30,15 @@ export class EventHandlerBase {
      * @protected
      */
     this._isPending = new Set()
-    this._sequenceId = new Sequence(this.ID)
-    // /**
-    //  *
-    //  * @type {number}
-    //  * @protected
-    //  */
-    // this._lastID = 0
+    this[_sequenceId_] = new Sequence(this.ID)
 
+    /**
+     * @property {boolean}
+     * @name EventHandlerBase#Symbol(_isDispatching_)
+     * @private
+     */
     var _isDispatching = false
-    Object.defineProperty(this, '_isDispatching', {
+    Object.defineProperty(this, _isDispatching_, {
       enumerable: false,
       configurable: false,
       get: () => _isDispatching,
@@ -56,15 +58,13 @@ export class EventHandlerBase {
    */
   dispatch(event, payload) {
     if (this._listeners.has(event)) {
-      this._beforeDispatching(event, payload)
+      this._beforeDispatch(event, payload)
       try {
         this._listeners.get(event).forEach((v, k) => {
           if (!this._isPending.has(k)) {
             this._invokeCallback(event, k)
           }
         })
-      } catch (e) {
-        console.log(e)
       } finally {
         this._stopDispatching(event)
       }
@@ -94,11 +94,17 @@ export class EventHandlerBase {
       this._listeners.get(event)
         .get(token)
         .callback(this._pendingPayload.get(event), event)
-    } catch (e) {
-      console.log(e)
     } finally {
       this._isHandled.add(token)
     }
+  }
+
+  /**
+   *
+   * @return {string}
+   */
+  nextID() {
+    return this[_sequenceId_].nextID()
   }
 
   /**
@@ -112,7 +118,7 @@ export class EventHandlerBase {
     )
 
     this._mayInitListeners(eventListenerParam.event)
-    const id = this._sequenceId.nextID().toString()
+    const id = this.nextID()
 
     this._listeners.get(eventListenerParam.event)
       .set(id, {
@@ -148,13 +154,18 @@ export class EventHandlerBase {
     return (this._listeners.has(event)) && (this._listeners.get(event).has(token))
   }
 
-  _beforeDispatching(event, payload) {
+  /**
+   *
+   * @param {String} event of Listener
+   * @param {Object} payload
+   * @private
+   */
+  _beforeDispatch(event, payload) {
     this._listeners.get(event).forEach((v, k) => {
-      this._isPending.delete(k)
       this._isHandled.delete(k)
     })
     this._pendingPayload.set(event, payload)
-    this._isDispatching = true
+    this[_isDispatching_] = true
   }
 
   /**
@@ -163,8 +174,11 @@ export class EventHandlerBase {
    * @protected
    */
   _stopDispatching(event) {
+    this._listeners.get(event).forEach((v, k) => {
+      this._isPending.delete(k)
+    })
     this._pendingPayload.delete(event)
-    this._isDispatching = false
+    this[_isDispatching_] = false
   }
 
   /**
@@ -172,6 +186,6 @@ export class EventHandlerBase {
    * @return {boolean}
    */
   isDispatching() {
-    return this._isDispatching
+    return this[_isDispatching_]
   }
 }

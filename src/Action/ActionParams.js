@@ -4,7 +4,7 @@ export class ActionParams {
   /**
    *
    * @param {string} name
-   * @param actionPayloadClass
+   * @param {ActionPayload} actionPayloadClass
    */
   constructor(name, actionPayloadClass) {
     assert(!!name && isPrimitive(name),
@@ -18,10 +18,18 @@ export class ActionParams {
     this._actionPayloadClass = actionPayloadClass
   }
 
+  /**
+   *
+   * @return {string}
+   */
   get name() {
     return this._name
   }
 
+  /**
+   *
+   * @return {ActionPayload}
+   */
   get actionPayloadClass() {
     return this._actionPayloadClass
   }

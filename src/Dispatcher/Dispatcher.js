@@ -1,5 +1,5 @@
 'use strict'
-import {assert} from 'flexio-jshelpers'
+import {assert, isArray} from 'flexio-jshelpers'
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_DISPATCHER} from '../HasTagClassNameInterface'
 import {EventHandlerBase} from '../Event/EventHandlerBase'
 import {EventAction} from '../Action/EventAction'
@@ -30,7 +30,7 @@ export class Dispatcher extends EventHandlerBase {
     assert(!!this.isDispatching(),
       'hotballoon:Dispatcher:waitFor: Must be invoked while dispatching.'
     )
-    assert(!!Array.isArray(ids),
+    assert(!!isArray(ids),
       'hotballoon:Dispatcher:waitFor: `ids` argument should be Array type')
     let countOfIds = ids.length
     for (let i = 0; i < countOfIds; i++) {
