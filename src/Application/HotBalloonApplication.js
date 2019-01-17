@@ -108,7 +108,7 @@ export class HotBalloonApplication extends WithIDBase {
 
   /**
    * @description register a Component into this Application
-   * @param {Component}
+   * @param {Component} component
    * @returns {String} token : componentID
    */
   addComponent(component) {
