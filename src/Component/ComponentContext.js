@@ -14,8 +14,6 @@ import {
   testClassTagName
 } from '../HasTagClassNameInterface'
 
-const _init = Symbol('_init')
-
 /**
  * @class
  * @description The componentContext is the entry point of the module
@@ -49,60 +47,58 @@ class ComponentContext extends WithIDBase {
     })
 
     Object.defineProperties(this, {
-      /**
+        /**
          * @name ComponentContext#_APP
          * @type {HotBalloonApplication}
          */
-      _APP: {
-        configurable: false,
-        enumerable: false,
-        get: () => {
-          return hotBallonApplication
+        _APP: {
+          configurable: false,
+          enumerable: false,
+          get: () => {
+            return hotBallonApplication
+          },
+          set: (v) => {
+            assert(false,
+              `hotballoon:${this.constructor.name}: _APP property already defined`
+            )
+            return false
+          }
         },
-        set: (v) => {
-          assert(false,
-            `hotballoon:${this.constructor.name}: _APP property already defined`
-          )
-          return false
-        }
-      },
-      _sequenceId: {
-        configurable: false,
-        enumerable: false,
-        get: () => {
-          return _sequenceId
+        _sequenceId: {
+          configurable: false,
+          enumerable: false,
+          get: () => {
+            return _sequenceId
+          },
+          set: (v) => {
+            return false
+          }
         },
-        set: (v) => {
-          return false
-        }
-      },
 
-      _stores: {
-        configurable: false,
-        enumerable: false,
-        get: () => {
-          return _stores
+        _stores: {
+          configurable: false,
+          enumerable: false,
+          get: () => {
+            return _stores
+          },
+          set: (v) => {
+            return false
+          }
         },
-        set: (v) => {
-          return false
-        }
-      },
 
-      _viewContainers: {
-        configurable: false,
-        enumerable: false,
-        get: () => {
-          return _viewContainers
-        },
-        set: (v) => {
-          return false
+        _viewContainers: {
+          configurable: false,
+          enumerable: false,
+          get: () => {
+            return _viewContainers
+          },
+          set: (v) => {
+            return false
+          }
         }
+
       }
-
-    }
     )
-
-    this[_init]()
   }
 
   /**
@@ -142,12 +138,12 @@ class ComponentContext extends WithIDBase {
   }
 
   /**
-   * @param {store} store
-   * @returns {String} tokenStore
+   * @param {Store} store
+   * @returns {Store} store
    */
   addStore(store) {
     this._stores.add(store.ID, store)
-    return store.ID
+    return store
   }
 
   /**

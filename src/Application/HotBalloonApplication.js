@@ -21,7 +21,7 @@ export class HotBalloonApplication extends WithIDBase {
   /**
    * @constructor
    * @param {string} id
-   * @param {dispatcher} dispatcher
+   * @param {Dispatcher} dispatcher
    */
   constructor(id, dispatcher) {
     super(id)
@@ -101,7 +101,7 @@ export class HotBalloonApplication extends WithIDBase {
   }
 
   /**
-   * @returns {dispatcher}
+   * @returns {Dispatcher}
    */
   dispatcher() {
     return this[_Dispatcher]

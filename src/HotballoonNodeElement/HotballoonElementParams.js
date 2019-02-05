@@ -24,7 +24,7 @@ class HotballoonElementParams extends HyperFlexParams {
     this._reconciliationRules = []
     /**
      *
-     * @type {Array<String>}
+     * @type {Array<NodeEventListenerParam>}
      * @private
      */
     this._eventListeners = []
@@ -86,7 +86,7 @@ class HotballoonElementParams extends HyperFlexParams {
 
   /**
    * @static
-   * @param {Array<String>} rules
+   * @param {NodeEventListenerParam} nodeEventListenerParam
    * @return {HotballoonElementParams}
    */
   static withEventListener(nodeEventListenerParam) {

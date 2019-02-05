@@ -143,8 +143,8 @@ export class ViewContainerBase extends WithIDBase {
 
   /**
    *
-   * @param {view} view
-   * @return {view}
+   * @param {View} view
+   * @return {View}
    */
   addView(view) {
     this[_Views].set(view.ID, view)
@@ -153,8 +153,8 @@ export class ViewContainerBase extends WithIDBase {
 
   /**
    *
-   * @param {String} key
-   * @return {view}
+   * @param {String|Symbol} key
+   * @return {View}
    */
   view(key) {
     return this[_Views].get(key)

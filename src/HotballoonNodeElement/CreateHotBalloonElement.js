@@ -19,7 +19,7 @@ const _setEventListeners = Symbol('_setEventListeners')
 class CreateHotBalloonElement extends HyperFlex {
   /**
    *
-   * @param {view} scope
+   * @param {View} scope
    * @param {string} querySelector
    * @param {HotballoonElementParams} hotballoonElementParams
    * @return {CreateHotBalloonElement}
@@ -28,7 +28,7 @@ class CreateHotBalloonElement extends HyperFlex {
     super(querySelector, hotballoonElementParams)
     /**
      *
-     * @type {view}
+     * @type {View}
      * @private
      */
     this._scope = scope
@@ -43,7 +43,7 @@ class CreateHotBalloonElement extends HyperFlex {
   /**
    * @static
    * @override
-   * @param {view} scope
+   * @param {View} scope
    * @param {string} querySelector - tag#id.class[.class,...]
    * @param {HotballoonElementParams} hotballoonElementParams
    * @return {Node}
