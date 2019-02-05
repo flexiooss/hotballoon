@@ -18,15 +18,18 @@ const _init = Symbol('_init')
 
 /**
  * @class
- * @description The ComponentContext is the entry point of the module
+ * @description The componentContext is the entry point of the module
  * @extends WithIDBase
  * @implements HasTagClassNameInterface
  */
 class ComponentContext extends WithIDBase {
-
+  /**
+   *
+   * @param {HotBalloonApplication} hotBallonApplication
+   */
   constructor(hotBallonApplication) {
     assert(testClassTagName(hotBallonApplication, CLASS_TAG_NAME_HOTBALLOON_APPLICATION),
-      'hotballoon:ComponentContext:constructor:  hotBallonApplication argument should be an instance of ̀ hotballoon/HotBalloonApplication`, `%s` given',
+      'hotballoon:componentContext:constructor:  hotBallonApplication argument should be an instance of ̀ hotballoon/HotBalloonApplication`, `%s` given',
       typeof hotBallonApplication
     )
 
@@ -50,85 +53,89 @@ class ComponentContext extends WithIDBase {
     })
 
     Object.defineProperties(this, {
-        _APP: {
-          configurable: false,
-          enumerable: false,
-          get: () => {
-            return hotBallonApplication
-          },
-          set: (v) => {
-            assert(false,
-              `hotballoon:${this.constructor.name}: _APP property already defined`
-            )
-            return false
-          }
+      /**
+         * @name ComponentContext#_APP
+         * @type {HotBalloonApplication}
+         */
+      _APP: {
+        configurable: false,
+        enumerable: false,
+        get: () => {
+          return hotBallonApplication
         },
-        _sequenceId: {
-          configurable: false,
-          enumerable: false,
-          get: () => {
-            return _sequenceId
-          },
-          set: (v) => {
-            return false
-          }
-        },
-        actionsListenerTokens: {
-          configurable: false,
-          enumerable: true,
-          get: () => {
-            return actionsListenerTokens
-          },
-          set: (v) => {
-            return false
-          }
-        },
-        _stores: {
-          configurable: false,
-          enumerable: false,
-          get: () => {
-            return _stores
-          },
-          set: (v) => {
-            return false
-          }
-        },
-        storesKeyRegister: {
-          configurable: false,
-          enumerable: true,
-          get: () => {
-            return storesKeyRegister
-          },
-          set: (v) => {
-            return false
-          }
-        },
-        _viewContainers: {
-          configurable: false,
-          enumerable: false,
-          get: () => {
-            return _viewContainers
-          },
-          set: (v) => {
-            return false
-          }
-        },
-        viewContainersKey: {
-          configurable: false,
-          enumerable: true,
-          get: () => {
-            return viewContainersKey
-          },
-          set: (v) => {
-            return false
-          }
-        },
-        _privateState: {
-          configurable: false,
-          enumerable: false,
-          value: _privateState
+        set: (v) => {
+          assert(false,
+            `hotballoon:${this.constructor.name}: _APP property already defined`
+          )
+          return false
         }
+      },
+      _sequenceId: {
+        configurable: false,
+        enumerable: false,
+        get: () => {
+          return _sequenceId
+        },
+        set: (v) => {
+          return false
+        }
+      },
+      actionsListenerTokens: {
+        configurable: false,
+        enumerable: true,
+        get: () => {
+          return actionsListenerTokens
+        },
+        set: (v) => {
+          return false
+        }
+      },
+      _stores: {
+        configurable: false,
+        enumerable: false,
+        get: () => {
+          return _stores
+        },
+        set: (v) => {
+          return false
+        }
+      },
+      storesKeyRegister: {
+        configurable: false,
+        enumerable: true,
+        get: () => {
+          return storesKeyRegister
+        },
+        set: (v) => {
+          return false
+        }
+      },
+      _viewContainers: {
+        configurable: false,
+        enumerable: false,
+        get: () => {
+          return _viewContainers
+        },
+        set: (v) => {
+          return false
+        }
+      },
+      viewContainersKey: {
+        configurable: false,
+        enumerable: true,
+        get: () => {
+          return viewContainersKey
+        },
+        set: (v) => {
+          return false
+        }
+      },
+      _privateState: {
+        configurable: false,
+        enumerable: false,
+        value: _privateState
       }
+    }
     )
 
     this[_init]()
@@ -157,7 +164,7 @@ class ComponentContext extends WithIDBase {
 
   /**
    * @protected
-   * @description called by the constructor for int Actrions, Stores, Listeners, ViewContainers
+   * @description called by the constructor for int Actions, Stores, Listeners, ViewContainers
    * @returns void
    *
    */
@@ -171,7 +178,7 @@ class ComponentContext extends WithIDBase {
   }
 
   /**
-   * @description called by the hotballoon Appliation before remove this ComponentContext
+   * @description called by the hotballoon Appliation before remove this componentContext
    */
   willRemove() {
   }
@@ -179,7 +186,7 @@ class ComponentContext extends WithIDBase {
   /**
    * @private
    * @param {String} key
-   * @param {mixed}
+   * @param {mixed} value
    */
   _setState(key, value) {
     this._privateState.set(key, value)
@@ -208,7 +215,7 @@ class ComponentContext extends WithIDBase {
    * @returns {String} token
    */
   listenAction(eventListenerParam) {
-    return this.Dispatcher().addActionListener(eventListenerParam)
+    return this.dispatcher().addActionListener(eventListenerParam)
   }
 
   /**
@@ -218,11 +225,11 @@ class ComponentContext extends WithIDBase {
     assert(action instanceof Action,
       'hotballoon:' + this.constructor.name + ':addAction: `action` argument should be an instance of Action'
     )
-    action.dispatchWith(this.Dispatcher())
+    action.dispatchWith(this.dispatcher())
   }
 
   /**
-   * @param {hotballoon/Store}
+   * @param {store} store
    * @returns {String} tokenStore
    */
   addStore(store) {
@@ -233,34 +240,34 @@ class ComponentContext extends WithIDBase {
   /**
    *
    * @param {String}  tokenStore
-   * @returns {StoreInterface} Store
+   * @returns {StoreInterface} store
    */
-  Store(tokenStore) {
+  store(tokenStore) {
     return this._stores.get(tokenStore)
   }
 
   /**
    *
    * @param {string} key token registered into storesKeyRegister
-   * @return {StoreInterface} Store
+   * @return {StoreInterface} store
    */
-  StoreByRegister(key) {
-    return this.Store(this.storesKeyRegister.get(key))
+  storeByRegister(key) {
+    return this.store(this.storesKeyRegister.get(key))
   }
 
   /**
    *
    * @param {string} key token registered into storesKeyRegister
-   * @returns {mixed} data of Store
+   * @returns {mixed} data of store
    */
-  StoreDataByRegister(key) {
-    return this.StoreByRegister(key).data()
+  storeDataByRegister(key) {
+    return this.storeByRegister(key).data()
   }
 
   /**
    *
-   * @param {hotballoon/ViewContainer} viewContainer
-   * @returns {hotballoon/ViewContainer} ViewContainer
+   * @param {viewContainer} ViewContainer
+   * @returns {viewContainer} viewContainer
    */
   addViewContainer(ViewContainer) {
     this._viewContainers.add(ViewContainer.ID, ViewContainer)
@@ -274,7 +281,7 @@ class ComponentContext extends WithIDBase {
    */
   removeViewContainer(tokenViewContainer) {
     if (this._viewContainers.has(tokenViewContainer)) {
-      this.ViewContainer(tokenViewContainer).dispatch(VIEWCONTAINER_WILL_REMOVE, {})
+      this.viewContainer(tokenViewContainer).dispatch(VIEWCONTAINER_WILL_REMOVE, {})
       this._viewContainers.delete(tokenViewContainer)
     }
   }
@@ -282,9 +289,9 @@ class ComponentContext extends WithIDBase {
   /**
    *
    * @param {String} key
-   * @returns {hotballoon/ViewContainer} ViewContainer
+   * @returns {viewContainer} viewContainer
    */
-  ViewContainer(key) {
+  viewContainer(key) {
     return this._viewContainers.get(key)
   }
 
@@ -305,17 +312,17 @@ class ComponentContext extends WithIDBase {
   }
 
   /**
-   * @return {Dispatcher}
+   * @return {dispatcher}
    */
-  Dispatcher() {
-    return this.APP().Dispatcher()
+  dispatcher() {
+    return this.APP().dispatcher()
   }
 
   /**
-   * @return {Service}
+   * @return {service}
    */
-  Service(key) {
-    return this.APP().Service(key)
+  service(key) {
+    return this.APP().service(key)
   }
 }
 

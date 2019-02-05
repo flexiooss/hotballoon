@@ -21,13 +21,13 @@ export class HotBalloonApplication extends WithIDBase {
   /**
    * @constructor
    * @param {string} id
-   * @param {Dispatcher} dispatcher
+   * @param {dispatcher} dispatcher
    */
   constructor(id, dispatcher) {
     super(id)
 
     assert(dispatcher instanceof Dispatcher,
-      'hotballoon:HotBalloonApplication:constructor: `dispatcher` argument should be an instance of hotballoon/Dispatcher'
+      'hotballoon:HotBalloonApplication:constructor: `dispatcher` argument should be an instance of hotballoon/dispatcher'
     )
 
     const _componentContexts = new MapOfInstance(ComponentContext)
@@ -101,20 +101,20 @@ export class HotBalloonApplication extends WithIDBase {
   }
 
   /**
-   * @returns {Dispatcher}
+   * @returns {dispatcher}
    */
-  Dispatcher() {
+  dispatcher() {
     return this[_Dispatcher]
   }
 
   /**
-   * @description register a ComponentContext into this Application
-   * @param {ComponentContext} componentContext
-   * @return {ComponentContext} componentContext
+   * @description register a componentContext into this Application
+   * @param {componentContext} componentContext
+   * @return {componentContext} componentContext
    */
   addComponentContext(componentContext) {
     assert(componentContext instanceof ComponentContext,
-      'hotballoon:HotBalloonApplication:addComponentContext: `component` argument should be an instance of hotballoon:ComponentContext'
+      'hotballoon:HotBalloonApplication:addComponentContext: `component` argument should be an instance of hotballoon:componentContext'
     )
     this[_ComponentContexts].add(componentContext.ID, componentContext)
     return componentContext
@@ -127,7 +127,7 @@ export class HotBalloonApplication extends WithIDBase {
    */
   removeComponentContext(componentID) {
     if (this[_ComponentContexts].has(componentID)) {
-      const removable = this.ComponentContext(componentID).willRemove()
+      const removable = this.componentContext(componentID).willRemove()
       if (removable !== false) {
         this[_ComponentContexts].delete(componentID)
         return true
@@ -139,17 +139,17 @@ export class HotBalloonApplication extends WithIDBase {
   /**
    *
    * @param {String} componentID
-   * @returns {ComponentContext}
+   * @returns {componentContext}
    */
-  ComponentContext(componentID) {
+  componentContext(componentID) {
     return this[_ComponentContexts].get(componentID)
   }
 
   /**
    *
    * @param {String} serviceName
-   * @param {Service} service
-   * @returns {Service} service
+   * @param {service} service
+   * @returns {service} service
    */
   addService(serviceName, service) {
     assert(!this[_Services].has(serviceName),
@@ -165,7 +165,7 @@ export class HotBalloonApplication extends WithIDBase {
    */
   removeService(serviceName) {
     if (this[_Services].has(serviceName)) {
-      let service = this.Service(serviceName)
+      let service = this.service(serviceName)
       if ('willRemove' in service) {
         service.willRemove()
       }
@@ -176,9 +176,9 @@ export class HotBalloonApplication extends WithIDBase {
   /**
    *
    * @param {String} serviceName
-   * @returns {Service}
+   * @returns {service}
    */
-  Service(serviceName) {
+  service(serviceName) {
     return this[_Services].get(serviceName)
   }
 }

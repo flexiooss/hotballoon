@@ -41,10 +41,9 @@ export const isEqualClassTagName = (object1, object2) => {
  * @interface
  */
 export class HasTagClassNameInterface {
-
   /**
-   * @property {Symbol} Symbol('__HB__CLASSNAME__')
-   * @name HasTagClassNameInterface#Symbol('__HB__CLASSNAME__')
+   * return {Symbol}
    */
-
+  get [CLASS_TAG_NAME]() {
+  }
 }

@@ -6,7 +6,7 @@ import {EventAction} from '../Action/EventAction'
 
 /**
  * @class
- * @description Dispatcher is the event handler between Actions and ComponentContext
+ * @description dispatcher is the event handler between Actions and componentContext
  * @extends EventHandlerBase
  * @implements HasTagClassNameInterface
  */
@@ -28,19 +28,19 @@ export class Dispatcher extends EventHandlerBase {
    */
   waitFor(type, ids) {
     assert(!!this.isDispatching(),
-      'hotballoon:Dispatcher:waitFor: Must be invoked while dispatching.'
+      'hotballoon:dispatcher:waitFor: Must be invoked while dispatching.'
     )
     assert(!!isArray(ids),
-      'hotballoon:Dispatcher:waitFor: `ids` argument should be Array type')
+      'hotballoon:dispatcher:waitFor: `ids` argument should be Array type')
     let countOfIds = ids.length
     for (let i = 0; i < countOfIds; i++) {
       let id = ids[i]
       if (!this._isPending.has(id)) {
         assert(!this._isHandled.has(id),
-          'hotballoon:Dispatcher:waitFor: `id` : `%s` already handled',
+          'hotballoon:dispatcher:waitFor: `id` : `%s` already handled',
           id)
         assert(this._listeners.get(type).has(id),
-          'hotballoon:Dispatcher:waitFor: `id` : `%s` not defined',
+          'hotballoon:dispatcher:waitFor: `id` : `%s` not defined',
           id)
         this._invokeCallback(type, id)
       }
@@ -72,7 +72,7 @@ export class Dispatcher extends EventHandlerBase {
    */
   dispatch(actionPayload) {
     assert(actionPayload instanceof EventAction,
-      'hotballoon:Dispatcher:dispatch "actionPayload" argument should be an instance of EventAction'
+      'hotballoon:dispatcher:dispatch "actionPayload" argument should be an instance of EventAction'
     )
     super.dispatch(actionPayload.name, actionPayload.payload)
   }

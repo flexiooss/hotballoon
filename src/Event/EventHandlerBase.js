@@ -44,7 +44,7 @@ export class EventHandlerBase {
       get: () => _isDispatching,
       set: (v) => {
         assert(isBoolean(v),
-          'hotballoonView:Dispatcher: `newIsDispatching` argument assert be a Boolean'
+          'hotballoonView:dispatcher: `newIsDispatching` argument assert be a Boolean'
         )
         _isDispatching = v
       }

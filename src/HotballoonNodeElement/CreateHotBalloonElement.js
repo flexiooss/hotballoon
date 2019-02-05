@@ -19,7 +19,7 @@ const _setEventListeners = Symbol('_setEventListeners')
 class CreateHotBalloonElement extends HyperFlex {
   /**
    *
-   * @param {View} scope
+   * @param {view} scope
    * @param {string} querySelector
    * @param {HotballoonElementParams} hotballoonElementParams
    * @return {CreateHotBalloonElement}
@@ -28,7 +28,7 @@ class CreateHotBalloonElement extends HyperFlex {
     super(querySelector, hotballoonElementParams)
     /**
      *
-     * @type {View}
+     * @type {view}
      * @private
      */
     this._scope = scope
@@ -43,7 +43,7 @@ class CreateHotBalloonElement extends HyperFlex {
   /**
    * @static
    * @override
-   * @param {View} scope
+   * @param {view} scope
    * @param {string} querySelector - tag#id.class[.class,...]
    * @param {HotballoonElementParams} hotballoonElementParams
    * @return {Node}
@@ -85,7 +85,7 @@ class CreateHotBalloonElement extends HyperFlex {
    * @return {String}
    */
   [_generateIdFromScope](id) {
-    return `${toString(this._scope.APP().ID)}-${toString(this._scope.Component().ID)}-${toString(this._scope.Container().ID)}-${toString(id)}`
+    return `${toString(this._scope.APP().ID)}-${toString(this._scope.componentContext().ID)}-${toString(this._scope.container().ID)}-${toString(id)}`
   }
 
   /**
@@ -102,7 +102,7 @@ class CreateHotBalloonElement extends HyperFlex {
 
   /**
    *
-   * @param {array<View>} views
+   * @param {array<view>} views
    * @return {CreateHotBalloonElement}
    * @private
    */

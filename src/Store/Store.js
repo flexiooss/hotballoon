@@ -14,7 +14,7 @@ const _dispatch = Symbol('_dispatch')
 
 /**
  * @class
- * @description Store is the instance for store data from ComponentContext
+ * @description store is the instance for store data from componentContext
  * @extends StoreInterface
  * @implements StoreInterface
  * @implements HasTagClassNameInterface

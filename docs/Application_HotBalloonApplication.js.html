@@ -27,9 +27,9 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>'use strict'
-import {Dispatcher} from '../Dispatcher/Dispatcher'
+import {dispatcher} from '../dispatcher/dispatcher'
 import {MapExtended, MapOfInstance, Sequence, assert} from 'flexio-jshelpers'
-import {ComponentContext} from '../ComponentContext/ComponentContext'
+import {componentContext} from '../componentContext/componentContext'
 import {WithIDBase} from '../bases/WithIDBase'
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_HOTBALLOON_APPLICATION} from '../HasTagClassNameInterface'
 
@@ -48,16 +48,16 @@ const _SequenceId = Symbol('_SequenceId')
 export class HotBalloonApplication extends WithIDBase {
   /**
    * @constructor
-   * @param {Dispatcher} dispatcher
+   * @param {dispatcher} dispatcher
    */
   constructor(id, dispatcher) {
     super(id)
 
-    assert(dispatcher instanceof Dispatcher,
-      'hotballoon:HotBalloonApplication:constructor: `dispatcher` argument should be an instance of hotballoon/Dispatcher'
+    assert(dispatcher instanceof dispatcher,
+      'hotballoon:HotBalloonApplication:constructor: `dispatcher` argument should be an instance of hotballoon/dispatcher'
     )
 
-    const _components = new MapOfInstance(ComponentContext)
+    const _components = new MapOfInstance(componentContext)
     const _services = new MapExtended()
     const _sequenceId = new Sequence('hb_')
 
@@ -128,20 +128,20 @@ export class HotBalloonApplication extends WithIDBase {
   }
 
   /**
-   * @returns {Dispatcher}
+   * @returns {dispatcher}
    */
-  Dispatcher() {
+  dispatcher() {
     return this[_Dispatcher]
   }
 
   /**
-   * @description register a ComponentContext into this Application
-   * @param {ComponentContext}
+   * @description register a componentContext into this Application
+   * @param {componentContext}
    * @returns {String} token : componentID
    */
   addComponentContext(component) {
-    assert(component instanceof ComponentContext,
-      'hotballoon:HotBalloonApplication:addComponentContext: `component` argument should be an instance of hotballoon:ComponentContext'
+    assert(component instanceof componentContext,
+      'hotballoon:HotBalloonApplication:addComponentContext: `component` argument should be an instance of hotballoon:componentContext'
     )
     this[_Components].add(component.ID, component)
     return component.ID
@@ -154,7 +154,7 @@ export class HotBalloonApplication extends WithIDBase {
    */
   removeComponentContext(componentID) {
     if (this[_Components].has(componentID)) {
-      const removable = this.ComponentContext(componentID).willRemove()
+      const removable = this.componentContext(componentID).willRemove()
       if (removable !== false) {
         this[_Components].delete(componentID)
         return true
@@ -166,17 +166,17 @@ export class HotBalloonApplication extends WithIDBase {
   /**
    *
    * @param {String} componentID
-   * @returns {ComponentContext}
+   * @returns {componentContext}
    */
-  ComponentContext(componentID) {
+  componentContext(componentID) {
     return this[_Components].get(componentID)
   }
 
   /**
    *
    * @param {String} serviceName
-   * @param {Service} service
-   * @returns {Service} service
+   * @param {service} service
+   * @returns {service} service
    */
   addService(serviceName, service) {
     assert(!this[_Services].has(serviceName),
@@ -192,7 +192,7 @@ export class HotBalloonApplication extends WithIDBase {
    */
   removeService(serviceName) {
     if (this[_Services].has(serviceName)) {
-      let service = this.Service(serviceName)
+      let service = this.service(serviceName)
       if ('willRemove' in service) {
         service.willRemove()
       }
@@ -203,9 +203,9 @@ export class HotBalloonApplication extends WithIDBase {
   /**
    *
    * @param {String} serviceName
-   * @returns {Service}
+   * @returns {service}
    */
-  Service(serviceName) {
+  service(serviceName) {
     return this[_Services].get(serviceName)
   }
 }
@@ -219,7 +219,7 @@ export class HotBalloonApplication extends WithIDBase {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Action.html">Action</a></li><li><a href="ActionParams_ActionParams.html">ActionParams</a></li><li><a href="Component.html">ComponentContext</a></li><li><a href="Component.create.html">create</a></li><li><a href="CreateHotBalloonElement.html">CreateHotBalloonElement</a></li><li><a href="Debugable.html">Debugable</a></li><li><a href="Dispatcher.html">Dispatcher</a></li><li><a href="DispatcherEventListenerFactory.html">DispatcherEventListenerFactory</a></li><li><a href="DispatcherEventListenerFactory.listen.html">listen</a></li><li><a href="DispatcherEventListenerFactory_EventListenerFactory.html">EventListenerFactory</a></li><li><a href="EventAction_EventAction.html">EventAction</a></li><li><a href="EventHandlerBase.html">EventHandlerBase</a></li><li><a href="EventListenerFactory.listen.html">listen</a></li><li><a href="EventListenerFactory_EventListenerFactory.html">EventListenerFactory</a></li><li><a href="EventListenerOrderedFactory.html">EventListenerOrderedFactory</a></li><li><a href="EventListenerOrderedFactory_EventListenerFactory.html">EventListenerFactory</a></li><li><a href="EventListenerOrderedParam.html">EventListenerOrderedParam</a></li><li><a href="EventListenerOrderedParam.create.html">create</a></li><li><a href="EventListenerOrderedParam_EventListenerParam.html">EventListenerParam</a></li><li><a href="EventListenerParam.create.html">create</a></li><li><a href="EventListenerParam_EventListenerParam.html">EventListenerParam</a></li><li><a href="EventOrderedHandler.html">EventOrderedHandler</a></li><li><a href="HotBalloonApplication.html">HotBalloonApplication</a></li><li><a href="HotBalloonAttributeHandler.html">HotBalloonAttributeHandler</a></li><li><a href="HotballoonElementParams.html">HotballoonElementParams</a></li><li><a href="NodeEventListenerParam.create.html">create</a></li><li><a href="NodeEventListenerParam.createWithOptions.html">createWithOptions</a></li><li><a href="ProxyStore.html">ProxyStore</a></li><li><a href="State.create.html">create</a></li><li><a href="State_State.html">State</a></li><li><a href="Storage.html">Storage</a></li><li><a href="Store.html">Store</a></li><li><a href="Store.create.html">create</a></li><li><a href="View.html">View</a></li><li><a href="ViewContainer.html">ViewContainer</a></li><li><a href="ViewContainer_Component.html">ComponentContext</a></li><li><a href="ViewContainerBase.html">ViewContainerBase</a></li><li><a href="ViewContainerParameters_ViewContainerParameters.html">ViewContainerParameters</a></li><li><a href="ViewEventListenerFactory.html">ViewEventListenerFactory</a></li><li><a href="ViewEventListenerFactory.bubble.html">bubble</a></li><li><a href="ViewEventListenerFactory_EventListenerFactory.html">EventListenerFactory</a></li><li><a href="ViewParameters_ViewParameters.html">ViewParameters</a></li><li><a href="WithIDBase.html">WithIDBase</a></li></ul><h3>Interfaces</h3><ul><li><a href="DataStoreHandlerInterface.html">DataStoreHandlerInterface</a></li><li><a href="DataStoreInterface.html">DataStoreInterface</a></li><li><a href="HasTagClassNameInterface.html">HasTagClassNameInterface</a></li><li><a href="StoreInterface.html">StoreInterface</a></li></ul><h3>Global</h3><ul><li><a href="global.html#hasClassTagName">hasClassTagName</a></li><li><a href="global.html#isEqualClassTagName">isEqualClassTagName</a></li><li><a href="global.html#nodeRef">nodeRef</a></li><li><a href="global.html#ROOT,">ROOT,</a></li><li><a href="global.html#testClassTagName">testClassTagName</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Action.html">Action</a></li><li><a href="ActionParams_ActionParams.html">ActionParams</a></li><li><a href="Component.html">componentContext</a></li><li><a href="Component.create.html">create</a></li><li><a href="CreateHotBalloonElement.html">CreateHotBalloonElement</a></li><li><a href="Debugable.html">Debugable</a></li><li><a href="Dispatcher.html">dispatcher</a></li><li><a href="DispatcherEventListenerFactory.html">DispatcherEventListenerFactory</a></li><li><a href="DispatcherEventListenerFactory.listen.html">listen</a></li><li><a href="DispatcherEventListenerFactory_EventListenerFactory.html">EventListenerFactory</a></li><li><a href="EventAction_EventAction.html">EventAction</a></li><li><a href="EventHandlerBase.html">EventHandlerBase</a></li><li><a href="EventListenerFactory.listen.html">listen</a></li><li><a href="EventListenerFactory_EventListenerFactory.html">EventListenerFactory</a></li><li><a href="EventListenerOrderedFactory.html">EventListenerOrderedFactory</a></li><li><a href="EventListenerOrderedFactory_EventListenerFactory.html">EventListenerFactory</a></li><li><a href="EventListenerOrderedParam.html">EventListenerOrderedParam</a></li><li><a href="EventListenerOrderedParam.create.html">create</a></li><li><a href="EventListenerOrderedParam_EventListenerParam.html">EventListenerParam</a></li><li><a href="EventListenerParam.create.html">create</a></li><li><a href="EventListenerParam_EventListenerParam.html">EventListenerParam</a></li><li><a href="EventOrderedHandler.html">EventOrderedHandler</a></li><li><a href="HotBalloonApplication.html">HotBalloonApplication</a></li><li><a href="HotBalloonAttributeHandler.html">HotBalloonAttributeHandler</a></li><li><a href="HotballoonElementParams.html">HotballoonElementParams</a></li><li><a href="NodeEventListenerParam.create.html">create</a></li><li><a href="NodeEventListenerParam.createWithOptions.html">createWithOptions</a></li><li><a href="ProxyStore.html">ProxyStore</a></li><li><a href="State.create.html">create</a></li><li><a href="State_State.html">State</a></li><li><a href="Storage.html">Storage</a></li><li><a href="Store.html">store</a></li><li><a href="Store.create.html">create</a></li><li><a href="View.html">view</a></li><li><a href="ViewContainer.html">viewContainer</a></li><li><a href="ViewContainer_Component.html">componentContext</a></li><li><a href="ViewContainerBase.html">ViewContainerBase</a></li><li><a href="ViewContainerParameters_ViewContainerParameters.html">ViewContainerParameters</a></li><li><a href="ViewEventListenerFactory.html">ViewEventListenerFactory</a></li><li><a href="ViewEventListenerFactory.bubble.html">bubble</a></li><li><a href="ViewEventListenerFactory_EventListenerFactory.html">EventListenerFactory</a></li><li><a href="ViewParameters_ViewParameters.html">ViewParameters</a></li><li><a href="WithIDBase.html">WithIDBase</a></li></ul><h3>Interfaces</h3><ul><li><a href="DataStoreHandlerInterface.html">DataStoreHandlerInterface</a></li><li><a href="DataStoreInterface.html">DataStoreInterface</a></li><li><a href="HasTagClassNameInterface.html">HasTagClassNameInterface</a></li><li><a href="StoreInterface.html">StoreInterface</a></li></ul><h3>Global</h3><ul><li><a href="global.html#hasClassTagName">hasClassTagName</a></li><li><a href="global.html#isEqualClassTagName">isEqualClassTagName</a></li><li><a href="global.html#nodeRef">nodeRef</a></li><li><a href="global.html#ROOT,">ROOT,</a></li><li><a href="global.html#testClassTagName">testClassTagName</a></li></ul>
 </nav>
 
 <br class="clear">

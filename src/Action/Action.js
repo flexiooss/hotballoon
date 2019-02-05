@@ -15,13 +15,13 @@ const _actionPayloadClass = Symbol('_actionPayloadClass')
 
 /**
  * @class
- * @description Action is the entry point of ComponentContext
+ * @description Action is the entry point of componentContext
  * @implements HasTagClassNameInterface
  */
 export class Action {
   /**
    *
-   * @param {hotballoon:Dispatcher} dispatcher
+   * @param {hotballoon:dispatcher} dispatcher
    * @param {Class<ActionPayload>} actionPayloadClass
    */
   constructor(actionParams) {

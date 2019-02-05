@@ -12,7 +12,7 @@ class HotballoonElementParams extends HyperFlexParams {
     super()
     /**
      *
-     * @type {Array<View>}
+     * @type {Array<view>}
      * @private
      */
     this._views = []
@@ -40,7 +40,7 @@ class HotballoonElementParams extends HyperFlexParams {
 
   /**
    *
-   * @return {Array<View>}
+   * @return {Array<view>}
    */
   get views() {
     return this._views
@@ -56,7 +56,7 @@ class HotballoonElementParams extends HyperFlexParams {
 
   /**
    * @static
-   * @param {Array<View>} views
+   * @param {Array<view>} views
    * @return {HotballoonElementParams}
    */
   static withViews(views) {

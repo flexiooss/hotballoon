@@ -2,7 +2,6 @@
 import {MapOfArray, isBoolean, isNode, assert} from 'flexio-jshelpers'
 import {WithIDBase} from '../bases/WithIDBase'
 import {ViewStoresParameters} from './ViewStoresParameters'
-// import {STORE_CHANGED, StoreInterface} from '../Store/StoreInterface'
 import {EventOrderedHandler} from '../Event/EventOrderedHandler'
 
 const _Stores = Symbol('_Stores')
@@ -79,7 +78,7 @@ export class ViewContainerBase extends WithIDBase {
         enumerable: false,
         configurable: false,
         /**
-         * @property {EventOrderedHandlerOld}
+         * @property {EventOrderedHandler}
          * @name ViewContainerBase#_EventHandler
          * @protected
          */
@@ -99,7 +98,7 @@ export class ViewContainerBase extends WithIDBase {
         enumerable: false,
         configurable: false,
         /**
-         * @property {Map<View>
+         * @property {Map<view>}
          * @name ViewContainerBase#_Views
          * @protected
          */
@@ -118,7 +117,7 @@ export class ViewContainerBase extends WithIDBase {
         },
         set: (v) => {
           assert(!!isNode(v),
-            'hotballoon:View:constructor: `parentNode` argument should be a Node'
+            'hotballoon:view:constructor: `parentNode` argument should be a Node'
           )
           parentNode = v
         }
@@ -144,8 +143,8 @@ export class ViewContainerBase extends WithIDBase {
 
   /**
    *
-   * @param {View} view
-   * @return {View}
+   * @param {view} view
+   * @return {view}
    */
   addView(view) {
     this[_Views].set(view.ID, view)
@@ -155,16 +154,16 @@ export class ViewContainerBase extends WithIDBase {
   /**
    *
    * @param {String} key
-   * @return {View}
+   * @return {view}
    */
-  View(key) {
+  view(key) {
     return this[_Views].get(key)
   }
 
   /**
    *
    * @param {String} key
-   * @return {Map<String, View>}
+   * @return {Map<String, view>}
    */
   MapOfView(key) {
     return this[_Views]
@@ -175,7 +174,7 @@ export class ViewContainerBase extends WithIDBase {
    * @param {string} key
    * @return {StoreInterface}
    */
-  Store(key) {
+  store(key) {
     return this[_Stores].get(key)
   }
 }

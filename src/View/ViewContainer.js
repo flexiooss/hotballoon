@@ -9,7 +9,7 @@ import {Action} from '../Action/Action'
 export class ViewContainerParameters {
   /**
    *
-   * @param {ComponentContext} componentInst
+   * @param {componentContext} componentInst
    * @param {string} id
    * @param {Node} parentNode
    * @return ViewContainerParameters
@@ -19,12 +19,12 @@ export class ViewContainerParameters {
       'hotballoon:ViewContainerParameters: `id` argument assert be a String'
     )
     assert(!!isNode(parentNode),
-      'hotballoon:View:ViewContainerParameters: `parentNode` argument should be a Node'
+      'hotballoon:view:ViewContainerParameters: `parentNode` argument should be a Node'
     )
 
     Object.defineProperties(this, {
       /**
-         * @property {ComponentContext} component
+         * @property {componentContext} component
          * @name ViewContainerParameters#component
          */
       component: {
@@ -59,7 +59,7 @@ const _mountViews = Symbol('_mountViews')
 /**
  *
  * @class
- * @description ViewContainer is a Views container who can suscribe to Stores to dispatch state to Views
+ * @description viewContainer is a Views container who can suscribe to Stores to dispatch state to Views
  * @extends ViewContainerBase
  * @implements HasTagClassNameInterface
  */
@@ -71,7 +71,7 @@ export class ViewContainer extends ViewContainerBase {
    */
   constructor(viewContainerParameters, stores) {
     assert(viewContainerParameters instanceof ViewContainerParameters,
-      'hotballoon:ViewContainer:constructor: `viewContainerParameters` argument assert be an instance of ViewContainerParameters'
+      'hotballoon:viewContainer:constructor: `viewContainerParameters` argument assert be an instance of ViewContainerParameters'
     )
 
     super(viewContainerParameters.id, stores)
@@ -91,7 +91,7 @@ export class ViewContainer extends ViewContainerBase {
         enumerable: false,
         writable: false,
         /**
-         * @type {ComponentContext}
+         * @type {componentContext}
          * @name ViewContainer#_ComponentContext
          * @protected
          */
@@ -171,7 +171,7 @@ export class ViewContainer extends ViewContainerBase {
    */
   mount(parentNode) {
     assert(isNode(parentNode),
-      'hotballoon:ViewContainer:mount: `parentNode` arguement assert be a Node, %s given',
+      'hotballoon:viewContainer:mount: `parentNode` arguement assert be a Node, %s given',
       typeof parentNode)
     this[_mountViews](parentNode)
     this._mounted = true
@@ -185,7 +185,7 @@ export class ViewContainer extends ViewContainerBase {
    * @return {Node} parentNode
    */
   renderAndMount(parentNode) {
-    this.debug.log('renderAndMount').background().size(2)
+    this.debug.log('render And Mount').background().size(2)
     this.debug.print()
 
     this.render()
@@ -200,15 +200,15 @@ export class ViewContainer extends ViewContainerBase {
     assert(action instanceof Action,
       'hotballoon:' + this.constructor.name + ':addAction: `action` argument should be an instance of Action'
     )
-    action.dispatchWith(this.Dispatcher())
+    action.dispatchWith(this.dispatcher())
   }
 
   /**
    *
-   * @return {ComponentContext}
+   * @return {componentContext}
    * @constructor
    */
-  ComponentContext() {
+  componentContext() {
     return this._ComponentContext
   }
 
@@ -217,23 +217,23 @@ export class ViewContainer extends ViewContainerBase {
    * @instance
    */
   APP() {
-    return this.ComponentContext().APP()
+    return this.componentContext().APP()
   }
 
   /**
-   * @return {Dispatcher} dispatcher
+   * @return {dispatcher} dispatcher
    * @instance
    */
-  Dispatcher() {
-    return this.APP().Dispatcher()
+  dispatcher() {
+    return this.APP().dispatcher()
   }
 
   /**
    * @param {String} key
-   * @return {Service} service
+   * @return {service} service
    * @instance
    */
-  Service(key) {
-    return this.APP().Service(key)
+  service(key) {
+    return this.APP().service(key)
   }
 }
