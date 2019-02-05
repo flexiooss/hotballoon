@@ -19,11 +19,11 @@
 
     <h1 class="page-title">Source: Event/EventOrderedHandler.js</h1>
 
-    
 
 
 
-    
+
+
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>'use strict'
@@ -47,7 +47,7 @@ export class EventOrderedHandler extends EventHandlerBase {
       'hotballoon:EventHandler:on: ̀`eventListenerOrderedParam` argument assert be an instance of EventListenerOrderedParam'
     )
 
-    this._mayInitListeners(eventListenerOrderedParam.event)
+    this._ensureHaveListenersMap(eventListenerOrderedParam.event)
 
     const id = this.nextID()
 

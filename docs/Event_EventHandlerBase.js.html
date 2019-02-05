@@ -19,11 +19,11 @@
 
     <h1 class="page-title">Source: Event/EventHandlerBase.js</h1>
 
-    
 
 
 
-    
+
+
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>'use strict'
@@ -104,7 +104,7 @@ export class EventHandlerBase {
    * @param {string} event
    * @protected
    */
-  _mayInitListeners(event) {
+  _ensureHaveListenersMap(event) {
     if (!(this._listeners.has(event))) {
       this._listeners.set(event, new Map())
     }
@@ -145,7 +145,7 @@ export class EventHandlerBase {
       'hotballoon:EventHandlerBase:addEventListener: ̀`eventListenerParam` argument assert be an instance of EventListenerParam'
     )
 
-    this._mayInitListeners(eventListenerParam.event)
+    this._ensureHaveListenersMap(eventListenerParam.event)
     const id = this.nextID()
 
     this._listeners.get(eventListenerParam.event)
