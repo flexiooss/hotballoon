@@ -109,8 +109,8 @@ export class HotBalloonApplication extends WithIDBase {
 
   /**
    * @description register a componentContext into this Application
-   * @param {componentContext} componentContext
-   * @return {componentContext} componentContext
+   * @param {ComponentContext} componentContext
+   * @return {ComponentContext} componentContext
    */
   addComponentContext(componentContext) {
     assert(componentContext instanceof ComponentContext,
@@ -139,7 +139,7 @@ export class HotBalloonApplication extends WithIDBase {
   /**
    *
    * @param {String} componentID
-   * @returns {componentContext}
+   * @returns {ComponentContext}
    */
   componentContext(componentID) {
     return this[_ComponentContexts].get(componentID)

@@ -38,12 +38,8 @@ class ComponentContext extends WithIDBase {
     this.debug.color = 'green'
 
     const _sequenceId = new Sequence(this.ID + '_')
-    const actionsListenerTokens = new Map()
     const _stores = new MapOfInstance(Store)
-    const storesKeyRegister = new Map()
     const _viewContainers = new MapOfInstance(ViewContainer)
-    const viewContainersKey = new Map()
-    const _privateState = new Map()
 
     Object.defineProperty(this, CLASS_TAG_NAME, {
       configurable: false,
@@ -80,16 +76,7 @@ class ComponentContext extends WithIDBase {
           return false
         }
       },
-      actionsListenerTokens: {
-        configurable: false,
-        enumerable: true,
-        get: () => {
-          return actionsListenerTokens
-        },
-        set: (v) => {
-          return false
-        }
-      },
+
       _stores: {
         configurable: false,
         enumerable: false,
@@ -100,16 +87,7 @@ class ComponentContext extends WithIDBase {
           return false
         }
       },
-      storesKeyRegister: {
-        configurable: false,
-        enumerable: true,
-        get: () => {
-          return storesKeyRegister
-        },
-        set: (v) => {
-          return false
-        }
-      },
+
       _viewContainers: {
         configurable: false,
         enumerable: false,
@@ -119,22 +97,8 @@ class ComponentContext extends WithIDBase {
         set: (v) => {
           return false
         }
-      },
-      viewContainersKey: {
-        configurable: false,
-        enumerable: true,
-        get: () => {
-          return viewContainersKey
-        },
-        set: (v) => {
-          return false
-        }
-      },
-      _privateState: {
-        configurable: false,
-        enumerable: false,
-        value: _privateState
       }
+
     }
     )
 
@@ -153,60 +117,9 @@ class ComponentContext extends WithIDBase {
   }
 
   /**
-   * @private
-   * @returns void
-   */
-  [_init]() {
-    this._initStores()
-    this._initDispatcherListeners()
-    this._initViewContainers()
-  }
-
-  /**
-   * @protected
-   * @description called by the constructor for int Actions, Stores, Listeners, ViewContainers
-   * @returns void
-   *
-   */
-  _initStores() {
-  }
-
-  _initDispatcherListeners() {
-  }
-
-  _initViewContainers() {
-  }
-
-  /**
-   * @description called by the hotballoon Appliation before remove this componentContext
+   * @description called by the hotballoon Application before remove this componentContext
    */
   willRemove() {
-  }
-
-  /**
-   * @private
-   * @param {String} key
-   * @param {mixed} value
-   */
-  _setState(key, value) {
-    this._privateState.set(key, value)
-  }
-
-  /**
-   * @private
-   * @param {String} key
-   * @returns {mixed}
-   */
-  _state(key) {
-    return this._privateState.get(key)
-  }
-
-  /**
-   * @private
-   * @param {String} key
-   */
-  _delete(key) {
-    this._privateState.delete(key)
   }
 
   /**
@@ -248,30 +161,12 @@ class ComponentContext extends WithIDBase {
 
   /**
    *
-   * @param {string} key token registered into storesKeyRegister
-   * @return {StoreInterface} store
+   * @param {ViewContainer} viewContainer
+   * @returns {ViewContainer} viewContainer
    */
-  storeByRegister(key) {
-    return this.store(this.storesKeyRegister.get(key))
-  }
-
-  /**
-   *
-   * @param {string} key token registered into storesKeyRegister
-   * @returns {mixed} data of store
-   */
-  storeDataByRegister(key) {
-    return this.storeByRegister(key).data()
-  }
-
-  /**
-   *
-   * @param {viewContainer} ViewContainer
-   * @returns {viewContainer} viewContainer
-   */
-  addViewContainer(ViewContainer) {
-    this._viewContainers.add(ViewContainer.ID, ViewContainer)
-    return ViewContainer
+  addViewContainer(viewContainer) {
+    this._viewContainers.add(viewContainer.ID, viewContainer)
+    return viewContainer
   }
 
   /**
@@ -312,7 +207,7 @@ class ComponentContext extends WithIDBase {
   }
 
   /**
-   * @return {dispatcher}
+   * @return {Dispatcher}
    */
   dispatcher() {
     return this.APP().dispatcher()
