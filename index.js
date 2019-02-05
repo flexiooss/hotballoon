@@ -24,3 +24,4 @@ export {NodeEventListenerFactory} from './src/HotballoonNodeElement/NodeEventLis
 export {ActionPayload} from './src/Action/ActionPayload'
 export {ActionParams} from './src/Action/ActionParams'
 export {DispatcherEventListenerFactory} from './src/Dispatcher/DispatcherEventListenerFactory'
+export {TypeCheck} from './src/TypeCheck'
