@@ -18,16 +18,18 @@ const _init = Symbol('_init')
 
 /**
  * @class
- * @description The Component is the entry point of the module
+ * @description The ComponentContext is the entry point of the module
  * @extends WithIDBase
  * @implements HasTagClassNameInterface
  */
-class Component extends WithIDBase {
+class ComponentContext extends WithIDBase {
+
   constructor(hotBallonApplication) {
     assert(testClassTagName(hotBallonApplication, CLASS_TAG_NAME_HOTBALLOON_APPLICATION),
-      'hotballoon:Component:constructor:  hotBallonApplication argument should be an instance of ̀ hotballoon/HotBalloonApplication`, `%s` given',
+      'hotballoon:ComponentContext:constructor:  hotBallonApplication argument should be an instance of ̀ hotballoon/HotBalloonApplication`, `%s` given',
       typeof hotBallonApplication
     )
+
     super(hotBallonApplication.nextID())
 
     this.debug.color = 'green'
@@ -48,85 +50,85 @@ class Component extends WithIDBase {
     })
 
     Object.defineProperties(this, {
-      _APP: {
-        configurable: false,
-        enumerable: false,
-        get: () => {
-          return hotBallonApplication
+        _APP: {
+          configurable: false,
+          enumerable: false,
+          get: () => {
+            return hotBallonApplication
+          },
+          set: (v) => {
+            assert(false,
+              `hotballoon:${this.constructor.name}: _APP property already defined`
+            )
+            return false
+          }
         },
-        set: (v) => {
-          assert(false,
-            `hotballoon:${this.constructor.name}: _APP property already defined`
-          )
-          return false
-        }
-      },
-      _sequenceId: {
-        configurable: false,
-        enumerable: false,
-        get: () => {
-          return _sequenceId
+        _sequenceId: {
+          configurable: false,
+          enumerable: false,
+          get: () => {
+            return _sequenceId
+          },
+          set: (v) => {
+            return false
+          }
         },
-        set: (v) => {
-          return false
-        }
-      },
-      actionsListenerTokens: {
-        configurable: false,
-        enumerable: true,
-        get: () => {
-          return actionsListenerTokens
+        actionsListenerTokens: {
+          configurable: false,
+          enumerable: true,
+          get: () => {
+            return actionsListenerTokens
+          },
+          set: (v) => {
+            return false
+          }
         },
-        set: (v) => {
-          return false
-        }
-      },
-      _stores: {
-        configurable: false,
-        enumerable: false,
-        get: () => {
-          return _stores
+        _stores: {
+          configurable: false,
+          enumerable: false,
+          get: () => {
+            return _stores
+          },
+          set: (v) => {
+            return false
+          }
         },
-        set: (v) => {
-          return false
-        }
-      },
-      storesKeyRegister: {
-        configurable: false,
-        enumerable: true,
-        get: () => {
-          return storesKeyRegister
+        storesKeyRegister: {
+          configurable: false,
+          enumerable: true,
+          get: () => {
+            return storesKeyRegister
+          },
+          set: (v) => {
+            return false
+          }
         },
-        set: (v) => {
-          return false
-        }
-      },
-      _viewContainers: {
-        configurable: false,
-        enumerable: false,
-        get: () => {
-          return _viewContainers
+        _viewContainers: {
+          configurable: false,
+          enumerable: false,
+          get: () => {
+            return _viewContainers
+          },
+          set: (v) => {
+            return false
+          }
         },
-        set: (v) => {
-          return false
-        }
-      },
-      viewContainersKey: {
-        configurable: false,
-        enumerable: true,
-        get: () => {
-          return viewContainersKey
+        viewContainersKey: {
+          configurable: false,
+          enumerable: true,
+          get: () => {
+            return viewContainersKey
+          },
+          set: (v) => {
+            return false
+          }
         },
-        set: (v) => {
-          return false
+        _privateState: {
+          configurable: false,
+          enumerable: false,
+          value: _privateState
         }
-      },
-      _privateState: {
-        configurable: false,
-        enumerable: false,
-        value: _privateState
       }
-    }
     )
 
     this[_init]()
@@ -134,8 +136,8 @@ class Component extends WithIDBase {
 
   /**
    *
-   * @param {HotballoonApplication} hotballoonApplication
-   * @return {Component}
+   * @param {HotBalloonApplication} hotballoonApplication
+   * @return {ComponentContext}
    * @constructor
    * @static
    */
@@ -169,7 +171,7 @@ class Component extends WithIDBase {
   }
 
   /**
-   * @description called by the hotballoon Appliation before remove this Component
+   * @description called by the hotballoon Appliation before remove this ComponentContext
    */
   willRemove() {
   }
@@ -318,5 +320,5 @@ class Component extends WithIDBase {
 }
 
 export {
-  Component
+  ComponentContext
 }

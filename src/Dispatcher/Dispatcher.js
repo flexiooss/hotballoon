@@ -6,7 +6,7 @@ import {EventAction} from '../Action/EventAction'
 
 /**
  * @class
- * @description Dispatcher is the event handler between Actions and Component
+ * @description Dispatcher is the event handler between Actions and ComponentContext
  * @extends EventHandlerBase
  * @implements HasTagClassNameInterface
  */

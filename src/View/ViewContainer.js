@@ -9,7 +9,7 @@ import {Action} from '../Action/Action'
 export class ViewContainerParameters {
   /**
    *
-   * @param {Component} componentInst
+   * @param {ComponentContext} componentInst
    * @param {string} id
    * @param {Node} parentNode
    * @return ViewContainerParameters
@@ -24,7 +24,7 @@ export class ViewContainerParameters {
 
     Object.defineProperties(this, {
       /**
-         * @property {Component} component
+         * @property {ComponentContext} component
          * @name ViewContainerParameters#component
          */
       component: {
@@ -86,13 +86,13 @@ export class ViewContainer extends ViewContainerBase {
     })
 
     Object.defineProperties(this, {
-      _Component: {
+      _ComponentContext: {
         configurable: false,
         enumerable: false,
         writable: false,
         /**
-         * @type {Component}
-         * @name ViewContainer#_Component
+         * @type {ComponentContext}
+         * @name ViewContainer#_ComponentContext
          * @protected
          */
         value: viewContainerParameters.component
@@ -205,11 +205,11 @@ export class ViewContainer extends ViewContainerBase {
 
   /**
    *
-   * @return {Component}
+   * @return {ComponentContext}
    * @constructor
    */
-  Component() {
-    return this._Component
+  ComponentContext() {
+    return this._ComponentContext
   }
 
   /**
@@ -217,7 +217,7 @@ export class ViewContainer extends ViewContainerBase {
    * @instance
    */
   APP() {
-    return this.Component().APP()
+    return this.ComponentContext().APP()
   }
 
   /**

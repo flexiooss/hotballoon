@@ -469,7 +469,7 @@ class View extends ViewContainerBase {
    * @return {Component}
    */
   Component() {
-    return this.Container().Component()
+    return this.Container().ComponentContext()
   }
 
   /**

@@ -15,7 +15,7 @@ const _actionPayloadClass = Symbol('_actionPayloadClass')
 
 /**
  * @class
- * @description Action is the entry point of Component
+ * @description Action is the entry point of ComponentContext
  * @implements HasTagClassNameInterface
  */
 export class Action {

@@ -1,12 +1,12 @@
 'use strict'
 import {Dispatcher} from '../Dispatcher/Dispatcher'
 import {MapExtended, MapOfInstance, Sequence, assert} from 'flexio-jshelpers'
-import {Component} from '../Component/Component'
+import {ComponentContext} from '../Component/ComponentContext'
 import {WithIDBase} from '../bases/WithIDBase'
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_HOTBALLOON_APPLICATION} from '../HasTagClassNameInterface'
 
 const _Dispatcher = Symbol('_Dispatcher')
-const _Components = Symbol('_Components')
+const _ComponentContexts = Symbol('_ComponentContexts')
 const _Services = Symbol('_Services')
 const _SequenceId = Symbol('_SequenceId')
 
@@ -20,6 +20,7 @@ const _SequenceId = Symbol('_SequenceId')
 export class HotBalloonApplication extends WithIDBase {
   /**
    * @constructor
+   * @param {string} id
    * @param {Dispatcher} dispatcher
    */
   constructor(id, dispatcher) {
@@ -29,7 +30,7 @@ export class HotBalloonApplication extends WithIDBase {
       'hotballoon:HotBalloonApplication:constructor: `dispatcher` argument should be an instance of hotballoon/Dispatcher'
     )
 
-    const _components = new MapOfInstance(Component)
+    const _componentContexts = new MapOfInstance(ComponentContext)
     const _services = new MapExtended()
     const _sequenceId = new Sequence('hb_')
 
@@ -53,15 +54,15 @@ export class HotBalloonApplication extends WithIDBase {
           )
         }
       },
-      [_Components]: {
+      [_ComponentContexts]: {
         configurable: false,
         enumerable: false,
         get: () => {
-          return _components
+          return _componentContexts
         },
         set: (v) => {
           assert(false,
-            'hotballoon:HotBalloonApplication:constructor:_components.set: `components` already set'
+            'hotballoon:HotBalloonApplication:constructor:_ComponentContexts.set: `components` already set'
           )
         }
       },
@@ -107,16 +108,16 @@ export class HotBalloonApplication extends WithIDBase {
   }
 
   /**
-   * @description register a Component into this Application
-   * @param {Component} component
-   * @returns {String} token : componentID
+   * @description register a ComponentContext into this Application
+   * @param {ComponentContext} componentContext
+   * @return {ComponentContext} componentContext
    */
-  addComponent(component) {
-    assert(component instanceof Component,
-      'hotballoon:HotBalloonApplication:addComponent: `component` argument should be an instance of hotballoon:Component'
+  addComponentContext(componentContext) {
+    assert(componentContext instanceof ComponentContext,
+      'hotballoon:HotBalloonApplication:addComponentContext: `component` argument should be an instance of hotballoon:ComponentContext'
     )
-    this[_Components].add(component.ID, component)
-    return component.ID
+    this[_ComponentContexts].add(componentContext.ID, componentContext)
+    return componentContext
   }
 
   /**
@@ -124,11 +125,11 @@ export class HotBalloonApplication extends WithIDBase {
    * @param {String} componentID
    * @returns {boolean} removed ?
    */
-  removeComponent(componentID) {
-    if (this[_Components].has(componentID)) {
-      const removable = this.Component(componentID).willRemove()
+  removeComponentContext(componentID) {
+    if (this[_ComponentContexts].has(componentID)) {
+      const removable = this.ComponentContext(componentID).willRemove()
       if (removable !== false) {
-        this[_Components].delete(componentID)
+        this[_ComponentContexts].delete(componentID)
         return true
       }
       return false
@@ -138,10 +139,10 @@ export class HotBalloonApplication extends WithIDBase {
   /**
    *
    * @param {String} componentID
-   * @returns {Component}
+   * @returns {ComponentContext}
    */
-  Component(componentID) {
-    return this[_Components].get(componentID)
+  ComponentContext(componentID) {
+    return this[_ComponentContexts].get(componentID)
   }
 
   /**

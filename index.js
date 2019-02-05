@@ -8,7 +8,7 @@ export {EventListenerOrderedFactory} from './src/Event/EventListenerOrderedFacto
 export {Action} from './src/Action/Action'
 export {ViewParameters, View, ATTRIBUTE_NODEREF} from './src/View/View'
 export {ViewContainer, ViewContainerParameters} from './src/View/ViewContainer'
-export {Component} from './src/Component/Component'
+export {ComponentContext} from './src/Component/ComponentContext'
 export {html} from './src/HotballoonNodeElement/CreateHotBalloonElement'
 export {HotballoonElementParams as HtmlParams} from './src/HotballoonNodeElement/HotballoonElementParams'
 export {HotBalloonAttributeHandler, select as $} from './src/HotballoonNodeElement/HotBalloonAttributeHandler'
