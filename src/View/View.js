@@ -236,7 +236,7 @@ class View extends ViewContainerBase {
    * Main method
    * @return {Node}
    */
-  view() {
+  template() {
     throw new CoreException('view should be override', 'METHOD_NOT_OVERRIDE')
   }
 
@@ -254,7 +254,7 @@ class View extends ViewContainerBase {
    *
    * @description subscribe subView an event of this view
    * @param {String} keyStore
-   * @param {updateCallback} clb : event name
+   * @param {View~updateCallback} clb : event name
    */
   suscribeToStore(keyStore, clb = (oldState, newState) => true) {
     assert(isFunction(clb), 'hotballoon:' + this.constructor.name + ':suscribeToStore: `clb` argument should be callable')
@@ -266,7 +266,8 @@ class View extends ViewContainerBase {
     this._tokenEvent.add(
       store.ID,
       store.subscribe(
-        EventListenerOrderedFactory.listen(STORE_CHANGED)
+        EventListenerOrderedFactory
+          .listen(STORE_CHANGED)
           .callback((payload, type) => {
             const oldState = this._state.get(keyStore)
             this._state.set(keyStore, payload.data)
@@ -274,12 +275,12 @@ class View extends ViewContainerBase {
               this.updateNode()
             }
           })
-          .build(this)
+          .build()
       )
     )
     /**
      *
-     * @callback updateCallback
+     * @callback View~updateCallback
      * @param {Object} oldState
      * @param {Object} newState
      */
@@ -290,7 +291,7 @@ class View extends ViewContainerBase {
    * @description update the node reference of this View
    */
   [_update]() {
-    reconcile(this.node, this.view(), this.parentNode)
+    reconcile(this.node, this.template(), this.parentNode)
   }
 
   /**
@@ -344,7 +345,6 @@ class View extends ViewContainerBase {
   /**
    * @public
    * @see _mount()
-   * @param {Node} parentNode
    */
   mount() {
     if (this._shouldMount) {
@@ -360,9 +360,7 @@ class View extends ViewContainerBase {
   }
 
   /**
-   * @public
-   * @description Render the view() into `_node` property and mount this into the `parentNode` argument
-   * @param {Node} parentNode
+   * @description Render the template() into `_node` property and mount this into the `parentNode` argument
    */
   renderAndMount() {
     this.render()
@@ -379,7 +377,7 @@ class View extends ViewContainerBase {
 
   /**
    * @param {String} key
-   * @return {Node} Node
+   * @return {Node}
    */
   nodeRef(key) {
     return this._nodeRefs.get(key)
@@ -397,8 +395,7 @@ class View extends ViewContainerBase {
   /**
    * @param {String} key
    * @param {Node} node
-   * @return {Node} Node
-   * @memberOf NodesHandlerMixin
+   * @return {Node}
    * @instance
    */
   addNodeRef(key, node) {
@@ -408,7 +405,7 @@ class View extends ViewContainerBase {
   /**
    * @param {String} key
    * @param {Node} node
-   * @return {Node} Node
+   * @return {Node}
    */
   replaceNodeRef(key, node) {
     return this[_setNodeRef](key, node)
@@ -445,7 +442,7 @@ class View extends ViewContainerBase {
    * @return {Node} node
    */
   [_replaceNode]() {
-    this._node = this.view()
+    this._node = this.template()
     return this._node
   }
 

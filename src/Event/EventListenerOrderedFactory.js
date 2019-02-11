@@ -33,7 +33,7 @@ export class EventListenerOrderedFactory extends EventListenerFactory {
   /**
    *
    * @param scope
-   * @return {EventListenerOrderedFactory}
+   * @return {EventListenerOrderedParam}
    */
   build(scope) {
     this._scope = scope
