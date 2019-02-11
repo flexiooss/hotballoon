@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: TypeCheck.js</title>
+    <title>JSDoc: Source: Event/EventHandler.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: TypeCheck.js</h1>
+    <h1 class="page-title">Source: Event/EventHandler.js</h1>
 
     
 
@@ -26,111 +26,14 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import {
-  testClassTagName,
-  CLASS_TAG_NAME_HOTBALLOON_APPLICATION,
-  CLASS_TAG_NAME_DISPATCHER,
-  CLASS_TAG_NAME_COMPONENT,
-  CLASS_TAG_NAME_ACTION,
-  CLASS_TAG_NAME_STORE,
-  CLASS_TAG_NAME_PROXYSTORE,
-  CLASS_TAG_NAME_VIEWCONTAINER,
-  CLASS_TAG_NAME_VIEW
-} from './HasTagClassNameInterface'
+            <pre class="prettyprint source linenums"><code>import {EventHandlerBase} from 'flexio-jshelpers'
 
-class TypeCheck {
-  /**
-   *
-   * @param {Object} inst
-   * @return {boolean}
-   */
-  static isHotballoonApplication(inst) {
-    return testClassTagName(inst, CLASS_TAG_NAME_HOTBALLOON_APPLICATION)
-  }
+/**
+ * @extends {EventHandlerBase}
+ */
+export class EventHandler extends EventHandlerBase {
 
-  /**
-   *
-   * @param {Object} inst
-   * @return {boolean}
-   */
-  static isDispatcher(inst) {
-    return testClassTagName(inst, CLASS_TAG_NAME_DISPATCHER)
-  }
-
-  /**
-   *
-   * @param {Object} inst
-   * @return {boolean}
-   */
-  static isComponentContext(inst) {
-    return testClassTagName(inst, CLASS_TAG_NAME_COMPONENT)
-  }
-
-  /**
-   *
-   * @param {Object} inst
-   * @return {boolean}
-   */
-  static isAction(inst) {
-    return testClassTagName(inst, CLASS_TAG_NAME_ACTION)
-  }
-
-  /**
-   *
-   * @param {Object} inst
-   * @return {boolean}
-   */
-  static isStore(inst) {
-    return testClassTagName(inst, CLASS_TAG_NAME_STORE)
-  }
-
-  /**
-   *
-   * @param {Object} inst
-   * @return {boolean}
-   */
-  static isProxyStore(inst) {
-    return testClassTagName(inst, CLASS_TAG_NAME_PROXYSTORE)
-  }
-
-  /**
-   *
-   * @param {Object} inst
-   * @return {boolean}
-   */
-  static isStoreBase(inst) {
-    return testClassTagName(inst, CLASS_TAG_NAME_STORE) || testClassTagName(inst, CLASS_TAG_NAME_PROXYSTORE)
-  }
-
-  /**
-   *
-   * @param {Object} inst
-   * @return {boolean}
-   */
-  static isViewContainer(inst) {
-    return testClassTagName(inst, CLASS_TAG_NAME_VIEWCONTAINER)
-  }
-
-  /**
-   *
-   * @param {Object} inst
-   * @return {boolean}
-   */
-  static isView(inst) {
-    return testClassTagName(inst, CLASS_TAG_NAME_VIEW)
-  }
-
-  /**
-   *
-   * @param {Object} inst
-   * @return {boolean}
-   */
-  static isViewContainerBase(inst) {
-    return testClassTagName(inst, CLASS_TAG_NAME_VIEWCONTAINER) || testClassTagName(inst, CLASS_TAG_NAME_VIEW)
-  }
 }
-
-export {TypeCheck}
 </code></pre>
         </article>
     </section>

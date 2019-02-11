@@ -1,9 +1,9 @@
 import {EventListenerOrderedParam} from './EventListenerOrderedParam'
-import {EventListenerFactory} from './EventListenerFactory'
+import {EventListenerFactory} from 'flexio-jshelpers'
 
 /**
  * @class
- * @extends EventListenerFactory
+ * @extends {EventListenerFactory}
  */
 export class EventListenerOrderedFactory extends EventListenerFactory {
   /**
@@ -32,11 +32,9 @@ export class EventListenerOrderedFactory extends EventListenerFactory {
 
   /**
    *
-   * @param scope
-   * @return {EventListenerOrderedFactory}
+   * @return {EventListenerOrderedParam}
    */
-  build(scope) {
-    this._scope = scope
-    return EventListenerOrderedParam.create(this._event, this._callback, this._scope, this._priority)
+  build() {
+    return EventListenerOrderedParam.create(this._event, this._callback, this._priority)
   }
 }

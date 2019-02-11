@@ -41,7 +41,7 @@ import {EventListenerOrderedFactory} from '../Event/EventListenerOrderedFactory'
 export class ViewParameters {
   /**
    * @constructor
-   * @param {string} id
+   * @param {string|Symbol} id
    * @param {ViewContainerBase} container
    */
   constructor(id, container) {
@@ -91,8 +91,8 @@ const _setNodeViewRef = Symbol('_setNodeViewRef')
 /**
  * @class
  * @description view describe a fragment of DOM
- * @extends ViewContainerBase
- * @implements HasTagClassNameInterface
+ * @extends {ViewContainerBase}
+ * @implements {HasTagClassNameInterface}
  */
 class View extends ViewContainerBase {
   /**
@@ -264,7 +264,7 @@ class View extends ViewContainerBase {
    * Main method
    * @return {Node}
    */
-  view() {
+  template() {
     throw new CoreException('view should be override', 'METHOD_NOT_OVERRIDE')
   }
 
@@ -282,11 +282,13 @@ class View extends ViewContainerBase {
    *
    * @description subscribe subView an event of this view
    * @param {String} keyStore
-   * @param {updateCallback} clb : event name
+   * @param {View~updateCallback} clb
    */
   suscribeToStore(keyStore, clb = (oldState, newState) => true) {
     assert(isFunction(clb), 'hotballoon:' + this.constructor.name + ':suscribeToStore: `clb` argument should be callable')
+
     const store = this.store(keyStore)
+
     assert(store instanceof StoreInterface, 'hotballoon:' + this.constructor.name + ':suscribeToStore: `keyStore : %s` not reference an instance of StoreInterface', keyStore)
 
     this._state.set(keyStore, store.data())
@@ -294,31 +296,34 @@ class View extends ViewContainerBase {
     this._tokenEvent.add(
       store.ID,
       store.subscribe(
-        EventListenerOrderedFactory.listen(STORE_CHANGED)
+        EventListenerOrderedFactory
+          .listen(STORE_CHANGED)
           .callback((payload, type) => {
             const oldState = this._state.get(keyStore)
             this._state.set(keyStore, payload.data)
+
             if (clb(oldState, payload.data) === true) {
               this.updateNode()
             }
           })
-          .build(this)
+          .build()
       )
     )
-    /**
-     *
-     * @callback updateCallback
-     * @param {Object} oldState
-     * @param {Object} newState
-     */
   }
+  /**
+   *
+   * @callback View~updateCallback
+   * @param {Object} oldState
+   * @param {Object} newState
+   * @return {boolean}
+   */
 
   /**
    * @private
    * @description update the node reference of this View
    */
   [_update]() {
-    reconcile(this.node, this.view(), this.parentNode)
+    reconcile(this.node, this.template(), this.parentNode)
   }
 
   /**
@@ -372,7 +377,6 @@ class View extends ViewContainerBase {
   /**
    * @public
    * @see _mount()
-   * @param {Node} parentNode
    */
   mount() {
     if (this._shouldMount) {
@@ -388,9 +392,7 @@ class View extends ViewContainerBase {
   }
 
   /**
-   * @public
-   * @description Render the view() into `_node` property and mount this into the `parentNode` argument
-   * @param {Node} parentNode
+   * @description Render the template() into `_node` property and mount this into the `parentNode` argument
    */
   renderAndMount() {
     this.render()
@@ -407,7 +409,7 @@ class View extends ViewContainerBase {
 
   /**
    * @param {String} key
-   * @return {Node} Node
+   * @return {Node}
    */
   nodeRef(key) {
     return this._nodeRefs.get(key)
@@ -425,8 +427,7 @@ class View extends ViewContainerBase {
   /**
    * @param {String} key
    * @param {Node} node
-   * @return {Node} Node
-   * @memberOf NodesHandlerMixin
+   * @return {Node}
    * @instance
    */
   addNodeRef(key, node) {
@@ -436,7 +437,7 @@ class View extends ViewContainerBase {
   /**
    * @param {String} key
    * @param {Node} node
-   * @return {Node} Node
+   * @return {Node}
    */
   replaceNodeRef(key, node) {
     return this[_setNodeRef](key, node)
@@ -473,7 +474,7 @@ class View extends ViewContainerBase {
    * @return {Node} node
    */
   [_replaceNode]() {
-    this._node = this.view()
+    this._node = this.template()
     return this._node
   }
 
@@ -534,13 +535,13 @@ export {View}
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Action.html">Action</a></li><li><a href="ActionParams_ActionParams.html">ActionParams</a></li><li><a href="ComponentContext.html">ComponentContext</a></li><li><a href="ComponentContext.create.html">create</a></li><li><a href="CreateHotBalloonElement.html">CreateHotBalloonElement</a></li><li><a href="Debugable.html">Debugable</a></li><li><a href="Dispatcher.html">Dispatcher</a></li><li><a href="DispatcherEventListenerFactory.html">DispatcherEventListenerFactory</a></li><li><a href="DispatcherEventListenerFactory.listen.html">listen</a></li><li><a href="DispatcherEventListenerFactory_EventListenerFactory.html">EventListenerFactory</a></li><li><a href="EventAction_EventAction.html">EventAction</a></li><li><a href="EventHandlerBase.html">EventHandlerBase</a></li><li><a href="EventListenerFactory.listen.html">listen</a></li><li><a href="EventListenerFactory_EventListenerFactory.html">EventListenerFactory</a></li><li><a href="EventListenerOrderedFactory.html">EventListenerOrderedFactory</a></li><li><a href="EventListenerOrderedFactory_EventListenerFactory.html">EventListenerFactory</a></li><li><a href="EventListenerOrderedParam.html">EventListenerOrderedParam</a></li><li><a href="EventListenerOrderedParam.create.html">create</a></li><li><a href="EventListenerOrderedParam_EventListenerParam.html">EventListenerParam</a></li><li><a href="EventListenerParam.create.html">create</a></li><li><a href="EventListenerParam_EventListenerParam.html">EventListenerParam</a></li><li><a href="EventOrderedHandler.html">EventOrderedHandler</a></li><li><a href="HotBalloonApplication.html">HotBalloonApplication</a></li><li><a href="HotBalloonAttributeHandler.html">HotBalloonAttributeHandler</a></li><li><a href="HotballoonElementParams.html">HotballoonElementParams</a></li><li><a href="InLocalStorageStorage.html">InLocalStorageStorage</a></li><li><a href="InMemoryStorage.html">InMemoryStorage</a></li><li><a href="NodeEventListenerParam.create.html">create</a></li><li><a href="NodeEventListenerParam.createWithOptions.html">createWithOptions</a></li><li><a href="ProxyStore.html">ProxyStore</a></li><li><a href="State.html">State</a></li><li><a href="Store.html">Store</a></li><li><a href="View.html">View</a></li><li><a href="ViewContainer.html">ViewContainer</a></li><li><a href="ViewContainer_componentContext.html">componentContext</a></li><li><a href="ViewContainerBase.html">ViewContainerBase</a></li><li><a href="ViewContainerParameters_ViewContainerParameters.html">ViewContainerParameters</a></li><li><a href="ViewEventListenerFactory.html">ViewEventListenerFactory</a></li><li><a href="ViewEventListenerFactory.bubble.html">bubble</a></li><li><a href="ViewEventListenerFactory_EventListenerFactory.html">EventListenerFactory</a></li><li><a href="ViewParameters_ViewParameters.html">ViewParameters</a></li><li><a href="WithIDBase.html">WithIDBase</a></li></ul><h3>Interfaces</h3><ul><li><a href="DataStoreHandlerInterface.html">DataStoreHandlerInterface</a></li><li><a href="DataStoreInterface.html">DataStoreInterface</a></li><li><a href="HasTagClassNameInterface.html">HasTagClassNameInterface</a></li><li><a href="StorageInterface.html">StorageInterface</a></li><li><a href="StoreInterface.html">StoreInterface</a></li></ul><h3>Global</h3><ul><li><a href="global.html#hasClassTagName">hasClassTagName</a></li><li><a href="global.html#isEqualClassTagName">isEqualClassTagName</a></li><li><a href="global.html#nodeRef">nodeRef</a></li><li><a href="global.html#ROOT,">ROOT,</a></li><li><a href="global.html#testClassTagName">testClassTagName</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Action.html">Action</a></li><li><a href="ActionParams_ActionParams.html">ActionParams</a></li><li><a href="ComponentContext.html">ComponentContext</a></li><li><a href="ComponentContext.create.html">create</a></li><li><a href="CreateHotBalloonElement.html">CreateHotBalloonElement</a></li><li><a href="Debugable.html">Debugable</a></li><li><a href="Dispatcher.html">Dispatcher</a></li><li><a href="DispatcherEventListenerFactory.html">DispatcherEventListenerFactory</a></li><li><a href="DispatcherEventListenerFactory.listen.html">listen</a></li><li><a href="EventAction_EventAction.html">EventAction</a></li><li><a href="EventHandler.html">EventHandler</a></li><li><a href="EventListenerOrderedFactory.html">EventListenerOrderedFactory</a></li><li><a href="EventListenerOrderedParam.html">EventListenerOrderedParam</a></li><li><a href="EventListenerOrderedParam.create.html">create</a></li><li><a href="EventOrderedHandler.html">EventOrderedHandler</a></li><li><a href="HotBalloonApplication.html">HotBalloonApplication</a></li><li><a href="HotBalloonAttributeHandler.html">HotBalloonAttributeHandler</a></li><li><a href="HotballoonElementParams.html">HotballoonElementParams</a></li><li><a href="InLocalStorageStorage.html">InLocalStorageStorage</a></li><li><a href="InMemoryStorage.html">InMemoryStorage</a></li><li><a href="NodeEventListenerParam.create.html">create</a></li><li><a href="NodeEventListenerParam.createWithOptions.html">createWithOptions</a></li><li><a href="ProxyStore.html">ProxyStore</a></li><li><a href="State.html">State</a></li><li><a href="Store.html">Store</a></li><li><a href="View.html">View</a></li><li><a href="ViewContainer.html">ViewContainer</a></li><li><a href="ViewContainer_componentContext.html">componentContext</a></li><li><a href="ViewContainerBase.html">ViewContainerBase</a></li><li><a href="ViewContainerParameters_ViewContainerParameters.html">ViewContainerParameters</a></li><li><a href="ViewEventListenerFactory.html">ViewEventListenerFactory</a></li><li><a href="ViewEventListenerFactory.bubble.html">bubble</a></li><li><a href="ViewParameters_ViewParameters.html">ViewParameters</a></li><li><a href="WithIDBase.html">WithIDBase</a></li></ul><h3>Interfaces</h3><ul><li><a href="DataStoreHandlerInterface.html">DataStoreHandlerInterface</a></li><li><a href="DataStoreInterface.html">DataStoreInterface</a></li><li><a href="HasTagClassNameInterface.html">HasTagClassNameInterface</a></li><li><a href="StorageInterface.html">StorageInterface</a></li><li><a href="StoreInterface.html">StoreInterface</a></li></ul><h3>Global</h3><ul><li><a href="global.html#hasClassTagName">hasClassTagName</a></li><li><a href="global.html#isEqualClassTagName">isEqualClassTagName</a></li><li><a href="global.html#nodeRef">nodeRef</a></li><li><a href="global.html#ROOT,">ROOT,</a></li><li><a href="global.html#testClassTagName">testClassTagName</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Feb 05 2019 12:22:08 GMT+0100 (GMT+01:00)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Feb 11 2019 13:32:34 GMT+0100 (GMT+01:00)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -1,9 +1,8 @@
-import {EventListenerFactory} from '../Event/EventListenerFactory'
 import {Action} from '../Action/Action'
-import {assert} from 'flexio-jshelpers'
+import {assert, EventListenerFactory} from 'flexio-jshelpers'
 
 /**
- * @extends EventListenerFactory
+ * @extends {EventListenerFactory}
  */
 export class DispatcherEventListenerFactory extends EventListenerFactory {
   /**

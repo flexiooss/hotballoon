@@ -115,7 +115,9 @@ export class ViewContainer extends ViewContainerBase {
   suscribeToStore(keyStore, clb = (payload) => {
   }) {
     assert(isFunction(clb), 'hotballoon:' + this.constructor.name + ':_suscribeToStore: `clb` argument should be callable')
+
     const store = this._Store(keyStore)
+
     assert(store instanceof StoreInterface, 'hotballoon:' + this.constructor.name + ':_suscribeToStore: `keyStore : %s` not reference an instance of StoreInterface', keyStore)
 
     this._tokenEvent.add(

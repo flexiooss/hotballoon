@@ -13,15 +13,32 @@ export class EventAction {
     assert(!!payload,
       'hotballoon:EventAction:constructor "payload" property should not be empty'
     )
-    this.name = name
-    this.payload = payload
+    this.__name = name
+    this.__payload = payload
+  }
+
+  /**
+   *
+   * @return {string}
+   */
+  get name() {
+    return this.__name
+  }
+
+  /**
+   *
+   * @return {*}
+   */
+  get payload() {
+    return this.__payload
   }
 
   /**
    *
    * @param {string} name
    * @param {*} payload
-   * @return {ReadonlyEventAction}
+   * @readonly
+   * @return {EventAction}
    */
   static create(name, payload) {
     return deepFreezeSeal(new this(name, payload))

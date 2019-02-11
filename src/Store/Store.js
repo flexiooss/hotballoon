@@ -58,7 +58,7 @@ export class Store extends StoreInterface {
         }
       },
       /**
-       * @property {EventOrderedHandlerOld}
+       * @property {EventOrderedHandler}
        * @name Store#_EventHandler
        * @protected
        */
@@ -89,7 +89,7 @@ export class Store extends StoreInterface {
   }
 
   /**
-   * @returns {DataStoreInterface} state#data frozen
+   * @return {State#data} state#data frozen
    */
   data() {
     return this[_get]().data

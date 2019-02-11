@@ -9,19 +9,13 @@ export const STORE_CHANGED = Symbol('STORE.CHANGED')
  */
 export class StoreInterface extends WithIDBase {
   /**
-   * @param {String} type
-   * @param {Function} callback
-   * @param {Object} scope
-   * @param {Integer} priority
+   * @param {EventListenerOrderedParam} eventListenerOrderedParam
    * @return {String} token
    */
-  subscribe(type, callback, scope, priority) {
+  subscribe(eventListenerOrderedParam) {
     throw new CoreException(`subscribe should be override with this signature :
    /**
-   * @param {String} type
-   * @param {Function} callback
-   * @param {Object} scope
-   * @param {Integer} priority
+   * @param {EventListenerOrderedParam} eventListenerOrderedParam
    * @return {String} token
    */
    `, 'METHOD_NOT_OVERRIDE')

@@ -1,13 +1,12 @@
 'use strict'
-import {assert, isArray} from 'flexio-jshelpers'
+import {assert, isArray, EventHandlerBase} from 'flexio-jshelpers'
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_DISPATCHER} from '../HasTagClassNameInterface'
-import {EventHandlerBase} from '../Event/EventHandlerBase'
 import {EventAction} from '../Action/EventAction'
 
 /**
  * @class
  * @description dispatcher is the event handler between Actions and componentContext
- * @extends EventHandlerBase
+ * @extends {EventHandlerBase}
  * @implements HasTagClassNameInterface
  */
 export class Dispatcher extends EventHandlerBase {

@@ -1,15 +1,5 @@
 {
   "name": "hotballoon",
-  "jest": {
-    "verbose": true,
-    "globals": {
-      "__ASSERT__": true
-    },
-    "testMatch": [
-      "<rootDir>/__tests__/**/?(*.)+(test).js"
-    ],
-    "testEnvironment": "jsdom"
-  },
   "description": "Small JavaScript library for building interfaces by Flexio",
   "main": "index.js",
   "module": "index.js",
@@ -17,8 +7,8 @@
   "license": "Apache-2.0",
   "scripts": {
     "doc": "yarn jsdoc -d ./docs/ -p -r ./src/ ",
-    "test": "jest",
-    "test:output": "jest --clearCache --json --outputFile=__tests__/results.json"
+    "hotballoon-shed": "node ./node_modules/hotballoon-shed",
+    "test": "yarn hotballoon-shed --test"
   },
   "bugs": {
     "url": "https://github.com/flexiooss/hotballoon/issues"
@@ -26,15 +16,7 @@
   "author": "Thomas Chatelain (https://github.com/TomAchT)",
   "repository": "https://github.com/flexiooss/hotballoon.git",
   "devDependencies": {
-    "babel-core": "^6.26.3",
-    "babel-jest": "^23.4.0",
-    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
-    "babel-polyfill": "^6.26.0",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-es2015": "^6.24.1",
-    "babel-preset-jest": "^23.2.0",
-    "babel-preset-stage-0": "^6.24.1",
-    "babel-eslint": "^8.0.3",
+    "code-altimeter-js": "https://github.com/flexiooss/code-altimeter-js.git",
     "eslint": "^5.2.0",
     "eslint-config-standard": "^11.0.0-beta.0",
     "eslint-friendly-formatter": "^3.0.0",
@@ -44,7 +26,7 @@
     "eslint-plugin-node": "^5.2.1",
     "eslint-plugin-promise": "^3.6.0",
     "eslint-plugin-standard": "^3.0.1",
-    "jest": "^23.4.1",
+    "hotballoon-shed": "https://github.com/flexiooss/hotballoon-shed.git",
     "jsdoc": "^3.5.5",
     "regenerator-runtime": "^0.12.0"
   },
