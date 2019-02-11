@@ -47,57 +47,70 @@ class ComponentContext extends WithIDBase {
     })
 
     Object.defineProperties(this, {
-        /**
+      /**
          * @name ComponentContext#_APP
          * @type {HotBalloonApplication}
          */
-        _APP: {
-          configurable: false,
-          enumerable: false,
-          get: () => {
-            return hotBallonApplication
-          },
-          set: (v) => {
-            assert(false,
-              `hotballoon:${this.constructor.name}: _APP property already defined`
-            )
-            return false
-          }
+      _APP: {
+        configurable: false,
+        enumerable: false,
+        get: () => {
+          return hotBallonApplication
         },
-        _sequenceId: {
-          configurable: false,
-          enumerable: false,
-          get: () => {
-            return _sequenceId
-          },
-          set: (v) => {
-            return false
-          }
-        },
-
-        _stores: {
-          configurable: false,
-          enumerable: false,
-          get: () => {
-            return _stores
-          },
-          set: (v) => {
-            return false
-          }
-        },
-
-        _viewContainers: {
-          configurable: false,
-          enumerable: false,
-          get: () => {
-            return _viewContainers
-          },
-          set: (v) => {
-            return false
-          }
+        set: (v) => {
+          assert(false,
+            `hotballoon:${this.constructor.name}: _APP property already defined`
+          )
+          return false
         }
+      },
+      _sequenceId: {
+        configurable: false,
+        enumerable: false,
+        /**
+           *
+           * @name ComponentContext#_sequenceId
+           * @return {Sequence}
+           */
+        get: () => {
+          return _sequenceId
+        },
+        set: (v) => {
+          return false
+        }
+      },
 
+      _stores: {
+        configurable: false,
+        enumerable: false,
+        /**
+           * @name ComponentContext#_stores
+           * @return {MapOfInstance}
+           */
+        get: () => {
+          return _stores
+        },
+        set: (v) => {
+          return false
+        }
+      },
+
+      _viewContainers: {
+        configurable: false,
+        enumerable: false,
+        /**
+           * @name ComponentContext#_viewContainers
+           * @return {MapOfInstance}
+           */
+        get: () => {
+          return _viewContainers
+        },
+        set: (v) => {
+          return false
+        }
       }
+
+    }
     )
   }
 
