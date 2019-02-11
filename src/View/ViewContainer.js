@@ -5,6 +5,7 @@ import {STORE_CHANGED, StoreInterface} from '../Store/StoreInterface'
 import {ViewContainerBase} from './ViewContainerBase'
 import {CoreException} from '../CoreException'
 import {Action} from '../Action/Action'
+import {EventListenerOrderedFactory} from '../..'
 
 export class ViewContainerParameters {
   /**
@@ -91,7 +92,7 @@ export class ViewContainer extends ViewContainerBase {
         enumerable: false,
         writable: false,
         /**
-         * @type {componentContext}
+         * @type {ComponentContext}
          * @name ViewContainer#_ComponentContext
          * @protected
          */
@@ -110,34 +111,33 @@ export class ViewContainer extends ViewContainerBase {
    *
    * @description subscribe subView an event of this view
    * @param {String} keyStore
-   * @param {updateCallback} clb : event name
+   * @param {ViewContainer~storeChanged} clb
    */
-  suscribeToStore(keyStore, clb = (payload) => {
-  }) {
-    assert(isFunction(clb), 'hotballoon:' + this.constructor.name + ':_suscribeToStore: `clb` argument should be callable')
+  suscribeToStore(keyStore, clb = (state) => true) {
+    assert(isFunction(clb), 'hotballoon:' + this.constructor.name + ':suscribeToStore: `clb` argument should be callable')
 
-    const store = this._Store(keyStore)
+    const store = this.store(keyStore)
 
-    assert(store instanceof StoreInterface, 'hotballoon:' + this.constructor.name + ':_suscribeToStore: `keyStore : %s` not reference an instance of StoreInterface', keyStore)
+    assert(store instanceof StoreInterface, 'hotballoon:' + this.constructor.name + ':suscribeToStore: `keyStore : %s` not reference an instance of StoreInterface', keyStore)
 
     this._tokenEvent.add(
       store.ID,
       store.subscribe(
-        STORE_CHANGED,
-        (payload, type) => {
-          clb(payload)
-        },
-        this,
-        100
+        EventListenerOrderedFactory
+          .listen(STORE_CHANGED)
+          .callback((payload, type) => {
+            clb(payload.data)
+          })
+          .build()
       )
     )
-    /**
-     *
-     * @callback updateCallback
-     * @param {Object} oldState
-     * @param {Object} newState
-     */
   }
+  /**
+   *
+   * @callback ViewContainer~storeChanged
+   * @param {Object} state
+   * @return {boolean}
+   */
 
   /**
    * @private
@@ -207,7 +207,7 @@ export class ViewContainer extends ViewContainerBase {
 
   /**
    *
-   * @return {componentContext}
+   * @return {ComponentContext}
    * @constructor
    */
   componentContext() {
@@ -223,7 +223,7 @@ export class ViewContainer extends ViewContainerBase {
   }
 
   /**
-   * @return {dispatcher} dispatcher
+   * @return {Dispatcher} dispatcher
    * @instance
    */
   dispatcher() {

@@ -233,7 +233,6 @@ class View extends ViewContainerBase {
   }
 
   /**
-   * Main method
    * @return {Node}
    */
   template() {
@@ -243,7 +242,7 @@ class View extends ViewContainerBase {
   /**
    *
    * @param {String} querySelector
-   * @param {HotballoonElementParams} [hotballoonElementParams]
+   * @param {HotballoonElementParams} hotballoonElementParams
    * @return {Node}
    */
   html(querySelector, hotballoonElementParams) {

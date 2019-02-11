@@ -162,7 +162,7 @@ export class ViewContainerBase extends WithIDBase {
 
   /**
    *
-   * @return {Map<String, view>}
+   * @return {Map<String, View>}
    */
   MapOfView() {
     return this[_Views]
