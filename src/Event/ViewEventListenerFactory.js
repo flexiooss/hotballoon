@@ -19,22 +19,24 @@ export class ViewEventListenerFactory extends EventListenerOrderedFactory {
      * @protected
      */
     this._eventToDispatch = ''
-    /**
-     *
-     * @type {boolean}
-     * @protected
-     */
-    this._isBubble = false
   }
 
   /**
    *
-   * @param {string} event
+   * @param {ViewContainerBase} viewContainerBase
+   * @throws AssertionError
    * @return {ViewEventListenerFactory}
+   * @private
    */
-  bubbleEvent(event) {
+  __bubbleEvent(viewContainerBase) {
     this._eventToDispatch = this._event
-    this._isBubble = true
+    if (this._isBubble) {
+      assert(viewContainerBase instanceof ViewContainerBase,
+        'hotballoon:ViewEventListenerFactory:build: `scope` argument should be an instance of ViewContainerBase')
+      this._callback = (payload, type) => {
+        viewContainerBase.dispatch(this._eventToDispatch, payload)
+      }
+    }
     return this
   }
 
@@ -51,28 +53,19 @@ export class ViewEventListenerFactory extends EventListenerOrderedFactory {
   /**
    *
    * @param {String} event
+   * @param {ViewContainerBase} viewContainerBase
    * @return {EventListenerFactory}
    * @constructor
    */
-  static bubble(event) {
-    return new this(event).bubbleEvent(event)
+  static bubble(event, viewContainerBase) {
+    return new this(event).__bubbleEvent(viewContainerBase)
   }
 
   /**
    *
-   * @param {ViewContainerBase} [scope = null]
-   * @throws AssertionError
-   * @return {EventListenerParam}
+   * @return {EventListenerOrderedParam}
    */
-  build(scope = null) {
-    this._scope = scope
-    if (this._isBubble) {
-      assert(scope instanceof ViewContainerBase,
-        'hotballoon:ViewEventListenerFactory:build: `scope` argument should be an instance of ViewContainerBase')
-      this._callback = (payload, type) => {
-        this._scope.dispatch(this._eventToDispatch, payload)
-      }
-    }
-    return EventListenerOrderedParam.create(this._event, this._callback, this._scope, this._priority)
+  build() {
+    return EventListenerOrderedParam.create(this._event, this._callback, this._priority)
   }
 }

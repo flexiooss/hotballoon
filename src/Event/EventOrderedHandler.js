@@ -1,11 +1,10 @@
 'use strict'
-import {assert, sortMap} from 'flexio-jshelpers'
-import {EventHandlerBase} from './EventHandlerBase'
+import {assert, sortMap, EventHandlerBase} from 'flexio-jshelpers'
 import {EventListenerOrderedParam} from './EventListenerOrderedParam'
 
 /**
  * @class
- * @extends EventHandlerBase
+ * @extends {EventHandlerBase}
  */
 export class EventOrderedHandler extends EventHandlerBase {
   /**
@@ -19,12 +18,11 @@ export class EventOrderedHandler extends EventHandlerBase {
       'hotballoon:EventHandler:on: ̀`eventListenerOrderedParam` argument assert be an instance of EventListenerOrderedParam'
     )
 
-    this._mayInitListeners(eventListenerOrderedParam.event)
+    this._ensureHaveListenersMap(eventListenerOrderedParam.event)
 
     const id = this.nextID()
 
     this._listeners.get(eventListenerOrderedParam.event).set(id, {
-      scope: eventListenerOrderedParam.scope,
       callback: eventListenerOrderedParam.callback,
       priority: eventListenerOrderedParam.priority
     })
@@ -50,8 +48,7 @@ export class EventOrderedHandler extends EventHandlerBase {
     this._isPending.add(token)
     try {
       const listener = this._listeners.get(event).get(token)
-      listener.callback.call(
-        listener.scope,
+      listener.callback(
         this._pendingPayload.get(event),
         event
       )

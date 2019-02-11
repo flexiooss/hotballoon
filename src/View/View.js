@@ -13,7 +13,7 @@ import {EventListenerOrderedFactory} from '../Event/EventListenerOrderedFactory'
 export class ViewParameters {
   /**
    * @constructor
-   * @param {string} id
+   * @param {string|Symbol} id
    * @param {ViewContainerBase} container
    */
   constructor(id, container) {
@@ -63,8 +63,8 @@ const _setNodeViewRef = Symbol('_setNodeViewRef')
 /**
  * @class
  * @description view describe a fragment of DOM
- * @extends ViewContainerBase
- * @implements HasTagClassNameInterface
+ * @extends {ViewContainerBase}
+ * @implements {HasTagClassNameInterface}
  */
 class View extends ViewContainerBase {
   /**
@@ -254,11 +254,13 @@ class View extends ViewContainerBase {
    *
    * @description subscribe subView an event of this view
    * @param {String} keyStore
-   * @param {View~updateCallback} clb : event name
+   * @param {View~updateCallback} clb
    */
   suscribeToStore(keyStore, clb = (oldState, newState) => true) {
     assert(isFunction(clb), 'hotballoon:' + this.constructor.name + ':suscribeToStore: `clb` argument should be callable')
+
     const store = this.store(keyStore)
+
     assert(store instanceof StoreInterface, 'hotballoon:' + this.constructor.name + ':suscribeToStore: `keyStore : %s` not reference an instance of StoreInterface', keyStore)
 
     this._state.set(keyStore, store.data())
@@ -271,6 +273,7 @@ class View extends ViewContainerBase {
           .callback((payload, type) => {
             const oldState = this._state.get(keyStore)
             this._state.set(keyStore, payload.data)
+
             if (clb(oldState, payload.data) === true) {
               this.updateNode()
             }
@@ -278,13 +281,14 @@ class View extends ViewContainerBase {
           .build()
       )
     )
-    /**
-     *
-     * @callback View~updateCallback
-     * @param {Object} oldState
-     * @param {Object} newState
-     */
   }
+  /**
+   *
+   * @callback View~updateCallback
+   * @param {Object} oldState
+   * @param {Object} newState
+   * @return {boolean}
+   */
 
   /**
    * @private

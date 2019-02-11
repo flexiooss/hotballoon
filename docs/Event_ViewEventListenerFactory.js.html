@@ -60,7 +60,7 @@ export class ViewEventListenerFactory extends EventListenerOrderedFactory {
    * @param {string} event
    * @return {ViewEventListenerFactory}
    */
-  bubbleEvent(event) {
+  __bubbleEvent(event) {
     this._eventToDispatch = this._event
     this._isBubble = true
     return this
@@ -83,7 +83,7 @@ export class ViewEventListenerFactory extends EventListenerOrderedFactory {
    * @constructor
    */
   static bubble(event) {
-    return new this(event).bubbleEvent(event)
+    return new this(event).__bubbleEvent(event)
   }
 
   /**

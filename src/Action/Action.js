@@ -21,8 +21,7 @@ const _actionPayloadClass = Symbol('_actionPayloadClass')
 export class Action {
   /**
    *
-   * @param {hotballoon:dispatcher} dispatcher
-   * @param {Class<ActionPayload>} actionPayloadClass
+   * @param {ActionParams} actionParams
    */
   constructor(actionParams) {
     assert(actionParams instanceof ActionParams,
