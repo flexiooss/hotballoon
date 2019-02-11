@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: Event/EventOrderedHandler.js</title>
+    <title>JSDoc: Source: Store/Storage/InLocalStorageStorage.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: Event/EventOrderedHandler.js</h1>
+    <h1 class="page-title">Source: Store/Storage/InLocalStorageStorage.js</h1>
 
     
 
@@ -27,62 +27,88 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>'use strict'
-import {assert, sortMap, EventHandlerBase} from 'flexio-jshelpers'
-import {EventListenerOrderedParam} from './EventListenerOrderedParam'
+/* global localStorage:false */
+
+import {assert, deepFreezeSeal, cloneObject} from 'flexio-jshelpers'
+import {State} from '../State'
+import {DataStoreInterface} from '../DataStore/DataStoreInterface'
+import {StorageInterface} from './StorageInterface'
+import {JsonParser} from 'flexio-json-parser'
+
+const _key_ = Symbol('_key_')
+const _dataStoreConstructor = Symbol('_dataStoreConstructor')
 
 /**
  * @class
- * @extends {EventHandlerBase}
+ * @implements StorageInterface
  */
-export class EventOrderedHandler extends EventHandlerBase {
+export class InLocalStorageStorage extends StorageInterface {
   /**
-   *
-   * @param {EventListenerOrderedParam} eventListenerOrderedParam
-   * @return {String} token
-   * @throws AssertionError
+   * @constructor
+   * @param {State} state
+   * @param {DataStoreInterface} dataStore
    */
-  on(eventListenerOrderedParam) {
-    assert(eventListenerOrderedParam instanceof EventListenerOrderedParam,
-      'hotballoon:EventHandler:on: ̀`eventListenerOrderedParam` argument assert be an instance of EventListenerOrderedParam'
-    )
+  constructor(state, dataStore) {
+    super()
 
-    this._ensureHaveListenersMap(eventListenerOrderedParam.event)
+    assert(state instanceof State,
+      'hotballoon:Storage:constructor: `state` argument should be a `State` instance')
 
-    const id = this.nextID()
+    assert(dataStore instanceof DataStoreInterface,
+      'hotballoon:' + this.constructor.name + ':constructor: `dataStore` argument should be an instance of `DataStoreInterface`')
 
-    this._listeners.get(eventListenerOrderedParam.event).set(id, {
-      callback: eventListenerOrderedParam.callback,
-      priority: eventListenerOrderedParam.priority
+    Object.defineProperties(this, {
+      [_key_]: {
+        enumerable: false,
+        configurable: false,
+        writable: false,
+        value: state
+      },
+
+      /**
+       * @property {DataStoreInterface}
+       * @name InMemoryStorage#_dataStoreConstructor
+       * @private
+       */
+      [_dataStoreConstructor]: {
+        enumerable: false,
+        configurable: false,
+        writable: false,
+        value: dataStore.constructor
+      }
     })
 
-    this._listeners.set(eventListenerOrderedParam.event,
-      sortMap(
-        this._listeners.get(eventListenerOrderedParam.event),
-        (a, b) => {
-          return a.value.priority - b.value.priority
-        }
-      )
-    )
-
-    return id
+    deepFreezeSeal(this)
   }
 
   /**
-   * @private
-   * @param {String} event
-   * @param {String} token
+   *
+   * @param {DataStoreInterface} dataStore
    */
-  _invokeCallback(event, token) {
-    this._isPending.add(token)
-    try {
-      const listener = this._listeners.get(event).get(token)
-      listener.callback(
-        this._pendingPayload.get(event),
-        event
-      )
-    } finally {
-      this._isHandled.add(token)
-    }
+  set(storeID, dataStore) {
+    assert(dataStore instanceof this[_dataStoreConstructor],
+      `hotballoon:${this.constructor.name}:set: \`dataStore\` argument should be an instance of ${this[_dataStoreConstructor].name} `)
+
+    localStorage.setItem(this[_key_], JSON.stringify(new State(storeID, dataStore)))
+    return this
+  }
+
+  /**
+   * @returns {State} state
+   */
+  get() {
+    const cloned = new JsonParser()
+      .withDateParserUTCISO8601()
+      .parse(localStorage.getItem(this[_key_]))
+
+    return new State(cloned.storeID, this[_dataStoreConstructor].fromJSON(cloned.data))
+  }
+
+  /**
+   * @returns {State} state cloned
+   */
+  clone() {
+    return this.get()
   }
 }
 </code></pre>

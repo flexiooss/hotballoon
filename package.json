@@ -1,15 +1,5 @@
 {
   "name": "hotballoon",
-  "jest": {
-    "verbose": true,
-    "globals": {
-      "__ASSERT__": true
-    },
-    "testMatch": [
-      "<rootDir>/__tests__/**/?(*.)+(test).js"
-    ],
-    "testEnvironment": "jsdom"
-  },
   "description": "Small JavaScript library for building interfaces by Flexio",
   "main": "index.js",
   "module": "index.js",
