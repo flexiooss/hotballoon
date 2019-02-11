@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: Store/Storage/StorageInterface.js</title>
+    <title>JSDoc: Class: withEventListener</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,49 +17,199 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: Store/Storage/StorageInterface.js</h1>
+    <h1 class="page-title">Class: withEventListener</h1>
 
     
 
 
 
+
+<section>
+
+<header>
     
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>'use strict'
-import {CoreException} from '../../CoreException'
+        <h2><span class="attribs"><span class="type-signature"></span></span>
+            <span class="ancestors"><a href="HotballoonElementParams.html">HotballoonElementParams</a>.</span>withEventListener<span class="signature">(nodeEventListenerParam)</span><span class="type-signature"> &rarr; {this}</span></h2>
+        
+    
+</header>
 
-/**
- * @class
- * @interface
- */
-export class StorageInterface {
-  /**
-   * @param {string|Symbol} storeId
-   * @param {DataStoreInterface} data
-   * @returns {StorageInterface}
-   */
-  set(storeId, data) {
-    throw new CoreException(`set should be override`, 'METHOD_NOT_OVERRIDE')
-  }
+<article>
+    <div class="container-overview">
+    
+        
 
-  /**
-   * @returns {State}
-   */
-  get() {
-    throw new CoreException(`get should be override`, 'METHOD_NOT_OVERRIDE')
-  }
+    
 
-  /**
-   * @returns {State} state cloned
-   */
-  clone() {
-    throw new CoreException(`clone should be override `, 'METHOD_NOT_OVERRIDE')
-  }
-}
-</code></pre>
-        </article>
-    </section>
+    
+    <h4 class="name" id="withEventListener"><span class="type-signature"></span>new withEventListener<span class="signature">(nodeEventListenerParam)</span><span class="type-signature"> &rarr; {this}</span></h4>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>nodeEventListenerParam</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">NodeEventListenerParam</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="HotballoonNodeElement_HotballoonElementParams.js.html">HotballoonNodeElement/HotballoonElementParams.js</a>, <a href="HotballoonNodeElement_HotballoonElementParams.js.html#line95">line 95</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">this</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 
