@@ -5,7 +5,7 @@ import {STORE_CHANGED, StoreInterface} from '../Store/StoreInterface'
 import {ViewContainerBase} from './ViewContainerBase'
 import {CoreException} from '../CoreException'
 import {Action} from '../Action/Action'
-import {EventListenerOrderedFactory} from '../..'
+import {EventListenerOrderedFactory} from '../Event/EventListenerOrderedFactory'
 
 export class ViewContainerParameters {
   /**
@@ -60,7 +60,7 @@ const _mountViews = Symbol('_mountViews')
 /**
  *
  * @class
- * @description viewContainer is a Views container who can suscribe to Stores to dispatch state to Views
+ * @description viewContainer is a Views container who can subscribe to Stores to dispatch state to Views
  * @extends ViewContainerBase
  * @implements HasTagClassNameInterface
  */
@@ -132,6 +132,7 @@ export class ViewContainer extends ViewContainerBase {
       )
     )
   }
+
   /**
    *
    * @callback ViewContainer~storeChanged
@@ -173,7 +174,7 @@ export class ViewContainer extends ViewContainerBase {
    */
   mount(parentNode) {
     assert(isNode(parentNode),
-      'hotballoon:viewContainer:mount: `parentNode` arguement assert be a Node, %s given',
+      'hotballoon:viewContainer:mount: `parentNode` argument assert be a Node, %s given',
       typeof parentNode)
     this[_mountViews](parentNode)
     this._mounted = true
@@ -215,7 +216,7 @@ export class ViewContainer extends ViewContainerBase {
   }
 
   /**
-   * @return {HotBalloonApplication} hotBallonApplication
+   * @return {HotBalloonApplication}
    * @instance
    */
   APP() {
@@ -232,7 +233,7 @@ export class ViewContainer extends ViewContainerBase {
 
   /**
    * @param {String} key
-   * @return {service} service
+   * @return {service}
    * @instance
    */
   service(key) {

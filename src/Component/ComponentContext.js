@@ -23,15 +23,15 @@ import {
 class ComponentContext extends WithIDBase {
   /**
    *
-   * @param {HotBalloonApplication} hotBallonApplication
+   * @param {HotBalloonApplication} hotBalloonApplication
    */
-  constructor(hotBallonApplication) {
-    assert(testClassTagName(hotBallonApplication, CLASS_TAG_NAME_HOTBALLOON_APPLICATION),
-      'hotballoon:componentContext:constructor:  hotBallonApplication argument should be an instance of ̀ hotballoon/HotBalloonApplication`, `%s` given',
-      typeof hotBallonApplication
+  constructor(hotBalloonApplication) {
+    assert(testClassTagName(hotBalloonApplication, CLASS_TAG_NAME_HOTBALLOON_APPLICATION),
+      'hotballoon:componentContext:constructor:  `hotBalloonApplication` argument should be an instance of ̀ hotballoon/HotBalloonApplication`, `%s` given',
+      typeof hotBalloonApplication
     )
 
-    super(hotBallonApplication.nextID())
+    super(hotBalloonApplication.nextID())
 
     this.debug.color = 'green'
 
@@ -55,7 +55,7 @@ class ComponentContext extends WithIDBase {
         configurable: false,
         enumerable: false,
         get: () => {
-          return hotBallonApplication
+          return hotBalloonApplication
         },
         set: (v) => {
           assert(false,
