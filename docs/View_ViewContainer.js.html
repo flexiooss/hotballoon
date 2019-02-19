@@ -128,11 +128,11 @@ export class ViewContainer extends ViewContainerBase {
       }
     })
 
-    this.registerViews()
+    this.__registerViews()
   }
 
-  registerViews() {
-    throw new CoreException('registerViews should be override', 'METHOD_NOT_OVERRIDE')
+  __registerViews() {
+    throw new CoreException('__registerViews should be override', 'METHOD_NOT_OVERRIDE')
   }
 
   /**

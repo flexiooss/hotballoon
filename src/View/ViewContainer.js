@@ -98,12 +98,6 @@ export class ViewContainer extends ViewContainerBase {
         value: viewContainerParameters.component
       }
     })
-
-    this.registerViews()
-  }
-
-  registerViews() {
-    throw new CoreException('registerViews should be override', 'METHOD_NOT_OVERRIDE')
   }
 
   /**
