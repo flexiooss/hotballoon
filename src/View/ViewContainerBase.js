@@ -1,10 +1,8 @@
 'use strict'
 import {MapOfArray, isBoolean, isNode, assert} from 'flexio-jshelpers'
 import {WithIDBase} from '../bases/WithIDBase'
-import {ViewStoresParameters} from './ViewStoresParameters'
 import {EventOrderedHandler} from '../Event/EventOrderedHandler'
 
-const _Stores = Symbol('_Stores')
 const _EventHandler = Symbol('_EventHandler')
 const _Views = Symbol('_Views')
 
@@ -15,9 +13,8 @@ export class ViewContainerBase extends WithIDBase {
   /**
    *
    * @param {String} id
-   * @param {ViewStoresParameters} stores
    */
-  constructor(id, stores = new ViewStoresParameters()) {
+  constructor(id) {
     super(id)
 
     var _mounted = false
@@ -27,17 +24,6 @@ export class ViewContainerBase extends WithIDBase {
     var parentNode
 
     Object.defineProperties(this, {
-      [_Stores]: {
-        configurable: false,
-        enumerable: true,
-        writable: false,
-        /**
-         * @property {Map<StoreInterface>}
-         * @name ViewContainerBase#_Stores
-         * @private
-         */
-        value: stores.getMap()
-      },
       _mounted: {
         configurable: false,
         enumerable: false,
@@ -168,12 +154,5 @@ export class ViewContainerBase extends WithIDBase {
     return this[_Views]
   }
 
-  /**
-   *
-   * @param {string} key
-   * @return {StoreInterface}
-   */
-  store(key) {
-    return this[_Stores].get(key)
-  }
+
 }

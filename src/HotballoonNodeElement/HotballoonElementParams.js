@@ -2,23 +2,21 @@
 import {HyperFlexParams} from 'flexio-hyperflex'
 
 /**
+ *
  * @extends {HyperFlexParams}
  */
 export class HotballoonElementParams extends HyperFlexParams {
-  /**
-   * @return {this}
-   */
   constructor() {
     super()
     /**
      *
-     * @type {Array<view>}
+     * @type {Array.<View>}
      * @private
      */
     this._views = []
     /**
      *
-     * @type {Array<String>}
+     * @type {Array.<String>}
      * @private
      */
     this._reconciliationRules = []
@@ -32,7 +30,7 @@ export class HotballoonElementParams extends HyperFlexParams {
 
   /**
    *
-   * @return {array<string>}
+   * @return {Array.<string>}
    */
   get reconciliationRules() {
     return this._reconciliationRules
@@ -40,7 +38,7 @@ export class HotballoonElementParams extends HyperFlexParams {
 
   /**
    *
-   * @return {Array<view>}
+   * @return {Array.<View>}
    */
   get views() {
     return this._views
@@ -48,7 +46,7 @@ export class HotballoonElementParams extends HyperFlexParams {
 
   /**
    *
-   * @return {Array<NodeEventListenerParam>}
+   * @return {Array.<NodeEventListenerParam>}
    */
   get eventListeners() {
     return this._eventListeners
@@ -56,8 +54,8 @@ export class HotballoonElementParams extends HyperFlexParams {
 
   /**
    * @static
-   * @param {Array<view>} views
-   * @return {this}
+   * @param {Array.<View>} views
+   * @return {HyperFlexParams}
    * @constructor
    */
   static withViews(views) {
@@ -68,8 +66,8 @@ export class HotballoonElementParams extends HyperFlexParams {
 
   /**
    * @static
-   * @param {Array<String>} rules
-   * @return {this}
+   * @param {Array.<String>} rules
+   * @return {HyperFlexParams}
    * @constructor
    */
   static withReconciliationRules(rules) {
@@ -78,7 +76,7 @@ export class HotballoonElementParams extends HyperFlexParams {
 
   /**
    *
-   * @param {Array<string>} reconciliationRules
+   * @param {Array.<string>} reconciliationRules
    * @return {this}
    */
   addReconciliationRules(reconciliationRules) {

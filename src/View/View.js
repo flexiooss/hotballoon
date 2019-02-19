@@ -70,12 +70,10 @@ class View extends ViewContainerBase {
   /**
    * @constructor
    * @param {ViewParameters} viewParameters
-   * @param {ViewStoresParameters} stores
    */
-  constructor(viewParameters, stores) {
-    super(viewParameters.id, stores)
+  constructor(viewParameters) {
+    super(viewParameters.id)
     assert(viewParameters instanceof ViewParameters, 'hotballoon:' + this.constructor.name + ':constructor: `viewParameters` should be an instance of ViewParameters')
-    assert(stores instanceof ViewStoresParameters, 'hotballoon:' + this.constructor.name + ':constructor: `stores` should be an instance of ViewStoresParameters')
 
     this.debug.color = 'blue'
     this.parentNode = viewParameters.container.parentNode
@@ -252,17 +250,13 @@ class View extends ViewContainerBase {
   /**
    *
    * @description subscribe subView an event of this view
-   * @param {String} keyStore
+   * @param {StoreInterface} store
    * @param {View~updateCallback} clb
    */
-  suscribeToStore(keyStore, clb = (oldState, newState) => true) {
-    assert(isFunction(clb), 'hotballoon:' + this.constructor.name + ':suscribeToStore: `clb` argument should be callable')
+  subscribeToStore(store, clb = (state) => true) {
+    assert(isFunction(clb), 'hotballoon:' + this.constructor.name + ':subscribeToStore: `clb` argument should be callable')
 
-    const store = this.store(keyStore)
-
-    assert(store instanceof StoreInterface, 'hotballoon:' + this.constructor.name + ':suscribeToStore: `keyStore : %s` not reference an instance of StoreInterface', keyStore)
-
-    this._state.set(keyStore, store.data())
+    assert(store instanceof StoreInterface, 'hotballoon:' + this.constructor.name + ':subscribeToStore: `keyStore : %s` not reference an instance of StoreInterface', store)
 
     this._tokenEvent.add(
       store.ID,
@@ -270,10 +264,8 @@ class View extends ViewContainerBase {
         EventListenerOrderedFactory
           .listen(STORE_CHANGED)
           .callback((payload, type) => {
-            const oldState = this._state.get(keyStore)
-            this._state.set(keyStore, payload.data)
-
-            if (clb(oldState, payload.data) === true) {
+            if (clb(payload.data) === true) {
+              console.log(this.ID.toString() + ' this.updateNode()')
               this.updateNode()
             }
           })
@@ -281,11 +273,11 @@ class View extends ViewContainerBase {
       )
     )
   }
+
   /**
    *
    * @callback View~updateCallback
-   * @param {Object} oldState
-   * @param {Object} newState
+   * @param {State} state
    * @return {boolean}
    */
 
@@ -325,6 +317,7 @@ class View extends ViewContainerBase {
       this[_render]()
       this.rendered = true
     }
+    console.log(this)
 
     this._shouldRender = true
     return this.node

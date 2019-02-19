@@ -19,11 +19,11 @@
 
     <h1 class="page-title">Source: View/ViewContainer.js</h1>
 
-    
 
 
 
-    
+
+
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>'use strict'
@@ -141,12 +141,12 @@ export class ViewContainer extends ViewContainerBase {
    * @param {String} keyStore
    * @param {ViewContainer~storeChanged} clb
    */
-  suscribeToStore(keyStore, clb = (state) => true) {
-    assert(isFunction(clb), 'hotballoon:' + this.constructor.name + ':suscribeToStore: `clb` argument should be callable')
+  subscribeToStore(keyStore, clb = (state) => true) {
+    assert(isFunction(clb), 'hotballoon:' + this.constructor.name + ':subscribeToStore: `clb` argument should be callable')
 
     const store = this.store(keyStore)
 
-    assert(store instanceof StoreInterface, 'hotballoon:' + this.constructor.name + ':suscribeToStore: `keyStore : %s` not reference an instance of StoreInterface', keyStore)
+    assert(store instanceof StoreInterface, 'hotballoon:' + this.constructor.name + ':subscribeToStore: `keyStore : %s` not reference an instance of StoreInterface', keyStore)
 
     this._tokenEvent.add(
       store.ID,

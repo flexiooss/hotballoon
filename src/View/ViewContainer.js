@@ -68,14 +68,13 @@ export class ViewContainer extends ViewContainerBase {
   /**
    *
    * @param {ViewContainerParameters} viewContainerParameters
-   * @param {ViewStoresParameters} stores
    */
-  constructor(viewContainerParameters, stores) {
+  constructor(viewContainerParameters) {
     assert(viewContainerParameters instanceof ViewContainerParameters,
       'hotballoon:viewContainer:constructor: `viewContainerParameters` argument assert be an instance of ViewContainerParameters'
     )
 
-    super(viewContainerParameters.id, stores)
+    super(viewContainerParameters.id)
     this.parentNode = viewContainerParameters.parentNode
     this.debug.color = 'blueDark'
 
@@ -109,16 +108,21 @@ export class ViewContainer extends ViewContainerBase {
 
   /**
    *
+   * @callback ViewContainer~storeChanged
+   * @param {Object} state
+   * @return {boolean}
+   */
+
+  /**
+   *
    * @description subscribe subView an event of this view
-   * @param {String} keyStore
+   * @param {StoreInterface} store
    * @param {ViewContainer~storeChanged} clb
    */
-  suscribeToStore(keyStore, clb = (state) => true) {
-    assert(isFunction(clb), 'hotballoon:' + this.constructor.name + ':suscribeToStore: `clb` argument should be callable')
+  subscribeToStore(store, clb = (state) => true) {
+    assert(isFunction(clb), 'hotballoon:' + this.constructor.name + ':subscribeToStore: `clb` argument should be callable')
 
-    const store = this.store(keyStore)
-
-    assert(store instanceof StoreInterface, 'hotballoon:' + this.constructor.name + ':suscribeToStore: `keyStore : %s` not reference an instance of StoreInterface', keyStore)
+    assert(store instanceof StoreInterface, 'hotballoon:' + this.constructor.name + ':subscribeToStore: `keyStore : %s` not reference an instance of StoreInterface', store)
 
     this._tokenEvent.add(
       store.ID,
@@ -136,7 +140,7 @@ export class ViewContainer extends ViewContainerBase {
   /**
    *
    * @callback ViewContainer~storeChanged
-   * @param {Object} state
+   * @param {State} state
    * @return {boolean}
    */
 
