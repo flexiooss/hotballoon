@@ -26,27 +26,27 @@ export class ViewParameters {
 
     Object.defineProperties(this, {
 
-      id: {
-        configurable: false,
-        enumerable: false,
-        writable: false,
-        /**
+        id: {
+          configurable: false,
+          enumerable: false,
+          writable: false,
+          /**
            * @type {String}
            * @name ViewParameters#id
            */
-        value: id
-      },
-      container: {
-        configurable: false,
-        enumerable: false,
-        writable: false,
-        /**
+          value: id
+        },
+        container: {
+          configurable: false,
+          enumerable: false,
+          writable: false,
+          /**
            * @type {ViewContainerBase}
            * @name ViewParameters#container
            */
-        value: container
+          value: container
+        }
       }
-    }
     )
   }
 }
@@ -73,7 +73,11 @@ class View extends ViewContainerBase {
    */
   constructor(viewParameters) {
     super(viewParameters.id)
-    assert(viewParameters instanceof ViewParameters, 'hotballoon:' + this.constructor.name + ':constructor: `viewParameters` should be an instance of ViewParameters')
+
+    assert(
+      viewParameters instanceof ViewParameters,
+      'hotballoon:' + this.constructor.name + ':constructor: `viewParameters` should be an instance of ViewParameters'
+    )
 
     this.debug.color = 'blue'
     this.parentNode = viewParameters.container.parentNode
@@ -83,7 +87,6 @@ class View extends ViewContainerBase {
     var _shouldRender = true
     var _shouldMount = true
     const _nodeRefs = new Map()
-    const _state = new Map()
 
     Object.defineProperty(this, CLASS_TAG_NAME, {
       configurable: false,
@@ -108,7 +111,7 @@ class View extends ViewContainerBase {
         configurable: false,
         get: () => {
           /**
-           * @property {Node} _node
+           * @property {Element} _node
            * @name View#_node
            * @private
            */
@@ -190,17 +193,6 @@ class View extends ViewContainerBase {
         set: (v) => {
           return false
         }
-      },
-      _state: {
-        configurable: false,
-        enumerable: false,
-        /**
-         * @property {Map} _state
-         * @type {Map<string, *>}
-         * @name View#_state
-         * @protected
-         */
-        value: _state
       }
 
     })
@@ -209,29 +201,27 @@ class View extends ViewContainerBase {
   /**
    * @static
    * @param {ViewParameters} viewParameters
-   * @param {ViewStoresParameters} stores
    * @return View
    */
-  static create(viewParameters, stores = new ViewStoresParameters()) {
-    return new this(viewParameters, stores)
+  static create(viewParameters) {
+    return new this(viewParameters)
   }
 
   /**
    *
    * @static
    * @param {ViewParameters} viewParameters
-   * @param {ViewStoresParameters} stores
-   * @param {Node} parentNode
+   * @param {Element} parentNode
    * @return View
    */
-  static createWithParentNode(viewParameters, stores, parentNode) {
-    const inst = new this(viewParameters, stores)
+  static createWithParentNode(viewParameters, parentNode) {
+    const inst = new this(viewParameters)
     inst.parentNode = parentNode
     return inst
   }
 
   /**
-   * @return {Node}
+   * @return {Element}
    */
   template() {
     throw new CoreException('view should be override', 'METHOD_NOT_OVERRIDE')
@@ -241,7 +231,7 @@ class View extends ViewContainerBase {
    *
    * @param {String} querySelector
    * @param {HotballoonElementParams} hotballoonElementParams
-   * @return {Node}
+   * @return {Element}
    */
   html(querySelector, hotballoonElementParams) {
     return html(this, querySelector, hotballoonElementParams)
@@ -254,9 +244,16 @@ class View extends ViewContainerBase {
    * @param {View~updateCallback} clb
    */
   subscribeToStore(store, clb = (state) => true) {
-    assert(isFunction(clb), 'hotballoon:' + this.constructor.name + ':subscribeToStore: `clb` argument should be callable')
+    assert(
+      isFunction(clb),
+      'hotballoon:' + this.constructor.name + ':subscribeToStore: `clb` argument should be callable'
+    )
 
-    assert(store instanceof StoreInterface, 'hotballoon:' + this.constructor.name + ':subscribeToStore: `keyStore : %s` not reference an instance of StoreInterface', store)
+    assert(
+      store instanceof StoreInterface,
+      'hotballoon:' + this.constructor.name + ':subscribeToStore: `keyStore : %s` not reference an instance of StoreInterface',
+      store
+    )
 
     this._tokenEvent.add(
       store.ID,
@@ -307,7 +304,7 @@ class View extends ViewContainerBase {
   }
 
   /**
-   * @return {Node} _node
+   * @return {Element} _node
    */
   render() {
     this.debug.log('render').size(2)
@@ -315,13 +312,14 @@ class View extends ViewContainerBase {
 
     if (this._shouldRender) {
       this[_render]()
-      this.rendered = true
+      this._rendered = true
     }
     console.log(this)
 
     this._shouldRender = true
     return this.node
   }
+
 
   /**
    * Set `_shouldRender` to false
@@ -355,6 +353,7 @@ class View extends ViewContainerBase {
     this._shouldMount = false
   }
 
+
   /**
    * @description Render the template() into `_node` property and mount this into the `parentNode` argument
    */
@@ -373,7 +372,7 @@ class View extends ViewContainerBase {
 
   /**
    * @param {String} key
-   * @return {Node}
+   * @return {Element}
    */
   nodeRef(key) {
     return this._nodeRefs.get(key)
@@ -390,8 +389,8 @@ class View extends ViewContainerBase {
 
   /**
    * @param {String} key
-   * @param {Node} node
-   * @return {Node}
+   * @param {Element} node
+   * @return {Element}
    * @instance
    */
   addNodeRef(key, node) {
@@ -400,8 +399,8 @@ class View extends ViewContainerBase {
 
   /**
    * @param {String} key
-   * @param {Node} node
-   * @return {Node}
+   * @param {Element} node
+   * @return {Element}
    */
   replaceNodeRef(key, node) {
     return this[_setNodeRef](key, node)
@@ -410,8 +409,8 @@ class View extends ViewContainerBase {
   /**
    * @private
    * @param {String} key
-   * @param {Node} node
-   * @return {Node} node
+   * @param {Element} node
+   * @return {Element} node
    */
   [_setNodeRef](key, node) {
     $(node).setNodeRef(key)
@@ -428,14 +427,22 @@ class View extends ViewContainerBase {
   }
 
   /**
-   * @return {Node} node
+   *
+   * @return {string}
+   */
+  viewRef() {
+    return this.ID
+  }
+
+  /**
+   * @return {Element} node
    */
   get node() {
     return this._node
   }
 
   /**
-   * @return {Node} node
+   * @return {Element} node
    */
   [_replaceNode]() {
     this._node = this.template()
@@ -451,40 +458,26 @@ class View extends ViewContainerBase {
 
   /**
    *
-   * @return {HotBalloonApplication}
+   * @return {string}
    */
-  APP() {
-    return this.componentContext().APP()
+  AppID() {
+    return this._container.AppID()
   }
 
   /**
    *
-   * @return {componentContext}
+   * @return {string}
    */
-  componentContext() {
-    return this.container().componentContext()
+  componentID() {
+    return this._container.componentID()
   }
 
   /**
    *
-   * @param key
-   * @param defaultValue
+   * @return {string}
    */
-  stateValue(key, defaultValue = null) {
-    return (this._state.has(key)) ? this._state.get(key) : defaultValue
-  }
-
-  /**
-   *
-   * @param {array<string>} keys
-   * @param defaultValue
-   */
-  stateValueByKeys(keys, defaultValue = null) {
-    const keyStore = keys.shift()
-    if (this._state.has(keyStore)) {
-      return (keys.length) ? valueByKeys(this._state.get(keyStore), keys, defaultValue) : this._state.get(keyStore)
-    }
-    return defaultValue
+  containerID() {
+    return this._container.ID
   }
 }
 

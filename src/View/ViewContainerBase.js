@@ -18,7 +18,7 @@ export class ViewContainerBase extends WithIDBase {
     super(id)
 
     var _mounted = false
-    var rendered = false
+    var _rendered = false
     var _tokenEvent = new MapOfArray()
     var _views = new Map()
     var parentNode
@@ -37,27 +37,27 @@ export class ViewContainerBase extends WithIDBase {
         },
         set: (v) => {
           assert(!!isBoolean(v),
-            'hotballoon:ViewContainerBase:constructor: `_mounted` argument should be a boolean'
+            'hotballoon:ViewContainerBase:constructor: `__mounted` argument should be a boolean'
           )
           _mounted = v
         }
       },
       /**
        * @property {boolean}
-       * @name ViewContainerBase#rendered
+       * @name ViewContainerBase#_rendered
        * @protected
        */
-      rendered: {
+      _rendered: {
         configurable: false,
         enumerable: false,
         get: () => {
-          return rendered
+          return _rendered
         },
         set: (v) => {
           assert(!!isBoolean(v),
             'hotballoon:ViewContainerBase:constructor: `rendered` argument should be a boolean'
           )
-          rendered = v
+          _rendered = v
         }
       },
       [_EventHandler]: {
@@ -154,5 +154,20 @@ export class ViewContainerBase extends WithIDBase {
     return this[_Views]
   }
 
+  /**
+   *
+   * @return {boolean}
+   */
+  isRendered() {
+    return this._rendered === true
+  }
+
+  /**
+   *
+   * @return {boolean}
+   */
+  isMounted() {
+    return this._mounted === true
+  }
 
 }

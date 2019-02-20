@@ -204,7 +204,7 @@ export class ViewContainer extends ViewContainerBase {
       'hotballoon:viewContainer:mount: `parentNode` arguement assert be a Node, %s given',
       typeof parentNode)
     this[_mountViews](parentNode)
-    this._mounted = true
+    this.__mounted = true
 
     return parentNode
   }

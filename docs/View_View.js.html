@@ -380,7 +380,7 @@ class View extends ViewContainerBase {
   mount() {
     if (this._shouldMount) {
       this[_mount]()
-      this._mounted = true
+      this.__mounted = true
     }
 
     this._shouldMount = true

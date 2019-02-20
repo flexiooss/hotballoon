@@ -19,11 +19,11 @@
 
     <h1 class="page-title">Source: View/ViewContainerBase.js</h1>
 
-    
 
 
 
-    
+
+
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>'use strict'
@@ -48,7 +48,7 @@ export class ViewContainerBase extends WithIDBase {
   constructor(id, stores = new ViewStoresParameters()) {
     super(id)
 
-    var _mounted = false
+    var __mounted = false
     var rendered = false
     var _tokenEvent = new MapOfArray()
     var _views = new Map()
@@ -66,22 +66,22 @@ export class ViewContainerBase extends WithIDBase {
          */
         value: stores.getMap()
       },
-      _mounted: {
+      __mounted: {
         configurable: false,
         enumerable: false,
         get: () => {
           /**
            * @property {boolean}
-           * @name ViewContainerBase#_mounted
+           * @name ViewContainerBase#__mounted
            * @protected
            */
-          return _mounted
+          return __mounted
         },
         set: (v) => {
           assert(!!isBoolean(v),
-            'hotballoon:ViewContainerBase:constructor: `_mounted` argument should be a boolean'
+            'hotballoon:ViewContainerBase:constructor: `__mounted` argument should be a boolean'
           )
-          _mounted = v
+          __mounted = v
         }
       },
       /**

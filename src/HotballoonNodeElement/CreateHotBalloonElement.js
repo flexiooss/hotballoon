@@ -46,10 +46,14 @@ class CreateHotBalloonElement extends HyperFlex {
    * @param {View} scope
    * @param {string} querySelector - tag#id.class[.class,...]
    * @param {HotballoonElementParams} hotballoonElementParams
-   * @return {Node}
+   * @return {Element}
    */
   static html(scope, querySelector, hotballoonElementParams) {
-    return new CreateHotBalloonElement(scope, querySelector, hotballoonElementParams)
+    return new CreateHotBalloonElement(
+      scope,
+      querySelector,
+      hotballoonElementParams
+    )
       .createHtmlElement()[_changeIdAndSetNodeRef]()
       ._element
   }
@@ -85,13 +89,13 @@ class CreateHotBalloonElement extends HyperFlex {
    * @return {String}
    */
   [_generateIdFromScope](id) {
-    return `${toString(this._scope.APP().ID)}-${toString(this._scope.componentContext().ID)}-${toString(this._scope.container().ID)}-${toString(id)}`
+    return `${toString(this._scope.AppID())}-${toString(this._scope.componentID())}-${toString(this._scope.containerID())}-${toString(id)}`
   }
 
   /**
    * @description alias of hotballoon/View:addNodeRef
    * @param {String} key
-   * @param {Node} node
+   * @param {Element} node
    * @return {CreateHotBalloonElement}
    * @private
    */
@@ -102,22 +106,33 @@ class CreateHotBalloonElement extends HyperFlex {
 
   /**
    *
-   * @param {array<view>} views
+   * @param {array.<View>} views
    * @return {CreateHotBalloonElement}
    * @private
    */
   [_setViews](views) {
     const countOfViews = views.length
     for (let i = 0; i < countOfViews; i++) {
-      views[i].parentNode = this._element
-      views[i].renderAndMount()
+      this.__ensureSubViewRenderedMounted(views[i])
     }
     return this
   }
 
   /**
+   *
+   * @param {View} view
    * @private
-   * @param {Array<string>} rules
+   */
+  __ensureSubViewRenderedMounted(view) {
+    if (!view.isRendered() && !view.isMounted()) {
+      view.parentNode = this._element
+      view.renderAndMount()
+    }
+  }
+
+  /**
+   * @private
+   * @param {Array.<string>} rules
    * @return {CreateHotBalloonElement}
    */
   [_setReconciliationRule](rules) {
@@ -127,7 +142,7 @@ class CreateHotBalloonElement extends HyperFlex {
 
   /**
    * @private
-   * @param {Array<NodeEventListenerParam>} listeners
+   * @param {Array.<NodeEventListenerParam>} listeners
    * @return {CreateHotBalloonElement}
    */
   [_setEventListeners](listeners) {
@@ -139,7 +154,7 @@ class CreateHotBalloonElement extends HyperFlex {
 
   /**
    * @private
-   * @param {Array<string>} propertiesToReconciliate
+   * @param {Array.<string>} propertiesToReconciliate
    * @return {CreateHotBalloonElement}
    */
   [_setReconciliationProperties](propertiesToReconciliate) {

@@ -24,31 +24,31 @@ export class ViewContainerParameters {
     )
 
     Object.defineProperties(this, {
-      /**
+        /**
          * @property {componentContext} component
          * @name ViewContainerParameters#component
          */
-      component: {
-        value: componentInst
-      },
-      id: {
-        configurable: false,
-        enumerable: false,
-        writable: false,
-        /**
+        component: {
+          value: componentInst
+        },
+        id: {
+          configurable: false,
+          enumerable: false,
+          writable: false,
+          /**
            * @property {String}
            * @name ViewContainerParameters#id
            */
-        value: id
-      },
-      parentNode: {
-        /**
+          value: id
+        },
+        parentNode: {
+          /**
            * @property {Node}
            * @name ViewContainerParameters#parentNode
            */
-        value: parentNode
+          value: parentNode
+        }
       }
-    }
     )
   }
 }
@@ -162,7 +162,7 @@ export class ViewContainer extends ViewContainerBase {
    */
   render() {
     this[_renderViews]()
-    this.rendered = true
+    this._rendered = true
   }
 
   /**
@@ -201,32 +201,7 @@ export class ViewContainer extends ViewContainerBase {
     assert(action instanceof Action,
       'hotballoon:' + this.constructor.name + ':addAction: `action` argument should be an instance of Action'
     )
-    action.dispatchWith(this.dispatcher())
-  }
-
-  /**
-   *
-   * @return {ComponentContext}
-   * @constructor
-   */
-  componentContext() {
-    return this._ComponentContext
-  }
-
-  /**
-   * @return {HotBalloonApplication}
-   * @instance
-   */
-  APP() {
-    return this.componentContext().APP()
-  }
-
-  /**
-   * @return {Dispatcher} dispatcher
-   * @instance
-   */
-  dispatcher() {
-    return this.APP().dispatcher()
+    action.dispatchWith(this._ComponentContext.APP().dispatcher())
   }
 
   /**
@@ -235,6 +210,22 @@ export class ViewContainer extends ViewContainerBase {
    * @instance
    */
   service(key) {
-    return this.APP().service(key)
+    return this._ComponentContext.APP().service(key)
+  }
+
+  /**
+   *
+   * @return {string}
+   */
+  AppID() {
+    return this._ComponentContext.APP().ID
+  }
+
+  /**
+   *
+   * @return {string}
+   */
+  componentID(){
+    return this._ComponentContext.ID
   }
 }
