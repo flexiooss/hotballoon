@@ -1,13 +1,12 @@
 'use strict'
 import {CoreException} from '../CoreException'
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_VIEW} from '../HasTagClassNameInterface'
-import {assert, isBoolean, isFunction, isNode, isPrimitive, valueByKeys} from 'flexio-jshelpers'
+import {assert, isBoolean, isFunction, isNode, isPrimitive} from 'flexio-jshelpers'
 import {$} from '../HotballoonNodeElement/HotBalloonAttributeHandler'
-import {reconcile} from 'flexio-nodes-reconciliation'
+import {startReconcile} from '../HotballoonNodeElement/HotballoonElementReconciliation'
 import {html} from '../HotballoonNodeElement/CreateHotBalloonElement'
 import {ViewContainerBase} from './ViewContainerBase'
 import {STORE_CHANGED, StoreInterface} from '../Store/StoreInterface'
-import {ViewStoresParameters} from './ViewStoresParameters'
 import {EventListenerOrderedFactory} from '../Event/EventListenerOrderedFactory'
 
 export class ViewParameters {
@@ -283,7 +282,9 @@ class View extends ViewContainerBase {
    * @description update the node reference of this View
    */
   [_update]() {
-    reconcile(this.node, this.template(), this.parentNode)
+    const candidate = this.template()
+    $(candidate).setViewRef(this.ID)
+    startReconcile(this.node, candidate, this.parentNode)
   }
 
   /**
@@ -320,7 +321,6 @@ class View extends ViewContainerBase {
     return this.node
   }
 
-
   /**
    * Set `_shouldRender` to false
    */
@@ -353,10 +353,6 @@ class View extends ViewContainerBase {
     this._shouldMount = false
   }
 
-
-  /**
-   * @description Render the template() into `_node` property and mount this into the `parentNode` argument
-   */
   renderAndMount() {
     this.render()
     this.mount()

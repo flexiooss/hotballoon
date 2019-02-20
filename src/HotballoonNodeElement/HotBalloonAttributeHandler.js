@@ -38,6 +38,14 @@ class HotBalloonAttributeHandler extends AttributeHandler {
 
   /**
    *
+   * @return {boolean}
+   */
+  hasViewRef() {
+    return this.viewRef() !== null
+  }
+
+  /**
+   *
    * @param {string} ref
    */
   setNodeRef(ref) {
