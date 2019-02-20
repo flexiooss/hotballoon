@@ -7,7 +7,7 @@ import {
   CLASS_TAG_NAME_STORE,
   CLASS_TAG_NAME_PROXYSTORE,
   CLASS_TAG_NAME_VIEWCONTAINER,
-  CLASS_TAG_NAME_VIEW
+  CLASS_TAG_NAME_VIEW, CLASS_TAG_NAME_PUBLIC_STORE_HANDLER
 } from './HasTagClassNameInterface'
 
 class TypeCheck {
@@ -64,6 +64,14 @@ class TypeCheck {
   static isProxyStore(inst) {
     return testClassTagName(inst, CLASS_TAG_NAME_PROXYSTORE)
   }
+  /**
+   *
+   * @param {Object} inst
+   * @return {boolean}
+   */
+  static isPublicStoreHandler(inst) {
+    return testClassTagName(inst, CLASS_TAG_NAME_PUBLIC_STORE_HANDLER)
+  }
 
   /**
    *
@@ -71,7 +79,7 @@ class TypeCheck {
    * @return {boolean}
    */
   static isStoreBase(inst) {
-    return testClassTagName(inst, CLASS_TAG_NAME_STORE) || testClassTagName(inst, CLASS_TAG_NAME_PROXYSTORE)
+    return testClassTagName(inst, CLASS_TAG_NAME_STORE) || testClassTagName(inst, CLASS_TAG_NAME_PROXYSTORE) || testClassTagName(inst, CLASS_TAG_NAME_PUBLIC_STORE_HANDLER)
   }
 
   /**

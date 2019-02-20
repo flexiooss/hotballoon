@@ -7,6 +7,7 @@ export const CLASS_TAG_NAME_COMPONENT = Symbol('__HB__COMPONENT__')
 export const CLASS_TAG_NAME_ACTION = Symbol('__HB__ACTION__')
 export const CLASS_TAG_NAME_STORE = Symbol('__HB__STORE__')
 export const CLASS_TAG_NAME_PROXYSTORE = Symbol('__HB__PROXYSTORE__')
+export const CLASS_TAG_NAME_PUBLIC_STORE_HANDLER = Symbol('__HB__PUBLIC_STORE_HANDLER__')
 export const CLASS_TAG_NAME_VIEWCONTAINER = Symbol('__HB__VIEWCONTAINER__')
 export const CLASS_TAG_NAME_VIEW = Symbol('__HB__VIEW__')
 

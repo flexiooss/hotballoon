@@ -5,6 +5,7 @@ import {assert, isFunction, UID} from 'flexio-jshelpers'
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_PROXYSTORE} from '../HasTagClassNameInterface'
 import {StoreInterface} from './StoreInterface'
 import {State} from './State'
+import {WithIDBase} from '../bases/WithIDBase'
 
 const _EventHandler = Symbol('_EventHandler')
 const _Store = Symbol('_Store')
@@ -12,11 +13,10 @@ const _mapper = Symbol('_mapper')
 const _dispatch = Symbol('_dispatch')
 
 /**
- * @extends StoreInterface
  * @implements StoreInterface
  * @implements HasTagClassNameInterface
  */
-export class ProxyStore extends StoreInterface {
+export class ProxyStore extends WithIDBase {
   /**
    * @constructor
    * @param {String} id
@@ -123,5 +123,13 @@ export class ProxyStore extends StoreInterface {
    */
   [_dispatch](eventType, payload) {
     this[_EventHandler].dispatch(eventType, payload)
+  }
+
+  /**
+   *
+   * @return {string}
+   */
+  storeId() {
+    return this.ID
   }
 }

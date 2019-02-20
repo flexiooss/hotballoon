@@ -6,8 +6,9 @@ import {$} from '../HotballoonNodeElement/HotBalloonAttributeHandler'
 import {startReconcile} from '../HotballoonNodeElement/HotballoonElementReconciliation'
 import {html} from '../HotballoonNodeElement/CreateHotBalloonElement'
 import {ViewContainerBase} from './ViewContainerBase'
-import {STORE_CHANGED, StoreInterface} from '../Store/StoreInterface'
+import {STORE_CHANGED} from '../Store/StoreInterface'
 import {EventListenerOrderedFactory} from '../Event/EventListenerOrderedFactory'
+import {TypeCheck} from '../TypeCheck'
 
 export class ViewParameters {
   /**
@@ -25,27 +26,27 @@ export class ViewParameters {
 
     Object.defineProperties(this, {
 
-        id: {
-          configurable: false,
-          enumerable: false,
-          writable: false,
-          /**
+      id: {
+        configurable: false,
+        enumerable: false,
+        writable: false,
+        /**
            * @type {String}
            * @name ViewParameters#id
            */
-          value: id
-        },
-        container: {
-          configurable: false,
-          enumerable: false,
-          writable: false,
-          /**
+        value: id
+      },
+      container: {
+        configurable: false,
+        enumerable: false,
+        writable: false,
+        /**
            * @type {ViewContainerBase}
            * @name ViewParameters#container
            */
-          value: container
-        }
+        value: container
       }
+    }
     )
   }
 }
@@ -247,15 +248,12 @@ class View extends ViewContainerBase {
       isFunction(clb),
       'hotballoon:' + this.constructor.name + ':subscribeToStore: `clb` argument should be callable'
     )
-
-    assert(
-      store instanceof StoreInterface,
-      'hotballoon:' + this.constructor.name + ':subscribeToStore: `keyStore : %s` not reference an instance of StoreInterface',
-      store
-    )
+    if (!TypeCheck.isStoreBase(store)) {
+      throw TypeError('store argument should be an instance of StoreInterface')
+    }
 
     this._tokenEvent.add(
-      store.ID,
+      store.storeId(),
       store.subscribe(
         EventListenerOrderedFactory
           .listen(STORE_CHANGED)

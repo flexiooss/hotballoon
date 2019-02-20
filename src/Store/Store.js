@@ -4,6 +4,7 @@ import {assert, staticClassName} from 'flexio-jshelpers'
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_STORE} from '../HasTagClassNameInterface'
 import {StoreInterface, STORE_CHANGED} from './StoreInterface'
 import {StorageInterface} from './Storage/StorageInterface'
+import {WithIDBase} from '../bases/WithIDBase'
 
 export const STORE_INIT = Symbol('STORE.INIT')
 const _storage = Symbol('_storage')
@@ -15,11 +16,10 @@ const _dispatch = Symbol('_dispatch')
 /**
  * @class
  * @description store is the instance for store data from componentContext
- * @extends StoreInterface
  * @implements StoreInterface
  * @implements HasTagClassNameInterface
  */
-export class Store extends StoreInterface {
+export class Store extends WithIDBase {
   /**
    * @constructor
    * @param {String} id
@@ -136,5 +136,13 @@ export class Store extends StoreInterface {
     this.debug.print()
 
     this[_dispatch](STORE_CHANGED)
+  }
+
+  /**
+   *
+   * @return {string}
+   */
+  storeId() {
+    return this.ID
   }
 }

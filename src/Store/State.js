@@ -1,5 +1,5 @@
 'use strict'
-import {deepFreezeSeal} from 'flexio-jshelpers'
+import {deepFreezeSeal, UID} from 'flexio-jshelpers'
 
 /**
  *
@@ -31,12 +31,18 @@ export class State {
          * @name State#data
          */
         value: dataStore
+      },
+      uid: {
+        configurable: false,
+        writable: false,
+        enumerable: true,
+        /**
+         * @property {string}
+         * @name State#uid
+         */
+        value: UID(storeID)
       }
     })
     deepFreezeSeal(this)
-  }
-
-  static fromJSON(json) {
-    return new State(json.storeID)
   }
 }
