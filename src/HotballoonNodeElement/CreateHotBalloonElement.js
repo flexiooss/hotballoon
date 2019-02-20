@@ -3,6 +3,7 @@ import {HotballoonElementParams} from './HotballoonElementParams'
 import {HyperFlex} from 'flexio-hyperflex'
 import {$} from './HotBalloonAttributeHandler'
 import {toString} from 'flexio-jshelpers'
+import {RECONCILIATION_RULES} from 'flexio-nodes-reconciliation'
 
 const _changeIdAndSetNodeRef = Symbol('_changeIdAndSetNodeRef')
 const _generateIdFromScope = Symbol('_generateIdFromScope')
@@ -111,9 +112,23 @@ class CreateHotBalloonElement extends HyperFlex {
    * @private
    */
   [_setViews](views) {
+    this.__ensureChildrenRules(views)
     const countOfViews = views.length
     for (let i = 0; i < countOfViews; i++) {
       this.__ensureSubViewRenderedMounted(views[i])
+    }
+    return this
+  }
+
+  /**
+   *
+   * @param {array.<View>} views
+   * @return {CreateHotBalloonElement}
+   * @private
+   */
+  __ensureChildrenRules(views) {
+    if (views.length) {
+      this._params.addReconciliationRules([RECONCILIATION_RULES.BYPATH_CHILDREN])
     }
     return this
   }

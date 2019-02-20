@@ -80,6 +80,7 @@ export class HotballoonElementParams extends HyperFlexParams {
    * @return {this}
    */
   addReconciliationRules(reconciliationRules) {
+    // TODO merge array
     this._reconciliationRules = reconciliationRules
     return this
   }

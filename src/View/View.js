@@ -314,6 +314,7 @@ class View extends ViewContainerBase {
       this._rendered = true
     }
     console.log(this)
+    console.log(this.node)
 
     this._shouldRender = true
     return this.node
