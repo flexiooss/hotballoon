@@ -9,6 +9,7 @@ import {
   CLASS_TAG_NAME_VIEWCONTAINER,
   CLASS_TAG_NAME_VIEW, CLASS_TAG_NAME_PUBLIC_STORE_HANDLER
 } from './HasTagClassNameInterface'
+import {assert} from 'flexio-jshelpers'
 
 class TypeCheck {
   /**
@@ -49,6 +50,18 @@ class TypeCheck {
 
   /**
    *
+   * @param {Action} inst
+   * @return {Action}
+   */
+  static assertIsAction(inst) {
+    assert(TypeCheck.isAction(inst),
+      'TypeCheck:assertIsAction: `inst` argument should be an Action'
+    )
+    return inst
+  }
+
+  /**
+   *
    * @param {Object} inst
    * @return {boolean}
    */
@@ -64,6 +77,7 @@ class TypeCheck {
   static isProxyStore(inst) {
     return testClassTagName(inst, CLASS_TAG_NAME_PROXYSTORE)
   }
+
   /**
    *
    * @param {Object} inst
@@ -80,6 +94,18 @@ class TypeCheck {
    */
   static isStoreBase(inst) {
     return testClassTagName(inst, CLASS_TAG_NAME_STORE) || testClassTagName(inst, CLASS_TAG_NAME_PROXYSTORE) || testClassTagName(inst, CLASS_TAG_NAME_PUBLIC_STORE_HANDLER)
+  }
+
+  /**
+   *
+   * @param {StoreInterface} inst
+   * @return {StoreInterface}
+   */
+  static assertStoreBase(inst) {
+    assert(TypeCheck.isStoreBase(inst),
+      'TypeCheck:assertStoreBase: `inst` argument should be an StoreInterface'
+    )
+    return inst
   }
 
   /**

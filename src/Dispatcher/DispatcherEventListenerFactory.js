@@ -1,5 +1,5 @@
-import {Action} from '../Action/Action'
 import {assert, EventListenerFactory} from 'flexio-jshelpers'
+import {TypeCheck} from '../TypeCheck'
 
 /**
  * @extends {EventListenerFactory}
@@ -10,8 +10,8 @@ export class DispatcherEventListenerFactory extends EventListenerFactory {
    * @param {Action} action
    */
   constructor(action) {
-    assert(action instanceof Action, 'hotballoon:DispatcherEventListenerFactory:constructor: `action` argument should be an instance of Action ')
-    super(action.name)
+    assert(TypeCheck.isAction(action), 'hotballoon:DispatcherEventListenerFactory:constructor: `action` argument should be an instance of Action ')
+    super(action.uid)
   }
 
   /**

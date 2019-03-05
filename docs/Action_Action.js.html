@@ -39,7 +39,7 @@ import {ActionPayload} from './ActionPayload'
 
 const _name = Symbol('_name')
 const _payload = Symbol('_payload')
-const _actionPayloadClass = Symbol('_actionPayloadClass')
+const _type = Symbol('_type')
 
 /**
  * @class
@@ -77,13 +77,13 @@ export class Action {
          */
         value: actionParams.name
       },
-      [_actionPayloadClass]: {
+      [_type]: {
         configurable: false,
         enumerable: false,
         writable: false,
         /**
-         * @property {string} _actionPayloadClass
-         * @name Action#_actionPayloadClass
+         * @property {string} _type
+         * @name Action#_type
          * @private
          */
         value: actionParams.actionPayloadClass
@@ -98,8 +98,8 @@ export class Action {
          */
         get: () => payload,
         set: (v) => {
-          assert(v instanceof this[_actionPayloadClass],
-            'hotballoon:Action:payload "payload" argument assert be an instance of _actionPayloadClass::class'
+          assert(v instanceof this[_type],
+            'hotballoon:Action:payload "payload" argument assert be an instance of _type::class'
           )
           assert(v instanceof ActionPayload,
             'hotballoon:Action:payload "payload" argument assert be an instance of ActionPayload'

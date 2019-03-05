@@ -26,27 +26,27 @@ export class ViewParameters {
 
     Object.defineProperties(this, {
 
-      id: {
-        configurable: false,
-        enumerable: false,
-        writable: false,
-        /**
+        id: {
+          configurable: false,
+          enumerable: false,
+          writable: false,
+          /**
            * @type {String}
            * @name ViewParameters#id
            */
-        value: id
-      },
-      container: {
-        configurable: false,
-        enumerable: false,
-        writable: false,
-        /**
+          value: id
+        },
+        container: {
+          configurable: false,
+          enumerable: false,
+          writable: false,
+          /**
            * @type {ViewContainerBase}
            * @name ViewParameters#container
            */
-        value: container
+          value: container
+        }
       }
-    }
     )
   }
 }
@@ -259,7 +259,6 @@ class View extends ViewContainerBase {
           .listen(STORE_CHANGED)
           .callback((payload, type) => {
             if (clb(payload.data) === true) {
-              console.log(this.ID.toString() + ' this.updateNode()')
               this.updateNode()
             }
           })
@@ -313,8 +312,6 @@ class View extends ViewContainerBase {
       this[_render]()
       this._rendered = true
     }
-    console.log(this)
-    console.log(this.node)
 
     this._shouldRender = true
     return this.node

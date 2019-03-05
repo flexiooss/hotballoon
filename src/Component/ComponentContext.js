@@ -1,5 +1,4 @@
 'use strict'
-import {Action} from '../Action/Action'
 import {Store} from '../Store/Store'
 import {
   ViewContainer,
@@ -129,25 +128,6 @@ class ComponentContext extends WithIDBase {
    * @description called by the hotballoon Application before remove this componentContext
    */
   willRemove() {
-  }
-
-  /**
-   *
-   * @param {EventListenerParam} eventListenerParam
-   * @returns {String} token
-   */
-  listenAction(eventListenerParam) {
-    return this.dispatcher().addActionListener(eventListenerParam)
-  }
-
-  /**
-   * @param {Action} action
-   */
-  dispatchAction(action) {
-    assert(action instanceof Action,
-      'hotballoon:' + this.constructor.name + ':addAction: `action` argument should be an instance of Action'
-    )
-    action.dispatchWith(this.dispatcher())
   }
 
   /**

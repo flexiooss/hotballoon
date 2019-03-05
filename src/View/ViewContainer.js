@@ -3,8 +3,6 @@ import {CLASS_TAG_NAME, CLASS_TAG_NAME_VIEWCONTAINER} from '../HasTagClassNameIn
 import {isNode, isString, assert, isFunction} from 'flexio-jshelpers'
 import {STORE_CHANGED, StoreInterface} from '../Store/StoreInterface'
 import {ViewContainerBase} from './ViewContainerBase'
-import {CoreException} from '../CoreException'
-import {Action} from '../Action/Action'
 import {EventListenerOrderedFactory} from '../Event/EventListenerOrderedFactory'
 
 export class ViewContainerParameters {
@@ -24,31 +22,31 @@ export class ViewContainerParameters {
     )
 
     Object.defineProperties(this, {
-        /**
+      /**
          * @property {componentContext} component
          * @name ViewContainerParameters#component
          */
-        component: {
-          value: componentInst
-        },
-        id: {
-          configurable: false,
-          enumerable: false,
-          writable: false,
-          /**
+      component: {
+        value: componentInst
+      },
+      id: {
+        configurable: false,
+        enumerable: false,
+        writable: false,
+        /**
            * @property {String}
            * @name ViewContainerParameters#id
            */
-          value: id
-        },
-        parentNode: {
-          /**
+        value: id
+      },
+      parentNode: {
+        /**
            * @property {Node}
            * @name ViewContainerParameters#parentNode
            */
-          value: parentNode
-        }
+        value: parentNode
       }
+    }
     )
   }
 }
@@ -195,16 +193,6 @@ export class ViewContainer extends ViewContainerBase {
   }
 
   /**
-   * @param {Action} action
-   */
-  dispatchAction(action) {
-    assert(action instanceof Action,
-      'hotballoon:' + this.constructor.name + ':addAction: `action` argument should be an instance of Action'
-    )
-    action.dispatchWith(this._ComponentContext.APP().dispatcher())
-  }
-
-  /**
    * @param {String} key
    * @return {service}
    * @instance
@@ -225,7 +213,7 @@ export class ViewContainer extends ViewContainerBase {
    *
    * @return {string}
    */
-  componentID(){
+  componentID() {
     return this._ComponentContext.ID
   }
 }

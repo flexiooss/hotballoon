@@ -43,7 +43,7 @@ export class ActionParams {
       'hotballoon:ActionParams:constructor "actionPayloadClass" argument should not be empty'
     )
     this._name = name
-    this._actionPayloadClass = actionPayloadClass
+    this._type = actionPayloadClass
   }
 
   /**
@@ -59,7 +59,7 @@ export class ActionParams {
    * @return {ActionPayload}
    */
   get actionPayloadClass() {
-    return this._actionPayloadClass
+    return this._type
   }
 }
 </code></pre>

@@ -1,5 +1,4 @@
 'use strict'
-import {Dispatcher} from '../Dispatcher/Dispatcher'
 import {assert} from 'flexio-jshelpers'
 import {
   CLASS_TAG_NAME,
@@ -7,16 +6,15 @@ import {
 } from '../HasTagClassNameInterface'
 import {EventAction} from './EventAction'
 import {ActionParams} from './ActionParams'
-import {ActionPayload} from './ActionPayload'
+import {DispatcherEventListenerFactory} from '../Dispatcher/DispatcherEventListenerFactory'
 
-const _name = Symbol('_name')
-const _payload = Symbol('_payload')
-const _actionPayloadClass = Symbol('_actionPayloadClass')
+
+const _uid = Symbol('_uid')
+const _actionParams = Symbol('_actionParams')
 
 /**
- * @class
- * @description Action is the entry point of componentContext
  * @implements HasTagClassNameInterface
+ * @template TYPE
  */
 export class Action {
   /**
@@ -28,8 +26,6 @@ export class Action {
       'hotballoon:Action:constructor "actionParams" argument assert be an instance of ActionParams'
     )
 
-    var payload = new ActionPayload()
-
     Object.defineProperty(this, CLASS_TAG_NAME, {
       configurable: false,
       writable: false,
@@ -38,46 +34,26 @@ export class Action {
     })
 
     Object.defineProperties(this, {
-      [_name]: {
+      [_actionParams]: {
         configurable: false,
         enumerable: false,
         writable: false,
         /**
-         * @property {string} _name
-         * @name Action#_name
+         * @property {ActionParams} [_actionParams]
          * @private
          */
-        value: actionParams.name
+        value: actionParams
       },
-      [_actionPayloadClass]: {
+      [_uid]: {
         configurable: false,
         enumerable: false,
         writable: false,
         /**
-         * @property {string} _actionPayloadClass
-         * @name Action#_actionPayloadClass
+         * @property {Symbol} _name
+         * @name Action#_uid
          * @private
          */
-        value: actionParams.actionPayloadClass
-      },
-      [_payload]: {
-        configurable: false,
-        enumerable: false,
-        /**
-         * @property {ActionPayload} _payload
-         * @name Action#_payload
-         * @private
-         */
-        get: () => payload,
-        set: (v) => {
-          assert(v instanceof this[_actionPayloadClass],
-            'hotballoon:Action:payload "payload" argument assert be an instance of _actionPayloadClass::class'
-          )
-          assert(v instanceof ActionPayload,
-            'hotballoon:Action:payload "payload" argument assert be an instance of ActionPayload'
-          )
-          payload = v
-        }
+        value: Symbol(actionParams.name)
       }
     })
   }
@@ -86,36 +62,53 @@ export class Action {
    * @return {string}
    */
   get name() {
-    return this[_name]
+    return this[_actionParams].name
   }
 
   /**
    *
-   * @param {ActionPayload} payload
-   * @return {Action}
+   * @return {Symbol}
    */
-  static withPayload(payload) {
-    return new this().payload(payload)
+  get uid() {
+    return this[_uid]
   }
 
   /**
    *
-   * @param {ActionPayload} payload
-   * @return {Action}
+   * @return {Class.<TYPE>}
    */
-  payload(payload) {
-    this[_payload] = payload
-    return this
+  get type() {
+    return this[_actionParams].type
   }
 
   /**
-   * @param {Dispatcher} dispatcher
+   * @param {TYPE} payload
    * @return void
    */
-  dispatchWith(dispatcher) {
-    assert(dispatcher instanceof Dispatcher,
-      'hotballoon:Action:constructor "actionParams" argument assert be an instance of ActionParams'
+  dispatch(payload) {
+    assert(
+      this[_actionParams].validate(payload),
+      'hotballoon:Action:dispatchPayload "payload" argument assert not validated'
     )
-    dispatcher.dispatch(EventAction.create(this.name, this[_payload]))
+
+    this[_actionParams].dispatcher.dispatch(
+      EventAction.create(
+        this.uid,
+        payload)
+    )
+  }
+
+  /**
+   *
+   * @param {EventListenerParam} callback
+   * @returns {String} token
+   */
+  listenWithCallback(callback) {
+    return this[_actionParams].dispatcher
+      .addActionListener(DispatcherEventListenerFactory
+        .listen(this)
+        .callback(callback)
+        .build()
+      )
   }
 }

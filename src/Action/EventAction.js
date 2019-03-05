@@ -1,10 +1,14 @@
 import {deepFreezeSeal, assert, isPrimitive} from 'flexio-jshelpers'
 
+/**
+ *
+ * @template TYPE
+ */
 export class EventAction {
   /**
    *
-   * @param {string} name
-   * @param {*} payload
+   * @param {(string|Symbol)} name
+   * @param {TYPE} payload
    */
   constructor(name, payload) {
     assert(!!name && isPrimitive(name),
@@ -19,7 +23,7 @@ export class EventAction {
 
   /**
    *
-   * @return {string}
+   * @return {(string|Symbol)}
    */
   get name() {
     return this.__name
@@ -27,7 +31,7 @@ export class EventAction {
 
   /**
    *
-   * @return {*}
+   * @return {TYPE}
    */
   get payload() {
     return this.__payload
@@ -35,8 +39,8 @@ export class EventAction {
 
   /**
    *
-   * @param {string} name
-   * @param {*} payload
+   * @param {(string|Symbol)} name
+   * @param {TYPE} payload
    * @readonly
    * @return {EventAction}
    */
