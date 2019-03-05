@@ -11,7 +11,7 @@ const _store = Symbol('_store')
 export class PublicStoreHandler {
   /**
    *
-   * @param {StoreInterface} store
+   * @param {StoreInterface<TYPE>} store
    */
   constructor(store) {
     Object.defineProperty(this, CLASS_TAG_NAME, {
@@ -22,16 +22,23 @@ export class PublicStoreHandler {
     })
 
     /**
-     * @type {StoreInterface}
+     * @type {StoreInterface<TYPE>}
      */
     this[_store] = store
+  }
+
+  /**
+   * @returns {State<TYPE>} state frozen
+   */
+  state() {
+    return this[_store].state()
   }
 
   /**
    * @return {TYPE} state#data
    */
   data() {
-    return this[_store].state().data
+    return this.state().data
   }
 
   /**
@@ -51,17 +58,10 @@ export class PublicStoreHandler {
   }
 
   /**
-   * @returns {!State<TYPE>} state frozen
-   */
-  state() {
-    return this[_store].state()
-  }
-
-  /**
    *
-   * @return {Class.<TYPE>}
+   * @return {Class<TYPE>}
    */
-  type() {
+  get type() {
     return this[_store].type()
   }
 
