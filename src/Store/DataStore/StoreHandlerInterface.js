@@ -5,12 +5,12 @@ import {CoreException} from '../../CoreException'
  */
 export class StoreHandlerInterface {
   /**
-   * @return {DataStoreInterface} data init
+   * @return {State}
    */
-  data() {
-    throw new CoreException(`data should be override with this signature :
+  state() {
+    throw new CoreException(`state should be override with this signature :
    /**
-   * @return {any} data init
+   * @return {State}
    */
    `, 'METHOD_NOT_OVERRIDE')
   }
@@ -21,7 +21,7 @@ export class StoreHandlerInterface {
    */
   subscribe(eventListenerOrderedParam) {
     throw new CoreException(`subscribe should be override with this signature :
-   /**
+   /**L
    * @return {any} data init
    */
    `, 'METHOD_NOT_OVERRIDE')

@@ -4,28 +4,22 @@ import {CoreException} from '../../CoreException'
 /**
  * @class
  * @interface
+ * @template TYPE
  */
 export class StorageInterface {
   /**
    * @param {string|Symbol} storeId
-   * @param {DataStoreInterface} data
-   * @returns {StorageInterface}
+   * @param {TYPE} data
+   * @returns {StorageInterface<TYPE>}
    */
   set(storeId, data) {
     throw new CoreException(`set should be override`, 'METHOD_NOT_OVERRIDE')
   }
 
   /**
-   * @returns {State}
+   * @returns {State<TYPE>}
    */
   get() {
     throw new CoreException(`get should be override`, 'METHOD_NOT_OVERRIDE')
-  }
-
-  /**
-   * @returns {State} state cloned
-   */
-  clone() {
-    throw new CoreException(`clone should be override `, 'METHOD_NOT_OVERRIDE')
   }
 }

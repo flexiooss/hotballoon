@@ -2,22 +2,23 @@
 import {deepFreezeSeal, UID} from 'flexio-jshelpers'
 
 /**
- *
+ * @template TYPE
  */
 export class State {
   /**
    *
-   * @param {string} storeID
-   * @param {DataStoreInterface} dataStore
+   * @param {(string|Symbol)} storeID
+   * @param {Class<TYPE>} type
+   * @param {TYPE} dataStore
    */
-  constructor(storeID, dataStore) {
+  constructor(storeID, type, dataStore) {
     Object.defineProperties(this, {
       storeID: {
         configurable: false,
         writable: false,
         enumerable: true,
         /**
-         * @property {string}
+         * @type {(string|Symbol)}
          * @name State#storeID
          */
         value: storeID
@@ -27,7 +28,7 @@ export class State {
         writable: false,
         enumerable: true,
         /**
-         * @property {DataStoreInterface}
+         * @type {TYPE}
          * @name State#data
          */
         value: dataStore
@@ -37,10 +38,20 @@ export class State {
         writable: false,
         enumerable: true,
         /**
-         * @property {string}
+         * @type {(string|Symbol)}
          * @name State#uid
          */
         value: UID(storeID)
+      },
+      type: {
+        configurable: false,
+        writable: false,
+        enumerable: true,
+        /**
+         * @type {Class<TYPE>}
+         * @name State#type
+         */
+        value: type
       }
     })
     deepFreezeSeal(this)

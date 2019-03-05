@@ -1,33 +1,23 @@
-'use strict'
-import {EventOrderedHandler} from '../Event/EventOrderedHandler'
 import {EventListenerOrderedFactory} from '../Event/EventListenerOrderedFactory'
-import {assert, isFunction, UID} from 'flexio-jshelpers'
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_PROXYSTORE} from '../HasTagClassNameInterface'
-import {StoreInterface} from './StoreInterface'
-import {State} from './State'
-import {WithIDBase} from '../bases/WithIDBase'
+import {STORE_CHANGED} from './StoreInterface'
+import {StoreBase, _set} from './StoreBase'
 
-const _EventHandler = Symbol('_EventHandler')
-const _Store = Symbol('_Store')
+const _store = Symbol('_store')
 const _mapper = Symbol('_mapper')
-const _dispatch = Symbol('_dispatch')
 
 /**
  * @implements StoreInterface
  * @implements HasTagClassNameInterface
+ * @template TYPE_STORE, TYPE
  */
-export class ProxyStore extends WithIDBase {
+export class ProxyStore extends StoreBase {
   /**
-   * @constructor
-   * @param {String} id
-   * @param {Store} store
-   * @param {Function} mapper
+   *
+   * @param {ProxyStoreParams} proxyStoreParams
    */
-  constructor(id, store, mapper) {
-    super(id)
-
-    assert(store instanceof StoreInterface, '`store` argument should be an instance of StoreInterface')
-    assert(isFunction(mapper), '`mapper` argument should be a Function')
+  constructor(proxyStoreParams) {
+    super(proxyStoreParams)
 
     this.debug.color = 'magenta'
 
@@ -39,97 +29,52 @@ export class ProxyStore extends WithIDBase {
     })
 
     Object.defineProperties(this, {
-      [_EventHandler]: {
+
+      [_store]: {
         enumerable: false,
         configurable: false,
         /**
-         * @property {EventOrderedHandler}
-         * @name ProxyStore#_EventHandler
-         * @protected
-         */
-        value: Object.seal(new EventOrderedHandler())
-      },
-      [_Store]: {
-        enumerable: false,
-        configurable: false,
-        /**
-         * @property {Store}
+         * @type {Store<TYPE_STORE>}
          * @name ProxyStore#_Store
-         * @protected
+         * @private
          */
-        value: store
+        value: proxyStoreParams.store
       },
+
       [_mapper]: {
         enumerable: false,
         configurable: false,
         /**
          * @property {Function}
          * @name ProxyStore#_mapper
-         * @protected
+         * @private
          */
-        value: mapper
+        value: proxyStoreParams.mapper
       }
+
     })
+
+    this.__subscribeToStore()
   }
 
-  /**
-   *
-   * @param {Store} store
-   * @param {Function} mapper
-   * @return {ProxyStore}
-   * @static
-   */
-  static create(store, mapper) {
-    return new this(UID(`proxy_${store.constructor.name}_${store.ID}_`), store, mapper)
-  }
-
-  /**
-   * @param {EventListenerOrderedParam} eventListenerOrderedParam
-   * @return {String} token
-   */
-  subscribe(eventListenerOrderedParam) {
-    this[_Store].subscribe(
-      EventListenerOrderedFactory.listen(eventListenerOrderedParam.event)
+  __subscribeToStore() {
+    this[_store].subscribe(
+      EventListenerOrderedFactory.listen(STORE_CHANGED)
         .callback((eventType, payload) => {
-          this[_dispatch](
-            eventType,
-            new State(this.ID, this._mapper(payload.data))
-          )
+          this.__mapAndUpdate(eventType, payload)
         })
         .priority(20)
         .build(this)
     )
-    return this[_EventHandler].on(eventListenerOrderedParam)
-  }
-
-  /**
-   * @returns {State#data} state#data frozen
-   */
-  data() {
-    return this.state().data
-  }
-
-  /**
-   * @returns {State} state frozen
-   */
-  state() {
-    return new State(this.ID, this[_mapper](this[_Store].data()))
-  }
-
-  /**
-   * @private
-   * @param {String} eventType
-   * @param {Object} payload
-   */
-  [_dispatch](eventType, payload) {
-    this[_EventHandler].dispatch(eventType, payload)
   }
 
   /**
    *
-   * @return {string}
+   * @param {string} eventType
+   * @param {State<TYPE_STORE>} payload
+   * @private
    */
-  storeId() {
-    return this.ID
+  __mapAndUpdate(eventType, payload) {
+    this[_set](this[_mapper](payload.data))
   }
 }

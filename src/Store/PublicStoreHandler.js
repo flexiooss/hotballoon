@@ -6,6 +6,7 @@ const _store = Symbol('_store')
  *
  * @implements {StoreInterface}
  * @implements {HasTagClassNameInterface}
+ * @template TYPE
  */
 export class PublicStoreHandler {
   /**
@@ -27,10 +28,10 @@ export class PublicStoreHandler {
   }
 
   /**
-   * @return {*} state#data frozen
+   * @return {TYPE} state#data
    */
   data() {
-    return this[_store].data()
+    return this[_store].state().data
   }
 
   /**
@@ -50,10 +51,26 @@ export class PublicStoreHandler {
   }
 
   /**
-   * @returns {State} state frozen
+   * @returns {!State<TYPE>} state frozen
    */
   state() {
     return this[_store].state()
   }
 
+  /**
+   *
+   * @return {Class.<TYPE>}
+   */
+  type() {
+    return this[_store].type()
+  }
+
+  /**
+   *
+   * @param {Class} constructor
+   * @return {boolean}
+   */
+  isStoreOf(constructor) {
+    return this[_store].isStoreOf(constructor)
+  }
 }

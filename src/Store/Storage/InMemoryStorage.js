@@ -1,30 +1,26 @@
 'use strict'
-import {assert, deepFreezeSeal, cloneObject} from 'flexio-jshelpers'
+import {assert, deepFreezeSeal} from 'flexio-jshelpers'
 import {State} from '../State'
-import {DataStoreInterface} from '../DataStore/DataStoreInterface'
 import {StorageInterface} from './StorageInterface'
 
 const _state = Symbol('_state')
-const _dataStoreConstructor = Symbol('_dataStoreConstructor')
 
 /**
- * @class
- * @implements StorageInterface
+ * @template TYPE
+ * @implements {StorageInterface<TYPE>}
+ * @extends {StorageInterface<TYPE>}
  */
 export class InMemoryStorage extends StorageInterface {
   /**
    * @constructor
-   * @param {State} state
-   * @param {DataStoreInterface} dataStore
+   * @param {Class<TYPE>} type
+   * @param {State<TYPE>} state
    */
-  constructor(state, dataStore) {
+  constructor(type, state) {
     super()
 
     assert(state instanceof State,
       'hotballoon:Storage:constructor: `state` argument should be a `State` instance')
-
-    assert(dataStore instanceof DataStoreInterface,
-      'hotballoon:' + this.constructor.name + ':constructor: `dataStore` argument should be an instance of `DataStoreInterface`')
 
     Object.defineProperties(this, {
       [_state]: {
@@ -33,18 +29,17 @@ export class InMemoryStorage extends StorageInterface {
         writable: false,
         value: state
       },
-
-      /**
-       * @property {DataStoreInterface}
-       * @name InMemoryStorage#_dataStoreConstructor
-       * @private
-       */
-      [_dataStoreConstructor]: {
-        enumerable: false,
+      type: {
         configurable: false,
         writable: false,
-        value: dataStore.constructor
+        enumerable: true,
+        /**
+         * @type {Class<TYPE>}
+         * @name InMemoryStorage#type
+         */
+        value: type
       }
+
     })
 
     deepFreezeSeal(this)
@@ -52,30 +47,21 @@ export class InMemoryStorage extends StorageInterface {
 
   /**
    *
-   * @param {DataStoreInterface} dataStore
+   * @param {(string|Symbol)} storeID
+   * @param {TYPE} data
+   * @return {InMemoryStorage<TYPE>}
    */
-  set(storeID, dataStore) {
-    assert(dataStore instanceof this[_dataStoreConstructor],
-      `hotballoon:${this.constructor.name}:set: \`dataStore\` argument should be an instance of ${this[_dataStoreConstructor].name} `)
-
+  set(storeID, data) {
     return new InMemoryStorage(
-      new State(storeID, dataStore),
-      new this[_dataStoreConstructor]()
+      this.type,
+      new State(storeID, this.type, data)
     )
   }
 
   /**
-   * @returns {State} state
+   * @returns {State<TYPE>}
    */
   get() {
     return this[_state]
-  }
-
-  /**
-   * @returns {State} state cloned
-   */
-  clone() {
-    const cloned = cloneObject(this[_state], true)
-    return new State(cloned.storeID, this[_dataStoreConstructor].fromJSON(cloned.data))
   }
 }

@@ -5,6 +5,7 @@ export const STORE_CHANGED = Symbol('STORE.CHANGED')
 /**
  * @interface
  * @extends WithIDBase
+ * @template TYPE
  */
 export class StoreInterface {
   /**
@@ -33,23 +34,23 @@ export class StoreInterface {
   }
 
   /**
-   * @return {State#data} state#data frozen
-   */
-  data() {
-    throw new CoreException(`data should be override with this signature :
-   /**
-   * @return {State#data} state#data frozen
-   */
-   `, 'METHOD_NOT_OVERRIDE')
-  }
-
-  /**
-   * @returns {State} state frozen
+   * @returns {State<TYPE>} state frozen
    */
   state() {
     throw new CoreException(`state should be override with this signature :
    /**
    * @return {State} state frozen
+   */
+   `, 'METHOD_NOT_OVERRIDE')
+  }
+
+  /**
+   * @returns {Class<TYPE>}
+   */
+  get type() {
+    throw new CoreException(`type should be override with this signature :
+   /**
+   * @return {Class} 
    */
    `, 'METHOD_NOT_OVERRIDE')
   }
