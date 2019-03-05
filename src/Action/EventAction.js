@@ -41,7 +41,6 @@ export class EventAction {
    *
    * @param {(string|Symbol)} name
    * @param {TYPE} payload
-   * @readonly
    * @return {EventAction}
    */
   static create(name, payload) {

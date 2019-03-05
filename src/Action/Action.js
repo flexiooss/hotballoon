@@ -83,7 +83,6 @@ export class Action {
 
   /**
    * @param {TYPE} payload
-   * @return void
    */
   dispatch(payload) {
     assert(
@@ -91,7 +90,7 @@ export class Action {
       'hotballoon:Action:dispatchPayload "payload" argument assert not validated'
     )
 
-    this[_actionParams].dispatcher.dispatch(
+    this[_actionParams].dispatcher.dispatchAction(
       EventAction.create(
         this.uid,
         payload)

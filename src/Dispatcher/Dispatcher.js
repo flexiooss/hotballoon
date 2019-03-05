@@ -67,12 +67,12 @@ export class Dispatcher extends EventHandlerBase {
 
   /**
    *
-   * @param {EventAction} actionPayload
+   * @param {EventAction} eventAction
    */
-  dispatch(actionPayload) {
-    assert(actionPayload instanceof EventAction,
+  dispatchAction(eventAction) {
+    assert(eventAction instanceof EventAction,
       'hotballoon:dispatcher:dispatch "actionPayload" argument should be an instance of EventAction'
     )
-    super.dispatch(actionPayload.name, actionPayload.payload)
+    super.dispatch(eventAction.name, eventAction.payload)
   }
 }
