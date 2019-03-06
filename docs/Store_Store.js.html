@@ -19,45 +19,36 @@
 
     <h1 class="page-title">Source: Store/Store.js</h1>
 
+    
 
 
 
-
-
+    
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>'use strict'
-import {EventOrderedHandler} from '../Event/EventOrderedHandler'
-import {assert, staticClassName} from 'flexio-jshelpers'
+
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_STORE} from '../HasTagClassNameInterface'
 import {StoreInterface, STORE_CHANGED} from './StoreInterface'
-import {StorageInterface} from './Storage/StorageInterface'
+
+import {StoreBase, _set, _dispatch} from './StoreBase'
 
 export const STORE_INIT = Symbol('STORE.INIT')
-const _storage = Symbol('_storage')
-const _EventHandler = Symbol('_EventHandler')
-const _get = Symbol('_get')
-const _updated = Symbol('_updated')
-const _dispatch = Symbol('_dispatch')
 
 /**
- * @class
- * @description store is the instance for store data from componentContext
- * @extends StoreInterface
- * @implements StoreInterface
- * @implements HasTagClassNameInterface
+ * @template TYPE
+ * @extends {StoreBase&lt;TYPE>}
+ * @implements {StoreInterface&lt;TYPE>}
+ * @implements {GenericType&lt;TYPE>}
+ * @implements  {HasTagClassNameInterface}
  */
-export class Store extends StoreInterface {
+export class Store extends StoreBase {
   /**
    * @constructor
-   * @param {String} id
-   * @param {StorageInterface} storage
+   * @param {StoreParams} storeParams
    */
-  constructor(id, storage) {
-    super(id)
-
-    assert(storage instanceof StorageInterface,
-      'hotballoon:' + this.constructor.name + ':constructor: `storage` argument should be an instance of `StorageInterface`')
+  constructor(storeParams) {
+    super(storeParams)
 
     this.debug.color = 'magentaDark'
 
@@ -68,102 +59,15 @@ export class Store extends StoreInterface {
       value: CLASS_TAG_NAME_STORE
     })
 
-    Object.defineProperties(this, {
-      [_storage]: {
-        enumerable: false,
-        configurable: false,
-        /**
-         * @property {Storage}
-         * @name Store#_storage
-         * @protected
-         */
-        get: () => storage,
-        set: (v) => {
-          assert(v instanceof StorageInterface,
-            'hotballoon:' + this.constructor.name + ':constructor: `storage` argument should be an instance of `StorageInterface`')
-          storage = v
-          this[_updated]()
-        }
-      },
-      /**
-       * @property {EventOrderedHandler}
-       * @name Store#_EventHandler
-       * @protected
-       */
-      [_EventHandler]: {
-        enumerable: false,
-        configurable: false,
-        value: Object.seal(new EventOrderedHandler())
-      }
-
-    })
-
     this[_dispatch](STORE_INIT)
   }
 
   /**
-   * @param {EventListenerOrderedParam} eventListenerOrderedParam
-   * @return {String} token
-   */
-  subscribe(eventListenerOrderedParam) {
-    return this[_EventHandler].on(eventListenerOrderedParam)
-  }
-
-  /**
-   * @returns {StoreState} state frozen
-   */
-  state() {
-    return this[_get]()
-  }
-
-  /**
-   * @return {StoreState#data} state#data frozen
-   */
-  data() {
-    return this[_get]().data
-  }
-
-  /**
-   * @returns {DataStoreInterface} state#data cloned
-   */
-  clone() {
-    return this[_storage].clone().data
-  }
-
-  /**
-   * @private
-   * @return {StorageInterface}
-   */
-  [_get]() {
-    return this[_storage].get()
-  }
-
-  /**
    *
-   * @param {DataStoreInterface} dataStore
+   * @param {TYPE} dataStore
    */
   set(dataStore) {
-    this[_storage] = this[_storage].set(this.ID, dataStore)
-  }
-
-  /**
-   * @private
-   * @param {String} eventType
-   * @param {Object} payload
-   */
-  [_dispatch](eventType, payload = this.state()) {
-    this[_EventHandler].dispatch(eventType, payload)
-  }
-
-  /**
-   * @private
-   */
-  [_updated]() {
-    this.debug.log('STORE STORE_CHANGED : ' + this.ID).size(2).background()
-    this.debug.object(this.state())
-    this.debug.print()
-
-    this[_dispatch](STORE_CHANGED)
+    this[_set](dataStore)
   }
 }
 </code></pre>
@@ -176,13 +80,13 @@ export class Store extends StoreInterface {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Action.html">Action</a></li><li><a href="ActionParams_ActionParams.html">ActionParams</a></li><li><a href="ComponentContext.html">ComponentContext</a></li><li><a href="ComponentContext.create.html">create</a></li><li><a href="CreateHotBalloonElement.html">CreateHotBalloonElement</a></li><li><a href="Debugable.html">Debugable</a></li><li><a href="Dispatcher.html">Dispatcher</a></li><li><a href="DispatcherEventListenerFactory.html">DispatcherEventListenerFactory</a></li><li><a href="DispatcherEventListenerFactory.listen.html">listen</a></li><li><a href="EventAction_EventAction.html">EventAction</a></li><li><a href="EventHandler.html">EventHandler</a></li><li><a href="EventListenerOrderedFactory.html">EventListenerOrderedFactory</a></li><li><a href="EventListenerOrderedParam.html">EventListenerOrderedParam</a></li><li><a href="EventListenerOrderedParam.create.html">create</a></li><li><a href="EventOrderedHandler.html">EventOrderedHandler</a></li><li><a href="HotBalloonApplication.html">HotBalloonApplication</a></li><li><a href="HotBalloonAttributeHandler.html">HotBalloonAttributeHandler</a></li><li><a href="HotballoonElementParams.html">HotballoonElementParams</a></li><li><a href="HotballoonElementParams.withEventListener.html">withEventListener</a></li><li><a href="HotballoonElementParams.withReconciliationRules.html">withReconciliationRules</a></li><li><a href="HotballoonElementParams.withViews.html">withViews</a></li><li><a href="InLocalStorageStorage.html">InLocalStorageStorage</a></li><li><a href="InMemoryStorage.html">InMemoryStorage</a></li><li><a href="NodeEventListenerParam.create.html">create</a></li><li><a href="NodeEventListenerParam.createWithOptions.html">createWithOptions</a></li><li><a href="ProxyStore.html">ProxyStore</a></li><li><a href="State.html">StoreState</a></li><li><a href="Store.html">Store</a></li><li><a href="View.html">View</a></li><li><a href="ViewContainer.html">ViewContainer</a></li><li><a href="ViewContainer_componentContext.html">componentContext</a></li><li><a href="ViewContainerBase.html">ViewContainerBase</a></li><li><a href="ViewContainerParameters_ViewContainerParameters.html">ViewContainerParameters</a></li><li><a href="ViewEventListenerFactory.html">ViewEventListenerFactory</a></li><li><a href="ViewEventListenerFactory.bubble.html">bubble</a></li><li><a href="ViewParameters_ViewParameters.html">ViewParameters</a></li><li><a href="WithIDBase.html">WithIDBase</a></li></ul><h3>Interfaces</h3><ul><li><a href="DataStoreHandlerInterface.html">StoreHandlerInterface</a></li><li><a href="DataStoreInterface.html">DataStoreInterface</a></li><li><a href="HasTagClassNameInterface.html">HasTagClassNameInterface</a></li><li><a href="StorageInterface.html">StorageInterface</a></li><li><a href="StoreInterface.html">StoreInterface</a></li></ul><h3>Global</h3><ul><li><a href="global.html#hasClassTagName">hasClassTagName</a></li><li><a href="global.html#isEqualClassTagName">isEqualClassTagName</a></li><li><a href="global.html#nodeRef">nodeRef</a></li><li><a href="global.html#ROOT,">ROOT,</a></li><li><a href="global.html#testClassTagName">testClassTagName</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Action.html">Action</a></li><li><a href="ActionParams.html">ActionParams</a></li><li><a href="ComponentContext.html">ComponentContext</a></li><li><a href="ComponentContext.create.html">create</a></li><li><a href="CreateHotBalloonElement.html">CreateHotBalloonElement</a></li><li><a href="Debugable.html">Debugable</a></li><li><a href="Dispatcher.html">Dispatcher</a></li><li><a href="DispatcherEventListenerFactory.html">DispatcherEventListenerFactory</a></li><li><a href="DispatcherEventListenerFactory.listen.html">listen</a></li><li><a href="ElementDescription_ElementDescription.html">ElementDescription</a></li><li><a href="EventAction.html">EventAction</a></li><li><a href="EventHandler.html">EventHandler</a></li><li><a href="EventListenerOrderedFactory.html">EventListenerOrderedFactory</a></li><li><a href="EventListenerOrderedParam.html">EventListenerOrderedParam</a></li><li><a href="EventListenerOrderedParam.create.html">create</a></li><li><a href="EventOrderedHandler.html">EventOrderedHandler</a></li><li><a href="HotBalloonApplication.html">HotBalloonApplication</a></li><li><a href="HotBalloonAttributeHandler.html">HotBalloonAttributeHandler</a></li><li><a href="HotballoonElementParams.html">HotballoonElementParams</a></li><li><a href="HotballoonElementParams.withEventListener.html">withEventListener</a></li><li><a href="HotballoonElementParams.withReconciliationRules.html">withReconciliationRules</a></li><li><a href="HotballoonElementParams.withViews.html">withViews</a></li><li><a href="InMemoryParams.html">InMemoryParams</a></li><li><a href="InMemoryStorage.html">InMemoryStorage</a></li><li><a href="NodeEventListenerParam.create.html">create</a></li><li><a href="NodeEventListenerParam.createWithOptions.html">createWithOptions</a></li><li><a href="ProxyParams.html">ProxyParams</a></li><li><a href="ProxyStore.html">ProxyStore</a></li><li><a href="ProxyStoreParams.html">ProxyStoreParams</a></li><li><a href="PublicStoreHandler.html">PublicStoreHandler</a></li><li><a href="Store.html">Store</a></li><li><a href="StoreBase.html">StoreBase</a></li><li><a href="StoreBaseParams.html">StoreBaseParams</a></li><li><a href="StoreBuilder.html">StoreBuilder</a></li><li><a href="StoreState.html">StoreState</a></li><li><a href="View.html">View</a></li><li><a href="ViewContainer.html">ViewContainer</a></li><li><a href="ViewContainerBase.html">ViewContainerBase</a></li><li><a href="ViewContainerParameters_ViewContainerParameters.html">ViewContainerParameters</a></li><li><a href="ViewEventListenerFactory.html">ViewEventListenerFactory</a></li><li><a href="ViewEventListenerFactory.bubble.html">bubble</a></li><li><a href="ViewParameters_ViewParameters.html">ViewParameters</a></li><li><a href="WithIDBase.html">WithIDBase</a></li></ul><h3>Interfaces</h3><ul><li><a href="GenericType.html">GenericType</a></li><li><a href="HasTagClassNameInterface.html">HasTagClassNameInterface</a></li><li><a href="StorageInterface.html">StorageInterface</a></li><li><a href="StoreHandlerInterface.html">StoreHandlerInterface</a></li><li><a href="StoreInterface.html">StoreInterface</a></li></ul><h3>Global</h3><ul><li><a href="global.html#e">e</a></li><li><a href="global.html#hasClassTagName">hasClassTagName</a></li><li><a href="global.html#isEqualClassTagName">isEqualClassTagName</a></li><li><a href="global.html#nodeRef">nodeRef</a></li><li><a href="global.html#ROOT,">ROOT,</a></li><li><a href="global.html#testClassTagName">testClassTagName</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Feb 11 2019 14:09:12 GMT+0100 (GMT+01:00)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Mar 06 2019 14:21:21 GMT+0100 (GMT+01:00)
 </footer>
 
 <script> prettyPrint(); </script>
