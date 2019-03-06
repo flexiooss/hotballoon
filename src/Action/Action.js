@@ -1,5 +1,5 @@
 'use strict'
-import {assert} from 'flexio-jshelpers'
+import {assert, UID} from 'flexio-jshelpers'
 import {
   CLASS_TAG_NAME,
   CLASS_TAG_NAME_ACTION
@@ -7,24 +7,28 @@ import {
 import {EventAction} from './EventAction'
 import {ActionParams} from './ActionParams'
 import {DispatcherEventListenerFactory} from '../Dispatcher/DispatcherEventListenerFactory'
+import {WithIDBase} from '../bases/WithIDBase'
 
-
-const _uid = Symbol('_uid')
 const _actionParams = Symbol('_actionParams')
 
 /**
- * @implements HasTagClassNameInterface
+ * @implements {HasTagClassNameInterface}
+ * @implements {GenericType<TYPE>}
  * @template TYPE
  */
-export class Action {
+export class Action extends WithIDBase {
   /**
    *
    * @param {ActionParams} actionParams
    */
   constructor(actionParams) {
+    super(UID(actionParams.type.name + '_'))
+
     assert(actionParams instanceof ActionParams,
       'hotballoon:Action:constructor "actionParams" argument assert be an instance of ActionParams'
     )
+
+    this.debug.color = 'sandDark'
 
     Object.defineProperty(this, CLASS_TAG_NAME, {
       configurable: false,
@@ -43,42 +47,26 @@ export class Action {
          * @private
          */
         value: actionParams
-      },
-      [_uid]: {
-        configurable: false,
-        enumerable: false,
-        writable: false,
-        /**
-         * @property {Symbol} _name
-         * @name Action#_uid
-         * @private
-         */
-        value: Symbol(actionParams.name)
       }
+
     })
-  }
-
-  /**
-   * @return {string}
-   */
-  get name() {
-    return this[_actionParams].name
-  }
-
-  /**
-   *
-   * @return {Symbol}
-   */
-  get uid() {
-    return this[_uid]
   }
 
   /**
    *
    * @return {Class.<TYPE>}
    */
-  get type() {
+  get __type__() {
     return this[_actionParams].type
+  }
+
+  /**
+   *
+   * @param {Class} constructor
+   * @return {boolean}
+   */
+  isTypeOf(constructor) {
+    return constructor === this.__type__
   }
 
   /**
@@ -89,10 +77,17 @@ export class Action {
       this[_actionParams].validate(payload),
       'hotballoon:Action:dispatchPayload "payload" argument assert not validated'
     )
+    assert(
+      this[_actionParams].validate(payload),
+      'hotballoon:Action:dispatchPayload "payload" argument assert not validated'
+    )
+    this.debug.log('Action dispatch : ' + this.ID).size(1).background()
+    this.debug.object(payload)
+    this.debug.print()
 
     this[_actionParams].dispatcher.dispatchAction(
       EventAction.create(
-        this.uid,
+        this.ID,
         payload)
     )
   }

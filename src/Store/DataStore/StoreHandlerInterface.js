@@ -5,7 +5,7 @@ import {CoreException} from '../../CoreException'
  */
 export class StoreHandlerInterface {
   /**
-   * @return {State}
+   * @return {StoreState}
    */
   state() {
     throw new CoreException(`state should be override with this signature :

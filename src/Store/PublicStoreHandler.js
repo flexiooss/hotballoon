@@ -4,8 +4,9 @@ const _store = Symbol('_store')
 
 /**
  *
- * @implements {StoreInterface}
- * @implements {HasTagClassNameInterface}
+ * @implements {StoreInterface<TYPE>}
+ * @implements  {HasTagClassNameInterface}
+ * @implements {GenericType<TYPE>}
  * @template TYPE
  */
 export class PublicStoreHandler {
@@ -28,7 +29,7 @@ export class PublicStoreHandler {
   }
 
   /**
-   * @returns {State<TYPE>} state frozen
+   * @returns {StoreState<TYPE>} state frozen
    */
   state() {
     return this[_store].state()
@@ -61,7 +62,7 @@ export class PublicStoreHandler {
    *
    * @return {Class<TYPE>}
    */
-  get type() {
+  get __type__() {
     return this[_store].type()
   }
 
@@ -70,7 +71,7 @@ export class PublicStoreHandler {
    * @param {Class} constructor
    * @return {boolean}
    */
-  isStoreOf(constructor) {
-    return this[_store].isStoreOf(constructor)
+  isTypeOf(constructor) {
+    return this[_store].isTypeOf(constructor)
   }
 }

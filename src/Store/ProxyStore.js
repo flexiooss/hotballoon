@@ -7,8 +7,9 @@ const _store = Symbol('_store')
 const _mapper = Symbol('_mapper')
 
 /**
- * @implements StoreInterface
- * @implements HasTagClassNameInterface
+ * @implements {StoreInterface<TYPE>}
+ * @implements {HasTagClassNameInterface}
+ * @implements {GenericType<TYPE>}
  * @template TYPE_STORE, TYPE
  */
 export class ProxyStore extends StoreBase {
@@ -34,7 +35,7 @@ export class ProxyStore extends StoreBase {
         enumerable: false,
         configurable: false,
         /**
-         * @type {Store<TYPE_STORE>}
+         * @type {StoreInterface<TYPE_STORE>}
          * @name ProxyStore#_Store
          * @private
          */
@@ -71,7 +72,7 @@ export class ProxyStore extends StoreBase {
   /**
    *
    * @param {string} eventType
-   * @param {State<TYPE_STORE>} payload
+   * @param {StoreState<TYPE_STORE>} payload
    * @private
    */
   __mapAndUpdate(eventType, payload) {

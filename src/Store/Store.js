@@ -1,6 +1,5 @@
 'use strict'
 
-import {assert} from 'flexio-jshelpers'
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_STORE} from '../HasTagClassNameInterface'
 import {StoreInterface, STORE_CHANGED} from './StoreInterface'
 
@@ -11,7 +10,9 @@ export const STORE_INIT = Symbol('STORE.INIT')
 /**
  * @template TYPE
  * @extends {StoreBase<TYPE>}
- * @implements StoreInterface<TYPE>, HasTagClassNameInterface
+ * @implements {StoreInterface<TYPE>}
+ * @implements {GenericType<TYPE>}
+ * @implements  {HasTagClassNameInterface}
  */
 export class Store extends StoreBase {
   /**

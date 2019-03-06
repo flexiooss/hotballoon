@@ -1,5 +1,5 @@
 import {WithIDBase} from '../bases/WithIDBase'
-import {assert} from 'flexio-jshelpers'
+import {assert, UID} from 'flexio-jshelpers'
 import {StorageInterface} from './Storage/StorageInterface'
 
 import {EventOrderedHandler} from '../Event/EventOrderedHandler'
@@ -11,11 +11,11 @@ export const _set = Symbol('_set')
 export const _get = Symbol('_get')
 export const _updated = Symbol('_updated')
 export const _dispatch = Symbol('_dispatch')
-export const _dataValidate = Symbol('_dataValidate')
 export const _storeParams = Symbol('_storeParams')
 
 /**
  * @template TYPE
+ * @implements {GenericType<TYPE>}
  */
 export class StoreBase extends WithIDBase {
   /**
@@ -33,7 +33,6 @@ export class StoreBase extends WithIDBase {
         enumerable: false,
         configurable: false,
         /**
-         * @type {StorageInterface<TYPE>}
          * @name Store#_storage
          * @protected
          */
@@ -71,7 +70,7 @@ export class StoreBase extends WithIDBase {
   }
 
   /**
-   * @returns {!State<TYPE>} state frozen
+   * @returns {!StoreState<TYPE>} state frozen
    */
   state() {
     return this[_get]()
@@ -81,8 +80,17 @@ export class StoreBase extends WithIDBase {
    *
    * @return {Class<TYPE>}
    */
-  get type() {
+  get __type__() {
     return this[_storeParams].type
+  }
+
+  /**
+   *
+   * @param {Class} constructor
+   * @return {boolean}
+   */
+  isTypeOf(constructor) {
+    return this.__type__ === constructor
   }
 
   /**
@@ -91,15 +99,6 @@ export class StoreBase extends WithIDBase {
    */
   storeId() {
     return this.ID
-  }
-
-  /**
-   *
-   * @param {Class} constructor
-   * @return {boolean}
-   */
-  isStoreOf(constructor) {
-    return this.type === constructor
   }
 
   /**
@@ -113,7 +112,7 @@ export class StoreBase extends WithIDBase {
   /**
    * @private
    * @param {String} eventType
-   * @param {!State<TYPE>}  payload
+   * @param {!StoreState<TYPE>}  payload
    */
   [_dispatch](eventType, payload = this.state()) {
     this[_EventHandler].dispatch(eventType, payload)
@@ -124,9 +123,9 @@ export class StoreBase extends WithIDBase {
    * @param {TYPE} dataStore
    */
   [_set](dataStore) {
-    assert(dataStore instanceof this.type,
+    assert(dataStore instanceof this.__type__,
       'StoreBase:set: `dataStore` should be an instanceof %s',
-      this.type.constructor.name
+      this.__type__.constructor.name
     )
     assert(this[_storeParams].dataValidate(dataStore),
       'StoreBase:set: `dataStore` failed validation'

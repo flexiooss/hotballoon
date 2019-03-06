@@ -34,23 +34,12 @@ export class StoreInterface {
   }
 
   /**
-   * @returns {State<TYPE>} state frozen
+   * @returns {StoreState<TYPE>} state frozen
    */
   state() {
     throw new CoreException(`state should be override with this signature :
    /**
    * @return {State} state frozen
-   */
-   `, 'METHOD_NOT_OVERRIDE')
-  }
-
-  /**
-   * @returns {Class<TYPE>}
-   */
-  get type() {
-    throw new CoreException(`type should be override with this signature :
-   /**
-   * @return {Class} 
    */
    `, 'METHOD_NOT_OVERRIDE')
   }

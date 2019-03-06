@@ -1,4 +1,4 @@
-import {assert, isFunction, isPrimitive} from 'flexio-jshelpers'
+import {assert, isFunction} from 'flexio-jshelpers'
 import {TypeCheck} from '../TypeCheck'
 
 /**
@@ -7,15 +7,11 @@ import {TypeCheck} from '../TypeCheck'
 export class ActionParams {
   /**
    *
-   * @param {string} name
    * @param {Class.<TYPE>} type
    * @param {CallableFunction} validate
    * @param {Dispatcher} dispatcher
    */
-  constructor(name, type, validate, dispatcher) {
-    assert(!!name && isPrimitive(name),
-      'hotballoon:ActionParams:constructor "name" argument should not be empty'
-    )
+  constructor(type, validate, dispatcher) {
     // TODO isClass(actionPayloadClass)
     assert(!!type,
       'hotballoon:ActionParams:constructor "type" argument should not be empty'
@@ -23,18 +19,9 @@ export class ActionParams {
     assert(isFunction(validate), 'hotballoon:ActionParams:constructor "validate" argument should be function')
     assert(TypeCheck.isDispatcher(dispatcher), 'hotballoon:ActionParams:constructor "dispatcher" argument should be a Dispatcher')
 
-    this._name = name
     this._type = type
     this._validate = validate
     this._dispatcher = dispatcher
-  }
-
-  /**
-   *
-   * @return {string}
-   */
-  get name() {
-    return this._name
   }
 
   /**

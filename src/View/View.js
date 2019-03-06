@@ -229,12 +229,11 @@ class View extends ViewContainerBase {
 
   /**
    *
-   * @param {String} querySelector
-   * @param {HotballoonElementParams} hotballoonElementParams
+   * @param {ElementDescription} element
    * @return {Element}
    */
-  html(querySelector, hotballoonElementParams) {
-    return html(this, querySelector, hotballoonElementParams)
+  html(element) {
+    return html(this, element.querySelector, element.params)
   }
 
   /**
@@ -270,7 +269,7 @@ class View extends ViewContainerBase {
   /**
    *
    * @callback View~updateCallback
-   * @param {State} state
+   * @param {StoreState} state
    * @return {boolean}
    */
 

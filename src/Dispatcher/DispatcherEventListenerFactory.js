@@ -11,7 +11,7 @@ export class DispatcherEventListenerFactory extends EventListenerFactory {
    */
   constructor(action) {
     assert(TypeCheck.isAction(action), 'hotballoon:DispatcherEventListenerFactory:constructor: `action` argument should be an instance of Action ')
-    super(action.uid)
+    super(action.ID)
   }
 
   /**

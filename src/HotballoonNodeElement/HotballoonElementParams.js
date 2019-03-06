@@ -65,6 +65,16 @@ export class HotballoonElementParams extends HyperFlexParams {
   }
 
   /**
+   *
+   * @param {Array.<View>} views
+   * @return {HotballoonElementParams}
+   */
+  addViews(views) {
+    this._views = views
+    return this
+  }
+
+  /**
    * @static
    * @param {Array.<String>} rules
    * @return {HyperFlexParams}

@@ -132,7 +132,7 @@ export class ViewContainer extends ViewContainerBase {
   /**
    *
    * @callback ViewContainer~storeChanged
-   * @param {State} state
+   * @param {StoreState} state
    * @return {boolean}
    */
 

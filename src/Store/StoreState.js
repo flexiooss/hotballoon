@@ -2,9 +2,10 @@
 import {deepFreezeSeal, UID} from 'flexio-jshelpers'
 
 /**
+ * @implements {GenericType<TYPE>}
  * @template TYPE
  */
-export class State {
+export class StoreState {
   /**
    *
    * @param {(string|Symbol)} storeID
@@ -19,7 +20,7 @@ export class State {
         enumerable: true,
         /**
          * @type {(string|Symbol)}
-         * @name State#storeID
+         * @name StoreState#storeID
          */
         value: storeID
       },
@@ -29,19 +30,19 @@ export class State {
         enumerable: true,
         /**
          * @type {TYPE}
-         * @name State#data
+         * @name StoreState#data
          */
         value: dataStore
       },
-      uid: {
+      time: {
         configurable: false,
         writable: false,
         enumerable: true,
         /**
-         * @type {(string|Symbol)}
-         * @name State#uid
+         * @type {Date}
+         * @name StoreState#time
          */
-        value: UID(storeID)
+        value: new Date()
       },
       type: {
         configurable: false,
@@ -49,11 +50,29 @@ export class State {
         enumerable: true,
         /**
          * @type {Class<TYPE>}
-         * @name State#type
+         * @name StoreState#type
          */
         value: type
       }
     })
     deepFreezeSeal(this)
+  }
+
+  /**
+   *
+   * @return {Class<TYPE>}
+   * @private
+   */
+  get __type__() {
+    return this.type
+  }
+
+  /**
+   *
+   * @param {Class} constructor
+   * @return {boolean}
+   */
+  isTypeOf(constructor) {
+    return constructor === this.__type__
   }
 }

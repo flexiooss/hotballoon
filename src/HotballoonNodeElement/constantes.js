@@ -1,6 +1,6 @@
 /**
  * @constant ROOT, NODE_REF, VIEW_REF
- * @description Custom NodeElement properties keys for HotballonnElement
+ * @description Custom ElementDescription properties keys for HotballonnElement
  */
 export const KEY = Object.freeze(Object.seal({
   ROOT: '__HB__',

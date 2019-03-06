@@ -1,6 +1,6 @@
 'use strict'
 import {assert, deepFreezeSeal} from 'flexio-jshelpers'
-import {State} from '../State'
+import {StoreState} from '../StoreState'
 import {StorageInterface} from './StorageInterface'
 
 const _state = Symbol('_state')
@@ -8,19 +8,20 @@ const _state = Symbol('_state')
 /**
  * @template TYPE
  * @implements {StorageInterface<TYPE>}
+ * @implements {GenericType<TYPE>}
  * @extends {StorageInterface<TYPE>}
  */
 export class InMemoryStorage extends StorageInterface {
   /**
    * @constructor
    * @param {Class<TYPE>} type
-   * @param {State<TYPE>} state
+   * @param {StoreState<TYPE>} state
    */
   constructor(type, state) {
     super()
 
-    assert(state instanceof State,
-      'hotballoon:Storage:constructor: `state` argument should be a `State` instance')
+    assert(state instanceof StoreState,
+      'hotballoon:Storage:constructor: `state` argument should be a `StoreState` instance')
 
     Object.defineProperties(this, {
       [_state]: {
@@ -54,14 +55,32 @@ export class InMemoryStorage extends StorageInterface {
   set(storeID, data) {
     return new InMemoryStorage(
       this.type,
-      new State(storeID, this.type, data)
+      new StoreState(storeID, this.type, data)
     )
   }
 
   /**
-   * @returns {State<TYPE>}
+   * @returns {StoreState<TYPE>}
    */
   get() {
     return this[_state]
+  }
+
+  /**
+   *
+   * @return {Class<TYPE>}
+   * @private
+   */
+  get __type__() {
+    return this.type
+  }
+
+  /**
+   *
+   * @param {Class} constructor
+   * @return {boolean}
+   */
+  isTypeOf(constructor) {
+    return constructor === this.__type__
   }
 }
