@@ -59,8 +59,8 @@ export class PublicActionParams {
    *
    * @return {CallableFunction}
    */
-  validate(payload) {
-    return this._validate(payload)
+  get validate() {
+    return this._validate
   }
 
   /**
