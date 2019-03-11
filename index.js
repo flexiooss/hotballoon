@@ -18,3 +18,6 @@ export {e} from './src/HotballoonNodeElement/ElementDescription'
 export {RECONCILIATION_RULES} from 'flexio-nodes-reconciliation'
 
 export {TypeCheck} from './src/TypeCheck'
+
+export {JobInterface} from './src/Job/JobInterface'
+export {ExecutorWorker} from './src/Job/ExecutorWorker'
