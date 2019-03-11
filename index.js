@@ -7,7 +7,7 @@ export {ViewParameters, View} from './src/View/View'
 export {ViewContainer, ViewContainerParameters} from './src/View/ViewContainer'
 
 export {ViewEventListenerBuilder} from './src/Event/ViewEventListenerBuilder'
-export {NodeEventListenerBuilder} from './src/HotballoonNodeElement/NodeEventListenerBuilder'
+export {ElementEventListenerBuilder} from './src/HotballoonNodeElement/ElementEventListenerBuilder'
 
 export {
   StoreBuilder, InMemoryParams as InMemoryStoreParams, ProxyParams as ProxyStoreParams

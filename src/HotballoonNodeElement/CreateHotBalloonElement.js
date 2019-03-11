@@ -157,7 +157,7 @@ class CreateHotBalloonElement extends HyperFlex {
 
   /**
    * @private
-   * @param {Array.<NodeEventListenerParam>} listeners
+   * @param {Array.<ElementEventListenerParam>} listeners
    * @return {CreateHotBalloonElement}
    */
   [_setEventListeners](listeners) {

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: HotballoonNodeElement/NodeEventListenerBuilder.js</title>
+    <title>JSDoc: Source: HotballoonNodeElement/ElementEventListenerBuilderder.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: HotballoonNodeElement/NodeEventListenerBuilder.js</h1>
+    <h1 class="page-title">Source: HotballoonNodeElement/ElementEventListenerBuilder.js.js</h1>
 
 
 
@@ -27,12 +27,12 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>import {EventListenerFactory} from 'flexio-nodes-reconciliation'
-import {NodeEventListenerParam} from './NodeEventListenerParam'
+import {ElementEventListenerParam} from './ElementEventListenerParam'
 
-export class NodeEventListenerBuilder extends EventListenerFactory {
+export class ElementEventListenerBuilder extends EventListenerFactory {
   /**
    *
-   * @return {NodeEventListenerParam}
+   * @return {ElementEventListenerParam}
    */
   build() {
     if (this._hasOptions()) {
@@ -46,9 +46,9 @@ export class NodeEventListenerBuilder extends EventListenerFactory {
       if (this._passive) {
         options.passive = true
       }
-      return NodeEventListenerParam.createWithOptions(this._event, this._callback, options)
+      return ElementEventListenerParam.createWithOptions(this._event, this._callback, options)
     } else {
-      return NodeEventListenerParam.create(this._event, this._callback)
+      return ElementEventListenerParam.create(this._event, this._callback)
     }
   }
 }

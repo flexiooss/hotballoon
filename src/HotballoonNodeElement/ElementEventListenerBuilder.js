@@ -1,10 +1,10 @@
 import {EventListenerFactory} from 'flexio-nodes-reconciliation'
-import {NodeEventListenerParam} from './NodeEventListenerParam'
+import {ElementEventListenerParam} from './ElementEventListenerParam'
 
-export class NodeEventListenerBuilder extends EventListenerFactory {
+export class ElementEventListenerBuilder extends EventListenerFactory {
   /**
    *
-   * @return {NodeEventListenerParam}
+   * @return {ElementEventListenerParam}
    */
   build() {
     if (this._hasOptions()) {
@@ -18,9 +18,9 @@ export class NodeEventListenerBuilder extends EventListenerFactory {
       if (this._passive) {
         options.passive = true
       }
-      return NodeEventListenerParam.createWithOptions(this._event, this._callback, options)
+      return ElementEventListenerParam.createWithOptions(this._event, this._callback, options)
     } else {
-      return NodeEventListenerParam.create(this._event, this._callback)
+      return ElementEventListenerParam.create(this._event, this._callback)
     }
   }
 }

@@ -38,7 +38,7 @@ export class ElementDescription {
 
   /**
    *
-   * @param {NodeEventListenerParam} nodeEventListenerParam
+   * @param {ElementEventListenerParam} nodeEventListenerParam
    * @return {ElementDescription}
    */
   listenEvent(nodeEventListenerParam) {
