@@ -41,7 +41,11 @@ export class StoreBuilder {
         proxyParams.type,
         proxyParams.dataValidate,
         proxyParams.store,
-        proxyParams.mapper
+        proxyParams.mapper,
+        new InMemoryStorage(
+          proxyParams.type,
+          new StoreState(id, proxyParams.type, proxyParams.mapper(proxyParams.store.state().data))
+        )
       )
     )
   }

@@ -14,9 +14,10 @@ export class ProxyStoreParams extends StoreBaseParams {
    * @param {Function} dataValidate
    * @param {StoreInterface<TYPE>} store
    * @param {Function} mapper
+   * @param {StorageInterface<TYPE>} storage
    */
-  constructor(id, type, dataValidate, store, mapper) {
-    super(id, type, dataValidate, new InMemoryStorage(type, mapper(store.state().data)))
+  constructor(id, type, dataValidate, store, mapper, storage) {
+    super(id, type, dataValidate, storage)
 
     assert(store instanceof StoreInterface, '`store` argument should be an instance of StoreInterface')
 
