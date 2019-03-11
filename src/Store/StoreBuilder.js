@@ -88,13 +88,13 @@ export class InMemoryParams {
 }
 
 /**
- * @template TYPE
+ * @template TYPE, STORE_TYPE
  */
 export class ProxyParams extends InMemoryParams {
   /**
    * @param {Class<TYPE>} type
    * @param {Function} dataValidate
-   * @param {StoreInterface<TYPE>} store
+   * @param {StoreInterface<STORE_TYPE>} store
    * @param {Function} mapper
    */
   constructor(type, dataValidate, store, mapper) {
@@ -105,7 +105,7 @@ export class ProxyParams extends InMemoryParams {
 
   /**
    *
-   * @return {StoreInterface<TYPE>}
+   * @return {StoreInterface<STORE_TYPE>}
    */
   get store() {
     return this._store

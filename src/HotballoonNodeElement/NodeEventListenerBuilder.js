@@ -1,7 +1,7 @@
 import {EventListenerFactory} from 'flexio-nodes-reconciliation'
 import {NodeEventListenerParam} from './NodeEventListenerParam'
 
-export class NodeEventListenerFactory extends EventListenerFactory {
+export class NodeEventListenerBuilder extends EventListenerFactory {
   /**
    *
    * @return {NodeEventListenerParam}

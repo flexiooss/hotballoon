@@ -6,7 +6,7 @@ import {EventListenerOrderedParam} from './EventListenerOrderedParam'
 /**
  * @extends EventListenerFactory
  */
-export class ViewEventListenerFactory extends EventListenerOrderedFactory {
+export class ViewEventListenerBuilder extends EventListenerOrderedFactory {
   /**
    *
    * @param {String} event
@@ -25,14 +25,14 @@ export class ViewEventListenerFactory extends EventListenerOrderedFactory {
    *
    * @param {ViewContainerBase} viewContainerBase
    * @throws AssertionError
-   * @return {ViewEventListenerFactory}
+   * @return {ViewEventListenerBuilder}
    * @private
    */
   __bubbleEvent(viewContainerBase) {
     this._eventToDispatch = this._event
     if (this._isBubble) {
       assert(viewContainerBase instanceof ViewContainerBase,
-        'hotballoon:ViewEventListenerFactory:build: `scope` argument should be an instance of ViewContainerBase')
+        'hotballoon:ViewEventListenerBuilder:build: `scope` argument should be an instance of ViewContainerBase')
       this._callback = (payload, type) => {
         viewContainerBase.dispatch(this._eventToDispatch, payload)
       }
@@ -43,7 +43,7 @@ export class ViewEventListenerFactory extends EventListenerOrderedFactory {
   /**
    *
    * @param {String} name
-   * @return {ViewEventListenerFactory}
+   * @return {ViewEventListenerBuilder}
    */
   rename(name) {
     this._eventToDispatch = name
