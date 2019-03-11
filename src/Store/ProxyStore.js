@@ -61,8 +61,8 @@ export class ProxyStore extends StoreBase {
   __subscribeToStore() {
     this[_store].subscribe(
       EventListenerOrderedFactory.listen(STORE_CHANGED)
-        .callback((eventType, payload) => {
-          this.__mapAndUpdate(eventType, payload)
+        .callback((payload, eventType) => {
+          this.__mapAndUpdate(payload, eventType)
         })
         .priority(20)
         .build(this)
@@ -71,11 +71,11 @@ export class ProxyStore extends StoreBase {
 
   /**
    *
-   * @param {string} eventType
    * @param {StoreState<TYPE_STORE>} payload
+   * @param {string} eventType
    * @private
    */
-  __mapAndUpdate(eventType, payload) {
+  __mapAndUpdate(payload, eventType) {
     this[_set](this[_mapper](payload.data))
   }
 }
