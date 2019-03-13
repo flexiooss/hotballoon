@@ -7,7 +7,7 @@ import {startReconcile} from '../HotballoonNodeElement/HotballoonElementReconcil
 import {html} from '../HotballoonNodeElement/CreateHotBalloonElement'
 import {ViewContainerBase} from './ViewContainerBase'
 import {STORE_CHANGED} from '../Store/StoreInterface'
-import {EventListenerOrderedFactory} from '../Event/EventListenerOrderedFactory'
+import {EventListenerOrderedBuilder} from '../Event/EventListenerOrderedBuilder'
 import {TypeCheck} from '../TypeCheck'
 
 export class ViewParameters {
@@ -254,7 +254,7 @@ class View extends ViewContainerBase {
     this._tokenEvent.add(
       store.storeId(),
       store.subscribe(
-        EventListenerOrderedFactory
+        EventListenerOrderedBuilder
           .listen(STORE_CHANGED)
           .callback((payload, type) => {
             if (clb(payload.data) === true) {

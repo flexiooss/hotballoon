@@ -56,7 +56,7 @@ export class StoreBuilder {
  */
 export class InMemoryParams {
   /**
-   * @param {Class<TYPE>} type
+   * @param {Class.<TYPE>} type
    * @param {Function} dataValidate
    * @param {TYPE} initialData
    */

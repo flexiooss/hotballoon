@@ -1,12 +1,12 @@
-import {EventListenerOrderedFactory} from './EventListenerOrderedFactory'
+import {EventListenerOrderedBuilder} from './EventListenerOrderedBuilder'
 import {ViewContainerBase} from '../View/ViewContainerBase'
 import {assert} from 'flexio-jshelpers'
 import {EventListenerOrderedParam} from './EventListenerOrderedParam'
 
 /**
- * @extends EventListenerFactory
+ * @extends EventListenerBuilder
  */
-export class ViewEventListenerBuilder extends EventListenerOrderedFactory {
+export class ViewEventListenerBuilder extends EventListenerOrderedBuilder {
   /**
    *
    * @param {String} event
@@ -54,7 +54,7 @@ export class ViewEventListenerBuilder extends EventListenerOrderedFactory {
    *
    * @param {String} event
    * @param {ViewContainerBase} viewContainerBase
-   * @return {EventListenerFactory}
+   * @return {EventListenerBuilder}
    * @constructor
    */
   static bubble(event, viewContainerBase) {

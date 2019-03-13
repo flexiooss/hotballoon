@@ -6,7 +6,7 @@ import {
 } from '../HasTagClassNameInterface'
 import {EventAction} from './EventAction'
 import {ActionParams} from './ActionParams'
-import {DispatcherEventListenerFactory} from '../Dispatcher/DispatcherEventListenerFactory'
+import {DispatcherEventListenerBuilder} from '../Dispatcher/DispatcherEventListenerBuilder'
 import {WithIDBase} from '../bases/WithIDBase'
 
 const _actionParams = Symbol('_actionParams')
@@ -74,8 +74,9 @@ export class Action extends WithIDBase {
    */
   dispatch(payload) {
     assert(
-      this[_actionParams].validate(payload),
-      'hotballoon:Action:dispatchPayload "payload" argument assert not validated'
+      payload instanceof this.__type__,
+      'hotballoon:Action:dispatchPayload "payload" argument should be an instance of %s',
+      this.__type__.name
     )
     assert(
       this[_actionParams].validate(payload),
@@ -88,18 +89,19 @@ export class Action extends WithIDBase {
     this[_actionParams].dispatcher.dispatchAction(
       EventAction.create(
         this.ID,
-        payload)
+        payload
+      )
     )
   }
 
   /**
    *
-   * @param {EventListenerParam} callback
+   * @param {Function} callback
    * @returns {String} token
    */
   listenWithCallback(callback) {
     return this[_actionParams].dispatcher
-      .addActionListener(DispatcherEventListenerFactory
+      .addActionListener(DispatcherEventListenerBuilder
         .listen(this)
         .callback(callback)
         .build()
