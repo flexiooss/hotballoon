@@ -123,12 +123,13 @@ export class StoreBase extends WithIDBase {
    * @param {TYPE} dataStore
    */
   [_set](dataStore) {
+//TODO defaultchecker
+    assert(this[_storeParams].validator(dataStore),
+      'StoreBase:set: `dataStore` failed validation'
+    )
     assert(dataStore instanceof this.__type__,
       'StoreBase:set: `dataStore` should be an instanceof %s',
       this.__type__.constructor.name
-    )
-    assert(this[_storeParams].dataValidate(dataStore),
-      'StoreBase:set: `dataStore` failed validation'
     )
     this[_storage] = this[_storage].set(this.ID, dataStore)
   }

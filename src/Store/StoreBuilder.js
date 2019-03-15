@@ -20,7 +20,7 @@ export class StoreBuilder {
       new StoreParams(
         id,
         inMemoryParams.type,
-        inMemoryParams.dataValidate,
+        inMemoryParams.validator,
         new InMemoryStorage(
           inMemoryParams.type,
           new StoreState(id, inMemoryParams.type, inMemoryParams.initialData)
@@ -39,7 +39,7 @@ export class StoreBuilder {
       new ProxyStoreParams(
         id,
         proxyParams.type,
-        proxyParams.dataValidate,
+        proxyParams.validator,
         proxyParams.store,
         proxyParams.mapper,
         new InMemoryStorage(
@@ -56,30 +56,20 @@ export class StoreBuilder {
  */
 export class InMemoryParams {
   /**
-   * @param {Class.<TYPE>} type
-   * @param {Function} dataValidate
+   * @param {TypeParameter<TYPE>} typeParameter
    * @param {TYPE} initialData
    */
-  constructor(type, dataValidate, initialData) {
-    this._type = type
-    this._dataValidate = dataValidate
+  constructor(typeParameter, initialData) {
+    this._typeParameter = typeParameter
     this._initialData = initialData
   }
 
   /**
    *
-   * @return {Class<TYPE>}
+   * @return {TypeParameter<TYPE>}
    */
-  get type() {
-    return this._type
-  }
-
-  /**
-   *
-   * @return {Function}
-   */
-  get dataValidate() {
-    return this._dataValidate
+  get typeParameter() {
+    return this._typeParameter
   }
 
   /**
@@ -96,13 +86,12 @@ export class InMemoryParams {
  */
 export class ProxyParams extends InMemoryParams {
   /**
-   * @param {Class<TYPE>} type
-   * @param {Function} dataValidate
+   * @param {TypeParameter<TYPE>} typeParameter
    * @param {StoreInterface<STORE_TYPE>} store
    * @param {Function} mapper
    */
-  constructor(type, dataValidate, store, mapper) {
-    super(type, dataValidate, mapper(store.state().data))
+  constructor(typeParameter, store, mapper) {
+    super(typeParameter, mapper(store.state().data))
     this._store = store
     this._mapper = mapper
   }
