@@ -35,7 +35,7 @@ export class EventListenerOrderedParam extends EventListenerParam {
   /**
    *
    * @param {String} event
-   * @param {function(payload&lt;Object>, type&lt;string>)} callback
+   * @param {function(payload&lt;Object>, params&lt;string>)} callback
    * @param {number} priority
    */
   constructor(event, callback, priority) {
@@ -49,7 +49,7 @@ export class EventListenerOrderedParam extends EventListenerParam {
   /**
    *
    * @param {String} event
-   * @param {function(payload&lt;Object>, type&lt;string>)} callback
+   * @param {function(payload&lt;Object>, params&lt;string>)} callback
    * @param {number} priority
    * @return {EventListenerOrderedParam}
    * @constructor

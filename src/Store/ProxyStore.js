@@ -35,7 +35,7 @@ export class ProxyStore extends StoreBase {
         enumerable: false,
         configurable: false,
         /**
-         * @type {StoreInterface<STORE_TYPE>}
+         * @params {StoreInterface<STORE_TYPE>}
          * @name ProxyStore#_Store
          * @private
          */

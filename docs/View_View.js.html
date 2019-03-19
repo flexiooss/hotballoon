@@ -59,7 +59,7 @@ export class ViewParameters {
         enumerable: false,
         writable: false,
         /**
-           * @type {String}
+           * @params {String}
            * @name ViewParameters#id
            */
         value: id
@@ -69,7 +69,7 @@ export class ViewParameters {
         enumerable: false,
         writable: false,
         /**
-           * @type {ViewContainerBase}
+           * @params {ViewContainerBase}
            * @name ViewParameters#container
            */
         value: container
@@ -226,7 +226,7 @@ class View extends ViewContainerBase {
         enumerable: false,
         /**
          * @property {Map} _state
-         * @type {Map&lt;string, *>}
+         * @params {Map&lt;string, *>}
          * @name View#_state
          * @protected
          */
@@ -297,7 +297,7 @@ class View extends ViewContainerBase {
       store.subscribe(
         EventListenerOrderedFactory
           .listen(STORE_CHANGED)
-          .callback((payload, type) => {
+          .callback((payload, params) => {
             const oldState = this._state.get(keyStore)
             this._state.set(keyStore, payload.data)
 

@@ -10,7 +10,7 @@ export class ProxyStoreParams extends StoreBaseParams {
    * @constructor
    * @param {(Symbol|String)} id
    * @param {StoreInterface<STORE_TYPE>} store
-   * @param {TypeParameter<TYPE>} typeParameter
+   * @param {StoreTypeParam<TYPE>} typeParameter
    * @param {ProxyStoreParams~mapperClb<TYPE>} mapper
    * @param {StorageInterface<TYPE>} storage
    */

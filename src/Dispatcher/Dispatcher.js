@@ -29,7 +29,7 @@ export class Dispatcher extends EventHandlerBase {
       'hotballoon:dispatcher:waitFor: Must be invoked while dispatching.'
     )
     assert(!!isArray(ids),
-      'hotballoon:dispatcher:waitFor: `ids` argument should be Array type')
+      'hotballoon:dispatcher:waitFor: `ids` argument should be Array params')
     let countOfIds = ids.length
     for (let i = 0; i < countOfIds; i++) {
       let id = ids[i]

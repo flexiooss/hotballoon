@@ -25,7 +25,7 @@ class WithIDBase extends Debugable {
             false,
         /**
            * @property {String}
-           * @type {string}
+           * @params {string}
            * @name  WithIDBase#_ID
            * @protected
            */

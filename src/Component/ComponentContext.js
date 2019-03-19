@@ -48,7 +48,7 @@ class ComponentContext extends WithIDBase {
     Object.defineProperties(this, {
       /**
          * @name ComponentContext#_APP
-         * @type {HotBalloonApplication}
+         * @params {HotBalloonApplication}
          */
       _APP: {
         configurable: false,

@@ -55,7 +55,7 @@ export class StoreBuilder {
 export class InMemoryParams {
   /**
    * @template TYPE
-   * @param {TypeParameter<TYPE>} typeParameter
+   * @param {StoreTypeParam<TYPE>} typeParameter
    * @param {TYPE} initialData
    */
   constructor(typeParameter, initialData) {
@@ -65,7 +65,7 @@ export class InMemoryParams {
 
   /**
    *
-   * @return {TypeParameter<TYPE>}
+   * @return {StoreTypeParam<TYPE>}
    */
   get typeParameter() {
     return this._typeParameter
@@ -85,7 +85,7 @@ export class InMemoryParams {
  */
 export class ProxyParams extends InMemoryParams {
   /**
-   * @param {TypeParameter<TYPE>} typeParameter
+   * @param {StoreTypeParam<TYPE>} typeParameter
    * @param {StoreInterface<STORE_TYPE>} store
    * @param {Function} mapper
    */

@@ -19,7 +19,7 @@ export class StoreState {
         writable: false,
         enumerable: true,
         /**
-         * @type {(string|Symbol)}
+         * @params {(string|Symbol)}
          * @name StoreState#storeID
          */
         value: storeID
@@ -29,7 +29,7 @@ export class StoreState {
         writable: false,
         enumerable: true,
         /**
-         * @type {TYPE}
+         * @params {TYPE}
          * @name StoreState#data
          */
         value: dataStore
@@ -39,7 +39,7 @@ export class StoreState {
         writable: false,
         enumerable: true,
         /**
-         * @type {Date}
+         * @params {Date}
          * @name StoreState#time
          */
         value: new Date()
@@ -49,7 +49,7 @@ export class StoreState {
         writable: false,
         enumerable: true,
         /**
-         * @type {Class<TYPE>}
+         * @params {Class<TYPE>}
          * @name StoreState#type
          */
         value: type

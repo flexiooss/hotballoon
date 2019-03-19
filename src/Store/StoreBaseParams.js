@@ -5,7 +5,7 @@ export class StoreBaseParams {
   /**
    * @constructor
    * @param {(Symbol|String)} id
-   * @param {TypeParameter<TYPE>} typeParameter
+   * @param {StoreTypeParam<TYPE>} typeParameter
    * @param {StorageInterface<TYPE>} storage
    */
   constructor(id, typeParameter, storage) {
@@ -32,7 +32,7 @@ export class StoreBaseParams {
 
   /**
    *
-   * @return {TypeParameter~validatorClb<TYPE>}
+   * @return {StoreTypeParam~validatorClb<TYPE>}
    */
   get validator() {
     return this._typeParameter.validator
@@ -40,7 +40,7 @@ export class StoreBaseParams {
 
   /**
    *
-   * @return {TypeParameter~defaultCheckerClb<TYPE>}
+   * @return {StoreTypeParam~defaultCheckerClb<TYPE>}
    */
   get defaultChecker() {
     return this._typeParameter.defaultChecker
@@ -48,7 +48,7 @@ export class StoreBaseParams {
 
   /**
    *
-   * @return {TypeParameter~fromObjectClb<TYPE>}
+   * @return {StoreTypeParam~fromObjectClb<TYPE>}
    */
   get fromObject() {
     return this._typeParameter.fromObject

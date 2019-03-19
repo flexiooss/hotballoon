@@ -31,7 +31,7 @@ export class ViewParameters {
           enumerable: false,
           writable: false,
           /**
-           * @type {String}
+           * @params {String}
            * @name ViewParameters#id
            */
           value: id
@@ -41,7 +41,7 @@ export class ViewParameters {
           enumerable: false,
           writable: false,
           /**
-           * @type {ViewContainerBase}
+           * @params {ViewContainerBase}
            * @name ViewParameters#container
            */
           value: container

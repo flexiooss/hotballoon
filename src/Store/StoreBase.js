@@ -4,7 +4,7 @@ import {StorageInterface} from './Storage/StorageInterface'
 
 import {EventOrderedHandler} from '../Event/EventOrderedHandler'
 import {STORE_CHANGED} from './StoreInterface'
-import {ValidationError} from './Exception/ValidationError'
+import {ValidationError} from '../Exception/ValidationError'
 
 export const _storage = Symbol('_storage')
 export const _EventHandler = Symbol('_EventHandler')

@@ -41,20 +41,20 @@ export class EventHandlerBase {
   constructor() {
     /**
      *
-     * @type {Map&lt;any, any>}
+     * @params {Map&lt;any, any>}
      * @protected
      */
     this._listeners = new Map()
     this._pendingPayload = new Map()
     /**
      *
-     * @type {Set&lt;string>}
+     * @params {Set&lt;string>}
      * @protected
      */
     this._isHandled = new Set()
     /**
      *
-     * @type {Set&lt;string>}
+     * @params {Set&lt;string>}
      * @protected
      */
     this._isPending = new Set()

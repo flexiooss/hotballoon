@@ -14,7 +14,7 @@ export class EventListenerOrderedBuilder extends EventListenerBuilder {
     super(event)
     /**
      *
-     * @type {number}
+     * @params {number}
      * @protected
      */
     this._priority = 100

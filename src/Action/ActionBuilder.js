@@ -1,7 +1,7 @@
 import {Action} from './Action'
 import {ActionParams} from './ActionParams'
+import {ActionTypeParam} from './ActionTypeParam'
 import {UID, assert, isFunction, assertType} from 'flexio-jshelpers'
-import {TypeCheck} from '../TypeCheck'
 
 /**
  * @template {TYPE}
@@ -9,15 +9,14 @@ import {TypeCheck} from '../TypeCheck'
 export class ActionBuilder {
   /**
    *
-   * @param {PublicActionParams} publicActionParams
+   * @param {PublicActionParams<TYPE>} publicActionParams
    * @return {Action<TYPE>}
    */
   static build(publicActionParams) {
     return new Action(
       new ActionParams(
-        UID(publicActionParams.type.name + '_'),
-        publicActionParams.type,
-        publicActionParams.validator,
+        UID(publicActionParams.params.name + '_'),
+        publicActionParams.params,
         publicActionParams.dispatcher
       )
     )
@@ -30,37 +29,20 @@ export class ActionBuilder {
 export class PublicActionParams {
   /**
    *
-   * @param {Class.<TYPE>} type
-   * @param {ActionParams~validatorClb<TYPE>} validator
+   * @param {ActionTypeParam<TYPE>} actionTypeParam
    * @param {Dispatcher} dispatcher
    */
-  constructor(type, validator, dispatcher) {
-    // TODO isClass(actionPayloadClass)
-    assert(!!type,
-      'hotballoon:ActionParams:constructor "type" argument should not be empty'
-    )
-    assertType(isFunction(validator), 'hotballoon:ActionParams:constructor "validator" argument should be function')
-    assertType(TypeCheck.isDispatcher(dispatcher), 'hotballoon:ActionParams:constructor "dispatcher" argument should be a Dispatcher')
-
-    this._type = type
-    this._validator = validator
+  constructor(actionTypeParam, dispatcher) {
+    this._params = actionTypeParam
     this._dispatcher = dispatcher
   }
 
   /**
    *
-   * @return {Class.<TYPE>}
+   * @return {ActionTypeParam<TYPE>}
    */
-  get type() {
-    return this._type
-  }
-
-  /**
-   *
-   * @return {ActionParams~validatorClb<TYPE>}
-   */
-  get validator() {
-    return this._validator
+  get params() {
+    return this._params
   }
 
   /**

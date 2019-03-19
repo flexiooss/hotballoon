@@ -120,7 +120,7 @@ export class ViewContainer extends ViewContainerBase {
         enumerable: false,
         writable: false,
         /**
-         * @type {ComponentContext}
+         * @params {ComponentContext}
          * @name ViewContainer#_ComponentContext
          * @protected
          */
@@ -153,7 +153,7 @@ export class ViewContainer extends ViewContainerBase {
       store.subscribe(
         EventListenerOrderedFactory
           .listen(STORE_CHANGED)
-          .callback((payload, type) => {
+          .callback((payload, params) => {
             clb(payload.data)
           })
           .build()

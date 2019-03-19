@@ -32,7 +32,7 @@ export class EventListenerParam {
   /**
    *
    * @param {String} event
-   * @param {function(payload&lt;Object>, type&lt;string>)} callback
+   * @param {function(payload&lt;Object>, params&lt;string>)} callback
    * @param {Object | null} scope
    */
   constructor(event, callback, scope) {
@@ -53,7 +53,7 @@ export class EventListenerParam {
   /**
    *
    * @param {String} event
-   * @param {function(payload&lt;Object>, type&lt;string>)} callback
+   * @param {function(payload&lt;Object>, params&lt;string>)} callback
    * @param {Object | null} scope
    * @return {EventListenerParam}
    * @constructor

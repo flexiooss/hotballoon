@@ -15,7 +15,7 @@ export class ViewEventListenerBuilder extends EventListenerOrderedBuilder {
     super(event)
     /**
      *
-     * @type {string}
+     * @params {string}
      * @protected
      */
     this._eventToDispatch = ''

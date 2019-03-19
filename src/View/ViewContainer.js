@@ -89,7 +89,7 @@ export class ViewContainer extends ViewContainerBase {
         enumerable: false,
         writable: false,
         /**
-         * @type {ComponentContext}
+         * @params {ComponentContext}
          * @name ViewContainer#_ComponentContext
          * @protected
          */

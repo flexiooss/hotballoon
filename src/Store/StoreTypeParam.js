@@ -1,12 +1,12 @@
 /**
  * @template TYPE
  */
-export class TypeParameter {
+export class StoreTypeParam {
   /**
    * @param {Class} type
-   * @param {TypeParameter~defaultCheckerClb<TYPE>} defaultChecker
-   * @param {TypeParameter~validatorClb<TYPE>} validator
-   * @param {TypeParameter~fromObjectClb<TYPE>} fromObject
+   * @param {StoreTypeParam~defaultCheckerClb<TYPE>} defaultChecker
+   * @param {StoreTypeParam~validatorClb<TYPE>} validator
+   * @param {StoreTypeParam~fromObjectClb<TYPE>} fromObject
    */
   constructor(
     type,
@@ -33,7 +33,7 @@ export class TypeParameter {
 
   /**
    *
-   * @return {TypeParameter~validatorClb<TYPE>}
+   * @return {StoreTypeParam~validatorClb<TYPE>}
    */
   get validator() {
     return this._validator
@@ -41,14 +41,14 @@ export class TypeParameter {
 
   /**
    * @template TYPE
-   * @callback TypeParameter~validatorClb
+   * @callback StoreTypeParam~validatorClb
    * @param {TYPE} v
    * @return {boolean}
    */
 
   /**
    *
-   * @return {TypeParameter~defaultCheckerClb}
+   * @return {StoreTypeParam~defaultCheckerClb}
    */
   get defaultChecker() {
     return this._defaultChecker
@@ -56,14 +56,14 @@ export class TypeParameter {
 
   /**
    * @template TYPE
-   * @callback TypeParameter~defaultCheckerClb
+   * @callback StoreTypeParam~defaultCheckerClb
    * @param {TYPE} v
    * @return {TYPE}
    */
 
   /**
    *
-   * @return {TypeParameter~fromObjectClb}
+   * @return {StoreTypeParam~fromObjectClb}
    */
   get fromObject() {
     return this._fromObject
@@ -71,7 +71,7 @@ export class TypeParameter {
 
   /**
    * @template TYPE
-   * @callback TypeParameter~fromObjectClb
+   * @callback StoreTypeParam~fromObjectClb
    * @param {Object} v
    * @return {TYPE}
    */

@@ -24,7 +24,7 @@ export class PublicStoreHandler {
     })
 
     /**
-     * @type {StoreInterface<TYPE>}
+     * @params {StoreInterface<TYPE>}
      */
     this[_store] = store
   }

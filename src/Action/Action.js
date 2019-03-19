@@ -1,5 +1,5 @@
 'use strict'
-import {assert, UID} from 'flexio-jshelpers'
+import {assert, assertType, UID} from 'flexio-jshelpers'
 import {
   CLASS_TAG_NAME,
   CLASS_TAG_NAME_ACTION
@@ -8,6 +8,7 @@ import {EventAction} from './EventAction'
 import {ActionParams} from './ActionParams'
 import {DispatcherEventListenerBuilder} from '../Dispatcher/DispatcherEventListenerBuilder'
 import {WithIDBase} from '../bases/WithIDBase'
+import {ValidationError} from '../Exception/ValidationError'
 
 const _actionParams = Symbol('_actionParams')
 
@@ -24,7 +25,7 @@ export class Action extends WithIDBase {
   constructor(actionParams) {
     super(UID(actionParams.type.name + '_'))
 
-    assert(actionParams instanceof ActionParams,
+    assertType(actionParams instanceof ActionParams,
       'hotballoon:Action:constructor "actionParams" argument assert be an instance of ActionParams'
     )
 
@@ -73,15 +74,18 @@ export class Action extends WithIDBase {
    * @param {TYPE} payload
    */
   dispatch(payload) {
-    assert(
-      payload instanceof this.__type__,
-      'hotballoon:Action:dispatchPayload "payload" argument should be an instance of %s',
+    const data = this[_actionParams].defaultChecker(payload)
+
+    assertType(
+      data instanceof this.__type__,
+      'hotballoon:Action:dispatch "data" argument should be an instance of %s',
       this.__type__.name
     )
-    assert(
-      this[_actionParams].validate(payload),
-      'hotballoon:Action:dispatchPayload "payload" argument assert not validated'
-    )
+
+    if (!this[_actionParams].validator(data)) {
+      throw new ValidationError('hotballoon:Action:dispatch "data" argument failed tot validation')
+    }
+
     this.debug.log('Action dispatch : ' + this.ID).size(1).background()
     this.debug.object(payload)
     this.debug.print()

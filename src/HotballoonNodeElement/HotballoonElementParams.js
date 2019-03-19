@@ -10,19 +10,19 @@ export class HotballoonElementParams extends HyperFlexParams {
     super()
     /**
      *
-     * @type {Array.<View>}
+     * @params {Array.<View>}
      * @private
      */
     this._views = []
     /**
      *
-     * @type {Array.<String>}
+     * @params {Array.<String>}
      * @private
      */
     this._reconciliationRules = []
     /**
      *
-     * @type {Array<ElementEventListenerParam>}
+     * @params {Array<ElementEventListenerParam>}
      * @private
      */
     this._eventListeners = []
