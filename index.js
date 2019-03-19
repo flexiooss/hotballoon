@@ -24,3 +24,4 @@ export {TypeCheck} from './src/TypeCheck'
 
 export {JobInterface} from './src/Job/JobInterface'
 export {ExecutorWorker} from './src/Job/ExecutorWorker'
+export {ExecutorInline} from './src/Job/ExecutorInline'
