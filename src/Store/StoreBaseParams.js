@@ -5,14 +5,12 @@ export class StoreBaseParams {
   /**
    * @constructor
    * @param {(Symbol|String)} id
-   * @param {Class<TYPE>} type
-   * @param {Function} dataValidate
+   * @param {StoreTypeParam<TYPE>} typeParameter
    * @param {StorageInterface<TYPE>} storage
    */
-  constructor(id, type, dataValidate, storage) {
+  constructor(id, typeParameter, storage) {
     this._id = id
-    this._type = type
-    this._dataValidate = dataValidate
+    this._typeParameter = typeParameter
     this._storage = storage
   }
 
@@ -29,15 +27,31 @@ export class StoreBaseParams {
    * @return {Class<TYPE>}
    */
   get type() {
-    return this._type
+    return this._typeParameter.type
   }
 
   /**
    *
-   * @return {Function}
+   * @return {StoreTypeParam~validatorClb<TYPE>}
    */
-  get dataValidate() {
-    return this._dataValidate
+  get validator() {
+    return this._typeParameter.validator
+  }
+
+  /**
+   *
+   * @return {StoreTypeParam~defaultCheckerClb<TYPE>}
+   */
+  get defaultChecker() {
+    return this._typeParameter.defaultChecker
+  }
+
+  /**
+   *
+   * @return {StoreTypeParam~fromObjectClb<TYPE>}
+   */
+  get fromObject() {
+    return this._typeParameter.fromObject
   }
 
   /**

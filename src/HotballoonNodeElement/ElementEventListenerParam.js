@@ -1,12 +1,12 @@
 import {deepFreezeSeal} from 'flexio-jshelpers'
 import {EventListenerParam} from 'flexio-nodes-reconciliation'
 
-export class NodeEventListenerParam extends EventListenerParam {
+export class ElementEventListenerParam extends EventListenerParam {
   /**
    *
    * @param {String} event
    * @param {function(payload<Object>, type<string>)} callback
-   * @return {NodeEventListenerParam}
+   * @return {ElementEventListenerParam}
    * @constructor
    * @readonly
    */
@@ -19,7 +19,7 @@ export class NodeEventListenerParam extends EventListenerParam {
    * @param {String} event
    * @param {function(payload<Object>, type<string>)} callback
    * @param {{capture: boolean, once: boolean, passive: boolean}} options
-   * @return {NodeEventListenerParam}
+   * @return {ElementEventListenerParam}
    * @constructor
    * @readonly
    */

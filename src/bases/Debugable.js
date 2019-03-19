@@ -10,7 +10,7 @@ export class Debugable {
         configurable: false,
         enumerable: false,
         /**
-         * @type {LogHandler}
+         * @params {LogHandler}
          * @property {LogHandler} debug
          * @name Debugable#debug
          */

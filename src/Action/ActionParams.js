@@ -1,27 +1,34 @@
-import {assert, isFunction} from 'flexio-jshelpers'
+import {assertType, isFunction} from 'flexio-jshelpers'
 import {TypeCheck} from '../TypeCheck'
+import {ActionTypeParam} from './ActionTypeParam'
 
 /**
  * @template TYPE
  */
 export class ActionParams {
   /**
-   *
-   * @param {Class.<TYPE>} type
-   * @param {CallableFunction} validate
+   * @param {(Symbol|String)} id
+   * @param {ActionTypeParam<TYPE>} actionTypeParam
    * @param {Dispatcher} dispatcher
    */
-  constructor(type, validate, dispatcher) {
-    // TODO isClass(actionPayloadClass)
-    assert(!!type,
-      'hotballoon:ActionParams:constructor "type" argument should not be empty'
+  constructor(id, actionTypeParam, dispatcher) {
+    assertType(actionTypeParam instanceof ActionTypeParam,
+      'hotballoon:ActionParams:constructor "actionTypeParam" should be ActionTypeParam'
     )
-    assert(isFunction(validate), 'hotballoon:ActionParams:constructor "validate" argument should be function')
-    assert(TypeCheck.isDispatcher(dispatcher), 'hotballoon:ActionParams:constructor "dispatcher" argument should be a Dispatcher')
 
-    this._type = type
-    this._validate = validate
+    assertType(TypeCheck.isDispatcher(dispatcher), 'hotballoon:ActionParams:constructor "dispatcher" argument should be a Dispatcher')
+
+    this._id = id
+    this._params = actionTypeParam
     this._dispatcher = dispatcher
+  }
+
+  /**
+   *
+   * @return {(symbol|String)}
+   */
+  get id() {
+    return this._id
   }
 
   /**
@@ -29,15 +36,23 @@ export class ActionParams {
    * @return {Class.<TYPE>}
    */
   get type() {
-    return this._type
+    return this._params.type
   }
 
   /**
    *
-   * @return {CallableFunction}
+   * @return {ActionTypeParam~validatorClb<TYPE>}
    */
-  validate(payload) {
-    return this._validate(payload)
+  get validator() {
+    return this._params.validator
+  }
+
+  /**
+   *
+   * @return {ActionTypeParam~defaultCheckerClb<TYPE>}
+   */
+  get defaultChecker() {
+    return this._params.defaultChecker
   }
 
   /**

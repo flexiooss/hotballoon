@@ -3,7 +3,7 @@ import {CLASS_TAG_NAME, CLASS_TAG_NAME_VIEWCONTAINER} from '../HasTagClassNameIn
 import {isNode, isString, assert, isFunction} from 'flexio-jshelpers'
 import {STORE_CHANGED, StoreInterface} from '../Store/StoreInterface'
 import {ViewContainerBase} from './ViewContainerBase'
-import {EventListenerOrderedFactory} from '../Event/EventListenerOrderedFactory'
+import {EventListenerOrderedBuilder} from '../Event/EventListenerOrderedBuilder'
 
 export class ViewContainerParameters {
   /**
@@ -89,7 +89,7 @@ export class ViewContainer extends ViewContainerBase {
         enumerable: false,
         writable: false,
         /**
-         * @type {ComponentContext}
+         * @params {ComponentContext}
          * @name ViewContainer#_ComponentContext
          * @protected
          */
@@ -119,7 +119,7 @@ export class ViewContainer extends ViewContainerBase {
     this._tokenEvent.add(
       store.ID,
       store.subscribe(
-        EventListenerOrderedFactory
+        EventListenerOrderedBuilder
           .listen(STORE_CHANGED)
           .callback((payload, type) => {
             clb(payload.data)

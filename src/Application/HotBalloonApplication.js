@@ -108,14 +108,10 @@ export class HotBalloonApplication extends WithIDBase {
   }
 
   /**
-   * @description register a componentContext into this Application
-   * @param {ComponentContext} componentContext
    * @return {ComponentContext} componentContext
    */
-  addComponentContext(componentContext) {
-    assert(componentContext instanceof ComponentContext,
-      'hotballoon:HotBalloonApplication:addComponentContext: `component` argument should be an instance of hotballoon:componentContext'
-    )
+  addComponentContext() {
+    const componentContext = new ComponentContext(this)
     this[_ComponentContexts].add(componentContext.ID, componentContext)
     return componentContext
   }

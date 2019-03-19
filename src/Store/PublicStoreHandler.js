@@ -12,6 +12,7 @@ const _store = Symbol('_store')
 export class PublicStoreHandler {
   /**
    *
+   * @template TYPE
    * @param {StoreInterface<TYPE>} store
    */
   constructor(store) {
@@ -23,7 +24,7 @@ export class PublicStoreHandler {
     })
 
     /**
-     * @type {StoreInterface<TYPE>}
+     * @params {StoreInterface<TYPE>}
      */
     this[_store] = store
   }

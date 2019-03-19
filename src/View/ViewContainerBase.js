@@ -91,7 +91,7 @@ export class ViewContainerBase extends WithIDBase {
         value: _views
       },
       /**
-       * @type {Node}
+       * @params {Node}
        * @name ViewContainerBase#parentNode
        * @protected
        */

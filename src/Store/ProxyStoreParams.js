@@ -1,25 +1,23 @@
 import {StoreBaseParams} from './StoreBaseParams'
 import {assert, isFunction} from 'flexio-jshelpers'
-import {StoreInterface} from './StoreInterface'
-import {InMemoryStorage} from './Storage/InMemoryStorage'
+import {TypeCheck} from '../TypeCheck'
 
 /**
- * @template TYPE
+ * @template STORE_TYPE, TYPE
  */
 export class ProxyStoreParams extends StoreBaseParams {
   /**
    * @constructor
    * @param {(Symbol|String)} id
-   * @param {Class<TYPE>} type
-   * @param {Function} dataValidate
-   * @param {StoreInterface<TYPE>} store
-   * @param {Function} mapper
+   * @param {StoreInterface<STORE_TYPE>} store
+   * @param {StoreTypeParam<TYPE>} typeParameter
+   * @param {ProxyStoreParams~mapperClb<TYPE>} mapper
+   * @param {StorageInterface<TYPE>} storage
    */
-  constructor(id, type, dataValidate, store, mapper) {
-    super(id, type, dataValidate, new InMemoryStorage(type, mapper(store.state().data)))
+  constructor(id, store, typeParameter, mapper, storage) {
+    super(id, typeParameter, storage)
 
-    assert(store instanceof StoreInterface, '`store` argument should be an instance of StoreInterface')
-
+    assert(TypeCheck.isStoreBase(store), '`store` argument should be an instance of StoreInterface')
     assert(isFunction(mapper), '`mapper` argument should be a Function')
 
     this._mapper = mapper
@@ -28,7 +26,7 @@ export class ProxyStoreParams extends StoreBaseParams {
 
   /**
    *
-   * @return {StoreInterface<TYPE>}
+   * @return {StoreInterface<STORE_TYPE>}
    */
   get store() {
     return this._store
@@ -36,9 +34,16 @@ export class ProxyStoreParams extends StoreBaseParams {
 
   /**
    *
-   * @return {Function}
+   * @return {ProxyStoreParams~mapperClb<TYPE>}
    */
   get mapper() {
     return this._mapper
   }
+
+  /**
+   * @template STORE_TYPE, TYPE
+   * @callback ProxyStoreParams~mapperClb
+   * @param {STORE_TYPE} v
+   * @return {TYPE}
+   */
 }

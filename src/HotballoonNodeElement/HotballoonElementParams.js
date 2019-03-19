@@ -10,19 +10,19 @@ export class HotballoonElementParams extends HyperFlexParams {
     super()
     /**
      *
-     * @type {Array.<View>}
+     * @params {Array.<View>}
      * @private
      */
     this._views = []
     /**
      *
-     * @type {Array.<String>}
+     * @params {Array.<String>}
      * @private
      */
     this._reconciliationRules = []
     /**
      *
-     * @type {Array<NodeEventListenerParam>}
+     * @params {Array<ElementEventListenerParam>}
      * @private
      */
     this._eventListeners = []
@@ -46,7 +46,7 @@ export class HotballoonElementParams extends HyperFlexParams {
 
   /**
    *
-   * @return {Array.<NodeEventListenerParam>}
+   * @return {Array.<ElementEventListenerParam>}
    */
   get eventListeners() {
     return this._eventListeners
@@ -97,7 +97,7 @@ export class HotballoonElementParams extends HyperFlexParams {
 
   /**
    * @static
-   * @param {NodeEventListenerParam} nodeEventListenerParam
+   * @param {ElementEventListenerParam} nodeEventListenerParam
    * @return {this}
    * @constructor
    */
@@ -107,7 +107,7 @@ export class HotballoonElementParams extends HyperFlexParams {
 
   /**
    *
-   * @param {NodeEventListenerParam} nodeEventListenerParam
+   * @param {ElementEventListenerParam} nodeEventListenerParam
    * @return {this}
    */
   addEventListener(nodeEventListenerParam) {

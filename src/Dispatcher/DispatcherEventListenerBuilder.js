@@ -1,10 +1,10 @@
-import {assert, EventListenerFactory} from 'flexio-jshelpers'
+import {assert, EventListenerBuilder} from 'flexio-jshelpers'
 import {TypeCheck} from '../TypeCheck'
 
 /**
- * @extends {EventListenerFactory}
+ * @extends {EventListenerBuilder}
  */
-export class DispatcherEventListenerFactory extends EventListenerFactory {
+export class DispatcherEventListenerBuilder extends EventListenerBuilder {
   /**
    *
    * @param {Action} action
@@ -17,7 +17,7 @@ export class DispatcherEventListenerFactory extends EventListenerFactory {
   /**
    *
    * @param {Action} action
-   * @return {DispatcherEventListenerFactory}
+   * @return {DispatcherEventListenerBuilder}
    * @constructor
    */
   static listen(action) {

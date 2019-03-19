@@ -1,11 +1,11 @@
 import {EventListenerOrderedParam} from './EventListenerOrderedParam'
-import {EventListenerFactory} from 'flexio-jshelpers'
+import {EventListenerBuilder} from 'flexio-jshelpers'
 
 /**
  * @class
- * @extends {EventListenerFactory}
+ * @extends {EventListenerBuilder}
  */
-export class EventListenerOrderedFactory extends EventListenerFactory {
+export class EventListenerOrderedBuilder extends EventListenerBuilder {
   /**
    *
    * @param {String} event
@@ -14,7 +14,7 @@ export class EventListenerOrderedFactory extends EventListenerFactory {
     super(event)
     /**
      *
-     * @type {number}
+     * @params {number}
      * @protected
      */
     this._priority = 100
@@ -23,7 +23,7 @@ export class EventListenerOrderedFactory extends EventListenerFactory {
   /**
    *
    * @param priority
-   * @return {EventListenerOrderedFactory}
+   * @return {EventListenerOrderedBuilder}
    */
   priority(priority) {
     this._priority = priority

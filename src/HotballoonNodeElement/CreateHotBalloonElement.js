@@ -29,13 +29,13 @@ class CreateHotBalloonElement extends HyperFlex {
     super(querySelector, hotballoonElementParams)
     /**
      *
-     * @type {View}
+     * @params {View}
      * @private
      */
     this._scope = scope
     /**
      *
-     * @type {HotBalloonAttributeHandler | null}
+     * @params {HotBalloonAttributeHandler | null}
      * @private
      */
     this._$element = null
@@ -157,7 +157,7 @@ class CreateHotBalloonElement extends HyperFlex {
 
   /**
    * @private
-   * @param {Array.<NodeEventListenerParam>} listeners
+   * @param {Array.<ElementEventListenerParam>} listeners
    * @return {CreateHotBalloonElement}
    */
   [_setEventListeners](listeners) {

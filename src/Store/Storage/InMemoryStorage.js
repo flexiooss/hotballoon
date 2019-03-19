@@ -35,7 +35,7 @@ export class InMemoryStorage extends StorageInterface {
         writable: false,
         enumerable: true,
         /**
-         * @type {Class<TYPE>}
+         * @params {Class<TYPE>}
          * @name InMemoryStorage#type
          */
         value: type

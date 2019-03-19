@@ -9,7 +9,7 @@ import {
   CLASS_TAG_NAME_VIEWCONTAINER,
   CLASS_TAG_NAME_VIEW, CLASS_TAG_NAME_PUBLIC_STORE_HANDLER
 } from './HasTagClassNameInterface'
-import {assert} from 'flexio-jshelpers'
+import {assertType} from 'flexio-jshelpers'
 
 class TypeCheck {
   /**
@@ -54,7 +54,7 @@ class TypeCheck {
    * @return {Action}
    */
   static assertIsAction(inst) {
-    assert(TypeCheck.isAction(inst),
+    assertType(TypeCheck.isAction(inst),
       'TypeCheck:assertIsAction: `inst` argument should be an Action'
     )
     return inst
@@ -102,7 +102,7 @@ class TypeCheck {
    * @return {StoreInterface}
    */
   static assertStoreBase(inst) {
-    assert(TypeCheck.isStoreBase(inst),
+    assertType(TypeCheck.isStoreBase(inst),
       'TypeCheck:assertStoreBase: `inst` argument should be an StoreInterface'
     )
     return inst
