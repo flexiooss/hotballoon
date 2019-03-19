@@ -2,18 +2,20 @@
  * @template TYPE
  */
 export class TypeParameter {
-
   /**
    * @param {Class.<TYPE>} type
-   * @param {validatorClb<TYPE>} validator
-   * @param {defaultCheckerClb<TYPE>} defaultChecker
-   * @param {fromObjectClb<TYPE>} fromObject
+   * @param {TypeParameter~validatorClb<TYPE>} validator
+   * @param {TypeParameter~defaultCheckerClb<TYPE>} defaultChecker
+   * @param {TypeParameter~fromObjectClb<TYPE>} fromObject
    */
-  constructor(type, defaultChecker = (v) => {
-    return v
-  }, validator = () => true, fromObject = () => {
-    throw new Error('Should be implemented')
-  }) {
+  constructor(
+    type,
+    defaultChecker = (v) => {
+      return v
+    },
+    validator = () => true, fromObject = () => {
+      throw new Error('Should be implemented')
+    }) {
     this._type = type
     this._validator = validator
     this._defaultChecker = defaultChecker
@@ -30,7 +32,7 @@ export class TypeParameter {
 
   /**
    *
-   * @return {validatorClb<TYPE>}
+   * @return {TypeParameter~validatorClb<TYPE>}
    */
   get validator() {
     return this._validator
@@ -38,14 +40,14 @@ export class TypeParameter {
 
   /**
    * @template TYPE
-   * @callback validatorClb
+   * @callback TypeParameter~validatorClb
    * @param {TYPE} v
    * @return {boolean}
    */
 
   /**
    *
-   * @return {Function}
+   * @return {TypeParameter~defaultCheckerClb}
    */
   get defaultChecker() {
     return this._defaultChecker
@@ -53,14 +55,14 @@ export class TypeParameter {
 
   /**
    * @template TYPE
-   * @callback defaultCheckerClb
+   * @callback TypeParameter~defaultCheckerClb
    * @param {TYPE} v
    * @return {TYPE}
    */
 
   /**
    *
-   * @return {Function}
+   * @return {TypeParameter~fromObjectClb}
    */
   get fromObject() {
     return this._fromObject
@@ -68,9 +70,8 @@ export class TypeParameter {
 
   /**
    * @template TYPE
-   * @callback fromObjectClb
+   * @callback TypeParameter~fromObjectClb
    * @param {Object} v
    * @return {TYPE}
    */
-
 }

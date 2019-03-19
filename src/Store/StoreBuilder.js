@@ -15,15 +15,14 @@ export class StoreBuilder {
    * @return {Store<TYPE>}
    */
   static InMemory(inMemoryParams) {
-    const id = UID(inMemoryParams.type.name + '_')
+    const id = UID(inMemoryParams.typeParameter.type.name + '_')
     return new Store(
       new StoreParams(
         id,
-        inMemoryParams.type,
-        inMemoryParams.validator,
+        inMemoryParams.typeParameter,
         new InMemoryStorage(
-          inMemoryParams.type,
-          new StoreState(id, inMemoryParams.type, inMemoryParams.initialData)
+          inMemoryParams.typeParameter.type,
+          new StoreState(id, inMemoryParams.typeParameter.type, inMemoryParams.initialData)
         )
       )
     )
@@ -34,17 +33,16 @@ export class StoreBuilder {
    * @return {ProxyStore<TYPE>}
    */
   static Proxy(proxyParams) {
-    const id = UID(proxyParams.type.name + '_')
+    const id = UID(proxyParams.typeParameter.type.name + '_')
     return new ProxyStore(
       new ProxyStoreParams(
         id,
-        proxyParams.type,
-        proxyParams.validator,
         proxyParams.store,
+        proxyParams.typeParameter,
         proxyParams.mapper,
         new InMemoryStorage(
-          proxyParams.type,
-          new StoreState(id, proxyParams.type, proxyParams.mapper(proxyParams.store.state().data))
+          proxyParams.typeParameter.type,
+          new StoreState(id, proxyParams.typeParameter.type, proxyParams.mapper(proxyParams.store.state().data))
         )
       )
     )

@@ -1,9 +1,10 @@
 import {WithIDBase} from '../bases/WithIDBase'
-import {assert} from 'flexio-jshelpers'
+import {assert, assertType} from 'flexio-jshelpers'
 import {StorageInterface} from './Storage/StorageInterface'
 
 import {EventOrderedHandler} from '../Event/EventOrderedHandler'
 import {STORE_CHANGED} from './StoreInterface'
+import {ValidationError} from './Exception/ValidationError'
 
 export const _storage = Symbol('_storage')
 export const _EventHandler = Symbol('_EventHandler')
@@ -25,7 +26,7 @@ export class StoreBase extends WithIDBase {
   constructor(storeBaseParams) {
     super(storeBaseParams.id)
     var storage = storeBaseParams.storage
-    assert(storage instanceof StorageInterface,
+    assertType(storage instanceof StorageInterface,
       'hotballoon:' + this.constructor.name + ':constructor: `storage` argument should be an instance of `StorageInterface`')
 
     Object.defineProperties(this, {
@@ -55,8 +56,8 @@ export class StoreBase extends WithIDBase {
         value: Object.seal(new EventOrderedHandler())
       },
       /**
-       * @property {_storeParams}
-       * @name Store#_storeParams
+       * @property {StoreParams}
+       * @name Store#[_storeParams]
        * @protected
        */
       [_storeParams]: {
@@ -123,15 +124,17 @@ export class StoreBase extends WithIDBase {
    * @param {TYPE} dataStore
    */
   [_set](dataStore) {
-//TODO defaultchecker
-    assert(this[_storeParams].validator(dataStore),
-      'StoreBase:set: `dataStore` failed validation'
-    )
-    assert(dataStore instanceof this.__type__,
+    const data = this[_storeParams].defaultChecker(dataStore)
+
+    if (!this[_storeParams].validator(data)) {
+      throw new ValidationError('StoreBase:set: `dataStore` failed validation')
+    }
+
+    assertType(data instanceof this.__type__,
       'StoreBase:set: `dataStore` should be an instanceof %s',
       this.__type__.constructor.name
     )
-    this[_storage] = this[_storage].set(this.ID, dataStore)
+    this[_storage] = this[_storage].set(this.ID, data)
   }
 
   /**

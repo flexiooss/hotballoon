@@ -9,9 +9,12 @@ export {ViewContainer, ViewContainerParameters} from './src/View/ViewContainer'
 export {ViewEventListenerBuilder} from './src/Event/ViewEventListenerBuilder'
 export {ElementEventListenerBuilder} from './src/HotballoonNodeElement/ElementEventListenerBuilder'
 
+export {TypeParameter} from './src/Store/TypeParameter'
 export {
   StoreBuilder, InMemoryParams as InMemoryStoreParams, ProxyParams as ProxyStoreParams
 } from './src/Store/StoreBuilder'
+
+
 export {PublicStoreHandler} from './src/Store/PublicStoreHandler'
 
 export {e} from './src/HotballoonNodeElement/ElementDescription'

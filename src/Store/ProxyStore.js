@@ -10,7 +10,7 @@ const _mapper = Symbol('_mapper')
  * @implements {StoreInterface<TYPE>}
  * @implements {HasTagClassNameInterface}
  * @implements {GenericType<TYPE>}
- * @template TYPE_STORE, TYPE
+ * @template STORE_TYPE, TYPE
  */
 export class ProxyStore extends StoreBase {
   /**
@@ -35,7 +35,7 @@ export class ProxyStore extends StoreBase {
         enumerable: false,
         configurable: false,
         /**
-         * @type {StoreInterface<TYPE_STORE>}
+         * @type {StoreInterface<STORE_TYPE>}
          * @name ProxyStore#_Store
          * @private
          */
@@ -46,7 +46,7 @@ export class ProxyStore extends StoreBase {
         enumerable: false,
         configurable: false,
         /**
-         * @property {Function}
+         * @property {ProxyStoreParams~mapperClb<TYPE>}
          * @name ProxyStore#_mapper
          * @private
          */
@@ -71,7 +71,7 @@ export class ProxyStore extends StoreBase {
 
   /**
    *
-   * @param {StoreState<TYPE_STORE>} payload
+   * @param {StoreState<STORE_TYPE>} payload
    * @param {string} eventType
    * @private
    */
