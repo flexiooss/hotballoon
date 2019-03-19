@@ -1,6 +1,6 @@
 import {Action} from './Action'
 import {ActionParams} from './ActionParams'
-import {UID, assert, isFunction} from 'flexio-jshelpers'
+import {UID, assert, isFunction, assertType} from 'flexio-jshelpers'
 import {TypeCheck} from '../TypeCheck'
 
 /**
@@ -17,7 +17,7 @@ export class ActionBuilder {
       new ActionParams(
         UID(publicActionParams.type.name + '_'),
         publicActionParams.type,
-        publicActionParams.validate,
+        publicActionParams.validator,
         publicActionParams.dispatcher
       )
     )
@@ -31,19 +31,19 @@ export class PublicActionParams {
   /**
    *
    * @param {Class.<TYPE>} type
-   * @param {CallableFunction} validate
+   * @param {ActionParams~validatorClb<TYPE>} validator
    * @param {Dispatcher} dispatcher
    */
-  constructor(type, validate, dispatcher) {
+  constructor(type, validator, dispatcher) {
     // TODO isClass(actionPayloadClass)
     assert(!!type,
       'hotballoon:ActionParams:constructor "type" argument should not be empty'
     )
-    assert(isFunction(validate), 'hotballoon:ActionParams:constructor "validate" argument should be function')
-    assert(TypeCheck.isDispatcher(dispatcher), 'hotballoon:ActionParams:constructor "dispatcher" argument should be a Dispatcher')
+    assertType(isFunction(validator), 'hotballoon:ActionParams:constructor "validator" argument should be function')
+    assertType(TypeCheck.isDispatcher(dispatcher), 'hotballoon:ActionParams:constructor "dispatcher" argument should be a Dispatcher')
 
     this._type = type
-    this._validate = validate
+    this._validator = validator
     this._dispatcher = dispatcher
   }
 
@@ -57,10 +57,10 @@ export class PublicActionParams {
 
   /**
    *
-   * @return {CallableFunction}
+   * @return {ActionParams~validatorClb<TYPE>}
    */
-  get validate() {
-    return this._validate
+  get validator() {
+    return this._validator
   }
 
   /**

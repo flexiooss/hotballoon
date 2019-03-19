@@ -54,6 +54,7 @@ export class StoreBuilder {
  */
 export class InMemoryParams {
   /**
+   * @template TYPE
    * @param {TypeParameter<TYPE>} typeParameter
    * @param {TYPE} initialData
    */

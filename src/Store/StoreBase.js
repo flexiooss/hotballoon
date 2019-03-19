@@ -126,14 +126,15 @@ export class StoreBase extends WithIDBase {
   [_set](dataStore) {
     const data = this[_storeParams].defaultChecker(dataStore)
 
-    if (!this[_storeParams].validator(data)) {
-      throw new ValidationError('StoreBase:set: `dataStore` failed validation')
-    }
-
     assertType(data instanceof this.__type__,
       'StoreBase:set: `dataStore` should be an instanceof %s',
       this.__type__.constructor.name
     )
+
+    if (!this[_storeParams].validator(data)) {
+      throw new ValidationError('StoreBase:set: `dataStore` failed validation')
+    }
+
     this[_storage] = this[_storage].set(this.ID, data)
   }
 

@@ -3,9 +3,9 @@
  */
 export class TypeParameter {
   /**
-   * @param {Class.<TYPE>} type
-   * @param {TypeParameter~validatorClb<TYPE>} validator
+   * @param {Class} type
    * @param {TypeParameter~defaultCheckerClb<TYPE>} defaultChecker
+   * @param {TypeParameter~validatorClb<TYPE>} validator
    * @param {TypeParameter~fromObjectClb<TYPE>} fromObject
    */
   constructor(
@@ -13,7 +13,8 @@ export class TypeParameter {
     defaultChecker = (v) => {
       return v
     },
-    validator = () => true, fromObject = () => {
+    validator = () => true,
+    fromObject = () => {
       throw new Error('Should be implemented')
     }) {
     this._type = type
