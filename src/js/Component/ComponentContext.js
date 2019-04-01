@@ -1,9 +1,11 @@
 'use strict'
 import {Store} from '../Store/Store'
 import {
-  ViewContainer,
-  WILL_REMOVE as VIEWCONTAINER_WILL_REMOVE
+  ViewContainer
 } from '../View/ViewContainer'
+import {
+  WILL_REMOVE as VIEWCONTAINER_WILL_REMOVE
+} from '../View/ViewContainerPublicEventHandler'
 import {MapOfInstance, Sequence, assertType} from 'flexio-jshelpers'
 import {WithIDBase} from '../bases/WithIDBase'
 import {

@@ -1,7 +1,7 @@
 'use strict'
 import {CoreException} from '../CoreException'
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_VIEW} from '../HasTagClassNameInterface'
-import {assert, isBoolean, isFunction, isNode, isPrimitive} from 'flexio-jshelpers'
+import {assertType, isBoolean, isFunction, isNode, UID} from 'flexio-jshelpers'
 import {$} from '../HotballoonNodeElement/HotBalloonAttributeHandler'
 import {startReconcile} from '../HotballoonNodeElement/HotballoonElementReconciliation'
 import {html} from '../HotballoonNodeElement/CreateHotBalloonElement'
@@ -9,47 +9,7 @@ import {ViewContainerBase} from './ViewContainerBase'
 import {STORE_CHANGED} from '../Store/StoreInterface'
 import {EventListenerOrderedBuilder} from '../Event/EventListenerOrderedBuilder'
 import {TypeCheck} from '../TypeCheck'
-
-export class ViewParameters {
-  /**
-   * @constructor
-   * @param {string|Symbol} id
-   * @param {ViewContainerBase} container
-   */
-  constructor(id, container) {
-    assert(!!isPrimitive(id),
-      'hotballoon:view:ViewParameters: `id` argument assert be a String'
-    )
-    assert(container instanceof ViewContainerBase,
-      'hotballoon:view:ViewParameters: `container` argument should be an instance of `ViewContainerBase`'
-    )
-
-    Object.defineProperties(this, {
-
-        id: {
-          configurable: false,
-          enumerable: false,
-          writable: false,
-          /**
-           * @params {String}
-           * @name ViewParameters#id
-           */
-          value: id
-        },
-        container: {
-          configurable: false,
-          enumerable: false,
-          writable: false,
-          /**
-           * @params {ViewContainerBase}
-           * @name ViewParameters#container
-           */
-          value: container
-        }
-      }
-    )
-  }
-}
+import {ViewPublicEventHandler} from './ViewPublicEventHandler'
 
 export const ATTRIBUTE_NODEREF = '_hb_noderef'
 
@@ -61,26 +21,23 @@ const _setNodeRef = Symbol('_setNodeRef')
 const _setNodeViewRef = Symbol('_setNodeViewRef')
 
 /**
- * @class
- * @description view describe a fragment of DOM
  * @extends {ViewContainerBase}
  * @implements {HasTagClassNameInterface}
  */
-class View extends ViewContainerBase {
+export class View extends ViewContainerBase {
   /**
-   * @constructor
-   * @param {ViewParameters} viewParameters
+   * @param {ViewContainerBase} container
    */
-  constructor(viewParameters) {
-    super(viewParameters.id)
+  constructor(container) {
+    super(UID('View_' + container.constructor.name + '_'))
 
-    assert(
-      viewParameters instanceof ViewParameters,
-      'hotballoon:' + this.constructor.name + ':constructor: `viewParameters` should be an instance of ViewParameters'
+    assertType(
+      TypeCheck.isViewContainerBase(container),
+      'hotballoon:' + this.constructor.name + ':constructor: `container` should be an instance of ViewContainerBase'
     )
 
     this.debug.color = 'blue'
-    this.parentNode = viewParameters.container.parentNode
+    this.parentNode = container.parentNode
 
     var _node = null
     var _shouldInit = true
@@ -104,7 +61,7 @@ class View extends ViewContainerBase {
          * @name View#_container
          * @protected
          */
-        value: viewParameters.container
+        value: container
       },
       _node: {
         enumerable: false,
@@ -118,7 +75,7 @@ class View extends ViewContainerBase {
           return _node
         },
         set: (node) => {
-          assert(isNode(node),
+          assertType(isNode(node),
             'view:_node:set: `node` argument assert be a Node, `%s` given',
             typeof node
           )
@@ -137,7 +94,7 @@ class View extends ViewContainerBase {
           return _shouldInit
         },
         set: (v) => {
-          assert(!!isBoolean(v),
+          assertType(!!isBoolean(v),
             'hotballoon:view:constructor: `_shouldInit` argument should be a boolean'
           )
           _shouldInit = v
@@ -155,7 +112,7 @@ class View extends ViewContainerBase {
           return _shouldRender
         },
         set: (v) => {
-          assert(!!isBoolean(v),
+          assertType(!!isBoolean(v),
             'hotballoon:view:constructor: `_shouldRender` argument should be a boolean'
           )
           _shouldRender = v
@@ -173,7 +130,7 @@ class View extends ViewContainerBase {
           return _shouldMount
         },
         set: (v) => {
-          assert(!!isBoolean(v),
+          assertType(!!isBoolean(v),
             'hotballoon:view:constructor: `_shouldMount` argument should be a boolean'
           )
           _shouldMount = v
@@ -199,28 +156,6 @@ class View extends ViewContainerBase {
   }
 
   /**
-   * @static
-   * @param {ViewParameters} viewParameters
-   * @return View
-   */
-  static create(viewParameters) {
-    return new this(viewParameters)
-  }
-
-  /**
-   *
-   * @static
-   * @param {ViewParameters} viewParameters
-   * @param {Element} parentNode
-   * @return View
-   */
-  static createWithParentNode(viewParameters, parentNode) {
-    const inst = new this(viewParameters)
-    inst.parentNode = parentNode
-    return inst
-  }
-
-  /**
    * @return {Element}
    */
   template() {
@@ -243,7 +178,7 @@ class View extends ViewContainerBase {
    * @param {View~updateCallback} clb
    */
   subscribeToStore(store, clb = (state) => true) {
-    assert(
+    assertType(
       isFunction(clb),
       'hotballoon:' + this.constructor.name + ':subscribeToStore: `clb` argument should be callable'
     )
@@ -470,6 +405,12 @@ class View extends ViewContainerBase {
   containerID() {
     return this._container.ID
   }
-}
 
-export {View}
+  /**
+   *
+   * @return {ViewPublicEventHandler}
+   */
+  on() {
+    return new ViewPublicEventHandler(a => this._on(a))
+  }
+}

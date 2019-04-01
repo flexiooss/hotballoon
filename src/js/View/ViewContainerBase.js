@@ -112,10 +112,11 @@ export class ViewContainerBase extends WithIDBase {
   }
 
   /**
+   * @protected
    * @param {EventListenerOrderedParam} eventListenerOrderedParam
    * @return {String} token
    */
-  on(eventListenerOrderedParam) {
+  _on(eventListenerOrderedParam) {
     return this[_EventHandler].on(eventListenerOrderedParam)
   }
 
@@ -169,5 +170,4 @@ export class ViewContainerBase extends WithIDBase {
   isMounted() {
     return this._mounted === true
   }
-
 }

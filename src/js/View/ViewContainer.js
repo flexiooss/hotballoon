@@ -1,9 +1,10 @@
 'use strict'
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_VIEWCONTAINER} from '../HasTagClassNameInterface'
-import {isNode, isString, assert, isFunction} from 'flexio-jshelpers'
+import {isNode, isString, assert, assertType, isFunction} from 'flexio-jshelpers'
 import {STORE_CHANGED, StoreInterface} from '../Store/StoreInterface'
 import {ViewContainerBase} from './ViewContainerBase'
 import {EventListenerOrderedBuilder} from '../Event/EventListenerOrderedBuilder'
+import {ViewContainerPublicEventHandler} from './ViewContainerPublicEventHandler'
 
 export class ViewContainerParameters {
   /**
@@ -14,10 +15,10 @@ export class ViewContainerParameters {
    * @return ViewContainerParameters
    */
   constructor(componentInst, id, parentNode) {
-    assert(!!isString(id),
+    assertType(!!isString(id),
       'hotballoon:ViewContainerParameters: `id` argument assert be a String'
     )
-    assert(!!isNode(parentNode),
+    assertType(!!isNode(parentNode),
       'hotballoon:view:ViewContainerParameters: `parentNode` argument should be a Node'
     )
 
@@ -51,7 +52,6 @@ export class ViewContainerParameters {
   }
 }
 
-export const WILL_REMOVE = 'WILL_REMOVE'
 const _renderViews = Symbol('_renderViews')
 const _mountViews = Symbol('_mountViews')
 
@@ -215,5 +215,13 @@ export class ViewContainer extends ViewContainerBase {
    */
   componentID() {
     return this._ComponentContext.ID
+  }
+
+  /**
+   *
+   * @return {ViewContainerPublicEventHandler}
+   */
+  on() {
+    return new ViewContainerPublicEventHandler(a => this._on(a))
   }
 }
