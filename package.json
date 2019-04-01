@@ -6,9 +6,7 @@
   "version": "1.0.1",
   "license": "Apache-2.0",
   "scripts": {
-    "doc": "yarn jsdoc -d ./docs/ -p -r ./src/ ",
-    "hotballoon-shed": "node ./node_modules/hotballoon-shed",
-    "test": "yarn hotballoon-shed --test"
+    "doc": "yarn jsdoc -d ./docs/ -p -r ./src/ "
   },
   "bugs": {
     "url": "https://github.com/flexiooss/hotballoon/issues"
@@ -26,14 +24,21 @@
     "eslint-plugin-node": "^5.2.1",
     "eslint-plugin-promise": "^3.6.0",
     "eslint-plugin-standard": "^3.0.1",
-    "hotballoon-shed": "https://github.com/flexiooss/hotballoon-shed.git",
     "jsdoc": "^3.5.5",
     "regenerator-runtime": "^0.12.0"
   },
   "dependencies": {
     "flexio-hyperflex": "https://github.com/flexiooss/flexio-hyperflex.git",
     "flexio-jshelpers": "https://github.com/flexiooss/flexio-jshelpers.git",
-    "flexio-nodes-reconciliation": "https://github.com/flexiooss/flexio-nodes-reconciliation.git",
-    "flexio-json-parser": "https://github.com/flexiooss/flexio-json-parser.git"
+    "flexio-nodes-reconciliation": "https://github.com/flexiooss/flexio-nodes-reconciliation.git"
+  },
+  "hotballoon-shed": {
+    "build": {
+      "builder": "webpack4"
+    },
+    "test": {
+      "tester": "code-altimeter-js",
+      "path": "src/test"
+    }
   }
 }

@@ -10,6 +10,8 @@ export const CLASS_TAG_NAME_PROXYSTORE = Symbol('__HB__PROXYSTORE__')
 export const CLASS_TAG_NAME_PUBLIC_STORE_HANDLER = Symbol('__HB__PUBLIC_STORE_HANDLER__')
 export const CLASS_TAG_NAME_VIEWCONTAINER = Symbol('__HB__VIEWCONTAINER__')
 export const CLASS_TAG_NAME_VIEW = Symbol('__HB__VIEW__')
+export const CLASS_TAG_NAME_EXECUTOR = Symbol('__HB__CLASS_TAG_NAME_EXECUTOR__')
+export const CLASS_TAG_NAME_JOB = Symbol('__HB__CLASS_TAG_NAME_JOB__')
 
 /**
  *
@@ -17,7 +19,7 @@ export const CLASS_TAG_NAME_VIEW = Symbol('__HB__VIEW__')
  * @return {boolean}
  * @function
  */
-export const hasClassTagName = (object) => CLASS_TAG_NAME in object
+export const hasClassTagName = (object) => isObject(object) && CLASS_TAG_NAME in object
 /**
  *
  * @param {Object} object

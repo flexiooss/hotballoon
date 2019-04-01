@@ -7,7 +7,10 @@ import {
   CLASS_TAG_NAME_STORE,
   CLASS_TAG_NAME_PROXYSTORE,
   CLASS_TAG_NAME_VIEWCONTAINER,
-  CLASS_TAG_NAME_VIEW, CLASS_TAG_NAME_PUBLIC_STORE_HANDLER
+  CLASS_TAG_NAME_VIEW,
+  CLASS_TAG_NAME_PUBLIC_STORE_HANDLER,
+  CLASS_TAG_NAME_JOB,
+  CLASS_TAG_NAME_EXECUTOR
 } from './HasTagClassNameInterface'
 import {assertType} from 'flexio-jshelpers'
 
@@ -124,6 +127,24 @@ class TypeCheck {
    */
   static isView(inst) {
     return testClassTagName(inst, CLASS_TAG_NAME_VIEW)
+  }
+
+  /**
+   *
+   * @param {Object} inst
+   * @return {boolean}
+   */
+  static isExecutor(inst) {
+    return testClassTagName(inst, CLASS_TAG_NAME_EXECUTOR)
+  }
+
+  /**
+   *
+   * @param {Object} inst
+   * @return {boolean}
+   */
+  static isJob(inst) {
+    return testClassTagName(inst, CLASS_TAG_NAME_JOB)
   }
 
   /**

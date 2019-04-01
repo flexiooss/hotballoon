@@ -1,4 +1,7 @@
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_PUBLIC_STORE_HANDLER} from '../HasTagClassNameInterface'
+import {STORE_CHANGED} from './StoreInterface'
+import {EventListenerOrderedBuilder} from '../Event/EventListenerOrderedBuilder'
+import {assertType, isFunction} from 'flexio-jshelpers'
 
 const _store = Symbol('_store')
 
@@ -75,4 +78,31 @@ export class PublicStoreHandler {
   isTypeOf(constructor) {
     return this[_store].isTypeOf(constructor)
   }
+
+  /**
+   *
+   * @param {PublicStoreHandler~changedClb} clb
+   * @return {string} token
+   */
+  listenChanged(clb = (state) => true) {
+    assertType(
+      isFunction(clb),
+      'hotballoon:' + this.constructor.name + ':listenChanged: `clb` argument should be callable'
+    )
+
+    return this[_store].subscribe(
+      EventListenerOrderedBuilder
+        .listen(STORE_CHANGED)
+        .callback((payload) => {
+          clb(payload)
+        })
+        .build()
+    )
+  }
+
+  /**
+   *
+   * @callback PublicStoreHandler~changedClb
+   * @param {StoreState} state
+   */
 }

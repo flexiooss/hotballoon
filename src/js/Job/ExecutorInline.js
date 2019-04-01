@@ -1,5 +1,8 @@
 import {ExecutorInterface} from './ExecutorInterface'
 
+/**
+ * @implements {ExecutorInterface}
+ */
 export class ExecutorInline extends ExecutorInterface {
   /**
    *

@@ -1,5 +1,5 @@
-import {Action} from '../src/Action/Action'
-import {Dispatcher} from '../src/Dispatcher/Dispatcher'
+import {Action} from '../js/Action/Action'
+import {Dispatcher} from '../js/Dispatcher/Dispatcher'
 
 test('should throw if construct without dispatcher and componentId', () => {
   expect(() => {

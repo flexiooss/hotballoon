@@ -1,5 +1,5 @@
-import {EventHandlerBase} from '../src/Event/EventHandlerBase'
-import {EventListenerFactory} from '../src/Event/EventListenerFactory'
+import {EventHandlerBase} from '../src/js/Event/EventHandlerBase'
+import {EventListenerFactory} from '../src/js/Event/EventListenerFactory'
 import {sleep} from 'flexio-jshelpers'
 
 test('should handle EventListeners registration', () => {

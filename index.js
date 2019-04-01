@@ -1,27 +1,28 @@
-export {HotBalloonApplication} from './src/Application/HotBalloonApplication'
-export {Dispatcher} from './src/Dispatcher/Dispatcher'
+export {HotBalloonApplication} from './src/js/Application/HotBalloonApplication'
+export {Dispatcher} from './src/js/Dispatcher/Dispatcher'
 
-export {ActionBuilder, PublicActionParams as ActionParams} from './src/Action/ActionBuilder'
-export {ActionTypeParam} from './src/Action/ActionTypeParam'
+export {ActionBuilder, PublicActionParams as ActionParams} from './src/js/Action/ActionBuilder'
+export {ActionTypeParam} from './src/js/Action/ActionTypeParam'
 
-export {ViewParameters, View} from './src/View/View'
-export {ViewContainer, ViewContainerParameters} from './src/View/ViewContainer'
+export {ViewParameters, View} from './src/js/View/View'
+export {ViewContainer, ViewContainerParameters, WILL_REMOVE} from './src/js/View/ViewContainer'
 
-export {ViewEventListenerBuilder} from './src/Event/ViewEventListenerBuilder'
-export {ElementEventListenerBuilder} from './src/HotballoonNodeElement/ElementEventListenerBuilder'
+export {ViewEventListenerBuilder} from './src/js/Event/ViewEventListenerBuilder'
+export {ElementEventListenerBuilder} from './src/js/HotballoonNodeElement/ElementEventListenerBuilder'
 
-export {StoreTypeParam} from './src/Store/StoreTypeParam'
+export {StoreTypeParam} from './src/js/Store/StoreTypeParam'
+
 export {
   StoreBuilder, InMemoryParams as InMemoryStoreParams, ProxyParams as ProxyStoreParams
-} from './src/Store/StoreBuilder'
+} from './src/js/Store/StoreBuilder'
 
-export {PublicStoreHandler} from './src/Store/PublicStoreHandler'
+export {PublicStoreHandler} from './src/js/Store/PublicStoreHandler'
 
-export {e} from './src/HotballoonNodeElement/ElementDescription'
+export {e} from './src/js/HotballoonNodeElement/ElementDescription'
 export {RECONCILIATION_RULES} from 'flexio-nodes-reconciliation'
 
-export {TypeCheck} from './src/TypeCheck'
+export {TypeCheck} from './src/js/TypeCheck'
 
-export {JobInterface} from './src/Job/JobInterface'
-export {ExecutorWorker} from './src/Job/ExecutorWorker'
-export {ExecutorInline} from './src/Job/ExecutorInline'
+export {JobInterface} from './src/js/Job/JobInterface'
+export {ExecutorWorker} from './src/js/Job/ExecutorWorker'
+export {ExecutorInline} from './src/js/Job/ExecutorInline'

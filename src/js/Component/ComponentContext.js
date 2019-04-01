@@ -4,14 +4,13 @@ import {
   ViewContainer,
   WILL_REMOVE as VIEWCONTAINER_WILL_REMOVE
 } from '../View/ViewContainer'
-import {MapOfInstance, Sequence, assert} from 'flexio-jshelpers'
+import {MapOfInstance, Sequence, assertType} from 'flexio-jshelpers'
 import {WithIDBase} from '../bases/WithIDBase'
 import {
   CLASS_TAG_NAME,
-  CLASS_TAG_NAME_COMPONENT,
-  CLASS_TAG_NAME_HOTBALLOON_APPLICATION,
-  testClassTagName
+  CLASS_TAG_NAME_COMPONENT
 } from '../HasTagClassNameInterface'
+import {TypeCheck} from '../TypeCheck'
 
 /**
  * @class
@@ -19,13 +18,13 @@ import {
  * @extends WithIDBase
  * @implements HasTagClassNameInterface
  */
-class ComponentContext extends WithIDBase {
+export class ComponentContext extends WithIDBase {
   /**
    *
    * @param {HotBalloonApplication} hotBalloonApplication
    */
   constructor(hotBalloonApplication) {
-    assert(testClassTagName(hotBalloonApplication, CLASS_TAG_NAME_HOTBALLOON_APPLICATION),
+    assertType(TypeCheck.isHotballoonApplication(hotBalloonApplication),
       'hotballoon:componentContext:constructor:  `hotBalloonApplication` argument should be an instance of ̀ hotballoon/HotBalloonApplication`, `%s` given',
       typeof hotBalloonApplication
     )
@@ -57,10 +56,7 @@ class ComponentContext extends WithIDBase {
           return hotBalloonApplication
         },
         set: (v) => {
-          assert(false,
-            `hotballoon:${this.constructor.name}: _APP property already defined`
-          )
-          return false
+          throw new Error('hotballoon:ComponentContext: : `_APP` property already defined')
         }
       },
       _sequenceId: {
@@ -75,7 +71,7 @@ class ComponentContext extends WithIDBase {
           return _sequenceId
         },
         set: (v) => {
-          return false
+          throw new Error('hotballoon:ComponentContext: : `_sequenceId` property already defined')
         }
       },
 
@@ -90,7 +86,7 @@ class ComponentContext extends WithIDBase {
           return _stores
         },
         set: (v) => {
-          return false
+          throw new Error('hotballoon:ComponentContext: : `_stores` property already defined')
         }
       },
 
@@ -105,7 +101,7 @@ class ComponentContext extends WithIDBase {
           return _viewContainers
         },
         set: (v) => {
-          return false
+          throw new Error('hotballoon:ComponentContext: : `_viewContainers` property already defined')
         }
       }
 
@@ -122,12 +118,6 @@ class ComponentContext extends WithIDBase {
    */
   static create(hotballoonApplication) {
     return new this(hotballoonApplication)
-  }
-
-  /**
-   * @description called by the hotballoon Application before remove this componentContext
-   */
-  willRemove() {
   }
 
   /**
@@ -208,8 +198,4 @@ class ComponentContext extends WithIDBase {
   service(key) {
     return this.APP().service(key)
   }
-}
-
-export {
-  ComponentContext
 }

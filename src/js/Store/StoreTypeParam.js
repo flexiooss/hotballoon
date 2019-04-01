@@ -3,7 +3,7 @@
  */
 export class StoreTypeParam {
   /**
-   * @param {Class} type
+   * @param {Class<TYPE>} type
    * @param {StoreTypeParam~defaultCheckerClb<TYPE>} defaultChecker
    * @param {StoreTypeParam~validatorClb<TYPE>} validator
    * @param {StoreTypeParam~fromObjectClb<TYPE>} fromObject
