@@ -19,11 +19,11 @@
 
     <h1 class="page-title">Source: Dispatcher/Dispatcher.js</h1>
 
-    
 
 
 
-    
+
+
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>import {assert, isArray, EventHandlerBase} from 'flexio-jshelpers'
@@ -32,7 +32,7 @@ import {EventAction} from '../Action/EventAction'
 
 /**
  * @class
- * @description dispatcher is the event handler between Actions and componentContext
+ * @description dispatcher is the events handler between Actions and componentContext
  * @extends {EventHandlerBase}
  * @implements HasTagClassNameInterface
  */
@@ -84,12 +84,12 @@ export class Dispatcher extends EventHandlerBase {
 
   /**
    *
-   * @param {String} event
+   * @param {String} events
    * @param {String} id
    * @returns void
    */
-  removeActionListener(event, id) {
-    this.removeEventListener(event, id)
+  removeActionListener(events, id) {
+    this.removeEventListener(events, id)
   }
 
   /**

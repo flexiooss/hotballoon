@@ -18,18 +18,18 @@ export class EventOrderedHandler extends EventHandlerBase {
       'hotballoon:EventHandler:on: ̀`eventListenerOrderedParam` argument assert be an instance of EventListenerOrderedParam'
     )
 
-    this._ensureHaveListenersMap(eventListenerOrderedParam.event)
+    this._ensureHaveListenersMap(eventListenerOrderedParam.events)
 
     const id = this.nextID()
 
-    this._listeners.get(eventListenerOrderedParam.event).set(id, {
+    this._listeners.get(eventListenerOrderedParam.events).set(id, {
       callback: eventListenerOrderedParam.callback,
       priority: eventListenerOrderedParam.priority
     })
 
-    this._listeners.set(eventListenerOrderedParam.event,
+    this._listeners.set(eventListenerOrderedParam.events,
       sortMap(
-        this._listeners.get(eventListenerOrderedParam.event),
+        this._listeners.get(eventListenerOrderedParam.events),
         (a, b) => {
           return a.value.priority - b.value.priority
         }

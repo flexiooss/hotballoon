@@ -20,6 +20,14 @@ const _replaceNode = Symbol('_replaceNode')
 const _setNodeRef = Symbol('_setNodeRef')
 const _setNodeViewRef = Symbol('_setNodeViewRef')
 
+export const VIEW_RENDER = 'VIEW_RENDER'
+export const VIEW_RENDERED = 'VIEW_RENDERED'
+export const VIEW_UPDATE = 'VIEW_UPDATE'
+export const VIEW_UPDATED = 'VIEW_UPDATED'
+export const VIEW_STORE_CHANGED = 'VIEW_STORE_CHANGED'
+export const VIEW_MOUNT = 'VIEW_MOUNT'
+export const VIEW_MOUNTED = 'VIEW_MOUNTED'
+
 /**
  * @extends {ViewContainerBase}
  * @implements {HasTagClassNameInterface}
@@ -173,7 +181,7 @@ export class View extends ViewContainerBase {
 
   /**
    *
-   * @description subscribe subView an event of this view
+   * @description subscribe subView an events of this view
    * @param {StoreInterface} store
    * @param {View~updateCallback} clb
    */

@@ -19,11 +19,11 @@
 
     <h1 class="page-title">Source: Event/ViewEventListenerBuilder.js</h1>
 
-    
 
 
 
-    
+
+
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>import {EventListenerOrderedFactory} from './EventListenerOrderedFactory'
@@ -37,10 +37,10 @@ import {EventListenerOrderedParam} from './EventListenerOrderedParam'
 export class ViewEventListenerBuilder extends EventListenerOrderedFactory {
   /**
    *
-   * @param {String} event
+   * @param {String} events
    */
-  constructor(event = '') {
-    super(event)
+  constructor(events = '') {
+    super(events)
     /**
      *
      * @params {string}
@@ -57,7 +57,7 @@ export class ViewEventListenerBuilder extends EventListenerOrderedFactory {
    * @private
    */
   __bubbleEvent(viewContainerBase) {
-    this._eventToDispatch = this._event
+    this._eventToDispatch = this._events
     if (this._isBubble) {
       assert(viewContainerBase instanceof ViewContainerBase,
         'hotballoon:ViewEventListenerBuilder:build: `scope` argument should be an instance of ViewContainerBase')
@@ -80,13 +80,13 @@ export class ViewEventListenerBuilder extends EventListenerOrderedFactory {
 
   /**
    *
-   * @param {String} event
+   * @param {String} events
    * @param {ViewContainerBase} viewContainerBase
    * @return {EventListenerFactory}
    * @constructor
    */
-  static bubble(event, viewContainerBase) {
-    return new this(event).__bubbleEvent(viewContainerBase)
+  static bubble(events, viewContainerBase) {
+    return new this(events).__bubbleEvent(viewContainerBase)
   }
 
   /**
@@ -94,7 +94,7 @@ export class ViewEventListenerBuilder extends EventListenerOrderedFactory {
    * @return {EventListenerOrderedParam}
    */
   build() {
-    return EventListenerOrderedParam.create(this._event, this._callback, this._priority)
+    return EventListenerOrderedParam.create(this._events, this._callback, this._priority)
   }
 }
 </code></pre>

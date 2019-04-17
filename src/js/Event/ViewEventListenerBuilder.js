@@ -29,7 +29,7 @@ export class ViewEventListenerBuilder extends EventListenerOrderedBuilder {
    * @private
    */
   __bubbleEvent(viewContainerBase) {
-    this._eventToDispatch = this._event
+    this._eventToDispatch = this._events
     if (this._isBubble) {
       assert(viewContainerBase instanceof ViewContainerBase,
         'hotballoon:ViewEventListenerBuilder:build: `scope` argument should be an instance of ViewContainerBase')
@@ -66,6 +66,6 @@ export class ViewEventListenerBuilder extends EventListenerOrderedBuilder {
    * @return {EventListenerOrderedParam}
    */
   build() {
-    return EventListenerOrderedParam.create(this._event, this._callback, this._priority)
+    return EventListenerOrderedParam.create(this._events, this._callback, this._priority)
   }
 }

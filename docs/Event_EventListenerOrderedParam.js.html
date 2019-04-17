@@ -19,11 +19,11 @@
 
     <h1 class="page-title">Source: Event/EventListenerOrderedParam.js</h1>
 
-    
 
 
 
-    
+
+
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>import {deepFreezeSeal, isNumber, assert, EventListenerParam} from 'flexio-jshelpers'
@@ -34,12 +34,12 @@
 export class EventListenerOrderedParam extends EventListenerParam {
   /**
    *
-   * @param {String} event
+   * @param {String} events
    * @param {function(payload&lt;Object>, type&lt;string>)} callback
    * @param {number} priority
    */
-  constructor(event, callback, priority) {
-    super(event, callback)
+  constructor(events, callback, priority) {
+    super(events, callback)
     assert(isNumber(priority),
       'hotballoon:EventListenerFactory:build: ̀`priority` property assert be a Number'
     )
@@ -48,15 +48,15 @@ export class EventListenerOrderedParam extends EventListenerParam {
 
   /**
    *
-   * @param {String} event
+   * @param {String} events
    * @param {function(payload&lt;Object>, type&lt;string>)} callback
    * @param {number} priority
    * @return {EventListenerOrderedParam}
    * @constructor
    * @readonly
    */
-  static create(event, callback, priority) {
-    return deepFreezeSeal(new this(event, callback, priority))
+  static create(events, callback, priority) {
+    return deepFreezeSeal(new this(events, callback, priority))
   }
 }
 </code></pre>

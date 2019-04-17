@@ -1,5 +1,6 @@
-import {assert, EventListenerBuilder} from 'flexio-jshelpers'
-import {TypeCheck} from '../TypeCheck'
+import {assertType, EventListenerBuilder} from 'flexio-jshelpers'
+import {ActionArray} from '../Action/ActionArray'
+import {SymbolStringArray} from '../../../../flexio-jshelpers'
 
 /**
  * @extends {EventListenerBuilder}
@@ -7,11 +8,11 @@ import {TypeCheck} from '../TypeCheck'
 export class DispatcherEventListenerBuilder extends EventListenerBuilder {
   /**
    *
-   * @param {Action} action
+   * @param {ActionArray} actions
    */
-  constructor(action) {
-    assert(TypeCheck.isAction(action), 'hotballoon:DispatcherEventListenerFactory:constructor: `action` argument should be an instance of Action ')
-    super(action.ID)
+  constructor(actions) {
+    assertType(actions instanceof ActionArray, 'hotballoon:DispatcherEventListenerFactory:constructor: `actions` argument should be an instance of ActionArray ')
+    super(actions.mapTo(new SymbolStringArray(), action => action.ID))
   }
 
   /**
@@ -20,7 +21,7 @@ export class DispatcherEventListenerBuilder extends EventListenerBuilder {
    * @return {DispatcherEventListenerBuilder}
    * @constructor
    */
-  static listen(action) {
-    return new this(action)
+  static listen(...action) {
+    return new this(new ActionArray(...action))
   }
 }

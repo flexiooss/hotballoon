@@ -19,11 +19,11 @@
 
     <h1 class="page-title">Source: Event/EventListenerOrderedBuilder.js</h1>
 
-    
 
 
 
-    
+
+
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>import {EventListenerOrderedParam} from './EventListenerOrderedParam'
@@ -36,10 +36,10 @@ import {EventListenerBuilder} from 'flexio-jshelpers'
 export class EventListenerOrderedBuilder extends EventListenerBuilder {
   /**
    *
-   * @param {String} event
+   * @param {String} events
    */
-  constructor(event = '') {
-    super(event)
+  constructor(events = '') {
+    super(events)
     /**
      *
      * @params {number}
@@ -63,7 +63,7 @@ export class EventListenerOrderedBuilder extends EventListenerBuilder {
    * @return {EventListenerOrderedParam}
    */
   build() {
-    return EventListenerOrderedParam.create(this._event, this._callback, this._priority)
+    return EventListenerOrderedParam.create(this._events, this._callback, this._priority)
   }
 }
 </code></pre>

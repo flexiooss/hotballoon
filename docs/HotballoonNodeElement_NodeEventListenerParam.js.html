@@ -19,11 +19,11 @@
 
     <h1 class="page-title">Source: HotballoonNodeElement/ElementEventListenerParamram.js</h1>
 
-    
 
 
 
-    
+
+
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>import {deepFreezeSeal} from 'flexio-jshelpers'
@@ -32,27 +32,27 @@ import {EventListenerParam} from 'flexio-nodes-reconciliation'
 export class ElementEventListenerParam extends EventListenerParam {
   /**
    *
-   * @param {String} event
+   * @param {String} events
    * @param {function(payload&lt;Object>, params&lt;string>)} callback
    * @return {ElementEventListenerParam}
    * @constructor
    * @readonly
    */
-  static create(event, callback) {
-    return deepFreezeSeal(new this(event, callback))
+  static create(events, callback) {
+    return deepFreezeSeal(new this(events, callback))
   }
 
   /**
    *
-   * @param {String} event
+   * @param {String} events
    * @param {function(payload&lt;Object>, params&lt;string>)} callback
    * @param {{capture: boolean, once: boolean, passive: boolean}} options
    * @return {ElementEventListenerParam}
    * @constructor
    * @readonly
    */
-  static createWithOptions(event, callback, options) {
-    return deepFreezeSeal(new this(event, callback, options))
+  static createWithOptions(events, callback, options) {
+    return deepFreezeSeal(new this(events, callback, options))
   }
 }
 </code></pre>

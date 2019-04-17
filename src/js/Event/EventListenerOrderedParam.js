@@ -1,4 +1,4 @@
-import {deepFreezeSeal, isNumber, assert, EventListenerParam} from 'flexio-jshelpers'
+import {deepFreezeSeal, isNumber, assertType, EventListenerParam} from 'flexio-jshelpers'
 
 /**
  * @extends {EventListenerParam}
@@ -6,28 +6,28 @@ import {deepFreezeSeal, isNumber, assert, EventListenerParam} from 'flexio-jshel
 export class EventListenerOrderedParam extends EventListenerParam {
   /**
    *
-   * @param {String} event
-   * @param {function(payload<Object>, type<string>)} callback
+   * @param {SymbolStringArray} events
+   * @param {EventHandlerBase~eventClb} callback
    * @param {number} priority
    */
-  constructor(event, callback, priority) {
-    super(event, callback)
-    assert(isNumber(priority),
-      'hotballoon:EventListenerFactory:build: ̀`priority` property assert be a Number'
+  constructor(events, callback, priority) {
+    super(events, callback)
+    assertType(isNumber(priority),
+      'hotballoon:EventListenerOrderedParam: ̀`priority` property assert be a Number'
     )
     this.priority = priority
   }
 
   /**
    *
-   * @param {String} event
-   * @param {function(payload<Object>, type<string>)} callback
+   * @param {SymbolStringArray} events
+   * @param {EventHandlerBase~eventClb} callback
    * @param {number} priority
    * @return {EventListenerOrderedParam}
    * @constructor
    * @readonly
    */
-  static create(event, callback, priority) {
-    return deepFreezeSeal(new this(event, callback, priority))
+  static create(events, callback, priority) {
+    return deepFreezeSeal(new this(events, callback, priority))
   }
 }

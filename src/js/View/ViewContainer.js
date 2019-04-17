@@ -107,7 +107,7 @@ export class ViewContainer extends ViewContainerBase {
 
   /**
    *
-   * @description subscribe subView an event of this view
+   * @description subscribe subView an events of this view
    * @param {StoreInterface} store
    * @param {ViewContainer~storeChanged} clb
    */

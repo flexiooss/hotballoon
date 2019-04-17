@@ -100,7 +100,7 @@ export class Action extends WithIDBase {
 
   /**
    *
-   * @param {Function} callback
+   * @type {EventHandlerBase~eventClb} callback
    * @returns {String} token
    */
   listenWithCallback(callback) {

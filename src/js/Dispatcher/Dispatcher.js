@@ -1,10 +1,10 @@
-import {assert, isArray, EventHandlerBase} from 'flexio-jshelpers'
+import {assert, assertType, isArray, EventHandlerBase} from 'flexio-jshelpers'
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_DISPATCHER} from '../HasTagClassNameInterface'
 import {EventAction} from '../Action/EventAction'
 
 /**
  * @class
- * @description dispatcher is the event handler between Actions and componentContext
+ * @description dispatcher is the events handler between Actions and componentContext
  * @extends {EventHandlerBase}
  * @implements HasTagClassNameInterface
  */
@@ -17,6 +17,7 @@ export class Dispatcher extends EventHandlerBase {
       enumerable: true,
       value: CLASS_TAG_NAME_DISPATCHER
     })
+    console.log(this)
   }
 
   /**
@@ -25,10 +26,10 @@ export class Dispatcher extends EventHandlerBase {
    * @param {Array<String>} ids
    */
   waitFor(type, ids) {
-    assert(!!this.isDispatching(),
+    assertType(!!this.isDispatching(),
       'hotballoon:dispatcher:waitFor: Must be invoked while dispatching.'
     )
-    assert(!!isArray(ids),
+    assertType(!!isArray(ids),
       'hotballoon:dispatcher:waitFor: `ids` argument should be Array params')
     let countOfIds = ids.length
     for (let i = 0; i < countOfIds; i++) {
@@ -69,7 +70,7 @@ export class Dispatcher extends EventHandlerBase {
    * @param {EventAction} eventAction
    */
   dispatchAction(eventAction) {
-    assert(eventAction instanceof EventAction,
+    assertType(eventAction instanceof EventAction,
       'hotballoon:dispatcher:dispatch "actionPayload" argument should be an instance of EventAction'
     )
     super.dispatch(eventAction.name, eventAction.payload)

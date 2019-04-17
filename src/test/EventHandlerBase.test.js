@@ -33,7 +33,7 @@ test('should handle EventListeners suppression', () => {
   expect(EventHandlerBaseInstance.hasEventListener('test', token)).toBeFalsy()
 })
 
-test('should handle event basically', () => {
+test('should handle events basically', () => {
   const track = {
     clb1: null,
     clb2: null,
@@ -93,7 +93,7 @@ test('should handle event basically', () => {
   expect(track.clb3).toBeNull()
 })
 
-test('should handle long event and error', (done) => {
+test('should handle long events and error', (done) => {
   const track = {
     clb: 0,
     clb1: 0,

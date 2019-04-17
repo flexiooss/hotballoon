@@ -8,10 +8,10 @@ import {EventListenerBuilder} from 'flexio-jshelpers'
 export class EventListenerOrderedBuilder extends EventListenerBuilder {
   /**
    *
-   * @param {String} event
+   * @param {SymbolStringArray} events
    */
-  constructor(event = '') {
-    super(event)
+  constructor(events ) {
+    super(events)
     /**
      *
      * @params {number}
@@ -35,6 +35,6 @@ export class EventListenerOrderedBuilder extends EventListenerBuilder {
    * @return {EventListenerOrderedParam}
    */
   build() {
-    return EventListenerOrderedParam.create(this._event, this._callback, this._priority)
+    return EventListenerOrderedParam.create(this._events, this._callback, this._priority)
   }
 }

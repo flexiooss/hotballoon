@@ -19,11 +19,11 @@
 
     <h1 class="page-title">Source: HotballoonNodeElement/ElementEventListenerBuilder.js.js</h1>
 
-    
 
 
 
-    
+
+
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>import {EventListenerFactory} from 'flexio-nodes-reconciliation'
@@ -46,9 +46,9 @@ export class ElementEventListenerBuilder extends EventListenerFactory {
       if (this._passive) {
         options.passive = true
       }
-      return ElementEventListenerParam.createWithOptions(this._event, this._callback, options)
+      return ElementEventListenerParam.createWithOptions(this._events, this._callback, options)
     } else {
-      return ElementEventListenerParam.create(this._event, this._callback)
+      return ElementEventListenerParam.create(this._events, this._callback)
     }
   }
 }

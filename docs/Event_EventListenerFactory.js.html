@@ -31,15 +31,15 @@
 export class EventListenerFactory {
   /**
    *
-   * @param {String} event
+   * @param {String} events
    */
-  constructor(event = '') {
+  constructor(events = '') {
     /**
      *
      * @params {string}
      * @protected
      */
-    this._event = event
+    this._events = events
     /**
      *
      * @params {Function}
@@ -57,12 +57,12 @@ export class EventListenerFactory {
 
   /**
    *
-   * @param {String} event
+   * @param {String} events
    * @return {EventListenerFactory}
    * @constructor
    */
-  static listen(event) {
-    return new this(event)
+  static listen(events) {
+    return new this(events)
   }
 
   /**
@@ -82,7 +82,7 @@ export class EventListenerFactory {
    */
   build(scope = null) {
     this._scope = scope
-    return EventListenerParam.create(this._event, this._callback, this._scope)
+    return EventListenerParam.create(this._events, this._callback, this._scope)
   }
 }
 </code></pre>
