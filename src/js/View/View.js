@@ -9,7 +9,16 @@ import {ViewContainerBase} from './ViewContainerBase'
 import {STORE_CHANGED} from '../Store/StoreInterface'
 import {EventListenerOrderedBuilder} from '../Event/EventListenerOrderedBuilder'
 import {TypeCheck} from '../TypeCheck'
-import {ViewPublicEventHandler} from './ViewPublicEventHandler'
+import {
+  ViewPublicEventHandler,
+  VIEW_RENDER,
+  VIEW_RENDERED,
+  VIEW_UPDATE,
+  VIEW_UPDATED,
+  VIEW_STORE_CHANGED,
+  VIEW_MOUNT,
+  VIEW_MOUNTED
+} from './ViewPublicEventHandler'
 
 export const ATTRIBUTE_NODEREF = '_hb_noderef'
 
@@ -19,14 +28,6 @@ const _render = Symbol('_render')
 const _replaceNode = Symbol('_replaceNode')
 const _setNodeRef = Symbol('_setNodeRef')
 const _setNodeViewRef = Symbol('_setNodeViewRef')
-
-export const VIEW_RENDER = 'VIEW_RENDER'
-export const VIEW_RENDERED = 'VIEW_RENDERED'
-export const VIEW_UPDATE = 'VIEW_UPDATE'
-export const VIEW_UPDATED = 'VIEW_UPDATED'
-export const VIEW_STORE_CHANGED = 'VIEW_STORE_CHANGED'
-export const VIEW_MOUNT = 'VIEW_MOUNT'
-export const VIEW_MOUNTED = 'VIEW_MOUNTED'
 
 /**
  * @extends {ViewContainerBase}

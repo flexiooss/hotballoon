@@ -1,15 +1,13 @@
 import {assertType, isFunction} from 'flexio-jshelpers'
 import {EventListenerOrderedBuilder} from '../Event/EventListenerOrderedBuilder'
-import {
-  VIEW_RENDER,
-  VIEW_RENDERED,
-  VIEW_UPDATE,
-  VIEW_UPDATED,
-  VIEW_STORE_CHANGED,
-  VIEW_MOUNT,
-  VIEW_MOUNTED
-} from './View'
 
+export const VIEW_RENDER = 'VIEW_RENDER'
+export const VIEW_RENDERED = 'VIEW_RENDERED'
+export const VIEW_UPDATE = 'VIEW_UPDATE'
+export const VIEW_UPDATED = 'VIEW_UPDATED'
+export const VIEW_STORE_CHANGED = 'VIEW_STORE_CHANGED'
+export const VIEW_MOUNT = 'VIEW_MOUNT'
+export const VIEW_MOUNTED = 'VIEW_MOUNTED'
 export class ViewPublicEventHandler {
   /***
    *

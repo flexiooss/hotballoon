@@ -7,7 +7,16 @@ export {ActionTypeParam} from './src/js/Action/ActionTypeParam'
 export {View} from './src/js/View/View'
 export {ViewContainer, ViewContainerParameters} from './src/js/View/ViewContainer'
 export {ViewContainerPublicEventHandler} from './src/js/View/ViewContainerPublicEventHandler'
-export {ViewPublicEventHandler} from './src/js/View/ViewPublicEventHandler'
+export {
+  ViewPublicEventHandler,
+  VIEW_RENDER,
+  VIEW_RENDERED,
+  VIEW_UPDATE,
+  VIEW_UPDATED,
+  VIEW_STORE_CHANGED,
+  VIEW_MOUNT,
+  VIEW_MOUNTED
+} from './src/js/View/ViewPublicEventHandler'
 
 export {ViewEventListenerBuilder} from './src/js/Event/ViewEventListenerBuilder'
 export {ElementEventListenerBuilder} from './src/js/HotballoonNodeElement/ElementEventListenerBuilder'
