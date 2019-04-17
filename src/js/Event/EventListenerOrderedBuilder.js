@@ -10,7 +10,7 @@ export class EventListenerOrderedBuilder extends EventListenerBuilder {
    *
    * @param {SymbolStringArray} events
    */
-  constructor(events ) {
+  constructor(events) {
     super(events)
     /**
      *

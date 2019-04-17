@@ -51,6 +51,7 @@ export class View extends ViewContainerBase {
     var _shouldInit = true
     var _shouldRender = true
     var _shouldMount = true
+    var _shouldUpdate = true
     const _nodeRefs = new Map()
 
     Object.defineProperty(this, CLASS_TAG_NAME, {
@@ -145,6 +146,24 @@ export class View extends ViewContainerBase {
         }
       },
       /**
+       * @property {boolean} _shouldUpdate
+       * @name View#_shouldUpdate
+       * @private
+       */
+      _shouldUpdate: {
+        configurable: false,
+        enumerable: false,
+        get: () => {
+          return _shouldUpdate
+        },
+        set: (v) => {
+          assertType(!!isBoolean(v),
+            'hotballoon:view:constructor: `_shouldUpdate` argument should be a boolean'
+          )
+          _shouldUpdate = v
+        }
+      },
+      /**
        * @property {Map} _nodeRefs
        * @name View#_nodeRefs
        * @private
@@ -201,6 +220,7 @@ export class View extends ViewContainerBase {
           .listen(STORE_CHANGED)
           .callback((payload, type) => {
             if (clb(payload.data) === true) {
+              this.dispatch(VIEW_STORE_CHANGED, payload)
               this.updateNode()
             }
           })
@@ -230,9 +250,18 @@ export class View extends ViewContainerBase {
    * @public
    */
   updateNode() {
-    this.debug.log('updateNode').background()
-    this.debug.print()
-    this[_update]()
+    if (this._shouldUpdate) {
+      this.debug.log('updateNode').background()
+      this.debug.print()
+      this.dispatch(VIEW_UPDATE, {})
+      this[_update]()
+      this.dispatch(VIEW_UPDATED, {})
+    }
+    this._shouldUpdate = true
+  }
+
+  shouldNotUpdate() {
+    this._shouldUpdate = false
   }
 
   /**
@@ -251,17 +280,16 @@ export class View extends ViewContainerBase {
     this.debug.print()
 
     if (this._shouldRender) {
+      this.dispatch(VIEW_RENDER, {})
       this[_render]()
       this._rendered = true
+      this.dispatch(VIEW_RENDERED, {})
     }
 
     this._shouldRender = true
     return this.node
   }
 
-  /**
-   * Set `_shouldRender` to false
-   */
   shouldNotRender() {
     this._shouldRender = false
   }
@@ -280,8 +308,10 @@ export class View extends ViewContainerBase {
    */
   mount() {
     if (this._shouldMount) {
+      this.dispatch(VIEW_MOUNT, {})
       this[_mount]()
       this._mounted = true
+      this.dispatch(VIEW_MOUNTED, {})
     }
 
     this._shouldMount = true
@@ -347,7 +377,7 @@ export class View extends ViewContainerBase {
    * @return {Element} node
    */
   [_setNodeRef](key, node) {
-    //TODO reconciliation for nodeRefs
+    // TODO reconciliation for nodeRefs
     if (!this._nodeRefs.has(key)) {
       $(node).setNodeRef(key)
       this._nodeRefs.set(key, node)

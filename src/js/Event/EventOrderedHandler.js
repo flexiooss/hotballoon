@@ -1,5 +1,5 @@
 'use strict'
-import {assert, sortMap, EventHandlerBase} from 'flexio-jshelpers'
+import {assertType, sortMap, EventHandlerBase, StringArray} from 'flexio-jshelpers'
 import {EventListenerOrderedParam} from './EventListenerOrderedParam'
 
 /**
@@ -10,38 +10,42 @@ export class EventOrderedHandler extends EventHandlerBase {
   /**
    *
    * @param {EventListenerOrderedParam} eventListenerOrderedParam
-   * @return {String} token
+   * @return {(String|StringArray)} token
    * @throws AssertionError
    */
   on(eventListenerOrderedParam) {
-    assert(eventListenerOrderedParam instanceof EventListenerOrderedParam,
+    assertType(eventListenerOrderedParam instanceof EventListenerOrderedParam,
       'hotballoon:EventHandler:on: ̀`eventListenerOrderedParam` argument assert be an instance of EventListenerOrderedParam'
     )
 
-    this._ensureHaveListenersMap(eventListenerOrderedParam.events)
+    const ids = new StringArray()
+    for (const event of eventListenerOrderedParam.events) {
+      this._ensureHaveListenersMap(event)
 
-    const id = this.nextID()
+      const id = this.nextID()
 
-    this._listeners.get(eventListenerOrderedParam.events).set(id, {
-      callback: eventListenerOrderedParam.callback,
-      priority: eventListenerOrderedParam.priority
-    })
+      this._listeners.get(event).set(id, {
+        callback: eventListenerOrderedParam.callback,
+        priority: eventListenerOrderedParam.priority
+      })
 
-    this._listeners.set(eventListenerOrderedParam.events,
-      sortMap(
-        this._listeners.get(eventListenerOrderedParam.events),
-        (a, b) => {
-          return a.value.priority - b.value.priority
-        }
+      this._listeners.set(event,
+        sortMap(
+          this._listeners.get(event),
+          (a, b) => {
+            return a.value.priority - b.value.priority
+          }
+        )
       )
-    )
+      ids.push(id)
+    }
 
-    return id
+    return ids.length > 1 ? ids : ids.first()
   }
 
   /**
    * @private
-   * @param {String} event
+   * @param {(String|Symbol)} event
    * @param {String} token
    */
   _invokeCallback(event, token) {

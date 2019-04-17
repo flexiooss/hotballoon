@@ -49,7 +49,7 @@ export class Dispatcher extends EventHandlerBase {
   /**
    *
    * @param {EventListenerParam} eventListenerParam
-   * @returns {String} token
+   * @returns {(String|StringArray)} token
    */
   addActionListener(eventListenerParam) {
     return this.addEventListener(eventListenerParam)

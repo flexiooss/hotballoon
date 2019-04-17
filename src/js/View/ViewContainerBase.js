@@ -114,14 +114,14 @@ export class ViewContainerBase extends WithIDBase {
   /**
    * @protected
    * @param {EventListenerOrderedParam} eventListenerOrderedParam
-   * @return {String} token
+   * @return {(String|StringArray)} token
    */
   _on(eventListenerOrderedParam) {
     return this[_EventHandler].on(eventListenerOrderedParam)
   }
 
   /**
-   * @param {String} eventType
+   * @param {(String|Symbol)} eventType
    * @param {Object} payload
    */
   dispatch(eventType, payload) {
