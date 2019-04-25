@@ -1,6 +1,5 @@
-import {assertType, EventListenerBuilder} from 'flexio-jshelpers'
+import {assertType, EventListenerBuilder, SymbolStringArray} from 'flexio-jshelpers'
 import {ActionArray} from '../Action/ActionArray'
-import {SymbolStringArray} from '../../../../flexio-jshelpers'
 
 /**
  * @extends {EventListenerBuilder}
