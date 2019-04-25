@@ -108,11 +108,12 @@ export class ElementDescription {
 
   /**
    *
-   * @param {Object.<String, boolean>} classNames
+   * @param {String} className
+   * @param { boolean} statement
    * @return {ElementDescription}
    */
-  bindClassName(classNames) {
-    this._params.bindClassName(classNames)
+  bindClassName(className, statement) {
+    this._params.bindClassName(className, statement)
     return this
   }
 
