@@ -42,7 +42,7 @@ export class StoreBuilder {
         proxyParams.mapper,
         new InMemoryStorage(
           proxyParams.typeParameter.type,
-          new StoreState(id, proxyParams.typeParameter.type, proxyParams.mapper(proxyParams.store.state().data))
+          new StoreState(id, proxyParams.typeParameter.type, proxyParams.initialData)
         )
       )
     )

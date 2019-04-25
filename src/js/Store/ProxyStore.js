@@ -62,6 +62,7 @@ export class ProxyStore extends StoreBase {
     this[_store].subscribe(
       EventListenerOrderedBuilder.listen(STORE_CHANGED)
         .callback((payload, eventType) => {
+          console.log('la')
           this.__mapAndUpdate(payload, eventType)
         })
         .priority(20)
