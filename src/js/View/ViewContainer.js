@@ -138,11 +138,10 @@ export class ViewContainer extends ViewContainerBase {
 
   /**
    * @private
-   * @param {Node} parentNode
    */
-  [_mountViews](parentNode) {
+  [_mountViews]() {
     this.MapOfView().forEach((view, key, map) => {
-      view.mount(parentNode)
+      view.mount(this.parentNode)
     })
   }
 
@@ -164,32 +163,24 @@ export class ViewContainer extends ViewContainerBase {
   }
 
   /**
-   * Mount all views into the `parentNode` argument
-   * @param {Node} parentNode
    * @return {Node} parentNode
    */
-  mount(parentNode) {
-    assert(isNode(parentNode),
-      'hotballoon:viewContainer:mount: `parentNode` argument assert be a Node, %s given',
-      typeof parentNode)
-    this[_mountViews](parentNode)
+  mount() {
+    this[_mountViews]()
     this._mounted = true
 
-    return parentNode
+    return this.parentNode
   }
 
   /**
-   * Render all views and mount these into the `parentNode` argument
-   * @param {Node} parentNode
    * @return {Node} parentNode
    */
-  renderAndMount(parentNode) {
+  renderAndMount() {
     this.debug.log('render And Mount').background().size(2)
     this.debug.print()
 
     this.render()
-    this.mount(parentNode)
-    return parentNode
+    return this.mount()
   }
 
   /**

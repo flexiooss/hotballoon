@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: Job/ExecutorInterface.js</title>
+    <title>JSDoc: Source: Action/ActionArray.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: Job/ExecutorInterface.js</h1>
+    <h1 class="page-title">Source: Action/ActionArray.js</h1>
 
     
 
@@ -26,23 +26,15 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import {CLASS_TAG_NAME, CLASS_TAG_NAME_EXECUTOR} from '../HasTagClassNameInterface'
+            <pre class="prettyprint source linenums"><code>import {FlexArray, assertType} from 'flexio-jshelpers'
+import {TypeCheck} from '../TypeCheck'
 
 /**
- * @interface ExecutorInterface
+ * @extends {FlexArray&lt;Action>}
  */
-export class ExecutorInterface {
-  constructor() {
-    Object.defineProperty(this, CLASS_TAG_NAME, {
-      configurable: false,
-      writable: false,
-      enumerable: true,
-      value: CLASS_TAG_NAME_EXECUTOR
-    })
-  }
-
-  process(job) {
-    throw Error('ExecutorInterface:process should be override')
+export class ActionArray extends FlexArray {
+  _validate(v) {
+    assertType(TypeCheck.assertIsAction(v), 'ActionArray: input should be an Action')
   }
 }
 </code></pre>

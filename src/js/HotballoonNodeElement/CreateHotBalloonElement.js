@@ -128,7 +128,7 @@ class CreateHotBalloonElement extends HyperFlex {
    */
   __ensureChildrenRules(views) {
     if (views.length) {
-      this._params.addReconciliationRules([RECONCILIATION_RULES.BYPATH_CHILDREN])
+      this._params.addReconciliationRules([RECONCILIATION_RULES.BYPASS_CHILDREN])
     }
     return this
   }

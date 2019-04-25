@@ -19,17 +19,17 @@
 
     <h1 class="page-title">Source: View/View.js</h1>
 
+    
 
 
 
-
-
+    
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>'use strict'
 import {CoreException} from '../CoreException'
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_VIEW} from '../HasTagClassNameInterface'
-import {assert, isBoolean, isFunction, isNode, isPrimitive} from 'flexio-jshelpers'
+import {assertType, isBoolean, isFunction, isNode, UID} from 'flexio-jshelpers'
 import {$} from '../HotballoonNodeElement/HotBalloonAttributeHandler'
 import {startReconcile} from '../HotballoonNodeElement/HotballoonElementReconciliation'
 import {html} from '../HotballoonNodeElement/CreateHotBalloonElement'
@@ -37,47 +37,16 @@ import {ViewContainerBase} from './ViewContainerBase'
 import {STORE_CHANGED} from '../Store/StoreInterface'
 import {EventListenerOrderedBuilder} from '../Event/EventListenerOrderedBuilder'
 import {TypeCheck} from '../TypeCheck'
-
-export class ViewParameters {
-  /**
-   * @constructor
-   * @param {string|Symbol} id
-   * @param {ViewContainerBase} container
-   */
-  constructor(id, container) {
-    assert(!!isPrimitive(id),
-      'hotballoon:view:ViewParameters: `id` argument assert be a String'
-    )
-    assert(container instanceof ViewContainerBase,
-      'hotballoon:view:ViewParameters: `container` argument should be an instance of `ViewContainerBase`'
-    )
-
-    Object.defineProperties(this, {
-
-        id: {
-          configurable: false,
-          enumerable: false,
-          writable: false,
-          /**
-           * @params {String}
-           * @name ViewParameters#id
-           */
-          value: id
-        },
-        container: {
-          configurable: false,
-          enumerable: false,
-          writable: false,
-          /**
-           * @params {ViewContainerBase}
-           * @name ViewParameters#container
-           */
-          value: container
-        }
-      }
-    )
-  }
-}
+import {
+  ViewPublicEventHandler,
+  VIEW_RENDER,
+  VIEW_RENDERED,
+  VIEW_UPDATE,
+  VIEW_UPDATED,
+  VIEW_STORE_CHANGED,
+  VIEW_MOUNT,
+  VIEW_MOUNTED
+} from './ViewPublicEventHandler'
 
 export const ATTRIBUTE_NODEREF = '_hb_noderef'
 
@@ -89,31 +58,29 @@ const _setNodeRef = Symbol('_setNodeRef')
 const _setNodeViewRef = Symbol('_setNodeViewRef')
 
 /**
- * @class
- * @description view describe a fragment of DOM
  * @extends {ViewContainerBase}
  * @implements {HasTagClassNameInterface}
  */
-class View extends ViewContainerBase {
+export class View extends ViewContainerBase {
   /**
-   * @constructor
-   * @param {ViewParameters} viewParameters
+   * @param {ViewContainerBase} container
    */
-  constructor(viewParameters) {
-    super(viewParameters.id)
+  constructor(container) {
+    super(UID('View_' + container.constructor.name + '_'))
 
-    assert(
-      viewParameters instanceof ViewParameters,
-      'hotballoon:' + this.constructor.name + ':constructor: `viewParameters` should be an instance of ViewParameters'
+    assertType(
+      TypeCheck.isViewContainerBase(container),
+      'hotballoon:' + this.constructor.name + ':constructor: `container` should be an instance of ViewContainerBase'
     )
 
     this.debug.color = 'blue'
-    this.parentNode = viewParameters.container.parentNode
+    this.parentNode = container.parentNode
 
     var _node = null
     var _shouldInit = true
     var _shouldRender = true
     var _shouldMount = true
+    var _shouldUpdate = true
     const _nodeRefs = new Map()
 
     Object.defineProperty(this, CLASS_TAG_NAME, {
@@ -132,7 +99,7 @@ class View extends ViewContainerBase {
          * @name View#_container
          * @protected
          */
-        value: viewParameters.container
+        value: container
       },
       _node: {
         enumerable: false,
@@ -146,7 +113,7 @@ class View extends ViewContainerBase {
           return _node
         },
         set: (node) => {
-          assert(isNode(node),
+          assertType(isNode(node),
             'view:_node:set: `node` argument assert be a Node, `%s` given',
             typeof node
           )
@@ -165,7 +132,7 @@ class View extends ViewContainerBase {
           return _shouldInit
         },
         set: (v) => {
-          assert(!!isBoolean(v),
+          assertType(!!isBoolean(v),
             'hotballoon:view:constructor: `_shouldInit` argument should be a boolean'
           )
           _shouldInit = v
@@ -183,7 +150,7 @@ class View extends ViewContainerBase {
           return _shouldRender
         },
         set: (v) => {
-          assert(!!isBoolean(v),
+          assertType(!!isBoolean(v),
             'hotballoon:view:constructor: `_shouldRender` argument should be a boolean'
           )
           _shouldRender = v
@@ -201,10 +168,28 @@ class View extends ViewContainerBase {
           return _shouldMount
         },
         set: (v) => {
-          assert(!!isBoolean(v),
+          assertType(!!isBoolean(v),
             'hotballoon:view:constructor: `_shouldMount` argument should be a boolean'
           )
           _shouldMount = v
+        }
+      },
+      /**
+       * @property {boolean} _shouldUpdate
+       * @name View#_shouldUpdate
+       * @private
+       */
+      _shouldUpdate: {
+        configurable: false,
+        enumerable: false,
+        get: () => {
+          return _shouldUpdate
+        },
+        set: (v) => {
+          assertType(!!isBoolean(v),
+            'hotballoon:view:constructor: `_shouldUpdate` argument should be a boolean'
+          )
+          _shouldUpdate = v
         }
       },
       /**
@@ -224,28 +209,6 @@ class View extends ViewContainerBase {
       }
 
     })
-  }
-
-  /**
-   * @static
-   * @param {ViewParameters} viewParameters
-   * @return View
-   */
-  static create(viewParameters) {
-    return new this(viewParameters)
-  }
-
-  /**
-   *
-   * @static
-   * @param {ViewParameters} viewParameters
-   * @param {Element} parentNode
-   * @return View
-   */
-  static createWithParentNode(viewParameters, parentNode) {
-    const inst = new this(viewParameters)
-    inst.parentNode = parentNode
-    return inst
   }
 
   /**
@@ -271,7 +234,7 @@ class View extends ViewContainerBase {
    * @param {View~updateCallback} clb
    */
   subscribeToStore(store, clb = (state) => true) {
-    assert(
+    assertType(
       isFunction(clb),
       'hotballoon:' + this.constructor.name + ':subscribeToStore: `clb` argument should be callable'
     )
@@ -286,6 +249,7 @@ class View extends ViewContainerBase {
           .listen(STORE_CHANGED)
           .callback((payload, type) => {
             if (clb(payload.data) === true) {
+              this.dispatch(VIEW_STORE_CHANGED, payload)
               this.updateNode()
             }
           })
@@ -315,9 +279,18 @@ class View extends ViewContainerBase {
    * @public
    */
   updateNode() {
-    this.debug.log('updateNode').background()
-    this.debug.print()
-    this[_update]()
+    if (this._shouldUpdate) {
+      this.debug.log('updateNode').background()
+      this.debug.print()
+      this.dispatch(VIEW_UPDATE, {})
+      this[_update]()
+      this.dispatch(VIEW_UPDATED, {})
+    }
+    this._shouldUpdate = true
+  }
+
+  shouldNotUpdate() {
+    this._shouldUpdate = false
   }
 
   /**
@@ -336,17 +309,16 @@ class View extends ViewContainerBase {
     this.debug.print()
 
     if (this._shouldRender) {
+      this.dispatch(VIEW_RENDER, {})
       this[_render]()
       this._rendered = true
+      this.dispatch(VIEW_RENDERED, {})
     }
 
     this._shouldRender = true
     return this.node
   }
 
-  /**
-   * Set `_shouldRender` to false
-   */
   shouldNotRender() {
     this._shouldRender = false
   }
@@ -365,8 +337,10 @@ class View extends ViewContainerBase {
    */
   mount() {
     if (this._shouldMount) {
+      this.dispatch(VIEW_MOUNT, {})
       this[_mount]()
       this._mounted = true
+      this.dispatch(VIEW_MOUNTED, {})
     }
 
     this._shouldMount = true
@@ -432,9 +406,12 @@ class View extends ViewContainerBase {
    * @return {Element} node
    */
   [_setNodeRef](key, node) {
-    $(node).setNodeRef(key)
-    this._nodeRefs.set(key, node)
-    node.setAttribute(ATTRIBUTE_NODEREF, key)
+    // TODO reconciliation for nodeRefs
+    if (!this._nodeRefs.has(key)) {
+      $(node).setNodeRef(key)
+      this._nodeRefs.set(key, node)
+      node.setAttribute(ATTRIBUTE_NODEREF, key)
+    }
     return node
   }
 
@@ -498,9 +475,15 @@ class View extends ViewContainerBase {
   containerID() {
     return this._container.ID
   }
-}
 
-export {View}
+  /**
+   *
+   * @return {ViewPublicEventHandler}
+   */
+  on() {
+    return new ViewPublicEventHandler(a => this._on(a))
+  }
+}
 </code></pre>
         </article>
     </section>
@@ -511,13 +494,13 @@ export {View}
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Action.html">Action</a></li><li><a href="ActionBuilder.html">ActionBuilder</a></li><li><a href="ActionParams.html">ActionParams</a></li><li><a href="ActionTypeParam.html">ActionTypeParam</a></li><li><a href="ComponentContext.html">ComponentContext</a></li><li><a href="ComponentContext.create.html">create</a></li><li><a href="CreateHotBalloonElement.html">CreateHotBalloonElement</a></li><li><a href="Debugable.html">Debugable</a></li><li><a href="Dispatcher.html">Dispatcher</a></li><li><a href="DispatcherEventListenerBuilder.html">DispatcherEventListenerBuilder</a></li><li><a href="DispatcherEventListenerBuilder.listen.html">listen</a></li><li><a href="ElementDescription_ElementDescription.html">ElementDescription</a></li><li><a href="ElementEventListenerParam.create.html">create</a></li><li><a href="ElementEventListenerParam.createWithOptions.html">createWithOptions</a></li><li><a href="EventAction.html">EventAction</a></li><li><a href="EventHandler.html">EventHandler</a></li><li><a href="EventListenerOrderedBuilder.html">EventListenerOrderedBuilder</a></li><li><a href="EventListenerOrderedParam.html">EventListenerOrderedParam</a></li><li><a href="EventListenerOrderedParam.create.html">create</a></li><li><a href="EventOrderedHandler.html">EventOrderedHandler</a></li><li><a href="HotBalloonApplication.html">HotBalloonApplication</a></li><li><a href="HotBalloonAttributeHandler.html">HotBalloonAttributeHandler</a></li><li><a href="HotballoonElementParams.html">HotballoonElementParams</a></li><li><a href="HotballoonElementParams.withEventListener.html">withEventListener</a></li><li><a href="HotballoonElementParams.withReconciliationRules.html">withReconciliationRules</a></li><li><a href="HotballoonElementParams.withViews.html">withViews</a></li><li><a href="InMemoryParams.html">InMemoryParams</a></li><li><a href="InMemoryStorage.html">InMemoryStorage</a></li><li><a href="ProxyParams.html">ProxyParams</a></li><li><a href="ProxyStore.html">ProxyStore</a></li><li><a href="ProxyStoreParams.html">ProxyStoreParams</a></li><li><a href="PublicActionParams.html">PublicActionParams</a></li><li><a href="PublicStoreHandler.html">PublicStoreHandler</a></li><li><a href="Store.html">Store</a></li><li><a href="StoreBase.html">StoreBase</a></li><li><a href="StoreBaseParams.html">StoreBaseParams</a></li><li><a href="StoreBuilder.html">StoreBuilder</a></li><li><a href="StoreState.html">StoreState</a></li><li><a href="StoreTypeParam.html">StoreTypeParam</a></li><li><a href="View.html">View</a></li><li><a href="ViewContainer.html">ViewContainer</a></li><li><a href="ViewContainerBase.html">ViewContainerBase</a></li><li><a href="ViewContainerParameters_ViewContainerParameters.html">ViewContainerParameters</a></li><li><a href="ViewEventListenerBuilder.html">ViewEventListenerBuilder</a></li><li><a href="ViewEventListenerBuilder.bubble.html">bubble</a></li><li><a href="ViewParameters_ViewParameters.html">ViewParameters</a></li><li><a href="WithIDBase.html">WithIDBase</a></li></ul><h3>Interfaces</h3><ul><li><a href="ExecutorInterface.html">ExecutorInterface</a></li><li><a href="GenericType.html">GenericType</a></li><li><a href="HasTagClassNameInterface.html">HasTagClassNameInterface</a></li><li><a href="StorageInterface.html">StorageInterface</a></li><li><a href="StoreHandlerInterface.html">StoreHandlerInterface</a></li><li><a href="StoreInterface.html">StoreInterface</a></li></ul><h3>Global</h3><ul><li><a href="global.html#e">e</a></li><li><a href="global.html#hasClassTagName">hasClassTagName</a></li><li><a href="global.html#isEqualClassTagName">isEqualClassTagName</a></li><li><a href="global.html#nodeRef">nodeRef</a></li><li><a href="global.html#ROOT,">ROOT,</a></li><li><a href="global.html#testClassTagName">testClassTagName</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Action.html">Action</a></li><li><a href="ActionArray.html">ActionArray</a></li><li><a href="ActionBuilder.html">ActionBuilder</a></li><li><a href="ActionParams.html">ActionParams</a></li><li><a href="ActionTypeParam.html">ActionTypeParam</a></li><li><a href="ComponentContext.html">ComponentContext</a></li><li><a href="ComponentContext.create.html">create</a></li><li><a href="CreateHotBalloonElement.html">CreateHotBalloonElement</a></li><li><a href="Debugable.html">Debugable</a></li><li><a href="Dispatcher.html">Dispatcher</a></li><li><a href="DispatcherEventListenerBuilder.html">DispatcherEventListenerBuilder</a></li><li><a href="DispatcherEventListenerBuilder.listen.html">listen</a></li><li><a href="ElementDescription_ElementDescription.html">ElementDescription</a></li><li><a href="ElementEventListenerParam.create.html">create</a></li><li><a href="ElementEventListenerParam.createWithOptions.html">createWithOptions</a></li><li><a href="EventAction.html">EventAction</a></li><li><a href="EventHandler.html">EventHandler</a></li><li><a href="EventListenerOrderedBuilder.html">EventListenerOrderedBuilder</a></li><li><a href="EventListenerOrderedParam.html">EventListenerOrderedParam</a></li><li><a href="EventListenerOrderedParam.create.html">create</a></li><li><a href="EventOrderedHandler.html">EventOrderedHandler</a></li><li><a href="ExecutorInline.html">ExecutorInline</a></li><li><a href="HotBalloonApplication.html">HotBalloonApplication</a></li><li><a href="HotBalloonAttributeHandler.html">HotBalloonAttributeHandler</a></li><li><a href="HotballoonElementParams.html">HotballoonElementParams</a></li><li><a href="HotballoonElementParams.withEventListener.html">withEventListener</a></li><li><a href="HotballoonElementParams.withReconciliationRules.html">withReconciliationRules</a></li><li><a href="HotballoonElementParams.withViews.html">withViews</a></li><li><a href="InMemoryParams.html">InMemoryParams</a></li><li><a href="InMemoryStorage.html">InMemoryStorage</a></li><li><a href="ProxyParams.html">ProxyParams</a></li><li><a href="ProxyStore.html">ProxyStore</a></li><li><a href="ProxyStoreParams.html">ProxyStoreParams</a></li><li><a href="PublicActionParams.html">PublicActionParams</a></li><li><a href="PublicStoreHandler.html">PublicStoreHandler</a></li><li><a href="Store.html">Store</a></li><li><a href="StoreBase.html">StoreBase</a></li><li><a href="StoreBaseParams.html">StoreBaseParams</a></li><li><a href="StoreBuilder.html">StoreBuilder</a></li><li><a href="StoreState.html">StoreState</a></li><li><a href="StoreTypeParam.html">StoreTypeParam</a></li><li><a href="View.html">View</a></li><li><a href="ViewContainer.html">ViewContainer</a></li><li><a href="ViewContainerBase.html">ViewContainerBase</a></li><li><a href="ViewContainerParameters_ViewContainerParameters.html">ViewContainerParameters</a></li><li><a href="ViewEventListenerBuilder.html">ViewEventListenerBuilder</a></li><li><a href="ViewEventListenerBuilder.bubble.html">bubble</a></li><li><a href="WithIDBase.html">WithIDBase</a></li></ul><h3>Interfaces</h3><ul><li><a href="Component.html">Component</a></li><li><a href="ExecutorInterface.html">ExecutorInterface</a></li><li><a href="GenericType.html">GenericType</a></li><li><a href="HasTagClassNameInterface.html">HasTagClassNameInterface</a></li><li><a href="JobInterface.html">JobInterface</a></li><li><a href="StorageInterface.html">StorageInterface</a></li><li><a href="StoreHandlerInterface.html">StoreHandlerInterface</a></li><li><a href="StoreInterface.html">StoreInterface</a></li></ul><h3>Global</h3><ul><li><a href="global.html#e">e</a></li><li><a href="global.html#hasClassTagName">hasClassTagName</a></li><li><a href="global.html#isEqualClassTagName">isEqualClassTagName</a></li><li><a href="global.html#nodeRef">nodeRef</a></li><li><a href="global.html#ROOT,">ROOT,</a></li><li><a href="global.html#testClassTagName">testClassTagName</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Mar 19 2019 13:30:07 GMT+0100 (GMT+01:00)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Apr 25 2019 11:08:31 GMT+0200 (GMT+02:00)
 </footer>
 
 <script> prettyPrint(); </script>
