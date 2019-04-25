@@ -9,7 +9,7 @@ import {ViewContainerPublicEventHandler} from './ViewContainerPublicEventHandler
 export class ViewContainerParameters {
   /**
    *
-   * @param {componentContext} componentInst
+   * @param {ComponentContext} componentInst
    * @param {string} id
    * @param {Node} parentNode
    * @return ViewContainerParameters
@@ -24,7 +24,7 @@ export class ViewContainerParameters {
 
     Object.defineProperties(this, {
       /**
-         * @property {componentContext} component
+         * @property {ComponentContext} component
          * @name ViewContainerParameters#component
          */
       component: {
