@@ -11,7 +11,7 @@ export class ViewContainerParameters {
    *
    * @param {ComponentContext} componentInst
    * @param {string} id
-   * @param {Node} parentNode
+   * @param {Element} parentNode
    * @return ViewContainerParameters
    */
   constructor(componentInst, id, parentNode) {
@@ -42,7 +42,7 @@ export class ViewContainerParameters {
       },
       parentNode: {
         /**
-           * @property {Node}
+           * @property {Element}
            * @name ViewContainerParameters#parentNode
            */
         value: parentNode
@@ -141,7 +141,7 @@ export class ViewContainer extends ViewContainerBase {
    */
   [_mountViews]() {
     this.MapOfView().forEach((view, key, map) => {
-      view.mount(this.parentNode)
+      view.mountInto(this.parentNode)
     })
   }
 
@@ -163,7 +163,7 @@ export class ViewContainer extends ViewContainerBase {
   }
 
   /**
-   * @return {Node} parentNode
+   * @return {Element} parentNode
    */
   mount() {
     this[_mountViews]()
@@ -173,7 +173,17 @@ export class ViewContainer extends ViewContainerBase {
   }
 
   /**
-   * @return {Node} parentNode
+   *
+   * @param {Element} element
+   * @return {Element}
+   */
+  mountInto(element) {
+    this.parentNode = element
+    return this.mount()
+  }
+
+  /**
+   * @return {Element} parentNode
    */
   renderAndMount() {
     this.debug.log('render And Mount').background().size(2)

@@ -304,7 +304,6 @@ export class View extends ViewContainerBase {
   }
 
   /**
-   * @public
    * @see _mount()
    */
   mount() {
@@ -316,6 +315,15 @@ export class View extends ViewContainerBase {
     }
 
     this._shouldMount = true
+  }
+
+  /**
+   *
+   * @param {Element} element
+   */
+  mountInto(element) {
+    this.parentNode = element
+    this.mount()
   }
 
   shouldNotMount() {

@@ -127,8 +127,9 @@ export class StoreBase extends WithIDBase {
     const data = this[_storeParams].defaultChecker(dataStore)
 
     assertType(data instanceof this.__type__,
-      'StoreBase:set: `dataStore` should be an instanceof %s',
-      this.__type__.constructor.name
+      'StoreBase:set: `dataStore` should be an instanceof `%s`, `%s` given',
+      this.__type__.name,
+      dataStore.constructor.name
     )
 
     if (!this[_storeParams].validator(data)) {
