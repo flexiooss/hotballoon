@@ -131,10 +131,11 @@ export class ViewContainerBase extends WithIDBase {
   /**
    *
    * @param {View} view
+   * @param {?string} key
    * @return {View}
    */
-  addView(view) {
-    this[_Views].set(view.ID, view)
+  addView(view, key = null) {
+    this[_Views].set(key || view.ID, view)
     return view
   }
 

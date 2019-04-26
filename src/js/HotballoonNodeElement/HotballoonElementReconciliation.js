@@ -1,4 +1,4 @@
-import {Reconciliation} from 'flexio-nodes-reconciliation'
+import {Reconciliation, RECONCILIATION_RULES as R} from 'flexio-nodes-reconciliation'
 import {select} from './HotBalloonAttributeHandler'
 
 class HotballoonElementReconciliation extends Reconciliation {
@@ -19,9 +19,18 @@ class HotballoonElementReconciliation extends Reconciliation {
    * @param {Element} parentCurrent Parent of current element
    */
   static startReconciliation(current, candidate, parentCurrent) {
-    new Reconciliation(current, candidate, parentCurrent)
+    new HotballoonElementReconciliation(current, candidate, parentCurrent)
       .withRootReconciliation(true)
       .reconcile()
+  }
+
+  /**
+   * @param {Element} current
+   * @param {Element} candidate
+   * @param {Element} parentCurrent Parent of current element
+   */
+  reconciliation(current, candidate, parentCurrent) {
+    HotballoonElementReconciliation.reconciliation(current, candidate, parentCurrent)
   }
 
   /**
@@ -38,10 +47,10 @@ class HotballoonElementReconciliation extends Reconciliation {
    * @return {(boolean | void)}
    */
   reconcile() {
-    if (this.__isSubView() && !this._hasForceRule()) {
+    if (this.__isSubView() && !this._hasForceRule() && !this.$parentCurrent.hasReconciliationRule(R.FORCE)) {
       return this._abort()
     }
-    super.reconcile()
+    return super.reconcile()
   }
 
   /**
@@ -55,4 +64,4 @@ class HotballoonElementReconciliation extends Reconciliation {
 }
 
 export const reconcile = HotballoonElementReconciliation.reconciliation
-export const startReconcile = Reconciliation.startReconciliation
+export const startReconcile = HotballoonElementReconciliation.startReconciliation

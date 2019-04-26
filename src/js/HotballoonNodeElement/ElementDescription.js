@@ -32,7 +32,7 @@ export class ElementDescription {
    * @return {ElementDescription}
    */
   reconciliationRules(...reconciliationRules) {
-    this._params.addReconciliationRules(reconciliationRules)
+    this._params.addReconciliationRules(...reconciliationRules)
     return this
   }
 

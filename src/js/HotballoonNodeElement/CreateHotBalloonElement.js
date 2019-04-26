@@ -101,9 +101,6 @@ class CreateHotBalloonElement extends HyperFlex {
    * @private
    */
   [_setNodeRef](key, node) {
-    // console.log('_setNodeRef')
-    // console.log(key)
-    // console.log(node)
     this._scope.addNodeRef(key, node)
     return this
   }
@@ -131,7 +128,9 @@ class CreateHotBalloonElement extends HyperFlex {
    */
   __ensureChildrenRules(views) {
     if (views.length) {
-      this._params.addReconciliationRules([RECONCILIATION_RULES.BYPASS_CHILDREN])
+      if (this._params._reconciliationRules.indexOf(RECONCILIATION_RULES.FORCE) < 0) {
+        this._params.addReconciliationRules(RECONCILIATION_RULES.BYPASS_CHILDREN)
+      }
     }
     return this
   }
@@ -143,8 +142,8 @@ class CreateHotBalloonElement extends HyperFlex {
    */
   __ensureSubViewRenderedMounted(view) {
     if (!view.isRendered() && !view.isMounted()) {
-      view.parentNode = this._element
-      view.renderAndMount()
+      view.render()
+      view.mountInto(this._element)
     }
   }
 
@@ -153,8 +152,8 @@ class CreateHotBalloonElement extends HyperFlex {
    * @param {Array.<string>} rules
    * @return {CreateHotBalloonElement}
    */
-  [_setReconciliationRule](rules) {
-    this._$element.addReconcileRules(rules)
+  [_setReconciliationRule](...rules) {
+    this._$element.addReconcileRules(...rules)
     return this
   }
 

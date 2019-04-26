@@ -33,7 +33,7 @@ class HotBalloonAttributeHandler extends AttributeHandler {
    * @return {string | null}
    */
   viewRef() {
-    return (KEY.NODE_REF in this.privateAttribute) ? this.privateAttribute[KEY.VIEW_REF] : null
+    return (KEY.VIEW_REF in this.privateAttribute) ? this.privateAttribute[KEY.VIEW_REF] : null
   }
 
   /**

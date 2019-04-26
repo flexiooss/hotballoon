@@ -76,22 +76,24 @@ export class HotballoonElementParams extends HyperFlexParams {
 
   /**
    * @static
-   * @param {Array.<String>} rules
+   * @param {...String} rules
    * @return {HyperFlexParams}
    * @constructor
    */
-  static withReconciliationRules(rules) {
-    return new this().addReconciliationRules(rules)
+  static withReconciliationRules(...rules) {
+    return new this().addReconciliationRules(...rules)
   }
 
   /**
    *
-   * @param {Array.<string>} reconciliationRules
+   * @param {...string} reconciliationRules
    * @return {this}
    */
-  addReconciliationRules(reconciliationRules) {
-    // TODO merge array
-    this._reconciliationRules = reconciliationRules
+  addReconciliationRules(...reconciliationRules) {
+    reconciliationRules.forEach((r) => {
+      this._reconciliationRules.push(...reconciliationRules)
+    })
+
     return this
   }
 
