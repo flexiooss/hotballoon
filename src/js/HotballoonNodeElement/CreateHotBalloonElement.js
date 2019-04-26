@@ -101,6 +101,9 @@ class CreateHotBalloonElement extends HyperFlex {
    * @private
    */
   [_setNodeRef](key, node) {
+    // console.log('_setNodeRef')
+    // console.log(key)
+    // console.log(node)
     this._scope.addNodeRef(key, node)
     return this
   }

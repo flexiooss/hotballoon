@@ -379,10 +379,10 @@ export class View extends ViewContainerBase {
    */
   [_setNodeRef](key, node) {
     // TODO reconciliation for nodeRefs
+    $(node).setNodeRef(key)
+    node.setAttribute(ATTRIBUTE_NODEREF, key)
     if (!this._nodeRefs.has(key)) {
-      $(node).setNodeRef(key)
       this._nodeRefs.set(key, node)
-      node.setAttribute(ATTRIBUTE_NODEREF, key)
     }
     return node
   }
