@@ -38,7 +38,7 @@ class HotballoonElementReconciliation extends Reconciliation {
    * @return {(boolean | void)}
    */
   reconcile() {
-    if (this.__isSubView()) {
+    if (this.__isSubView() && !this._hasForceRule()) {
       return this._abort()
     }
     super.reconcile()
