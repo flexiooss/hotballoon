@@ -9,6 +9,8 @@ import {ExecutorInline} from '../js/Job/ExecutorInline'
 import {ExecutorWorker} from '../js/Job/ExecutorWorker'
 import {ActionBuilder, PublicActionParams} from '../js/Action/ActionBuilder'
 import {ActionTypeParam} from '../js/Action/ActionTypeParam'
+import {ViewContainer, ViewContainerParameters} from '../js/View/ViewContainer'
+import {View} from '../js/View/View'
 
 const assert = require('assert')
 
@@ -97,6 +99,28 @@ export class TestTypeCheck extends TestCase {
       )
     )
     assert(TypeCheck.isAction(action))
+  }
+
+  testIsViewContainer() {
+    const viewContainer = new ViewContainer(
+      new ViewContainerParameters(
+        Object, 'id', {nodeType: 2}
+      )
+    )
+    assert(TypeCheck.isViewContainer(viewContainer))
+    assert(TypeCheck.isViewContainerBase(viewContainer))
+  }
+
+  tesIsView() {
+    const view = new View(
+      new ViewContainer(
+        new ViewContainerParameters(
+          Object, 'id', {nodeType: 2}
+        )
+      )
+    )
+    assert(TypeCheck.isView(view))
+    assert(TypeCheck.isViewContainerBase(view))
   }
 }
 
