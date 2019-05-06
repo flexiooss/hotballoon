@@ -6,7 +6,6 @@ import {toString} from 'flexio-jshelpers'
 import {RECONCILIATION_RULES} from 'flexio-nodes-reconciliation'
 
 const _changeIdAndSetNodeRef = Symbol('_changeIdAndSetNodeRef')
-const _generateIdFromScope = Symbol('_generateIdFromScope')
 const _setNodeRef = Symbol('_setNodeRef')
 const _setReconciliationRule = Symbol('_setReconciliationRule')
 const _setViews = Symbol('_setViews')
@@ -77,20 +76,10 @@ class CreateHotBalloonElement extends HyperFlex {
   [_changeIdAndSetNodeRef]() {
     const shortId = this._element.id
     if (shortId) {
-      this._element.id = this[_generateIdFromScope](shortId)
+      this._element.id = this._scope.elementIdFromRef(shortId)
       this[_setNodeRef](shortId, this._element)
     }
     return this
-  }
-
-  /**
-   *
-   * @private
-   * @param {String} id
-   * @return {String}
-   */
-  [_generateIdFromScope](id) {
-    return `${toString(this._scope.AppID())}-${toString(this._scope.componentID())}-${toString(this._scope.containerID())}-${toString(id)}`
   }
 
   /**

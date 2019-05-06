@@ -1,7 +1,7 @@
 'use strict'
 import {CoreException} from '../CoreException'
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_VIEW} from '../HasTagClassNameInterface'
-import {assertType, isBoolean, isFunction, isNode, UID} from 'flexio-jshelpers'
+import {assertType, isBoolean, isFunction, isNode, toString, UID} from 'flexio-jshelpers'
 import {$} from '../HotballoonNodeElement/HotBalloonAttributeHandler'
 import {startReconcile} from '../HotballoonNodeElement/HotballoonElementReconciliation'
 import {html} from '../HotballoonNodeElement/CreateHotBalloonElement'
@@ -27,6 +27,7 @@ const _update = Symbol('_update')
 const _render = Symbol('_render')
 const _replaceNode = Symbol('_replaceNode')
 const _setNodeRef = Symbol('_setNodeRef')
+const _addNodeRef = Symbol('_addNodeRef')
 const _setNodeViewRef = Symbol('_setNodeViewRef')
 
 /**
@@ -61,6 +62,7 @@ export class View extends ViewContainerBase {
       enumerable: true,
       value: CLASS_TAG_NAME_VIEW
     })
+    this.weakNodeRefs = new WeakSet()
 
     Object.defineProperties(this, {
       _container: {
@@ -167,7 +169,7 @@ export class View extends ViewContainerBase {
       /**
        * @property {Map} _nodeRefs
        * @name View#_nodeRefs
-       * @private
+       * @protected
        */
       _nodeRefs: {
         configurable: false,
@@ -348,7 +350,8 @@ export class View extends ViewContainerBase {
    * @return {Element}
    */
   nodeRef(key) {
-    return this._nodeRefs.get(key)
+    return this.node.querySelector('#' + this.elementIdFromRef(key))
+    // return this._nodeRefs.get(key)
   }
 
   /**
@@ -367,7 +370,7 @@ export class View extends ViewContainerBase {
    * @instance
    */
   addNodeRef(key, node) {
-    return this[_setNodeRef](key, node)
+    return this[_addNodeRef](key, node)
   }
 
   /**
@@ -375,7 +378,7 @@ export class View extends ViewContainerBase {
    * @param {Element} node
    * @return {Element}
    */
-  replaceNodeRef(key, node) {
+  setNodeRef(key, node) {
     return this[_setNodeRef](key, node)
   }
 
@@ -385,13 +388,26 @@ export class View extends ViewContainerBase {
    * @param {Element} node
    * @return {Element} node
    */
-  [_setNodeRef](key, node) {
-    // TODO reconciliation for nodeRefs
+  [_addNodeRef](key, node) {
     $(node).setNodeRef(key)
     node.setAttribute(ATTRIBUTE_NODEREF, key)
-    if (!this._nodeRefs.has(key)) {
-      this._nodeRefs.set(key, node)
-    }
+    // if (!this._nodeRefs.has(key)) {
+    //   // this.weakNodeRefs.add(node)
+    //   this._nodeRefs.set(key, node)
+    // }
+    return node
+  }
+
+  /**
+   * @private
+   * @param {String} key
+   * @param {Element} node
+   * @return {Element} node
+   */
+  [_setNodeRef](key, node) {
+    $(node).setNodeRef(key)
+    node.setAttribute(ATTRIBUTE_NODEREF, key)
+    // this._nodeRefs.set(key, node)
     return node
   }
 
@@ -462,5 +478,14 @@ export class View extends ViewContainerBase {
    */
   on() {
     return new ViewPublicEventHandler(a => this._on(a))
+  }
+
+  /**
+   *
+   * @param {string} ref
+   * @return {string}
+   */
+  elementIdFromRef(ref) {
+    return `${toString(this.AppID())}-${toString(this.componentID())}-${toString(this.containerID())}-${toString(ref)}`
   }
 }
