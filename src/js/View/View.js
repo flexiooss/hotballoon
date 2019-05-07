@@ -26,7 +26,6 @@ const _mount = Symbol('_mount')
 const _update = Symbol('_update')
 const _render = Symbol('_render')
 const _replaceNode = Symbol('_replaceNode')
-const _setNodeRef = Symbol('_setNodeRef')
 const _addNodeRef = Symbol('_addNodeRef')
 const _setNodeViewRef = Symbol('_setNodeViewRef')
 
@@ -97,7 +96,7 @@ export class View extends ViewContainerBase {
       /**
        * @property {boolean} _shouldInit
        * @name View#_shouldInit
-       * @private
+       * @protected
        */
       _shouldInit: {
         configurable: false,
@@ -115,7 +114,7 @@ export class View extends ViewContainerBase {
       /**
        * @property {boolean} _shouldRender
        * @name View#_shouldRender
-       * @private
+       * @protected
        */
       _shouldRender: {
         configurable: false,
@@ -133,7 +132,7 @@ export class View extends ViewContainerBase {
       /**
        * @property {boolean} _shouldMount
        * @name View#_shouldMount
-       * @private
+       * @protected
        */
       _shouldMount: {
         configurable: false,
@@ -151,7 +150,7 @@ export class View extends ViewContainerBase {
       /**
        * @property {boolean} _shouldUpdate
        * @name View#_shouldUpdate
-       * @private
+       * @protected
        */
       _shouldUpdate: {
         configurable: false,
@@ -167,7 +166,7 @@ export class View extends ViewContainerBase {
         }
       },
       /**
-       * @property {Map} _nodeRefs
+       * @property {Map<string, Element>} _nodeRefs
        * @name View#_nodeRefs
        * @protected
        */
@@ -244,14 +243,12 @@ export class View extends ViewContainerBase {
    * @description update the node reference of this View
    */
   [_update]() {
+    this._nodeRefs.clear()
     const candidate = this.template()
     $(candidate).setViewRef(this.ID)
     startReconcile(this.node, candidate, this.parentNode)
   }
 
-  /**
-   * @public
-   */
   updateNode() {
     if (this._shouldUpdate) {
       this.debug.log('updateNode').background()
@@ -299,15 +296,11 @@ export class View extends ViewContainerBase {
 
   /**
    * @private
-   * @description mount `_node` property into `parentNode` argument
    */
   [_mount]() {
     this.parentNode.appendChild(this.node)
   }
 
-  /**
-   * @see _mount()
-   */
   mount() {
     if (this._shouldMount) {
       this.dispatch(VIEW_MOUNT, {})
@@ -322,10 +315,12 @@ export class View extends ViewContainerBase {
   /**
    *
    * @param {Element} element
+   * @return {Element}
    */
   mountInto(element) {
     this.parentNode = element
     this.mount()
+    return element
   }
 
   shouldNotMount() {
@@ -350,8 +345,10 @@ export class View extends ViewContainerBase {
    * @return {Element}
    */
   nodeRef(key) {
-    return this.node.querySelector('#' + this.elementIdFromRef(key))
-    // return this._nodeRefs.get(key)
+    if (!this._nodeRefs.has(key)) {
+      this._nodeRefs.set(key, document.getElementById(this.elementIdFromRef(key)))
+    }
+    return this._nodeRefs.get(key)
   }
 
   /**
@@ -374,15 +371,6 @@ export class View extends ViewContainerBase {
   }
 
   /**
-   * @param {String} key
-   * @param {Element} node
-   * @return {Element}
-   */
-  setNodeRef(key, node) {
-    return this[_setNodeRef](key, node)
-  }
-
-  /**
    * @private
    * @param {String} key
    * @param {Element} node
@@ -391,23 +379,6 @@ export class View extends ViewContainerBase {
   [_addNodeRef](key, node) {
     $(node).setNodeRef(key)
     node.setAttribute(ATTRIBUTE_NODEREF, key)
-    // if (!this._nodeRefs.has(key)) {
-    //   // this.weakNodeRefs.add(node)
-    //   this._nodeRefs.set(key, node)
-    // }
-    return node
-  }
-
-  /**
-   * @private
-   * @param {String} key
-   * @param {Element} node
-   * @return {Element} node
-   */
-  [_setNodeRef](key, node) {
-    $(node).setNodeRef(key)
-    node.setAttribute(ATTRIBUTE_NODEREF, key)
-    // this._nodeRefs.set(key, node)
     return node
   }
 
