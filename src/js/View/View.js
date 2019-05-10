@@ -367,6 +367,9 @@ export class View extends ViewContainerBase {
    * @instance
    */
   addNodeRef(key, node) {
+    if (!this._rendered && !this._nodeRefs.has(key)) {
+      this._nodeRefs.set(key, node)
+    }
     return this[_addNodeRef](key, node)
   }
 
