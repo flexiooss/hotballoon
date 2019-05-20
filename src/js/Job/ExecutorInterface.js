@@ -14,6 +14,6 @@ export class ExecutorInterface {
   }
 
   process(job) {
-    throw Error('ExecutorInterface:process should be override')
+    throw Error('ExecutorRequesterInterface:process should be override')
   }
 }
