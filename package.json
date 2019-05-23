@@ -1,5 +1,5 @@
 {
-  "name": "hotballoon",
+  "name": "@flexio-oss/hotballoon",
   "description": "Small JavaScript library for building interfaces by Flexio",
   "main": "index.js",
   "module": "index.js",
