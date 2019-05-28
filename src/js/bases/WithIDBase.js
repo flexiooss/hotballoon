@@ -1,5 +1,4 @@
-'use strict'
-import {assert} from 'flexio-jshelpers'
+import {assert} from '@flexio-oss/assert'
 import {Debugable} from './Debugable'
 
 const _ID = Symbol('_ID')

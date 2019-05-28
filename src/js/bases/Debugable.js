@@ -1,4 +1,4 @@
-import {LogHandler} from 'flexio-jshelpers'
+import {LogHandler} from '@flexio-oss/js-logger'
 
 /**
  * @class

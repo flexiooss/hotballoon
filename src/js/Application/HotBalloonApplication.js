@@ -1,6 +1,8 @@
-'use strict'
 import {Dispatcher} from '../Dispatcher/Dispatcher'
-import {MapExtended, MapOfInstance, Sequence, assert} from 'flexio-jshelpers'
+import {assert} from '@flexio-oss/assert'
+import {Sequence} from '@flexio-oss/js-helpers'
+// TODO mapextended
+import {MapExtended, MapOfInstance} from '@flexio-oss/flex-types'
 import {ComponentContext} from '../Component/ComponentContext'
 import {WithIDBase} from '../bases/WithIDBase'
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_HOTBALLOON_APPLICATION} from '../HasTagClassNameInterface'
