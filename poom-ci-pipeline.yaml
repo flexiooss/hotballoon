@@ -5,6 +5,8 @@ stages:
       - $NOTIFY --data-urlencode "status=2" --data-urlencode "current-stage=$STAGE"
       - git clone -b $FLEXIO_SCRIPTS_BRANCH $FLEXIO_SCRIPTS $WORKSPACE/flexio-ci-scripts && export PATH=$PATH:$WORKSPACE/flexio-ci-scripts/bin
       - docker pull $CI_TOOLS_IMAGE
+    onlyWhen:
+      - branch in (master, develop)
 
   - name: build
     timeout: 60
@@ -12,6 +14,8 @@ stages:
       - $NOTIFY --data-urlencode "status=2" --data-urlencode "current-stage=$STAGE"
       - $HBSHED clean install generate-sources test
       - $HBSHED extract-package -T $EXTRACTED_PACKAGE_PATH
+    onlyWhen:
+      - branch in (master, develop)
 
   - name: deploy-package
     timeout: 60
@@ -35,6 +39,8 @@ onSuccess:
   - name: notify-flexio
     exec:
       - $NOTIFY --data-urlencode "status=0" --data-urlencode "current-stage="
+    onlyWhen:
+      - branch in (master, develop)
 
 onError:
   - name: notify-flexio
