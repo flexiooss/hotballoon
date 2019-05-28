@@ -1,4 +1,3 @@
-'use strict'
 import {Store} from '../Store/Store'
 import {
   ViewContainer
@@ -6,7 +5,10 @@ import {
 import {
   WILL_REMOVE as VIEWCONTAINER_WILL_REMOVE
 } from '../View/ViewContainerPublicEventHandler'
-import {MapOfInstance, Sequence, assertType} from 'flexio-jshelpers'
+import {assertType} from '@flexio-oss/assert'
+import {Sequence} from '@flexio-oss/js-helpers'
+// TODO mapextended
+import {MapOfInstance} from '@flexio-oss/flex-types'
 import {WithIDBase} from '../bases/WithIDBase'
 import {
   CLASS_TAG_NAME,
