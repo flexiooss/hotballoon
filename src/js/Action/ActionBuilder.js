@@ -1,7 +1,7 @@
 import {Action} from './Action'
 import {ActionParams} from './ActionParams'
 import {ActionTypeParam} from './ActionTypeParam'
-import {UID, assert, isFunction, assertType} from 'flexio-jshelpers'
+import {UID} from '@flexio-oss/js-helpers'
 
 /**
  * @template {TYPE}

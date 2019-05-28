@@ -1,4 +1,4 @@
-import {assertType, isFunction} from 'flexio-jshelpers'
+import {assertType} from '@flexio-oss/assert'
 import {TypeCheck} from '../TypeCheck'
 import {ActionTypeParam} from './ActionTypeParam'
 

@@ -25,8 +25,15 @@
   },
   "dependencies": {
     "flexio-hyperflex": "https://github.com/flexiooss/flexio-hyperflex.git",
-    "flexio-jshelpers": "https://github.com/flexiooss/flexio-jshelpers.git",
-    "flexio-nodes-reconciliation": "https://github.com/flexiooss/flexio-nodes-reconciliation.git"
+    "flexio-nodes-reconciliation": "https://github.com/flexiooss/flexio-nodes-reconciliation.git",
+    "@flexio-oss/assert": "0.0.0",
+    "@flexio-oss/js-helpers": "0.0.0",
+    "@flexio-oss/import": "0.0.0",
+    "@flexio-oss/event-handler": "0.0.0",
+    "@flexio-oss/js-type-helpers": "0.0.0",
+    "@flexio-oss/js-logger": "0.0.0",
+    "@flexio-oss/flex-types": "0.0.0",
+    "@flexio-oss/extended-flex-types": "0.0.0"
   },
   "hotballoon-shed": {
     "build": {

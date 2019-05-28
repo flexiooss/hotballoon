@@ -1,5 +1,5 @@
-'use strict'
-import {assert, assertType, UID} from 'flexio-jshelpers'
+import {assertType} from '@flexio-oss/assert'
+import {UID} from '@flexio-oss/js-helpers'
 import {
   CLASS_TAG_NAME,
   CLASS_TAG_NAME_ACTION
@@ -111,6 +111,7 @@ export class Action extends WithIDBase {
         .build()
       )
   }
+
   /**
    * @template TYPE
    * @callback Action~eventClb

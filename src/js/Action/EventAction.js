@@ -1,4 +1,5 @@
-import {deepFreezeSeal, assert, isPrimitive} from 'flexio-jshelpers'
+import {assert, isPrimitive} from '@flexio-oss/assert'
+import {deepFreezeSeal} from '@flexio-oss/js-type-helpers'
 
 /**
  *

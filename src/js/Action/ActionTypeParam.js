@@ -1,4 +1,4 @@
-import {assertType, isFunction, isObject} from 'flexio-jshelpers'
+import {assertType, isFunction} from '@flexio-oss/assert'
 
 /**
  * @template TYPE
