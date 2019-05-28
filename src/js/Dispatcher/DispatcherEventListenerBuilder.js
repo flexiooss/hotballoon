@@ -1,4 +1,6 @@
-import {assertType, EventListenerBuilder, SymbolStringArray} from 'flexio-jshelpers'
+import {assertType} from '@flexio-oss/assert'
+import {SymbolStringArray} from '@flexio-oss/extended-flex-types'
+import {EventListenerBuilder} from '@flexio-oss/event-handler'
 import {ActionArray} from '../Action/ActionArray'
 
 /**

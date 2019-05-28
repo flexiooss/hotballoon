@@ -1,4 +1,5 @@
-import {assert, assertType, isArray, EventHandlerBase} from 'flexio-jshelpers'
+import {assert, assertType, isArray} from '@flexio-oss/assert'
+import {EventHandlerBase} from '@flexio-oss/event-handler'
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_DISPATCHER} from '../HasTagClassNameInterface'
 import {EventAction} from '../Action/EventAction'
 
