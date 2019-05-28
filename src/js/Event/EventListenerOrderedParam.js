@@ -1,4 +1,6 @@
-import {deepFreezeSeal, isNumber, assertType, EventListenerParam} from 'flexio-jshelpers'
+import {isNumber, assertType} from '@flexio-oss/assert'
+import {deepFreezeSeal} from '@flexio-oss/js-type-helpers'
+import {EventListenerParam} from '@flexio-oss/event-handler'
 
 /**
  * @extends {EventListenerParam}

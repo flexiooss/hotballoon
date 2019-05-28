@@ -1,5 +1,7 @@
-'use strict'
-import {assertType, sortMap, EventHandlerBase, StringArray} from 'flexio-jshelpers'
+import {assertType} from '@flexio-oss/assert'
+import {StringArray} from '@flexio-oss/extended-flex-types'
+import {EventHandlerBase} from '@flexio-oss/event-handler'
+import {sortMap} from '@flexio-oss/js-type-helpers'
 import {EventListenerOrderedParam} from './EventListenerOrderedParam'
 
 /**

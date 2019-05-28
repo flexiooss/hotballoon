@@ -1,6 +1,6 @@
 import {EventListenerOrderedBuilder} from './EventListenerOrderedBuilder'
 import {ViewContainerBase} from '../View/ViewContainerBase'
-import {assert} from 'flexio-jshelpers'
+import {assert} from '@flexio-oss/assert'
 import {EventListenerOrderedParam} from './EventListenerOrderedParam'
 
 /**
@@ -30,6 +30,7 @@ export class ViewEventListenerBuilder extends EventListenerOrderedBuilder {
    */
   __bubbleEvent(viewContainerBase) {
     this._eventToDispatch = this._events
+    // TODO refactor bubble
     if (this._isBubble) {
       assert(viewContainerBase instanceof ViewContainerBase,
         'hotballoon:ViewEventListenerBuilder:build: `scope` argument should be an instance of ViewContainerBase')

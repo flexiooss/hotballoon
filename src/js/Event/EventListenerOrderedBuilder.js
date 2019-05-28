@@ -1,5 +1,5 @@
 import {EventListenerOrderedParam} from './EventListenerOrderedParam'
-import {EventListenerBuilder} from 'flexio-jshelpers'
+import {EventListenerBuilder} from '@flexio-oss/event-handler'
 
 /**
  * @class
