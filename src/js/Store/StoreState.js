@@ -1,5 +1,4 @@
-'use strict'
-import {deepFreezeSeal, UID} from 'flexio-jshelpers'
+import {deepFreezeSeal} from '@flexio-oss/js-type-helpers'
 
 /**
  * @implements {GenericType<TYPE>}

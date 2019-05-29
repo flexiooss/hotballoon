@@ -1,9 +1,9 @@
-'use strict'
-import {assert, deepFreezeSeal} from 'flexio-jshelpers'
+import {assert} from '@flexio-oss/assert'
+import {deepFreezeSeal} from '@flexio-oss/js-type-helpers'
 import {StoreState} from '../StoreState'
 import {StorageInterface} from './StorageInterface'
 
-const _state = Symbol('_state')
+const _state = Symbol.for('_state')
 
 /**
  * @template TYPE

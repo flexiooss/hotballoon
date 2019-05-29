@@ -1,5 +1,5 @@
 import {WithIDBase} from '../bases/WithIDBase'
-import {assert, assertType} from 'flexio-jshelpers'
+import {assert, assertType} from '@flexio-oss/assert'
 import {StorageInterface} from './Storage/StorageInterface'
 
 import {EventOrderedHandler} from '../Event/EventOrderedHandler'

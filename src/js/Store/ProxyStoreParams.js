@@ -1,5 +1,5 @@
 import {StoreBaseParams} from './StoreBaseParams'
-import {assert, isFunction} from 'flexio-jshelpers'
+import {assert, isFunction} from '@flexio-oss/assert'
 import {TypeCheck} from '../TypeCheck'
 
 /**

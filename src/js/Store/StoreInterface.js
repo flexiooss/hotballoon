@@ -1,6 +1,6 @@
 import {CoreException} from '../CoreException'
 
-export const STORE_CHANGED = Symbol('STORE.CHANGED')
+export const STORE_CHANGED = Symbol.for('__HB__.STORE.CHANGED')
 
 /**
  * @interface

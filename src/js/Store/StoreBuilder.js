@@ -4,7 +4,7 @@ import {InMemoryStorage} from './Storage/InMemoryStorage'
 import {StoreState} from './StoreState'
 import {ProxyStore} from './ProxyStore'
 import {ProxyStoreParams} from './ProxyStoreParams'
-import {UID} from 'flexio-jshelpers'
+import {UID} from '@flexio-oss/js-helpers'
 
 /**
  * @template TYPE

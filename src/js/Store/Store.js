@@ -1,7 +1,5 @@
-'use strict'
-
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_STORE} from '../HasTagClassNameInterface'
-import {StoreInterface, STORE_CHANGED} from './StoreInterface'
+import {StoreInterface} from './StoreInterface'
 
 import {StoreBase, _set, _dispatch} from './StoreBase'
 

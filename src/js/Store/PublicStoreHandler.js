@@ -1,7 +1,7 @@
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_PUBLIC_STORE_HANDLER} from '../HasTagClassNameInterface'
 import {STORE_CHANGED} from './StoreInterface'
 import {EventListenerOrderedBuilder} from '../Event/EventListenerOrderedBuilder'
-import {assertType, isFunction} from 'flexio-jshelpers'
+import {assertType, isFunction} from '@flexio-oss/assert'
 
 const _store = Symbol('_store')
 
