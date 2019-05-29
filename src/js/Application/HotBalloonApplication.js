@@ -1,8 +1,7 @@
 import {Dispatcher} from '../Dispatcher/Dispatcher'
 import {assert} from '@flexio-oss/assert'
 import {Sequence} from '@flexio-oss/js-helpers'
-// TODO mapextended
-import {MapExtended, MapOfInstance} from '@flexio-oss/flex-types'
+import {ComponentContextMap} from '../Component/ComponentContextMap'
 import {ComponentContext} from '../Component/ComponentContext'
 import {WithIDBase} from '../bases/WithIDBase'
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_HOTBALLOON_APPLICATION} from '../HasTagClassNameInterface'
@@ -32,8 +31,8 @@ export class HotBalloonApplication extends WithIDBase {
       'hotballoon:HotBalloonApplication:constructor: `dispatcher` argument should be an instance of hotballoon/dispatcher'
     )
 
-    const _componentContexts = new MapOfInstance(ComponentContext)
-    const _services = new MapExtended()
+    const _componentContexts = new ComponentContextMap()
+    const _services = new Map()
     const _sequenceId = new Sequence('hb_')
 
     Object.defineProperty(this, CLASS_TAG_NAME, {
@@ -114,7 +113,7 @@ export class HotBalloonApplication extends WithIDBase {
    */
   addComponentContext() {
     const componentContext = new ComponentContext(this)
-    this[_ComponentContexts].add(componentContext.ID, componentContext)
+    this[_ComponentContexts].set(componentContext.ID, componentContext)
     return componentContext
   }
 
@@ -154,7 +153,7 @@ export class HotBalloonApplication extends WithIDBase {
       'hotballoon:HotBalloonApplication:addService: `serviceName` : `%s` is already set',
       serviceName
     )
-    return this[_Services].add(serviceName, service)
+    return this[_Services].set(serviceName, service)
   }
 
   /**
