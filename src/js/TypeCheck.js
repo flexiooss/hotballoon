@@ -12,7 +12,7 @@ import {
   CLASS_TAG_NAME_JOB,
   CLASS_TAG_NAME_EXECUTOR
 } from './HasTagClassNameInterface'
-import {assertType} from 'flexio-jshelpers'
+import {assertType} from '@flexio-oss/assert'
 
 class TypeCheck {
   /**
