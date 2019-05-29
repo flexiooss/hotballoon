@@ -1,16 +1,15 @@
-'use strict'
 import {HotballoonElementParams} from './HotballoonElementParams'
 import {HyperFlex} from 'flexio-hyperflex'
 import {$} from './HotBalloonAttributeHandler'
-import {toString} from 'flexio-jshelpers'
+import {symbolToString} from '@flexio-oss/js-type-helpers'
 import {RECONCILIATION_RULES} from 'flexio-nodes-reconciliation'
 
-const _changeIdAndSetNodeRef = Symbol('_changeIdAndSetNodeRef')
-const _setNodeRef = Symbol('_setNodeRef')
-const _setReconciliationRule = Symbol('_setReconciliationRule')
-const _setViews = Symbol('_setViews')
-const _setReconciliationProperties = Symbol('_setReconciliationProperties')
-const _setEventListeners = Symbol('_setEventListeners')
+const _changeIdAndSetNodeRef = Symbol.for('_changeIdAndSetNodeRef')
+const _setNodeRef = Symbol.for('_setNodeRef')
+const _setReconciliationRule = Symbol.for('_setReconciliationRule')
+const _setViews = Symbol.for('_setViews')
+const _setReconciliationProperties = Symbol.for('_setReconciliationProperties')
+const _setEventListeners = Symbol.for('_setEventListeners')
 
 /**
  * @class

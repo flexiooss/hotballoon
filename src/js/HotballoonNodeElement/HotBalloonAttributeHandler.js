@@ -1,4 +1,3 @@
-'use strict'
 import {AttributeHandler} from 'flexio-nodes-reconciliation'
 import {KEY} from './constantes'
 

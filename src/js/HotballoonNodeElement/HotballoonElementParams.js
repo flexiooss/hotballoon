@@ -1,4 +1,3 @@
-'use strict'
 import {HyperFlexParams} from 'flexio-hyperflex'
 
 /**
