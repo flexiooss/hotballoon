@@ -1,8 +1,8 @@
 import {isBoolean, isNode, assert} from '@flexio-oss/assert'
-// TODO mapextended
-import {MapOfArray} from '@flexio-oss/extended-flex-types'
+import {ArrayMap} from '@flexio-oss/extended-flex-types'
 import {WithIDBase} from '../bases/WithIDBase'
 import {EventOrderedHandler} from '../Event/EventOrderedHandler'
+import {ViewContainerBaseMap} from './ViewContainerBaseMap'
 
 const _EventHandler = Symbol('_EventHandler')
 const _Views = Symbol('_Views')
@@ -20,8 +20,8 @@ export class ViewContainerBase extends WithIDBase {
 
     var _mounted = false
     var _rendered = false
-    var _tokenEvent = new MapOfArray()
-    var _views = new Map()
+    var _tokenEvent = new ArrayMap()
+    var _views = new ViewContainerBaseMap()
     var parentNode
 
     Object.defineProperties(this, {
@@ -75,7 +75,7 @@ export class ViewContainerBase extends WithIDBase {
         enumerable: false,
         configurable: false,
         /**
-         * @property {MapOfArray}
+         * @property {ArrayMap}
          * @name ViewContainerBase#_tokenEvent
          * @protected
          */
@@ -85,7 +85,7 @@ export class ViewContainerBase extends WithIDBase {
         enumerable: false,
         configurable: false,
         /**
-         * @property {Map<view>}
+         * @property {ViewContainerBaseMap}
          * @name ViewContainerBase#_Views
          * @protected
          */

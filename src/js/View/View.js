@@ -216,7 +216,7 @@ export class View extends ViewContainerBase {
       throw TypeError('store argument should be an instance of StoreInterface')
     }
 
-    this._tokenEvent.add(
+    this._tokenEvent.push(
       store.storeId(),
       store.subscribe(
         EventListenerOrderedBuilder
