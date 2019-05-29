@@ -8,7 +8,8 @@ import {
 import {assertType} from '@flexio-oss/assert'
 import {Sequence} from '@flexio-oss/js-helpers'
 // TODO mapextended
-import {MapOfInstance} from '@flexio-oss/flex-types'
+import {StoreMap} from '../Store/StoreMap'
+import {ViewContainerMap} from '../View/ViewContainerMap'
 import {WithIDBase} from '../bases/WithIDBase'
 import {
   CLASS_TAG_NAME,
@@ -38,8 +39,8 @@ export class ComponentContext extends WithIDBase {
     this.debug.color = 'green'
 
     const _sequenceId = new Sequence(this.ID + '_')
-    const _stores = new MapOfInstance(Store)
-    const _viewContainers = new MapOfInstance(ViewContainer)
+    const _stores = new StoreMap()
+    const _viewContainers = new ViewContainerMap()
 
     Object.defineProperty(this, CLASS_TAG_NAME, {
       configurable: false,
@@ -84,7 +85,7 @@ export class ComponentContext extends WithIDBase {
         enumerable: false,
         /**
            * @name ComponentContext#_stores
-           * @return {MapOfInstance}
+           * @return {StoreMap}
            */
         get: () => {
           return _stores
@@ -99,7 +100,7 @@ export class ComponentContext extends WithIDBase {
         enumerable: false,
         /**
            * @name ComponentContext#_viewContainers
-           * @return {MapOfInstance}
+           * @return {ViewContainerMap}
            */
         get: () => {
           return _viewContainers
@@ -129,7 +130,7 @@ export class ComponentContext extends WithIDBase {
    * @returns {Store} store
    */
   addStore(store) {
-    this._stores.add(store.ID, store)
+    this._stores.set(store.ID, store)
     return store
   }
 
@@ -148,7 +149,7 @@ export class ComponentContext extends WithIDBase {
    * @returns {ViewContainer} viewContainer
    */
   addViewContainer(viewContainer) {
-    this._viewContainers.add(viewContainer.ID, viewContainer)
+    this._viewContainers.set(viewContainer.ID, viewContainer)
     return viewContainer
   }
 
