@@ -1,7 +1,7 @@
 import {HotballoonElementParams} from './HotballoonElementParams'
-import {HyperFlex} from 'flexio-hyperflex'
+import {HyperFlex} from '@flexio-oss/flexio-hyperflex'
 import {$} from './HotBalloonAttributeHandler'
-import {RECONCILIATION_RULES} from 'flexio-nodes-reconciliation'
+import {RECONCILIATION_RULES} from '@flexio-oss/flexio-nodes-reconciliation'
 
 const _changeIdAndSetNodeRef = Symbol('_changeIdAndSetNodeRef')
 const _setNodeRef = Symbol('_setNodeRef')

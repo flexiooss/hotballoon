@@ -1,5 +1,5 @@
 import {deepFreezeSeal} from '@flexio-oss/js-type-helpers'
-import {EventListenerParam} from 'flexio-nodes-reconciliation'
+import {EventListenerParam} from '@flexio-oss/flexio-nodes-reconciliation'
 
 export class ElementEventListenerParam extends EventListenerParam {
   /**

@@ -1,4 +1,4 @@
-import {AttributeHandler} from 'flexio-nodes-reconciliation'
+import {AttributeHandler} from '@flexio-oss/flexio-nodes-reconciliation'
 import {KEY} from './constantes'
 
 /**

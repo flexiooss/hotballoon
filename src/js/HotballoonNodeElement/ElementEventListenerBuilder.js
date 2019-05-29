@@ -1,4 +1,4 @@
-import {EventListenerFactory} from 'flexio-nodes-reconciliation'
+import {EventListenerFactory} from '@flexio-oss/flexio-nodes-reconciliation'
 import {ElementEventListenerParam} from './ElementEventListenerParam'
 
 export class ElementEventListenerBuilder extends EventListenerFactory {
