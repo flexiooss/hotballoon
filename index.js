@@ -30,7 +30,7 @@ export {
 export {PublicStoreHandler} from './src/js/Store/PublicStoreHandler'
 
 export {e} from './src/js/HotballoonNodeElement/ElementDescription'
-export {RECONCILIATION_RULES} from 'flexio-nodes-reconciliation'
+export {RECONCILIATION_RULES} from '@flexio-oss/flexio-nodes-reconciliation'
 
 export {TypeCheck} from './src/js/TypeCheck'
 
