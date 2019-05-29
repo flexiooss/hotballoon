@@ -1,4 +1,4 @@
-import {assertType, isFunction} from 'flexio-jshelpers'
+import {assertType, isFunction} from '@flexio-oss/assert'
 import {EventListenerOrderedBuilder} from '../Event/EventListenerOrderedBuilder'
 export const WILL_REMOVE = 'WILL_REMOVE'
 

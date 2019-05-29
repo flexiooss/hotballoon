@@ -1,7 +1,8 @@
-'use strict'
 import {CoreException} from '../CoreException'
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_VIEW} from '../HasTagClassNameInterface'
-import {assertType, isBoolean, isFunction, isNode, toString, UID} from 'flexio-jshelpers'
+import {assertType, isBoolean, isFunction, isNode} from '@flexio-oss/assert'
+import {symbolToString} from '@flexio-oss/js-type-helpers'
+import {UID} from '@flexio-oss/js-helpers'
 import {$} from '../HotballoonNodeElement/HotBalloonAttributeHandler'
 import {startReconcile} from '../HotballoonNodeElement/HotballoonElementReconciliation'
 import {html} from '../HotballoonNodeElement/CreateHotBalloonElement'
@@ -460,6 +461,6 @@ export class View extends ViewContainerBase {
    * @return {string}
    */
   elementIdFromRef(ref) {
-    return `${toString(this.AppID())}-${toString(this.componentID())}-${toString(this.containerID())}-${toString(ref)}`
+    return `${symbolToString(this.AppID())}-${symbolToString(this.componentID())}-${symbolToString(this.containerID())}-${symbolToString(ref)}`
   }
 }

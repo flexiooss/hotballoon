@@ -1,6 +1,5 @@
-'use strict'
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_VIEWCONTAINER} from '../HasTagClassNameInterface'
-import {isNode, isString, assert, assertType, isFunction} from 'flexio-jshelpers'
+import {isNode, isString, assert, assertType, isFunction} from '@flexio-oss/assert'
 import {STORE_CHANGED, StoreInterface} from '../Store/StoreInterface'
 import {ViewContainerBase} from './ViewContainerBase'
 import {EventListenerOrderedBuilder} from '../Event/EventListenerOrderedBuilder'

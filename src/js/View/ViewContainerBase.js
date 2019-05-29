@@ -1,5 +1,6 @@
-'use strict'
-import {MapOfArray, isBoolean, isNode, assert} from 'flexio-jshelpers'
+import {isBoolean, isNode, assert} from '@flexio-oss/assert'
+// TODO mapextended
+import {MapOfArray} from '@flexio-oss/extended-flex-types'
 import {WithIDBase} from '../bases/WithIDBase'
 import {EventOrderedHandler} from '../Event/EventOrderedHandler'
 
