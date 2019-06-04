@@ -22,7 +22,7 @@
     "@flexio-oss/js-helpers": "0.0.0",
     "@flexio-oss/event-handler": "0.0.0",
     "@flexio-oss/js-type-helpers": "0.0.0",
-    "@flexio-oss/js-logger": "0.0.0",
+    "@flexio-oss/js-logger": "0.1.0-dev",
     "@flexio-oss/flex-types": "0.0.0",
     "@flexio-oss/extended-flex-types": "0.0.0"
   },

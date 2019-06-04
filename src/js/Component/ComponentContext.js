@@ -1,13 +1,8 @@
-import {Store} from '../Store/Store'
-import {
-  ViewContainer
-} from '../View/ViewContainer'
 import {
   WILL_REMOVE as VIEWCONTAINER_WILL_REMOVE
 } from '../View/ViewContainerPublicEventHandler'
 import {assertType} from '@flexio-oss/assert'
 import {Sequence} from '@flexio-oss/js-helpers'
-// TODO mapextended
 import {StoreMap} from '../Store/StoreMap'
 import {ViewContainerMap} from '../View/ViewContainerMap'
 import {WithIDBase} from '../bases/WithIDBase'
@@ -16,6 +11,11 @@ import {
   CLASS_TAG_NAME_COMPONENT
 } from '../HasTagClassNameInterface'
 import {TypeCheck} from '../TypeCheck'
+
+const componentContextLogOptions = {
+  color: 'green',
+  titleSize: 2
+}
 
 /**
  * @class
@@ -36,8 +36,6 @@ export class ComponentContext extends WithIDBase {
 
     super(hotBalloonApplication.nextID())
 
-    this.debug.color = 'green'
-
     const _sequenceId = new Sequence(this.ID + '_')
     const _stores = new StoreMap()
     const _viewContainers = new ViewContainerMap()
@@ -50,67 +48,67 @@ export class ComponentContext extends WithIDBase {
     })
 
     Object.defineProperties(this, {
-      /**
+        /**
          * @name ComponentContext#_APP
          * @params {HotBalloonApplication}
          */
-      _APP: {
-        configurable: false,
-        enumerable: false,
-        get: () => {
-          return hotBalloonApplication
+        _APP: {
+          configurable: false,
+          enumerable: false,
+          get: () => {
+            return hotBalloonApplication
+          },
+          set: (v) => {
+            throw new Error('hotballoon:ComponentContext: : `_APP` property already defined')
+          }
         },
-        set: (v) => {
-          throw new Error('hotballoon:ComponentContext: : `_APP` property already defined')
-        }
-      },
-      _sequenceId: {
-        configurable: false,
-        enumerable: false,
-        /**
+        _sequenceId: {
+          configurable: false,
+          enumerable: false,
+          /**
            *
            * @name ComponentContext#_sequenceId
            * @return {Sequence}
            */
-        get: () => {
-          return _sequenceId
+          get: () => {
+            return _sequenceId
+          },
+          set: (v) => {
+            throw new Error('hotballoon:ComponentContext: : `_sequenceId` property already defined')
+          }
         },
-        set: (v) => {
-          throw new Error('hotballoon:ComponentContext: : `_sequenceId` property already defined')
-        }
-      },
 
-      _stores: {
-        configurable: false,
-        enumerable: false,
-        /**
+        _stores: {
+          configurable: false,
+          enumerable: false,
+          /**
            * @name ComponentContext#_stores
            * @return {StoreMap}
            */
-        get: () => {
-          return _stores
+          get: () => {
+            return _stores
+          },
+          set: (v) => {
+            throw new Error('hotballoon:ComponentContext: : `_stores` property already defined')
+          }
         },
-        set: (v) => {
-          throw new Error('hotballoon:ComponentContext: : `_stores` property already defined')
-        }
-      },
 
-      _viewContainers: {
-        configurable: false,
-        enumerable: false,
-        /**
+        _viewContainers: {
+          configurable: false,
+          enumerable: false,
+          /**
            * @name ComponentContext#_viewContainers
            * @return {ViewContainerMap}
            */
-        get: () => {
-          return _viewContainers
-        },
-        set: (v) => {
-          throw new Error('hotballoon:ComponentContext: : `_viewContainers` property already defined')
+          get: () => {
+            return _viewContainers
+          },
+          set: (v) => {
+            throw new Error('hotballoon:ComponentContext: : `_viewContainers` property already defined')
+          }
         }
-      }
 
-    }
+      }
     )
   }
 
@@ -131,6 +129,7 @@ export class ComponentContext extends WithIDBase {
    */
   addStore(store) {
     this._stores.set(store.ID, store)
+    store.setComponentContext(this)
     return store
   }
 
@@ -202,5 +201,12 @@ export class ComponentContext extends WithIDBase {
    */
   service(key) {
     return this.APP().service(key)
+  }
+  /**
+   *
+   * @return {LoggerInterface}
+   */
+  logger() {
+    return this.APP().logger()
   }
 }

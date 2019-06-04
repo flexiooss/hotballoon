@@ -29,8 +29,6 @@ export class Action extends WithIDBase {
       'hotballoon:Action:constructor "actionParams" argument assert be an instance of ActionParams'
     )
 
-    this.debug.color = 'sandDark'
-
     Object.defineProperty(this, CLASS_TAG_NAME, {
       configurable: false,
       writable: false,
@@ -85,10 +83,6 @@ export class Action extends WithIDBase {
     if (!this[_actionParams].validator(data)) {
       throw new ValidationError('hotballoon:Action:dispatch "data" argument failed tot validation')
     }
-
-    this.debug.log('Action dispatch : ' + this.ID).size(1).background()
-    this.debug.object(payload)
-    this.debug.print()
 
     this[_actionParams].dispatcher.dispatchAction(
       EventAction.create(

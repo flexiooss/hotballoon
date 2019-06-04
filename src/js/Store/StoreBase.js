@@ -1,10 +1,11 @@
 import {WithIDBase} from '../bases/WithIDBase'
-import {assert, assertType} from '@flexio-oss/assert'
+import {assert, assertType, isNull} from '@flexio-oss/assert'
 import {StorageInterface} from './Storage/StorageInterface'
 
 import {EventOrderedHandler} from '../Event/EventOrderedHandler'
 import {STORE_CHANGED} from './StoreInterface'
 import {ValidationError} from '../Exception/ValidationError'
+import {TypeCheck} from '../TypeCheck'
 
 export const _storage = Symbol('_storage')
 export const _EventHandler = Symbol('_EventHandler')
@@ -13,6 +14,12 @@ export const _get = Symbol('_get')
 export const _updated = Symbol('_updated')
 export const _dispatch = Symbol('_dispatch')
 export const _storeParams = Symbol('_storeParams')
+export const _ComponentContext = Symbol('_ComponentContext')
+
+const storeBaseLogOptions = {
+  color: 'sandDark',
+  titleSize: 2
+}
 
 /**
  * @template TYPE
@@ -26,6 +33,8 @@ export class StoreBase extends WithIDBase {
   constructor(storeBaseParams) {
     super(storeBaseParams.id)
     var storage = storeBaseParams.storage
+    var _ComponentContext = null
+
     assertType(storage instanceof StorageInterface,
       'hotballoon:' + this.constructor.name + ':constructor: `storage` argument should be an instance of `StorageInterface`')
 
@@ -65,6 +74,26 @@ export class StoreBase extends WithIDBase {
         configurable: false,
         writable: false,
         value: storeBaseParams
+      },
+      /**
+       * @property {ComponentContext}
+       * @name Store#[_storeParams]
+       * @protected
+       */
+      [_ComponentContext]: {
+        configurable: false,
+        enumerable: false,
+        /**
+         * @name Store#_storage
+         * @protected
+         */
+        get: () => _ComponentContext,
+        set: (v) => {
+          assertType(TypeCheck.isComponentContext(v),
+            'hotballoon:' + this.constructor.name + ':constructor: `componentContext` argument should be an instance of `ComponentContext`')
+          assert(isNull(_ComponentContext), 'hotballoon:' + this.constructor.name + ':constructor: `ComponentContext` already set')
+          _ComponentContext = v
+        }
       }
 
     })
@@ -111,6 +140,14 @@ export class StoreBase extends WithIDBase {
   }
 
   /**
+   *
+   * @param {ComponentContext} componentContext
+   */
+  setComponentContext(componentContext) {
+    this[_ComponentContext] = componentContext
+  }
+
+  /**
    * @private
    * @param {String} eventType
    * @param {!StoreState<TYPE>}  payload
@@ -151,10 +188,21 @@ export class StoreBase extends WithIDBase {
    * @private
    */
   [_updated]() {
-    this.debug.log('STORE STORE_CHANGED : ' + this.ID).size(2).background()
-    this.debug.object(this.state())
-    this.debug.print()
-
+    this.logger().log(
+      this.logger().builder()
+        .info()
+        .pushLog('STORE STORE_CHANGED : ' + this.ID)
+        .pushLog(this.state()),
+      storeBaseLogOptions
+    )
     this[_dispatch](STORE_CHANGED)
+  }
+
+  /**
+   *
+   * @return {LoggerInterface}
+   */
+  logger() {
+    return this[_ComponentContext].logger()
   }
 }

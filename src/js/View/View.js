@@ -30,6 +30,11 @@ const _replaceNode = Symbol('_replaceNode')
 const _addNodeRef = Symbol('_addNodeRef')
 const _setNodeViewRef = Symbol('_setNodeViewRef')
 
+const viewLogOptions = {
+  color: 'blue',
+  titleSize: 2
+}
+
 /**
  * @extends {ViewContainerBase}
  * @implements {HasTagClassNameInterface}
@@ -46,7 +51,6 @@ export class View extends ViewContainerBase {
       'hotballoon:' + this.constructor.name + ':constructor: `container` should be an instance of ViewContainerBase'
     )
 
-    this.debug.color = 'blue'
     this.parentNode = container.parentNode
 
     var _node = null
@@ -252,8 +256,14 @@ export class View extends ViewContainerBase {
 
   updateNode() {
     if (this._shouldUpdate) {
-      this.debug.log('updateNode').background()
-      this.debug.print()
+      this.logger().log(
+        this.logger().builder()
+          .debug()
+          .pushLog('UpdateNode : ' + this.ID)
+          .pushLog(this.node),
+        viewLogOptions
+      )
+
       this.dispatch(VIEW_UPDATE, {})
       this[_update]()
       this.dispatch(VIEW_UPDATED, {})
@@ -277,8 +287,12 @@ export class View extends ViewContainerBase {
    * @return {Element} _node
    */
   render() {
-    this.debug.log('render').size(2)
-    this.debug.print()
+    this.logger().log(
+      this.logger().builder()
+        .info()
+        .pushLog('Render : ' + this.ID),
+      viewLogOptions
+    )
 
     if (this._shouldRender) {
       this.dispatch(VIEW_RENDER, {})
@@ -462,5 +476,13 @@ export class View extends ViewContainerBase {
    */
   elementIdFromRef(ref) {
     return `${symbolToString(this.AppID())}-${symbolToString(this.componentID())}-${symbolToString(this.containerID())}-${symbolToString(ref)}`
+  }
+
+  /**
+   *
+   * @return {LoggerInterface}
+   */
+  logger() {
+    return this._container().logger()
   }
 }

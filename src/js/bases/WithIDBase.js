@@ -1,18 +1,13 @@
 import {assert} from '@flexio-oss/assert'
-import {Debugable} from './Debugable'
 
 const _ID = Symbol('_ID')
 
-/**
- * @extends Debugable
- */
-class WithIDBase extends Debugable {
+export class WithIDBase {
   /**
    *
    * @param {String} id
    */
   constructor(id) {
-    super()
     assert(!!id,
       'hotballoon:WithIDBase:constructor: `id` argument assert not be empty')
     Object.defineProperties(this, {
@@ -42,5 +37,3 @@ class WithIDBase extends Debugable {
     return this[_ID]
   }
 }
-
-export {WithIDBase}

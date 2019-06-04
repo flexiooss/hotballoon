@@ -4,16 +4,20 @@ import {STORE_CHANGED, StoreInterface} from '../Store/StoreInterface'
 import {ViewContainerBase} from './ViewContainerBase'
 import {EventListenerOrderedBuilder} from '../Event/EventListenerOrderedBuilder'
 import {ViewContainerPublicEventHandler} from './ViewContainerPublicEventHandler'
+import {TypeCheck} from '../TypeCheck'
 
 export class ViewContainerParameters {
   /**
    *
-   * @param {ComponentContext} componentInst
+   * @param {ComponentContext} componentContext
    * @param {string} id
    * @param {Element} parentNode
    * @return ViewContainerParameters
    */
-  constructor(componentInst, id, parentNode) {
+  constructor(componentContext, id, parentNode) {
+    assertType(TypeCheck.isComponentContext(componentContext),
+      'hotballoon:ViewContainerParameters: `componentContext` argument should be an instance of `ComponentContext`')
+
     assertType(!!isString(id),
       'hotballoon:ViewContainerParameters: `id` argument assert be a String'
     )
@@ -22,37 +26,43 @@ export class ViewContainerParameters {
     )
 
     Object.defineProperties(this, {
-      /**
-         * @property {ComponentContext} component
-         * @name ViewContainerParameters#component
-         */
-      component: {
-        value: componentInst
-      },
-      id: {
-        configurable: false,
-        enumerable: false,
-        writable: false,
         /**
+         * @property {ComponentContext} componentContext
+         * @name ViewContainerParameters#componentContext
+         */
+        componentContext: {
+          value: componentContext
+        },
+        id: {
+          configurable: false,
+          enumerable: false,
+          writable: false,
+          /**
            * @property {String}
            * @name ViewContainerParameters#id
            */
-        value: id
-      },
-      parentNode: {
-        /**
+          value: id
+        },
+        parentNode: {
+          /**
            * @property {Element}
            * @name ViewContainerParameters#parentNode
            */
-        value: parentNode
+          value: parentNode
+        }
       }
-    }
     )
   }
 }
 
 const _renderViews = Symbol('_renderViews')
 const _mountViews = Symbol('_mountViews')
+const _ComponentContext = Symbol('_ComponentContext')
+
+const viewContainerLogOptions = {
+  color: 'blueDark',
+  titleSize: 2
+}
 
 /**
  *
@@ -73,7 +83,6 @@ export class ViewContainer extends ViewContainerBase {
 
     super(viewContainerParameters.id)
     this.parentNode = viewContainerParameters.parentNode
-    this.debug.color = 'blueDark'
 
     Object.defineProperty(this, CLASS_TAG_NAME, {
       configurable: false,
@@ -83,7 +92,7 @@ export class ViewContainer extends ViewContainerBase {
     })
 
     Object.defineProperties(this, {
-      _ComponentContext: {
+      [_ComponentContext]: {
         configurable: false,
         enumerable: false,
         writable: false,
@@ -92,7 +101,7 @@ export class ViewContainer extends ViewContainerBase {
          * @name ViewContainer#_ComponentContext
          * @protected
          */
-        value: viewContainerParameters.component
+        value: viewContainerParameters.componentContext
       }
     })
   }
@@ -185,8 +194,13 @@ export class ViewContainer extends ViewContainerBase {
    * @return {Element} parentNode
    */
   renderAndMount() {
-    this.debug.log('render And Mount').background().size(2)
-    this.debug.print()
+    this.logger().log(
+      this.logger().builder()
+        .info()
+        .pushLog('Render And Mount : ' + this.ID)
+        .pushLog(this),
+      viewContainerLogOptions
+    )
 
     this.render()
     return this.mount()
@@ -198,7 +212,7 @@ export class ViewContainer extends ViewContainerBase {
    * @instance
    */
   service(key) {
-    return this._ComponentContext.APP().service(key)
+    return this[_ComponentContext].APP().service(key)
   }
 
   /**
@@ -206,7 +220,7 @@ export class ViewContainer extends ViewContainerBase {
    * @return {string}
    */
   AppID() {
-    return this._ComponentContext.APP().ID
+    return this[_ComponentContext].APP().ID
   }
 
   /**
@@ -214,7 +228,15 @@ export class ViewContainer extends ViewContainerBase {
    * @return {string}
    */
   componentID() {
-    return this._ComponentContext.ID
+    return this[_ComponentContext].ID
+  }
+
+  /**
+   *
+   * @return {LoggerInterface}
+   */
+  logger() {
+    return this[_ComponentContext].logger()
   }
 
   /**

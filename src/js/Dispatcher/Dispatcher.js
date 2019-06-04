@@ -1,7 +1,12 @@
-import {assert, assertType, isArray} from '@flexio-oss/assert'
+import {assert, assertType, isArray, isNull} from '@flexio-oss/assert'
 import {EventHandlerBase} from '@flexio-oss/event-handler'
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_DISPATCHER} from '../HasTagClassNameInterface'
 import {EventAction} from '../Action/EventAction'
+
+const dispatcherLogOptions = {
+  color: 'pink',
+  titleSize: 2
+}
 
 /**
  * @class
@@ -12,13 +17,30 @@ import {EventAction} from '../Action/EventAction'
 export class Dispatcher extends EventHandlerBase {
   constructor() {
     super()
-    Object.defineProperty(this, CLASS_TAG_NAME, {
-      configurable: false,
-      writable: false,
-      enumerable: true,
-      value: CLASS_TAG_NAME_DISPATCHER
+
+    var logger = null
+
+    Object.defineProperties(this, {
+      [CLASS_TAG_NAME]: {
+        configurable: false,
+        writable: false,
+        enumerable: true,
+        value: CLASS_TAG_NAME_DISPATCHER
+      },
+      _logger: {
+        configurable: false,
+        enumerable: true,
+        /**
+         * @name Store#_storage
+         * @protected
+         */
+        get: () => logger,
+        set: (v) => {
+          assert(isNull(logger), 'hotballoon:' + this.constructor.name + ':constructor: `logger` already set')
+          logger = v
+        }
+      }
     })
-    console.log(this)
   }
 
   /**
@@ -74,6 +96,39 @@ export class Dispatcher extends EventHandlerBase {
     assertType(eventAction instanceof EventAction,
       'hotballoon:dispatcher:dispatch "actionPayload" argument should be an instance of EventAction'
     )
+
+    this.logger().log(
+      this.logger().builder()
+        .info()
+        .pushLog('Action dispatched : ' + eventAction.name)
+        .pushLog(eventAction.payload),
+      dispatcherLogOptions
+    )
+
     super.dispatch(eventAction.name, eventAction.payload)
+  }
+
+  /**
+   *
+   * @param {LoggerInterface} logger
+   */
+  setLogger(logger) {
+    this._logger = logger
+
+    this.logger().log(
+      this.logger().builder()
+        .debug()
+        .pushLog('Dispatcher added to HotballoonApplication')
+        .pushLog(this),
+      dispatcherLogOptions
+    )
+  }
+
+  /**
+   *
+   * @return {LoggerInterface}
+   */
+  logger() {
+    return this._logger
   }
 }

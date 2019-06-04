@@ -1,15 +1,22 @@
 import {Dispatcher} from '../Dispatcher/Dispatcher'
-import {assert} from '@flexio-oss/assert'
+import {assert, assertType} from '@flexio-oss/assert'
 import {Sequence} from '@flexio-oss/js-helpers'
 import {ComponentContextMap} from '../Component/ComponentContextMap'
 import {ComponentContext} from '../Component/ComponentContext'
 import {WithIDBase} from '../bases/WithIDBase'
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_HOTBALLOON_APPLICATION} from '../HasTagClassNameInterface'
+import {LoggerInterface} from '@flexio-oss/js-logger'
 
 const _Dispatcher = Symbol('_Dispatcher')
 const _ComponentContexts = Symbol('_ComponentContexts')
 const _Services = Symbol('_Services')
 const _SequenceId = Symbol('_SequenceId')
+const _Logger = Symbol('_Logger')
+
+const applicationLogOptions = {
+  color: 'magenta',
+  titleSize: 2
+}
 
 /**
  *
@@ -23,13 +30,19 @@ export class HotBalloonApplication extends WithIDBase {
    * @constructor
    * @param {string} id
    * @param {Dispatcher} dispatcher
+   * @param {LoggerInterface} logger
    */
-  constructor(id, dispatcher) {
+  constructor(id, dispatcher, logger) {
     super(id)
 
-    assert(dispatcher instanceof Dispatcher,
+    assertType(dispatcher instanceof Dispatcher,
       'hotballoon:HotBalloonApplication:constructor: `dispatcher` argument should be an instance of hotballoon/dispatcher'
     )
+    assertType(logger instanceof LoggerInterface,
+      'hotballoon:HotBalloonApplication:constructor: `logger` argument should be an instance of LoggerInterface'
+    )
+
+    dispatcher.setLogger(logger)
 
     const _componentContexts = new ComponentContextMap()
     const _services = new Map()
@@ -90,8 +103,28 @@ export class HotBalloonApplication extends WithIDBase {
             'hotballoon:HotBalloonApplication:constructor:_sequenceId.set: `_sequenceId` already set'
           )
         }
+      },
+      [_Logger]: {
+        configurable: false,
+        enumerable: false,
+        get: () => {
+          return logger
+        },
+        set: (v) => {
+          assert(false,
+            'hotballoon:HotBalloonApplication:constructor:_Logger.set: `_sequenceId` already set'
+          )
+        }
       }
     })
+
+    this.logger().log(
+      this.logger().builder()
+        .debug()
+        .pushLog('HotballoonApplication:init: ' + id)
+        .pushLog(this),
+      applicationLogOptions
+    )
   }
 
   /**
@@ -177,5 +210,13 @@ export class HotBalloonApplication extends WithIDBase {
    */
   service(serviceName) {
     return this[_Services].get(serviceName)
+  }
+
+  /**
+   *
+   * @return {LoggerInterface}
+   */
+  logger() {
+    return this[_Logger]
   }
 }
