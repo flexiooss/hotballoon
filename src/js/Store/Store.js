@@ -20,8 +20,6 @@ export class Store extends StoreBase {
   constructor(storeParams) {
     super(storeParams)
 
-    this.debug.color = 'magentaDark'
-
     Object.defineProperty(this, CLASS_TAG_NAME, {
       configurable: false,
       writable: false,

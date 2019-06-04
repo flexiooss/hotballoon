@@ -483,6 +483,6 @@ export class View extends ViewContainerBase {
    * @return {LoggerInterface}
    */
   logger() {
-    return this._container().logger()
+    return this.container().logger()
   }
 }
