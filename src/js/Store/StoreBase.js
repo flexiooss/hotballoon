@@ -1,11 +1,12 @@
 import {WithIDBase} from '../bases/WithIDBase'
-import {assert, assertType, isNull} from '@flexio-oss/assert'
+import {assert, assertType, isFunction, isNull} from '@flexio-oss/assert'
 import {StorageInterface} from './Storage/StorageInterface'
 
 import {EventOrderedHandler} from '../Event/EventOrderedHandler'
 import {STORE_CHANGED} from './StoreInterface'
 import {ValidationError} from '../Exception/ValidationError'
 import {TypeCheck} from '../TypeCheck'
+import {EventListenerOrderedBuilder} from '../../..'
 
 export const _storage = Symbol('_storage')
 export const _EventHandler = Symbol('_EventHandler')
@@ -205,4 +206,31 @@ export class StoreBase extends WithIDBase {
   logger() {
     return this[_ComponentContext].logger()
   }
+
+  /**
+   *
+   * @param {StoreBase~changedClb} clb
+   * @return {string} token
+   */
+  listenChanged(clb = (state) => true) {
+    assertType(
+      isFunction(clb),
+      'hotballoon:' + this.constructor.name + ':listenChanged: `clb` argument should be callable'
+    )
+
+    return this.subscribe(
+      EventListenerOrderedBuilder
+        .listen(STORE_CHANGED)
+        .callback((payload) => {
+          clb(payload)
+        })
+        .build()
+    )
+  }
+
+  /**
+   *
+   * @callback StoreBase~changedClb
+   * @param {StoreState} state
+   */
 }

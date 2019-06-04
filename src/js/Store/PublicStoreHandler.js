@@ -1,6 +1,4 @@
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_PUBLIC_STORE_HANDLER} from '../HasTagClassNameInterface'
-import {STORE_CHANGED} from './StoreInterface'
-import {EventListenerOrderedBuilder} from '../Event/EventListenerOrderedBuilder'
 import {assertType, isFunction} from '@flexio-oss/assert'
 
 const _store = Symbol('_store')
@@ -81,7 +79,7 @@ export class PublicStoreHandler {
 
   /**
    *
-   * @param {PublicStoreHandler~changedClb} clb
+   * @param {StoreBase~changedClb} clb
    * @return {string} token
    */
   listenChanged(clb = (state) => true) {
@@ -90,19 +88,7 @@ export class PublicStoreHandler {
       'hotballoon:' + this.constructor.name + ':listenChanged: `clb` argument should be callable'
     )
 
-    return this[_store].subscribe(
-      EventListenerOrderedBuilder
-        .listen(STORE_CHANGED)
-        .callback((payload) => {
-          clb(payload)
-        })
-        .build()
-    )
+    return this[_store].listenChanged(clb)
   }
 
-  /**
-   *
-   * @callback PublicStoreHandler~changedClb
-   * @param {StoreState} state
-   */
 }
