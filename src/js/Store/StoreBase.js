@@ -6,7 +6,7 @@ import {EventOrderedHandler} from '../Event/EventOrderedHandler'
 import {STORE_CHANGED} from './StoreInterface'
 import {ValidationError} from '../Exception/ValidationError'
 import {TypeCheck} from '../TypeCheck'
-import {EventListenerOrderedBuilder} from '../../..'
+import {EventListenerOrderedBuilder} from '../Event/EventListenerOrderedBuilder'
 
 export const _storage = Symbol('_storage')
 export const _EventHandler = Symbol('_EventHandler')

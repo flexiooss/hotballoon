@@ -11,6 +11,7 @@ import {ActionBuilder, PublicActionParams} from '../js/Action/ActionBuilder'
 import {ActionTypeParam} from '../js/Action/ActionTypeParam'
 import {ViewContainer, ViewContainerParameters} from '../js/View/ViewContainer'
 import {View} from '../js/View/View'
+import {FakeLogger} from '@flexio-oss/js-logger'
 
 const assert = require('assert')
 
@@ -66,12 +67,12 @@ export class TestTypeCheck extends TestCase {
   }
 
   testIsHotballoonApplication() {
-    const app = new HotBalloonApplication('id', new Dispatcher())
+    const app = new HotBalloonApplication('id', new Dispatcher(), new FakeLogger().debug())
     assert(TypeCheck.isHotballoonApplication(app))
   }
 
   testIsComponentContext() {
-    const componentContext = new HotBalloonApplication('id', new Dispatcher()).addComponentContext()
+    const componentContext = new HotBalloonApplication('id', new Dispatcher(), new FakeLogger().debug()).addComponentContext()
     assert(TypeCheck.isComponentContext(componentContext))
   }
 

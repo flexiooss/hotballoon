@@ -20,7 +20,7 @@ export class ProxyStore extends StoreBase {
   constructor(proxyStoreParams) {
     super(proxyStoreParams)
 
-    this.debug.color = 'magenta'
+    // this.debug.color = 'magenta'
 
     Object.defineProperty(this, CLASS_TAG_NAME, {
       configurable: false,
