@@ -5,8 +5,8 @@ import {StorageInterface} from './Storage/StorageInterface'
 import {EventOrderedHandler} from '../Event/EventOrderedHandler'
 import {STORE_CHANGED} from './StoreInterface'
 import {ValidationError} from '../Exception/ValidationError'
-import {TypeCheck} from '../TypeCheck'
 import {EventListenerOrderedBuilder} from '../Event/EventListenerOrderedBuilder'
+import {LoggerInterface, FakeLogger} from '@flexio-oss/js-logger'
 
 export const _storage = Symbol('_storage')
 export const _EventHandler = Symbol('_EventHandler')
@@ -15,12 +15,12 @@ export const _get = Symbol('_get')
 export const _updated = Symbol('_updated')
 export const _dispatch = Symbol('_dispatch')
 export const _storeParams = Symbol('_storeParams')
-export const _ComponentContext = Symbol('_ComponentContext')
 
 const storeBaseLogOptions = {
   color: 'sandDark',
   titleSize: 2
 }
+const fakeLogger = new FakeLogger()
 
 /**
  * @template TYPE
@@ -34,7 +34,7 @@ export class StoreBase extends WithIDBase {
   constructor(storeBaseParams) {
     super(storeBaseParams.id)
     var storage = storeBaseParams.storage
-    var _ComponentContext = null
+    var logger = fakeLogger
 
     assertType(storage instanceof StorageInterface,
       'hotballoon:' + this.constructor.name + ':constructor: `storage` argument should be an instance of `StorageInterface`')
@@ -44,7 +44,7 @@ export class StoreBase extends WithIDBase {
         enumerable: false,
         configurable: false,
         /**
-         * @name Store#_storage
+         * @name StoreBase#_storage
          * @protected
          */
         get: () => storage,
@@ -57,7 +57,7 @@ export class StoreBase extends WithIDBase {
       },
       /**
        * @property {EventOrderedHandler}
-       * @name Store#_EventHandler
+       * @name StoreBase#_EventHandler
        * @protected
        */
       [_EventHandler]: {
@@ -67,7 +67,7 @@ export class StoreBase extends WithIDBase {
       },
       /**
        * @property {StoreParams}
-       * @name Store#[_storeParams]
+       * @name StoreBase#[_storeParams]
        * @protected
        */
       [_storeParams]: {
@@ -76,24 +76,19 @@ export class StoreBase extends WithIDBase {
         writable: false,
         value: storeBaseParams
       },
-      /**
-       * @property {ComponentContext}
-       * @name Store#[_storeParams]
-       * @protected
-       */
-      [_ComponentContext]: {
+      _logger: {
         configurable: false,
         enumerable: false,
         /**
-         * @name Store#_storage
+         * @property {LoggerInterface} StoreBase#_logger
+         * @name StoreBase#_logger
          * @protected
          */
-        get: () => _ComponentContext,
+        get: () => logger,
         set: (v) => {
-          assertType(TypeCheck.isComponentContext(v),
-            'hotballoon:' + this.constructor.name + ':constructor: `componentContext` argument should be an instance of `ComponentContext`')
-          assert(isNull(_ComponentContext), 'hotballoon:' + this.constructor.name + ':constructor: `ComponentContext` already set')
-          _ComponentContext = v
+          assertType(v instanceof LoggerInterface,
+            'hotballoon:' + this.constructor.name + ':constructor: `logger` argument should be an instance of `LoggerInterface`')
+          logger = v
         }
       }
 
@@ -142,10 +137,10 @@ export class StoreBase extends WithIDBase {
 
   /**
    *
-   * @param {ComponentContext} componentContext
+   * @param {LoggerInterface} logger
    */
-  setComponentContext(componentContext) {
-    this[_ComponentContext] = componentContext
+  setLogger(logger) {
+    this._logger = logger
   }
 
   /**
@@ -204,7 +199,7 @@ export class StoreBase extends WithIDBase {
    * @return {LoggerInterface}
    */
   logger() {
-    return this[_ComponentContext].logger()
+    return this._logger
   }
 
   /**

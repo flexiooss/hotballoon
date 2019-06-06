@@ -4,6 +4,7 @@ import {StoreBuilder, InMemoryParams, ProxyParams} from '../js/Store/StoreBuilde
 import {StoreTypeParam} from '../js/Store/StoreTypeParam'
 import {PublicStoreHandler} from '../js/Store/PublicStoreHandler'
 import {HotBalloonApplication} from '../js/Application/HotBalloonApplication'
+import {ComponentContext} from '../js/Component/ComponentContext'
 import {Dispatcher} from '../js/Dispatcher/Dispatcher'
 import {ExecutorInline} from '../js/Job/ExecutorInline'
 import {ExecutorWorker} from '../js/Job/ExecutorWorker'
@@ -105,7 +106,7 @@ export class TestTypeCheck extends TestCase {
   testIsViewContainer() {
     const viewContainer = new ViewContainer(
       new ViewContainerParameters(
-        Object, 'id', {nodeType: 2}
+        new ComponentContext(new HotBalloonApplication('test', new Dispatcher(), new FakeLogger())), 'id', {nodeType: 2}
       )
     )
     assert(TypeCheck.isViewContainer(viewContainer))

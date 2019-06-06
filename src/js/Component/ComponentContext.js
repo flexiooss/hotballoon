@@ -129,7 +129,7 @@ export class ComponentContext extends WithIDBase {
    */
   addStore(store) {
     this._stores.set(store.ID, store)
-    store.setComponentContext(this)
+    store.setLogger(this.logger())
     return store
   }
 

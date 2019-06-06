@@ -20,8 +20,6 @@ export class ProxyStore extends StoreBase {
   constructor(proxyStoreParams) {
     super(proxyStoreParams)
 
-    // this.debug.color = 'magenta'
-
     Object.defineProperty(this, CLASS_TAG_NAME, {
       configurable: false,
       writable: false,
@@ -54,6 +52,9 @@ export class ProxyStore extends StoreBase {
       }
 
     })
+    if (this[_store].hasOwnProperty('logger')) {
+      this.setLogger(this[_store].logger())
+    }
 
     this.__subscribeToStore()
   }
@@ -62,7 +63,6 @@ export class ProxyStore extends StoreBase {
     this[_store].subscribe(
       EventListenerOrderedBuilder.listen(STORE_CHANGED)
         .callback((payload, eventType) => {
-          console.log('la')
           this.__mapAndUpdate(payload, eventType)
         })
         .priority(20)
@@ -79,4 +79,5 @@ export class ProxyStore extends StoreBase {
   __mapAndUpdate(payload, eventType) {
     this[_set](this[_mapper](payload.data))
   }
+
 }
