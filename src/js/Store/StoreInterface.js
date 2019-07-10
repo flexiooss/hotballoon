@@ -1,6 +1,8 @@
 import {CoreException} from '../CoreException'
+import {assertType, isFunction} from '@flexio-oss/assert'
+import {EventListenerOrderedBuilder} from '../../..'
 
-export const STORE_CHANGED = Symbol.for('__HB__.STORE.CHANGED')
+export const STORE_CHANGED = '__HB__.STORE.CHANGED'
 
 /**
  * @interface
@@ -21,6 +23,18 @@ export class StoreInterface {
   }
 
   /**
+   *
+   * @return {string}
+   */
+  changedEventName() {
+    throw new CoreException(`changedEventName should be override with this signature :
+   /**
+   *@return {string}
+   */
+   `, 'METHOD_NOT_OVERRIDE')
+  }
+
+  /**
    * @param {EventListenerOrderedParam} eventListenerOrderedParam
    * @return {String} token
    */
@@ -32,6 +46,26 @@ export class StoreInterface {
    */
    `, 'METHOD_NOT_OVERRIDE')
   }
+
+  /**
+   *
+   * @param {StoreInterface~changedClb} clb
+   * @return {string} token
+   */
+  listenChanged(clb) {
+    throw new CoreException(`listenChanged should be override with this signature :
+   /**
+   * @param {StoreInterface~changedClb} clb
+   * @return {string} token
+   */
+   `, 'METHOD_NOT_OVERRIDE')
+  }
+
+  /**
+   *
+   * @callback StoreInterface~changedClb
+   * @param {StoreState} state
+   */
 
   /**
    * @returns {StoreState<TYPE>} state frozen

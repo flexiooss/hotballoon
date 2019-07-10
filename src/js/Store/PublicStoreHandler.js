@@ -79,7 +79,7 @@ export class PublicStoreHandler {
 
   /**
    *
-   * @param {StoreBase~changedClb} clb
+   * @param {StoreInterface~changedClb} clb
    * @return {string} token
    */
   listenChanged(clb = (state) => true) {

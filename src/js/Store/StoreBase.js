@@ -96,6 +96,14 @@ export class StoreBase extends WithIDBase {
   }
 
   /**
+   *
+   * @return {string}
+   */
+  changedEventName() {
+    return STORE_CHANGED + '.' + this.storeId()
+  }
+
+  /**
    * @returns {!StoreState<TYPE>} state frozen
    */
   state() {
@@ -191,7 +199,7 @@ export class StoreBase extends WithIDBase {
         .pushLog(this.state()),
       storeBaseLogOptions
     )
-    this[_dispatch](STORE_CHANGED)
+    this[_dispatch](this.changedEventName())
   }
 
   /**
@@ -204,7 +212,7 @@ export class StoreBase extends WithIDBase {
 
   /**
    *
-   * @param {StoreBase~changedClb} clb
+   * @param {StoreInterface~changedClb} clb
    * @return {string} token
    */
   listenChanged(clb = (state) => true) {
@@ -213,9 +221,9 @@ export class StoreBase extends WithIDBase {
       'hotballoon:' + this.constructor.name + ':listenChanged: `clb` argument should be callable'
     )
 
-    return this.subscribe(
+    return this[_EventHandler].on(
       EventListenerOrderedBuilder
-        .listen(STORE_CHANGED)
+        .listen(this.changedEventName())
         .callback((payload) => {
           clb(payload)
         })
@@ -223,9 +231,4 @@ export class StoreBase extends WithIDBase {
     )
   }
 
-  /**
-   *
-   * @callback StoreBase~changedClb
-   * @param {StoreState} state
-   */
 }

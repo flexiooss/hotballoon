@@ -7,8 +7,6 @@ import {$} from '../HotballoonNodeElement/HotBalloonAttributeHandler'
 import {startReconcile} from '../HotballoonNodeElement/HotballoonElementReconciliation'
 import {html} from '../HotballoonNodeElement/CreateHotBalloonElement'
 import {ViewContainerBase} from './ViewContainerBase'
-import {STORE_CHANGED} from '../Store/StoreInterface'
-import {EventListenerOrderedBuilder} from '../Event/EventListenerOrderedBuilder'
 import {TypeCheck} from '../TypeCheck'
 import {
   ViewPublicEventHandler,
@@ -222,16 +220,13 @@ export class View extends ViewContainerBase {
 
     this._tokenEvent.push(
       store.storeId(),
-      store.subscribe(
-        EventListenerOrderedBuilder
-          .listen(STORE_CHANGED)
-          .callback((payload, type) => {
-            if (clb(payload.data) === true) {
-              this.dispatch(VIEW_STORE_CHANGED, payload)
-              this.updateNode()
-            }
-          })
-          .build()
+      store.listenChanged(
+        (payload, type) => {
+          if (clb(payload.data) === true) {
+            this.dispatch(VIEW_STORE_CHANGED, payload)
+            this.updateNode()
+          }
+        }
       )
     )
   }

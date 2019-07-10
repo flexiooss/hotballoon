@@ -1,6 +1,4 @@
-import {EventListenerOrderedBuilder} from '../Event/EventListenerOrderedBuilder'
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_PROXYSTORE} from '../HasTagClassNameInterface'
-import {STORE_CHANGED} from './StoreInterface'
 import {StoreBase, _set} from './StoreBase'
 
 const _store = Symbol('_store')
@@ -60,13 +58,10 @@ export class ProxyStore extends StoreBase {
   }
 
   __subscribeToStore() {
-    this[_store].subscribe(
-      EventListenerOrderedBuilder.listen(STORE_CHANGED)
-        .callback((payload, eventType) => {
-          this.__mapAndUpdate(payload, eventType)
-        })
-        .priority(20)
-        .build(this)
+    this[_store].listenChanged(
+      (payload, eventType) => {
+        this.__mapAndUpdate(payload, eventType)
+      }
     )
   }
 

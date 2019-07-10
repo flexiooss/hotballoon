@@ -1,6 +1,6 @@
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_VIEWCONTAINER} from '../HasTagClassNameInterface'
 import {isNode, isString, assert, assertType, isFunction} from '@flexio-oss/assert'
-import {STORE_CHANGED, StoreInterface} from '../Store/StoreInterface'
+import {StoreInterface} from '../Store/StoreInterface'
 import {ViewContainerBase} from './ViewContainerBase'
 import {EventListenerOrderedBuilder} from '../Event/EventListenerOrderedBuilder'
 import {ViewContainerPublicEventHandler} from './ViewContainerPublicEventHandler'
@@ -125,14 +125,11 @@ export class ViewContainer extends ViewContainerBase {
     assert(store instanceof StoreInterface, 'hotballoon:' + this.constructor.name + ':subscribeToStore: `keyStore : %s` not reference an instance of StoreInterface', store)
 
     this._tokenEvent.push(
-      store.ID,
-      store.subscribe(
-        EventListenerOrderedBuilder
-          .listen(STORE_CHANGED)
-          .callback((payload, type) => {
-            clb(payload.data)
-          })
-          .build()
+      store.storeId(),
+      store.listenChanged(
+        (payload, type) => {
+          clb(payload.data)
+        }
       )
     )
   }
