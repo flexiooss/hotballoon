@@ -1,6 +1,4 @@
 import {CoreException} from '../CoreException'
-import {assertType, isFunction} from '@flexio-oss/assert'
-import {EventListenerOrderedBuilder} from '../../..'
 
 export const STORE_CHANGED = '__HB__.STORE.CHANGED'
 
