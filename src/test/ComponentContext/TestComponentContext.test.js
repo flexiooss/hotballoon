@@ -45,7 +45,8 @@ export class TestComponentContext extends TestCase {
     const viewContainer = this.getViewContainer()
     this.componentContext.addViewContainer(viewContainer)
     this.componentContext.removeViewContainer(viewContainer.ID)
-    assert(this.componentContext.viewContainer(viewContainer.ID) === undefined)
+    console.log(this.componentContext.viewContainer(viewContainer.ID))
+    assert(this.componentContext.viewContainer(viewContainer.ID) === null)
   }
 
   getStore() {
