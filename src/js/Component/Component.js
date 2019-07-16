@@ -8,4 +8,10 @@ export class Component {
    */
   mountView() {
   }
+
+  /**
+   *
+   */
+  remove() {
+  }
 }

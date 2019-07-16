@@ -157,13 +157,10 @@ export class HotBalloonApplication extends WithIDBase {
    */
   removeComponentContext(componentID) {
     if (this[_ComponentContexts].has(componentID)) {
-      const removable = this.componentContext(componentID).willRemove()
-      if (removable !== false) {
-        this[_ComponentContexts].delete(componentID)
-        return true
-      }
-      return false
+      this[_ComponentContexts].delete(componentID)
+      return true
     }
+    return false
   }
 
   /**
