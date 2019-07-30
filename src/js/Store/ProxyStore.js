@@ -1,4 +1,4 @@
-import {CLASS_TAG_NAME, CLASS_TAG_NAME_PROXYSTORE} from '../HasTagClassNameInterface'
+import {CLASS_TAG_NAME, CLASS_TAG_NAME_PROXYSTORE} from '../Types/HasTagClassNameInterface'
 import {StoreBase, _set} from './StoreBase'
 
 const _store = Symbol('_store')

@@ -1,6 +1,6 @@
 import {assertType} from '@flexio-oss/assert'
 import {FlexMap} from '@flexio-oss/flex-types'
-import {TypeCheck} from '../TypeCheck'
+import {TypeCheck} from '../Types/TypeCheck'
 
 /**
  * @extends {FlexMap<?Store>}

@@ -1,14 +1,14 @@
 import {assertType} from '@flexio-oss/assert'
 import {UID} from '@flexio-oss/js-helpers'
+import {EventAction} from './EventAction'
+import {ActionDispatcherConfig} from './ActionDispatcherConfig'
+import {DispatcherEventListenerBuilder} from '../Dispatcher/DispatcherEventListenerBuilder'
+import {WithID} from '../abstract/WithID'
+import {ValidationError} from '../Exception/ValidationError'
 import {
   CLASS_TAG_NAME,
   CLASS_TAG_NAME_ACTION
-} from '../HasTagClassNameInterface'
-import {EventAction} from './EventAction'
-import {ActionParams} from './ActionParams'
-import {DispatcherEventListenerBuilder} from '../Dispatcher/DispatcherEventListenerBuilder'
-import {WithIDBase} from '../bases/WithIDBase'
-import {ValidationError} from '../Exception/ValidationError'
+} from '../Types/HasTagClassNameInterface'
 
 const _actionParams = Symbol('_actionParams')
 
@@ -17,16 +17,16 @@ const _actionParams = Symbol('_actionParams')
  * @implements {GenericType<TYPE>}
  * @template TYPE
  */
-export class Action extends WithIDBase {
+export class ActionDispatcher extends WithID {
   /**
    *
-   * @param {ActionParams} actionParams
+   * @param {ActionDispatcherConfig} actionParams
    */
   constructor(actionParams) {
     super(UID(actionParams.type.name + '_'))
 
-    assertType(actionParams instanceof ActionParams,
-      'hotballoon:Action:constructor "actionParams" argument assert be an instance of ActionParams'
+    assertType(actionParams instanceof ActionDispatcherConfig,
+      'hotballoon:ActionDispatcher:constructor "actionParams" argument assert be an instance of ActionDispatcherConfig'
     )
 
     Object.defineProperty(this, CLASS_TAG_NAME, {
@@ -42,7 +42,7 @@ export class Action extends WithIDBase {
         enumerable: false,
         writable: false,
         /**
-         * @property {ActionParams} [_actionParams]
+         * @property {ActionDispatcherConfig} [_actionParams]
          * @private
          */
         value: actionParams
@@ -76,12 +76,12 @@ export class Action extends WithIDBase {
 
     assertType(
       data instanceof this.__type__,
-      'hotballoon:Action:dispatch "data" argument should be an instance of %s',
+      'hotballoon:ActionDispatcher:dispatch "data" argument should be an instance of %s',
       this.__type__.name
     )
 
     if (!this[_actionParams].validator(data)) {
-      throw new ValidationError('hotballoon:Action:dispatch "data" argument failed tot validation')
+      throw new ValidationError('hotballoon:ActionDispatcher:dispatch "data" argument failed tot validation')
     }
 
     this[_actionParams].dispatcher.dispatchAction(
@@ -94,7 +94,7 @@ export class Action extends WithIDBase {
 
   /**
    *
-   * @type {Action~eventClb<TYPE>} callback
+   * @type {ActionDispatcher~eventClb<TYPE>} callback
    * @returns {String} token
    */
   listenWithCallback(callback) {
@@ -108,7 +108,7 @@ export class Action extends WithIDBase {
 
   /**
    * @template TYPE
-   * @callback Action~eventClb
+   * @callback ActionDispatcher~eventClb
    * @param {TYPE} payload
    * @param {(string|Symbol)} type
    */

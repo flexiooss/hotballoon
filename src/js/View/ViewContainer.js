@@ -1,10 +1,10 @@
-import {CLASS_TAG_NAME, CLASS_TAG_NAME_VIEWCONTAINER} from '../HasTagClassNameInterface'
+import {CLASS_TAG_NAME, CLASS_TAG_NAME_VIEWCONTAINER} from '../Types/HasTagClassNameInterface'
 import {isNode, isString, assert, assertType, isFunction} from '@flexio-oss/assert'
 import {StoreInterface} from '../Store/StoreInterface'
 import {ViewContainerBase} from './ViewContainerBase'
 import {EventListenerOrderedBuilder} from '../Event/EventListenerOrderedBuilder'
 import {ViewContainerPublicEventHandler} from './ViewContainerPublicEventHandler'
-import {TypeCheck} from '../TypeCheck'
+import {TypeCheck} from '../Types/TypeCheck'
 
 export class ViewContainerParameters {
   /**

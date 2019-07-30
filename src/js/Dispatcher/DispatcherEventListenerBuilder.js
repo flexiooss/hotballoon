@@ -1,7 +1,7 @@
 import {assertType} from '@flexio-oss/assert'
 import {SymbolStringArray} from '@flexio-oss/extended-flex-types'
 import {EventListenerBuilder} from '@flexio-oss/event-handler'
-import {ActionArray} from '../Action/ActionArray'
+import {ActionDispatcherArray} from '../Action/ActionDispatcherArray'
 
 /**
  * @extends {EventListenerBuilder}
@@ -9,20 +9,20 @@ import {ActionArray} from '../Action/ActionArray'
 export class DispatcherEventListenerBuilder extends EventListenerBuilder {
   /**
    *
-   * @param {ActionArray} actions
+   * @param {ActionDispatcherArray} actions
    */
   constructor(actions) {
-    assertType(actions instanceof ActionArray, 'hotballoon:DispatcherEventListenerFactory:constructor: `actions` argument should be an instance of ActionArray ')
+    assertType(actions instanceof ActionDispatcherArray, 'hotballoon:DispatcherEventListenerFactory:constructor: `actions` argument should be an instance of ActionDispatcherArray ')
     super(actions.mapTo(new SymbolStringArray(), action => action.ID))
   }
 
   /**
    *
-   * @param {Action} action
+   * @param {...ActionDispatcher} action
    * @return {DispatcherEventListenerBuilder}
    * @constructor
    */
   static listen(...action) {
-    return new this(new ActionArray(...action))
+    return new this(new ActionDispatcherArray(...action))
   }
 }

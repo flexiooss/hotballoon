@@ -47,7 +47,7 @@ class TypeCheck {
    * @param {Object} inst
    * @return {boolean}
    */
-  static isAction(inst) {
+  static isActionDispatcher(inst) {
     return testClassTagName(inst, CLASS_TAG_NAME_ACTION)
   }
 
@@ -56,9 +56,9 @@ class TypeCheck {
    * @param {Action} inst
    * @return {Action}
    */
-  static assertIsAction(inst) {
-    assertType(TypeCheck.isAction(inst),
-      'TypeCheck:assertIsAction: `inst` argument should be an Action'
+  static assertIsActionDispatcher(inst) {
+    assertType(TypeCheck.isActionDispatcher(inst),
+      'TypeCheck:assertIsActionDispatcher: `inst` argument should be an ActionDispatcher'
     )
     return inst
   }

@@ -2,14 +2,14 @@ import {assert} from '@flexio-oss/assert'
 
 const _ID = Symbol('_ID')
 
-export class WithIDBase {
+export class WithID {
   /**
    *
    * @param {String} id
    */
   constructor(id) {
     assert(!!id,
-      'hotballoon:WithIDBase:constructor: `id` argument assert not be empty')
+      'hotballoon:WithID:constructor: `id` argument assert not be empty')
     Object.defineProperties(this, {
       [_ID]: {
         enumerable: true,
@@ -20,7 +20,7 @@ export class WithIDBase {
         /**
            * @property {String}
            * @params {string}
-           * @name  WithIDBase#_ID
+           * @name  WithID#_ID
            * @protected
            */
         value: id

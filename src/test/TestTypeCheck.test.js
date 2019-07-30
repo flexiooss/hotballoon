@@ -1,5 +1,5 @@
 import {TestCase} from 'code-altimeter-js'
-import {TypeCheck} from '../js/TypeCheck'
+import {TypeCheck} from '../js/Types/TypeCheck'
 import {StoreBuilder, InMemoryParams, ProxyParams} from '../js/Store/StoreBuilder'
 import {StoreTypeParam} from '../js/Store/StoreTypeParam'
 import {PublicStoreHandler} from '../js/Store/PublicStoreHandler'
@@ -8,13 +8,17 @@ import {ComponentContext} from '../js/Component/ComponentContext'
 import {Dispatcher} from '../js/Dispatcher/Dispatcher'
 import {ExecutorInline} from '../js/Job/ExecutorInline'
 import {ExecutorWorker} from '../js/Job/ExecutorWorker'
-import {ActionBuilder, PublicActionParams} from '../js/Action/ActionBuilder'
-import {ActionTypeParam} from '../js/Action/ActionTypeParam'
+import {ActionDispatcherBuilder, PublicActionDispatcherConfig} from '../js/Action/ActionDispatcherBuilder'
+import {ActionTypeConfig} from '../js/Action/ActionTypeConfig'
 import {ViewContainer, ViewContainerParameters} from '../js/View/ViewContainer'
 import {View} from '../js/View/View'
 import {FakeLogger} from '@flexio-oss/js-logger'
 
 const assert = require('assert')
+
+class FakeValueObject {
+
+}
 
 export class TestTypeCheck extends TestCase {
   testIsStoreBase() {
@@ -89,18 +93,20 @@ export class TestTypeCheck extends TestCase {
     assert(TypeCheck.isExecutor(executor))
   }
 
-  testIsAction() {
-    const action = ActionBuilder.build(
-      new PublicActionParams(
-        new ActionTypeParam(
-          Object,
+
+
+  testIsActionDispatcher() {
+    const action = ActionDispatcherBuilder.build(
+      new PublicActionDispatcherConfig(
+        new ActionTypeConfig(
+          FakeValueObject,
           v => v,
           v => true
         ),
         new Dispatcher()
       )
     )
-    assert(TypeCheck.isAction(action))
+    assert(TypeCheck.isActionDispatcher(action))
   }
 
   testIsViewContainer() {

@@ -1,5 +1,5 @@
 import {ExecutorInterface} from './ExecutorInterface'
-import {TypeCheck} from '../TypeCheck'
+import {TypeCheck} from '../Types/TypeCheck'
 import {assertType} from '@flexio-oss/assert'
 /**
  * @implements {ExecutorInterface}

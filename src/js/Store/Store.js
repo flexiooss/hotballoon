@@ -1,4 +1,4 @@
-import {CLASS_TAG_NAME, CLASS_TAG_NAME_STORE} from '../HasTagClassNameInterface'
+import {CLASS_TAG_NAME, CLASS_TAG_NAME_STORE} from '../Types/HasTagClassNameInterface'
 import {StoreInterface} from './StoreInterface'
 
 import {StoreBase, _set, _dispatch} from './StoreBase'

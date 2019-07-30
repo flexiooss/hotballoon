@@ -1,6 +1,6 @@
 import {StoreBaseParams} from './StoreBaseParams'
 import {assert, isFunction} from '@flexio-oss/assert'
-import {TypeCheck} from '../TypeCheck'
+import {TypeCheck} from '../Types/TypeCheck'
 
 /**
  * @template STORE_TYPE, TYPE

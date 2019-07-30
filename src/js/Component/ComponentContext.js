@@ -5,12 +5,12 @@ import {assertType} from '@flexio-oss/assert'
 import {Sequence} from '@flexio-oss/js-helpers'
 import {StoreMap} from '../Store/StoreMap'
 import {ViewContainerMap} from '../View/ViewContainerMap'
-import {WithIDBase} from '../bases/WithIDBase'
+import {WithID} from '../abstract/WithID'
 import {
   CLASS_TAG_NAME,
   CLASS_TAG_NAME_COMPONENT
-} from '../HasTagClassNameInterface'
-import {TypeCheck} from '../TypeCheck'
+} from '../Types/HasTagClassNameInterface'
+import {TypeCheck} from '../Types/TypeCheck'
 
 const componentContextLogOptions = {
   color: 'green',
@@ -18,12 +18,10 @@ const componentContextLogOptions = {
 }
 
 /**
- * @class
- * @description The componentContext is the entry point of the module
- * @extends WithIDBase
+ * @extends WithID
  * @implements HasTagClassNameInterface
  */
-export class ComponentContext extends WithIDBase {
+export class ComponentContext extends WithID {
   /**
    *
    * @param {HotBalloonApplication} hotBalloonApplication
@@ -51,6 +49,7 @@ export class ComponentContext extends WithIDBase {
         /**
          * @name ComponentContext#_APP
          * @params {HotBalloonApplication}
+         * @protected
          */
         _APP: {
           configurable: false,
@@ -69,6 +68,7 @@ export class ComponentContext extends WithIDBase {
            *
            * @name ComponentContext#_sequenceId
            * @return {Sequence}
+           * @protected
            */
           get: () => {
             return _sequenceId
@@ -84,6 +84,7 @@ export class ComponentContext extends WithIDBase {
           /**
            * @name ComponentContext#_stores
            * @return {StoreMap}
+           * @protected
            */
           get: () => {
             return _stores
@@ -99,6 +100,7 @@ export class ComponentContext extends WithIDBase {
           /**
            * @name ComponentContext#_viewContainers
            * @return {ViewContainerMap}
+           * @protected
            */
           get: () => {
             return _viewContainers
@@ -167,10 +169,10 @@ export class ComponentContext extends WithIDBase {
   /**
    *
    * @param {String} key
-   * @returns {viewContainer} viewContainer
+   * @returns {?ViewContainer} viewContainer
    */
   viewContainer(key) {
-    return this._viewContainers.get(key)
+    return this._viewContainers.has(key) ? this._viewContainers.get(key) : null
   }
 
   /**

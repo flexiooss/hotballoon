@@ -1,6 +1,6 @@
 import {assert, assertType, isArray, isNull} from '@flexio-oss/assert'
 import {EventHandlerBase} from '@flexio-oss/event-handler'
-import {CLASS_TAG_NAME, CLASS_TAG_NAME_DISPATCHER} from '../HasTagClassNameInterface'
+import {CLASS_TAG_NAME, CLASS_TAG_NAME_DISPATCHER} from '../Types/HasTagClassNameInterface'
 import {EventAction} from '../Action/EventAction'
 
 const dispatcherLogOptions = {
@@ -100,7 +100,7 @@ export class Dispatcher extends EventHandlerBase {
     this.logger().log(
       this.logger().builder()
         .info()
-        .pushLog('Action dispatched : ' + eventAction.name)
+        .pushLog('ActionDispatcher dispatched : ' + eventAction.name)
         .pushLog(eventAction.payload),
       dispatcherLogOptions
     )

@@ -1,4 +1,4 @@
-import {WithIDBase} from '../bases/WithIDBase'
+import {WithID} from '../abstract/WithID'
 import {assert, assertType, isFunction, isNull} from '@flexio-oss/assert'
 import {StorageInterface} from './Storage/StorageInterface'
 
@@ -26,7 +26,7 @@ const fakeLogger = new FakeLogger()
  * @template TYPE
  * @implements {GenericType<TYPE>}
  */
-export class StoreBase extends WithIDBase {
+export class StoreBase extends WithID {
   /**
    * @constructor
    * @param {StoreBaseParams<TYPE>} storeBaseParams

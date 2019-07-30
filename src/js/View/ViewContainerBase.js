@@ -1,6 +1,6 @@
 import {isBoolean, isNode, assert} from '@flexio-oss/assert'
 import {ArrayMap} from '@flexio-oss/extended-flex-types'
-import {WithIDBase} from '../bases/WithIDBase'
+import {WithID} from '../abstract/WithID'
 import {EventOrderedHandler} from '../Event/EventOrderedHandler'
 import {ViewContainerBaseMap} from './ViewContainerBaseMap'
 
@@ -8,9 +8,9 @@ const _EventHandler = Symbol('_EventHandler')
 const _Views = Symbol('_Views')
 
 /**
- * @extends WithIDBase
+ * @extends WithID
  */
-export class ViewContainerBase extends WithIDBase {
+export class ViewContainerBase extends WithID {
   /**
    *
    * @param {String} id

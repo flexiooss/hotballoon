@@ -1,8 +1,10 @@
 export {HotBalloonApplication} from './src/js/Application/HotBalloonApplication'
 export {Dispatcher} from './src/js/Dispatcher/Dispatcher'
 
-export {ActionBuilder, PublicActionParams as ActionParams} from './src/js/Action/ActionBuilder'
-export {ActionTypeParam} from './src/js/Action/ActionTypeParam'
+export {Component} from './src/js/Component/Component'
+
+export {ActionDispatcherBuilder, PublicActionDispatcherConfig as ActionDispatcherConfig} from './src/js/Action/ActionDispatcherBuilder'
+export {ActionTypeConfig} from './src/js/Action/ActionTypeConfig'
 
 export {View} from './src/js/View/View'
 export {ViewContainer, ViewContainerParameters} from './src/js/View/ViewContainer'
@@ -32,7 +34,7 @@ export {PublicStoreHandler} from './src/js/Store/PublicStoreHandler'
 export {e} from './src/js/HotballoonNodeElement/ElementDescription'
 export {RECONCILIATION_RULES} from '@flexio-oss/flexio-nodes-reconciliation'
 
-export {TypeCheck} from './src/js/TypeCheck'
+export {TypeCheck} from './src/js/Types/TypeCheck'
 
 export {JobInterface} from './src/js/Job/JobInterface'
 export {ExecutorWorker} from './src/js/Job/ExecutorWorker'

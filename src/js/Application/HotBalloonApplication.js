@@ -3,8 +3,8 @@ import {assert, assertType} from '@flexio-oss/assert'
 import {Sequence} from '@flexio-oss/js-helpers'
 import {ComponentContextMap} from '../Component/ComponentContextMap'
 import {ComponentContext} from '../Component/ComponentContext'
-import {WithIDBase} from '../bases/WithIDBase'
-import {CLASS_TAG_NAME, CLASS_TAG_NAME_HOTBALLOON_APPLICATION} from '../HasTagClassNameInterface'
+import {WithID} from '../abstract/WithID'
+import {CLASS_TAG_NAME, CLASS_TAG_NAME_HOTBALLOON_APPLICATION} from '../Types/HasTagClassNameInterface'
 import {LoggerInterface} from '@flexio-oss/js-logger'
 
 const _Dispatcher = Symbol('_Dispatcher')
@@ -22,10 +22,10 @@ const applicationLogOptions = {
  *
  * @class
  * @description HotBalloonApplication is the container for a loop hotballoon
- * @extends WithIDBase
+ * @extends WithID
  * @implements HasTagClassNameInterface
  */
-export class HotBalloonApplication extends WithIDBase {
+export class HotBalloonApplication extends WithID {
   /**
    * @constructor
    * @param {string} id

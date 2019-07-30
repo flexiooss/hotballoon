@@ -1,5 +1,5 @@
 import {CoreException} from '../CoreException'
-import {CLASS_TAG_NAME, CLASS_TAG_NAME_VIEW} from '../HasTagClassNameInterface'
+import {CLASS_TAG_NAME, CLASS_TAG_NAME_VIEW} from '../Types/HasTagClassNameInterface'
 import {assertType, isBoolean, isFunction, isNode} from '@flexio-oss/assert'
 import {symbolToString} from '@flexio-oss/js-type-helpers'
 import {UID} from '@flexio-oss/js-helpers'
@@ -7,7 +7,7 @@ import {$} from '../HotballoonNodeElement/HotBalloonAttributeHandler'
 import {startReconcile} from '../HotballoonNodeElement/HotballoonElementReconciliation'
 import {html} from '../HotballoonNodeElement/CreateHotBalloonElement'
 import {ViewContainerBase} from './ViewContainerBase'
-import {TypeCheck} from '../TypeCheck'
+import {TypeCheck} from '../Types/TypeCheck'
 import {
   ViewPublicEventHandler,
   VIEW_RENDER,
