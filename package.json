@@ -16,15 +16,9 @@
     "eslint-plugin-html": "^4.0.1"
   },
   "dependencies": {
+    "@flexio-corp/js-common-parent": "0.0.0-dev",
     "@flexio-oss/flexio-hyperflex": "0.0.0",
-    "@flexio-oss/flexio-nodes-reconciliation": "0.0.0-dev",
-    "@flexio-oss/assert": "0.0.0",
-    "@flexio-oss/js-helpers": "0.0.0",
-    "@flexio-oss/event-handler": "0.2.0-dev",
-    "@flexio-oss/js-type-helpers": "0.0.0",
-    "@flexio-oss/js-logger": "0.1.0-dev",
-    "@flexio-oss/flex-types": "0.1.0",
-    "@flexio-oss/extended-flex-types": "0.2.0"
+    "@flexio-oss/flexio-nodes-reconciliation": "0.0.0-dev"
   },
   "hotballoon-shed": {
     "build": {

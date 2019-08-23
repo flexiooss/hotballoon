@@ -5,10 +5,10 @@ import {CoreException} from '../CoreException'
  */
 export class Component {
   /**
-   *
+   * @param {Element} htmlElement
    * @return {Component}
    */
-  mountView() {
+  mountView(htmlElement) {
     throw new CoreException(`mountView should be override`)
   }
 
