@@ -53,8 +53,8 @@ class TypeCheck {
 
   /**
    *
-   * @param {Action} inst
-   * @return {Action}
+   * @param {ActionDispatcher} inst
+   * @return {ActionDispatcher}
    */
   static assertIsActionDispatcher(inst) {
     assertType(TypeCheck.isActionDispatcher(inst),
