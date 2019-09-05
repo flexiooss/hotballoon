@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "@flexio-corp/js-common-parent": "0.0.0-dev",
-    "@flexio-oss/flexio-hyperflex": "0.0.0",
+    "@flexio-oss/flexio-hyperflex": "0.1.0-dev",
     "@flexio-oss/flexio-nodes-reconciliation": "0.0.0-dev"
   },
   "hotballoon-shed": {
