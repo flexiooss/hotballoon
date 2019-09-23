@@ -1,48 +1,61 @@
 import {Store} from './Store'
-import {StoreParams} from './StoreParams'
+import {StoreConfig} from './StoreConfig'
 import {InMemoryStorage} from './Storage/InMemoryStorage'
 import {StoreState} from './StoreState'
 import {ProxyStore} from './ProxyStore'
-import {ProxyStoreParams} from './ProxyStoreParams'
+import {ProxyStoreConfig} from './ProxyStoreConfig'
 import {UID} from '@flexio-oss/js-helpers'
 
 /**
- * @template TYPE
+ * @template TYPE, TYPE_BUILDER
  */
 export class StoreBuilder {
   /**
-   * @param {InMemoryParams<TYPE>} inMemoryParams
+   * @param {InMemoryConfig<TYPE, TYPE_BUILDER>} inMemoryConfig
    * @return {Store<TYPE>}
    */
-  static InMemory(inMemoryParams) {
-    const id = UID(inMemoryParams.typeParameter.type.name + '_')
+  static InMemory(inMemoryConfig) {
+
+    const id = UID(inMemoryConfig.storeTypeConfig.type.name + '_')
+
     return new Store(
-      new StoreParams(
+      new StoreConfig(
         id,
-        inMemoryParams.typeParameter,
+        inMemoryConfig.storeTypeConfig,
         new InMemoryStorage(
-          inMemoryParams.typeParameter.type,
-          new StoreState(id, inMemoryParams.typeParameter.type, inMemoryParams.initialData)
+          inMemoryConfig.storeTypeConfig.type,
+          new StoreState(
+            id,
+            inMemoryConfig.storeTypeConfig.type,
+            inMemoryConfig.initialData
+          )
         )
       )
     )
   }
 
   /**
-   * @param {ProxyParams<TYPE>} proxyParams
+   * @param {ProxyConfig<STORE_TYPE, TYPE, TYPE_BUILDER>} proxyConfig
    * @return {ProxyStore<TYPE>}
+   * @template STORE_TYPE, TYPE, TYPE_BUILDER
    */
-  static Proxy(proxyParams) {
-    const id = UID(proxyParams.typeParameter.type.name + '_')
+  static Proxy(proxyConfig) {
+
+    const id = UID(proxyConfig.typeParameter.type.name + '_')
+
     return new ProxyStore(
-      new ProxyStoreParams(
+      new ProxyStoreConfig(
         id,
-        proxyParams.store,
-        proxyParams.typeParameter,
-        proxyParams.mapper,
+        proxyConfig.store,
+        proxyConfig.typeParameter,
+        proxyConfig.mapper,
         new InMemoryStorage(
-          proxyParams.typeParameter.type,
-          new StoreState(id, proxyParams.typeParameter.type, proxyParams.initialData)
+          proxyConfig.typeParameter.type,
+          new StoreState(
+            id,
+            proxyConfig.typeParameter.type,
+            proxyConfig.initialData
+          )
         )
       )
     )
@@ -50,25 +63,24 @@ export class StoreBuilder {
 }
 
 /**
- * @template TYPE
+ * @template TYPE, TYPE_BUILDER
  */
-export class InMemoryParams {
+export class InMemoryConfig {
   /**
-   * @template TYPE
-   * @param {StoreTypeParam<TYPE>} typeParameter
+   * @param {StoreTypeConfig<TYPE, TYPE_BUILDER>} storeTypeConfig
    * @param {TYPE} initialData
    */
-  constructor(typeParameter, initialData) {
-    this._typeParameter = typeParameter
+  constructor(storeTypeConfig, initialData) {
+    this._storeTypeConfig = storeTypeConfig
     this._initialData = initialData
   }
 
   /**
    *
-   * @return {StoreTypeParam<TYPE>}
+   * @return {StoreTypeConfig<TYPE, TYPE_BUILDER>}
    */
-  get typeParameter() {
-    return this._typeParameter
+  get storeTypeConfig() {
+    return this._storeTypeConfig
   }
 
   /**
@@ -81,16 +93,16 @@ export class InMemoryParams {
 }
 
 /**
- * @template TYPE, STORE_TYPE
+ * @template  STORE_TYPE, TYPE, TYPE_BUILDER
  */
-export class ProxyParams extends InMemoryParams {
+export class ProxyConfig extends InMemoryConfig {
   /**
-   * @param {StoreTypeParam<TYPE>} typeParameter
+   * @param {StoreTypeConfig<TYPE, TYPE_BUILDER>} storeTypeConfig
    * @param {StoreInterface<STORE_TYPE>} store
-   * @param {Function} mapper
+   * @param {ProxyStoreConfig~mapperClb<STORE_TYPE, TYPE>} mapper
    */
-  constructor(typeParameter, store, mapper) {
-    super(typeParameter, mapper(store.state().data))
+  constructor(storeTypeConfig, store, mapper) {
+    super(storeTypeConfig, mapper(store.state().data))
     this._store = store
     this._mapper = mapper
   }
@@ -105,7 +117,7 @@ export class ProxyParams extends InMemoryParams {
 
   /**
    *
-   * @return {Function}
+   * @return {ProxyStoreConfig~mapperClb<STORE_TYPE, TYPE>}
    */
   get mapper() {
     return this._mapper

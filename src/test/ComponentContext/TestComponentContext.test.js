@@ -1,6 +1,6 @@
 import {TestCase} from 'code-altimeter-js'
-import {StoreBuilder, InMemoryParams, ProxyParams} from '../../js/Store/StoreBuilder'
-import {StoreTypeParam} from '../../js/Store/StoreTypeParam'
+import {StoreBuilder, InMemoryConfig, ProxyConfig} from '../../js/Store/StoreBuilder'
+import {StoreTypeConfig} from '../../js/Store/StoreTypeConfig'
 import {HotBalloonApplication} from '../../js/Application/HotBalloonApplication'
 import {Dispatcher} from '../../js/Dispatcher/Dispatcher'
 import {ViewContainer, ViewContainerParameters} from '../../js/View/ViewContainer'
@@ -53,8 +53,8 @@ export class TestComponentContext extends TestCase {
   getStore() {
     return StoreBuilder
       .InMemory(
-        new InMemoryParams(
-          new StoreTypeParam(
+        new InMemoryConfig(
+          new StoreTypeConfig(
             Object,
             v => v,
             v => true,

@@ -1,7 +1,7 @@
 import {isBoolean, isNode, assert} from '@flexio-oss/assert'
 import {ArrayMap} from '@flexio-oss/extended-flex-types'
 import {WithID} from '../abstract/WithID'
-import {EventOrderedHandler} from '../Event/EventOrderedHandler'
+import {OrderedEventHandler} from '../Event/OrderedEventHandler'
 import {ViewContainerBaseMap} from './ViewContainerBaseMap'
 
 const _EventHandler = Symbol('_EventHandler')
@@ -65,11 +65,11 @@ export class ViewContainerBase extends WithID {
         enumerable: false,
         configurable: false,
         /**
-         * @property {EventOrderedHandler}
+         * @property {OrderedEventHandler}
          * @name ViewContainerBase#_EventHandler
          * @protected
          */
-        value: Object.seal(new EventOrderedHandler())
+        value: Object.seal(new OrderedEventHandler())
       },
       _tokenEvent: {
         enumerable: false,
@@ -92,7 +92,7 @@ export class ViewContainerBase extends WithID {
         value: _views
       },
       /**
-       * @params {Node}
+       * @params {Element}
        * @name ViewContainerBase#parentNode
        * @protected
        */
@@ -104,7 +104,7 @@ export class ViewContainerBase extends WithID {
         },
         set: (v) => {
           assert(!!isNode(v),
-            'hotballoon:view:constructor: `parentNode` argument should be a Node'
+            'hotballoon:view:constructor: `parentNode` argument should be a Element'
           )
           parentNode = v
         }
@@ -114,11 +114,11 @@ export class ViewContainerBase extends WithID {
 
   /**
    * @protected
-   * @param {EventListenerOrderedParam} eventListenerOrderedParam
+   * @param {OrderedEventListenerConfig} orderedEventListenerConfig
    * @return {(String|StringArray)} token
    */
-  _on(eventListenerOrderedParam) {
-    return this[_EventHandler].on(eventListenerOrderedParam)
+  _on(orderedEventListenerConfig) {
+    return this[_EventHandler].on(orderedEventListenerConfig)
   }
 
   /**

@@ -5,13 +5,13 @@ import {UID} from '@flexio-oss/js-helpers'
 import {assertType} from '@flexio-oss/assert'
 
 /**
- * @template {TYPE}
+ * @template TYPE, TYPE_BUILDER
  */
 export class ActionDispatcherBuilder {
   /**
    *
-   * @param {PublicActionDispatcherConfig<TYPE>} publicActionParams
-   * @return {ActionDispatcher<TYPE>}
+   * @param {PublicActionDispatcherConfig<TYPE, TYPE_BUILDER>} publicActionParams
+   * @return {ActionDispatcher<TYPE, TYPE_BUILDER>}
    */
   static build(publicActionParams) {
 
@@ -31,22 +31,22 @@ export class ActionDispatcherBuilder {
 }
 
 /**
- * @template TYPE
+ * @template TYPE, TYPE_BUILDER
  */
 export class PublicActionDispatcherConfig {
   /**
    *
-   * @param {ActionTypeConfig<TYPE>} actionTypeParam
+   * @param {ActionTypeConfig<TYPE, TYPE_BUILDER>} actionTypeConfig
    * @param {Dispatcher} dispatcher
    */
-  constructor(actionTypeParam, dispatcher) {
-    this._params = actionTypeParam
+  constructor(actionTypeConfig, dispatcher) {
+    this._params = actionTypeConfig
     this._dispatcher = dispatcher
   }
 
   /**
    *
-   * @return {ActionTypeConfig<TYPE>}
+   * @return {ActionTypeConfig<TYPE, TYPE_BUILDER>}
    */
   get params() {
     return this._params

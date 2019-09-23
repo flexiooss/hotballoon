@@ -1,7 +1,7 @@
 import {TestCase} from 'code-altimeter-js'
 import {TypeCheck} from '../js/Types/TypeCheck'
-import {StoreBuilder, InMemoryParams, ProxyParams} from '../js/Store/StoreBuilder'
-import {StoreTypeParam} from '../js/Store/StoreTypeParam'
+import {StoreBuilder, InMemoryConfig, ProxyConfig} from '../js/Store/StoreBuilder'
+import {StoreTypeConfig} from '../js/Store/StoreTypeConfig'
 import {PublicStoreHandler} from '../js/Store/PublicStoreHandler'
 import {HotBalloonApplication} from '../js/Application/HotBalloonApplication'
 import {ComponentContext} from '../js/Component/ComponentContext'
@@ -24,8 +24,8 @@ export class TestTypeCheck extends TestCase {
   testIsStoreBase() {
     const store = StoreBuilder
       .InMemory(
-        new InMemoryParams(
-          new StoreTypeParam(
+        new InMemoryConfig(
+          new StoreTypeConfig(
             Object,
             v => v,
             v => true,
@@ -42,8 +42,8 @@ export class TestTypeCheck extends TestCase {
 
     const proxyStore = StoreBuilder
       .Proxy(
-        new ProxyParams(
-          new StoreTypeParam(
+        new ProxyConfig(
+          new StoreTypeConfig(
             Object,
             v => v,
             v => true,
@@ -57,8 +57,8 @@ export class TestTypeCheck extends TestCase {
 
     const proxyStoreFromPublic = StoreBuilder
       .Proxy(
-        new ProxyParams(
-          new StoreTypeParam(
+        new ProxyConfig(
+          new StoreTypeConfig(
             Object,
             v => v,
             v => true,

@@ -2,11 +2,12 @@ import {WithID} from '../abstract/WithID'
 import {assert, assertType, isFunction, isNull} from '@flexio-oss/assert'
 import {StorageInterface} from './Storage/StorageInterface'
 
-import {EventOrderedHandler} from '../Event/EventOrderedHandler'
+import {OrderedEventHandler} from '../Event/OrderedEventHandler'
 import {STORE_CHANGED} from './StoreInterface'
 import {ValidationError} from '../Exception/ValidationError'
-import {EventListenerOrderedBuilder} from '../Event/EventListenerOrderedBuilder'
+import {OrderedEventListenerConfigBuilder} from '@flexio-oss/event-handler'
 import {LoggerInterface, FakeLogger} from '@flexio-oss/js-logger'
+import {StoreBaseConfig} from './StoreBaseConfig'
 
 export const _storage = Symbol('_storage')
 export const _EventHandler = Symbol('_EventHandler')
@@ -23,21 +24,21 @@ const storeBaseLogOptions = {
 const fakeLogger = new FakeLogger()
 
 /**
- * @template TYPE
+ * @template TYPE, TYPE_BUILDER
  * @implements {GenericType<TYPE>}
  */
 export class StoreBase extends WithID {
   /**
    * @constructor
-   * @param {StoreBaseParams<TYPE>} storeBaseParams
+   * @param {StoreBaseConfig<TYPE, TYPE_BUILDER>} storeBaseConfig
    */
-  constructor(storeBaseParams) {
-    super(storeBaseParams.id)
-    var storage = storeBaseParams.storage
-    var logger = fakeLogger
+  constructor(storeBaseConfig) {
+    super(storeBaseConfig.id)
+    let storage = storeBaseConfig.storage
+    let logger = fakeLogger
 
-    assertType(storage instanceof StorageInterface,
-      'hotballoon:' + this.constructor.name + ':constructor: `storage` argument should be an instance of `StorageInterface`')
+    assertType(storeBaseConfig instanceof StoreBaseConfig,
+      'hotballoon:' + this.constructor.name + ':constructor: `storeBaseConfig` argument should be an instance of `StoreBaseConfig`')
 
     Object.defineProperties(this, {
       [_storage]: {
@@ -56,17 +57,17 @@ export class StoreBase extends WithID {
         }
       },
       /**
-       * @property {EventOrderedHandler}
+       * @property {OrderedEventHandler}
        * @name StoreBase#_EventHandler
        * @protected
        */
       [_EventHandler]: {
         enumerable: false,
         configurable: false,
-        value: Object.seal(new EventOrderedHandler())
+        value: Object.seal(new OrderedEventHandler())
       },
       /**
-       * @property {StoreParams}
+       * @property {StoreConfig}
        * @name StoreBase#[_storeParams]
        * @protected
        */
@@ -74,7 +75,7 @@ export class StoreBase extends WithID {
         enumerable: false,
         configurable: false,
         writable: false,
-        value: storeBaseParams
+        value: storeBaseConfig
       },
       _logger: {
         configurable: false,
@@ -112,10 +113,18 @@ export class StoreBase extends WithID {
 
   /**
    *
-   * @return {Class<TYPE>}
+   * @return {TYPE.}
    */
   get __type__() {
     return this[_storeParams].type
+  }
+
+  /**
+   *
+   * @return {TYPE_BUILDER.}
+   */
+  typeBuilder() {
+    return this[_storeParams].typeBuilder
   }
 
   /**
@@ -136,11 +145,11 @@ export class StoreBase extends WithID {
   }
 
   /**
-   * @param {EventListenerOrderedParam} eventListenerOrderedParam
+   * @param {OrderedEventListenerConfig}  orderedEventListenerConfig
    * @return {String} token
    */
-  subscribe(eventListenerOrderedParam) {
-    return this[_EventHandler].on(eventListenerOrderedParam)
+  subscribe(orderedEventListenerConfig) {
+    return this[_EventHandler].on(orderedEventListenerConfig)
   }
 
   /**
@@ -222,7 +231,7 @@ export class StoreBase extends WithID {
     )
 
     return this[_EventHandler].on(
-      EventListenerOrderedBuilder
+      OrderedEventListenerConfigBuilder
         .listen(this.changedEventName())
         .callback((payload) => {
           clb(payload)

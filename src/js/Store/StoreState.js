@@ -8,7 +8,7 @@ export class StoreState {
   /**
    *
    * @param {(string|Symbol)} storeID
-   * @param {Class<TYPE>} type
+   * @param {TYPE.} type
    * @param {TYPE} dataStore
    */
   constructor(storeID, type, dataStore) {
@@ -48,7 +48,7 @@ export class StoreState {
         writable: false,
         enumerable: true,
         /**
-         * @params {Class<TYPE>}
+         * @params {TYPE.}
          * @name StoreState#type
          */
         value: type
@@ -59,7 +59,7 @@ export class StoreState {
 
   /**
    *
-   * @return {Class<TYPE>}
+   * @return {TYPE.}
    * @private
    */
   get __type__() {

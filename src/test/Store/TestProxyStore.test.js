@@ -1,6 +1,6 @@
 import {TestCase} from 'code-altimeter-js'
-import {StoreBuilder, InMemoryParams, ProxyParams} from '../../js/Store/StoreBuilder'
-import {StoreTypeParam} from '../../js/Store/StoreTypeParam'
+import {StoreBuilder, InMemoryConfig, ProxyConfig} from '../../js/Store/StoreBuilder'
+import {StoreTypeConfig} from '../../js/Store/StoreTypeConfig'
 
 const assert = require('assert')
 
@@ -8,8 +8,8 @@ export class TestProxyStore extends TestCase {
   setUp() {
     this.store = StoreBuilder
       .InMemory(
-        new InMemoryParams(
-          new StoreTypeParam(
+        new InMemoryConfig(
+          new StoreTypeConfig(
             Object,
             v => v,
             v => true,
@@ -27,8 +27,8 @@ export class TestProxyStore extends TestCase {
     let invoked = 0
     this.proxyStore = StoreBuilder
       .Proxy(
-        new ProxyParams(
-          new StoreTypeParam(
+        new ProxyConfig(
+          new StoreTypeConfig(
             Object,
             v => v,
             v => true,
@@ -56,8 +56,8 @@ export class TestProxyStore extends TestCase {
   testUpdateFromStoreEvent() {
     this.proxyStore = StoreBuilder
       .Proxy(
-        new ProxyParams(
-          new StoreTypeParam(
+        new ProxyConfig(
+          new StoreTypeConfig(
             Object,
             v => v,
             v => true,

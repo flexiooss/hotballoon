@@ -1,5 +1,8 @@
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_PROXYSTORE} from '../Types/HasTagClassNameInterface'
 import {StoreBase, _set} from './StoreBase'
+import {StoreBaseConfig} from './StoreBaseConfig'
+import {assertType, isFunction} from '@flexio-oss/assert'
+import {ProxyStoreConfig} from './ProxyStoreConfig'
 
 const _store = Symbol('_store')
 const _mapper = Symbol('_mapper')
@@ -8,15 +11,26 @@ const _mapper = Symbol('_mapper')
  * @implements {StoreInterface<TYPE>}
  * @implements {HasTagClassNameInterface}
  * @implements {GenericType<TYPE>}
- * @template STORE_TYPE, TYPE
+ * @template STORE_TYPE, TYPE, TYPE_BUILDER
  */
 export class ProxyStore extends StoreBase {
   /**
    *
-   * @param {ProxyStoreParams} proxyStoreParams
+   * @param {ProxyStoreConfig<STORE_TYPE, TYPE, TYPE_BUILDER>} proxyStoreConfig
    */
-  constructor(proxyStoreParams) {
-    super(proxyStoreParams)
+  constructor(proxyStoreConfig) {
+    super(
+      new StoreBaseConfig(
+        proxyStoreConfig.id,
+        proxyStoreConfig.storeTypeConfig,
+        proxyStoreConfig.storage
+      )
+    )
+
+    assertType(
+      proxyStoreConfig instanceof ProxyStoreConfig,
+      '`proxyStoreConfig` argument should be a ProxyStoreConfig'
+    )
 
     Object.defineProperty(this, CLASS_TAG_NAME, {
       configurable: false,
@@ -35,18 +49,18 @@ export class ProxyStore extends StoreBase {
          * @name ProxyStore#_Store
          * @private
          */
-        value: proxyStoreParams.store
+        value: proxyStoreConfig.store
       },
 
       [_mapper]: {
         enumerable: false,
         configurable: false,
         /**
-         * @property {ProxyStoreParams~mapperClb<TYPE>}
+         * @property {ProxyStoreConfig~mapperClb<STORE_TYPE, TYPE>}
          * @name ProxyStore#_mapper
          * @private
          */
-        value: proxyStoreParams.mapper
+        value: proxyStoreConfig.mapper
       }
 
     })

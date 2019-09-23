@@ -3,7 +3,9 @@ export {Dispatcher} from './src/js/Dispatcher/Dispatcher'
 
 export {Component} from './src/js/Component/Component'
 
-export {ActionDispatcherBuilder, PublicActionDispatcherConfig as ActionDispatcherConfig} from './src/js/Action/ActionDispatcherBuilder'
+export {
+  ActionDispatcherBuilder, PublicActionDispatcherConfig as ActionDispatcherConfig
+}from './src/js/Action/ActionDispatcherBuilder'
 export {ActionTypeConfig} from './src/js/Action/ActionTypeConfig'
 
 export {View} from './src/js/View/View'
@@ -20,16 +22,11 @@ export {
   VIEW_MOUNTED
 } from './src/js/View/ViewPublicEventHandler'
 
-export {ViewEventListenerBuilder} from './src/js/Event/ViewEventListenerBuilder'
 export {ElementEventListenerBuilder} from './src/js/HotballoonNodeElement/ElementEventListenerBuilder'
 
-export {StoreTypeParam} from './src/js/Store/StoreTypeParam'
-
-export {
-  StoreBuilder, InMemoryParams as InMemoryStoreParams, ProxyParams as ProxyStoreParams
-} from './src/js/Store/StoreBuilder'
-
 export {PublicStoreHandler} from './src/js/Store/PublicStoreHandler'
+export {ProxyStoreBuilder} from './src/js/Store/ProxyStoreBuilder'
+export {InMemoryStoreBuilder} from './src/js/Store/InMemoryStoreBuilder'
 
 export {e} from './src/js/HotballoonNodeElement/ElementDescription'
 export {RECONCILIATION_RULES} from '@flexio-oss/flexio-nodes-reconciliation'
@@ -40,4 +37,5 @@ export {JobInterface} from './src/js/Job/JobInterface'
 export {ExecutorWorker} from './src/js/Job/ExecutorWorker'
 export {ExecutorInline} from './src/js/Job/ExecutorInline'
 
-export {EventListenerOrderedBuilder} from './src/js/Event/EventListenerOrderedBuilder'
+export {OrderedEventListenerConfigBuilder} from '@flexio-oss/event-handler'
+

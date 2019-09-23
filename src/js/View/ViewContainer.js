@@ -2,7 +2,6 @@ import {CLASS_TAG_NAME, CLASS_TAG_NAME_VIEWCONTAINER} from '../Types/HasTagClass
 import {isNode, isString, assert, assertType, isFunction} from '@flexio-oss/assert'
 import {StoreInterface} from '../Store/StoreInterface'
 import {ViewContainerBase} from './ViewContainerBase'
-import {EventListenerOrderedBuilder} from '../Event/EventListenerOrderedBuilder'
 import {ViewContainerPublicEventHandler} from './ViewContainerPublicEventHandler'
 import {TypeCheck} from '../Types/TypeCheck'
 
@@ -77,7 +76,7 @@ export class ViewContainer extends ViewContainerBase {
    * @param {ViewContainerParameters} viewContainerParameters
    */
   constructor(viewContainerParameters) {
-    assert(viewContainerParameters instanceof ViewContainerParameters,
+    assertType(viewContainerParameters instanceof ViewContainerParameters,
       'hotballoon:viewContainer:constructor: `viewContainerParameters` argument assert be an instance of ViewContainerParameters'
     )
 
@@ -120,9 +119,9 @@ export class ViewContainer extends ViewContainerBase {
    * @param {ViewContainer~storeChanged} clb
    */
   subscribeToStore(store, clb = (state) => true) {
-    assert(isFunction(clb), 'hotballoon:' + this.constructor.name + ':subscribeToStore: `clb` argument should be callable')
+    assertType(isFunction(clb), 'hotballoon:' + this.constructor.name + ':subscribeToStore: `clb` argument should be callable')
 
-    assert(store instanceof StoreInterface, 'hotballoon:' + this.constructor.name + ':subscribeToStore: `keyStore : %s` not reference an instance of StoreInterface', store)
+    assertType(store instanceof StoreInterface, 'hotballoon:' + this.constructor.name + ':subscribeToStore: `keyStore : %s` not reference an instance of StoreInterface', store.constructor)
 
     this._tokenEvent.push(
       store.storeId(),

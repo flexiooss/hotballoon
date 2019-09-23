@@ -3,12 +3,12 @@ import {TypeCheck} from '../Types/TypeCheck'
 import {ActionTypeConfig} from './ActionTypeConfig'
 
 /**
- * @template TYPE
+ * @template TYPE, TYPE_BUILDER
  */
 export class ActionDispatcherConfig {
   /**
    * @param {(Symbol|String)} id
-   * @param {ActionTypeConfig<TYPE>} actionTypeParam
+   * @param {ActionTypeConfig<TYPE, TYPE_BUILDER>} actionTypeParam
    * @param {Dispatcher} dispatcher
    */
   constructor(id, actionTypeParam, dispatcher) {
@@ -26,7 +26,7 @@ export class ActionDispatcherConfig {
     this._id = id
     /**
      *
-     * @type {ActionTypeConfig<TYPE>}
+     * @type {ActionTypeConfig<TYPE, TYPE_BUILDER>}
      * @protected
      */
     this._params = actionTypeParam
@@ -48,10 +48,18 @@ export class ActionDispatcherConfig {
 
   /**
    *
-   * @return {Class.<TYPE>}
+   * @return {TYPE.}
    */
   get type() {
     return this._params.type
+  }
+
+  /**
+   *
+   * @return {TYPE_BUILDER.}
+   */
+  get payloadBuilder() {
+    return this._params.payloadBuilder
   }
 
   /**

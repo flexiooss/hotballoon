@@ -1,4 +1,4 @@
-import {assert} from '@flexio-oss/assert'
+import {assertType, isClass} from '@flexio-oss/assert'
 import {deepFreezeSeal} from '@flexio-oss/js-type-helpers'
 import {StoreState} from '../StoreState'
 import {StorageInterface} from './StorageInterface'
@@ -14,13 +14,18 @@ const _state = Symbol.for('_state')
 export class InMemoryStorage extends StorageInterface {
   /**
    * @constructor
-   * @param {Class<TYPE>} type
+   * @param {TYPE.} type
    * @param {StoreState<TYPE>} state
    */
   constructor(type, state) {
     super()
 
-    assert(state instanceof StoreState,
+    assertType(
+      isClass(type),
+      'hotballoon:Storage:constructor: `type` argument should be a Class'
+    )
+
+    assertType(state instanceof StoreState,
       'hotballoon:Storage:constructor: `state` argument should be a `StoreState` instance')
 
     Object.defineProperties(this, {
@@ -35,7 +40,7 @@ export class InMemoryStorage extends StorageInterface {
         writable: false,
         enumerable: true,
         /**
-         * @params {Class<TYPE>}
+         * @params {TYPE.}
          * @name InMemoryStorage#type
          */
         value: type
@@ -68,7 +73,7 @@ export class InMemoryStorage extends StorageInterface {
 
   /**
    *
-   * @return {Class<TYPE>}
+   * @return {TYPE.}
    * @private
    */
   get __type__() {

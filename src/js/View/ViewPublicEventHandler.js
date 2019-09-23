@@ -1,5 +1,5 @@
 import {assertType, isFunction} from '@flexio-oss/assert'
-import {EventListenerOrderedBuilder} from '../Event/EventListenerOrderedBuilder'
+import {OrderedEventListenerConfigBuilder} from '@flexio-oss/event-handler'
 
 export const VIEW_RENDER = 'VIEW_RENDER'
 export const VIEW_RENDERED = 'VIEW_RENDERED'
@@ -25,7 +25,7 @@ export class ViewPublicEventHandler {
 
   /**
    * @callback ViewPublicEventHandler~subscriberClb
-   * @param {EventListenerOrderedParam} eventListenerOrderedParam
+   * @param {OrderedEventListenerConfig} orderedEventListenerConfig
    * @return {String} token
    */
 
@@ -40,7 +40,7 @@ export class ViewPublicEventHandler {
       'ViewContainerPublicEventHandler:update: `clb` should be a function'
     )
     return this._subscriber(
-      EventListenerOrderedBuilder
+      OrderedEventListenerConfigBuilder
         .listen(VIEW_UPDATE)
         .callback(() => {
           clb()
@@ -64,7 +64,7 @@ export class ViewPublicEventHandler {
       'ViewContainerPublicEventHandler:updated: `clb` should be a function'
     )
     return this._subscriber(
-      EventListenerOrderedBuilder
+      OrderedEventListenerConfigBuilder
         .listen(VIEW_UPDATED)
         .callback(() => {
           clb()
@@ -88,7 +88,7 @@ export class ViewPublicEventHandler {
       'ViewContainerPublicEventHandler:render: `clb` should be a function'
     )
     return this._subscriber(
-      EventListenerOrderedBuilder
+      OrderedEventListenerConfigBuilder
         .listen(VIEW_RENDER)
         .callback(() => {
           clb()
@@ -112,7 +112,7 @@ export class ViewPublicEventHandler {
       'ViewContainerPublicEventHandler:rendered: `clb` should be a function'
     )
     return this._subscriber(
-      EventListenerOrderedBuilder
+      OrderedEventListenerConfigBuilder
         .listen(VIEW_RENDERED)
         .callback(() => {
           clb()
@@ -136,7 +136,7 @@ export class ViewPublicEventHandler {
       'ViewContainerPublicEventHandler:mount: `clb` should be a function'
     )
     return this._subscriber(
-      EventListenerOrderedBuilder
+      OrderedEventListenerConfigBuilder
         .listen(VIEW_MOUNT)
         .callback(() => {
           clb()
@@ -160,7 +160,7 @@ export class ViewPublicEventHandler {
       'ViewContainerPublicEventHandler:mounted: `clb` should be a function'
     )
     return this._subscriber(
-      EventListenerOrderedBuilder
+      OrderedEventListenerConfigBuilder
         .listen(VIEW_MOUNTED)
         .callback(() => {
           clb()
@@ -184,7 +184,7 @@ export class ViewPublicEventHandler {
       'ViewContainerPublicEventHandler:storeChanged: `clb` should be a function'
     )
     return this._subscriber(
-      EventListenerOrderedBuilder
+      OrderedEventListenerConfigBuilder
         .listen(VIEW_STORE_CHANGED)
         .callback(() => {
           clb()

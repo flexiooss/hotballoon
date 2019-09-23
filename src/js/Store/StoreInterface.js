@@ -4,8 +4,9 @@ export const STORE_CHANGED = '__HB__.STORE.CHANGED'
 
 /**
  * @interface
- * @extends WithIDBase
- * @template TYPE
+ * @extends WithID
+ * @implements {GenericType<TYPE>}
+ * @template TYPE, TYPE_BUILDER
  */
 export class StoreInterface {
   /**
@@ -33,13 +34,13 @@ export class StoreInterface {
   }
 
   /**
-   * @param {EventListenerOrderedParam} eventListenerOrderedParam
+   * @param {OrderedEventListenerConfig} orderedEventListenerConfig
    * @return {String} token
    */
-  subscribe(eventListenerOrderedParam) {
+  subscribe(orderedEventListenerConfig) {
     throw new CoreException(`subscribe should be override with this signature :
    /**
-   * @param {EventListenerOrderedParam} eventListenerOrderedParam
+   * @param {OrderedEventListenerConfig} orderedEventListenerConfig
    * @return {String} token
    */
    `, 'METHOD_NOT_OVERRIDE')
@@ -47,7 +48,7 @@ export class StoreInterface {
 
   /**
    *
-   * @param {StoreInterface~changedClb} clb
+   * @param {StoreInterface~changedClb<TYPE>} clb
    * @return {string} token
    */
   listenChanged(clb) {
@@ -62,7 +63,8 @@ export class StoreInterface {
   /**
    *
    * @callback StoreInterface~changedClb
-   * @param {StoreState} state
+   * @param {StoreState<TYPE>} state
+   * @template TYPE
    */
 
   /**
@@ -72,6 +74,44 @@ export class StoreInterface {
     throw new CoreException(`state should be override with this signature :
    /**
    * @return {State} state frozen
+   */
+   `, 'METHOD_NOT_OVERRIDE')
+  }
+
+  /**
+   *
+   * @return {TYPE.}
+   */
+  get __type__() {
+    throw new CoreException(`state should be override with this signature :
+   /**
+   * @return {TYPE.}
+   */
+   `, 'METHOD_NOT_OVERRIDE')
+  }
+
+  /**
+   *
+   * @param {Class} constructor
+   * @return {boolean}
+   */
+  isTypeOf(constructor) {
+    throw new CoreException(`state should be override with this signature :
+   /**
+   * @param {Class} constructor
+   * @return {boolean}
+   */
+   `, 'METHOD_NOT_OVERRIDE')
+  }
+
+  /**
+   *
+   * @return {TYPE_BUILDER.}
+   */
+  typeBuilder() {
+    throw new CoreException(`state should be override with this signature :
+   /**
+   * @return {TYPE_BUILDER.}
    */
    `, 'METHOD_NOT_OVERRIDE')
   }

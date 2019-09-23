@@ -21,7 +21,7 @@ export class HotballoonElementParams extends HyperFlexParams {
     this._reconciliationRules = []
     /**
      *
-     * @params {Array<ElementEventListenerParam>}
+     * @params {Array<ElementEventListenerConfig>}
      * @private
      */
     this._eventListeners = []

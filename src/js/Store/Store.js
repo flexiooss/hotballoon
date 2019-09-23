@@ -6,7 +6,7 @@ import {StoreBase, _set, _dispatch} from './StoreBase'
 export const STORE_INIT = Symbol('STORE.INIT')
 
 /**
- * @template TYPE
+ * @template TYPE, TYPE_BUILDER
  * @extends {StoreBase<TYPE>}
  * @implements {StoreInterface<TYPE>}
  * @implements {GenericType<TYPE>}
@@ -15,10 +15,10 @@ export const STORE_INIT = Symbol('STORE.INIT')
 export class Store extends StoreBase {
   /**
    * @constructor
-   * @param {StoreParams} storeParams
+   * @param {StoreConfig<TYPE, TYPE_BUILDER>} storeConfig
    */
-  constructor(storeParams) {
-    super(storeParams)
+  constructor(storeConfig) {
+    super(storeConfig)
 
     Object.defineProperty(this, CLASS_TAG_NAME, {
       configurable: false,

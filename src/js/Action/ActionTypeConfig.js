@@ -1,36 +1,46 @@
 import {assertType, isFunction, isClass} from '@flexio-oss/assert'
 
 /**
- * @template TYPE
+ * @template TYPE, TYPE_BUILDER
  */
 export class ActionTypeConfig {
   /**
-   * @param {Class<TYPE>} type
-   * @param {ActionTypeConfig~defaultCheckerClb<TYPE>} defaultChecker
-   * @param {ActionTypeConfig~validatorClb<TYPE>} validator
+   * @param {TYPE.} type
+   * @param {TYPE_BUILDER.} payloadBuilder
+   * @param {ActionTypeConfig~defaultCheckerClb<TYPE>} [defaultChecker=data=>data]
+   * @param {ActionTypeConfig~validatorClb<TYPE>} [validator=data=>true]
    */
   constructor(
     type,
-    defaultChecker = (data) => {
-      return data
-    },
-    validator = (data) => true
+    payloadBuilder,
+    defaultChecker = data => data,
+    validator = data => true
   ) {
     assertType(isClass(type), 'hotballoon:ActionTypeConfig:constructor "type" argument should be a Class')
+    assertType(isClass(payloadBuilder), 'hotballoon:ActionTypeConfig:constructor "payloadBuilder" argument should be a Class')
     assertType(isFunction(validator), 'hotballoon:ActionTypeConfig:constructor "validator" argument should be function')
     assertType(isFunction(defaultChecker), 'hotballoon:ActionTypeConfig:constructor "defaultChecker" argument should be function')
 
     this._type = type
+    this._payloadBuilder = payloadBuilder
     this._validator = validator
     this._defaultChecker = defaultChecker
   }
 
   /**
    *
-   * @return {Class<TYPE>}
+   * @return {TYPE.}
    */
   get type() {
     return this._type
+  }
+
+  /**
+   *
+   * @return {TYPE_BUILDER.}
+   */
+  get payloadBuilder() {
+    return this._payloadBuilder
   }
 
   /**

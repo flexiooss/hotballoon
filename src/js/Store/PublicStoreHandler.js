@@ -5,10 +5,10 @@ const _store = Symbol('_store')
 
 /**
  *
- * @implements {StoreInterface<TYPE>}
+ * @implements {StoreInterface<TYPE, TYPE_BUILDER>}
  * @implements  {HasTagClassNameInterface}
  * @implements {GenericType<TYPE>}
- * @template TYPE
+ * @template TYPE, TYPE_BUILDER
  */
 export class PublicStoreHandler {
   /**
@@ -53,19 +53,28 @@ export class PublicStoreHandler {
   }
 
   /**
-   * @param {EventListenerOrderedParam} eventListenerOrderedParam
+   * @param {OrderedEventListenerConfig} orderedEventListenerConfig
    * @return {String} token
    */
-  subscribe(eventListenerOrderedParam) {
-    return this[_store].subscribe(eventListenerOrderedParam)
+  subscribe(orderedEventListenerConfig) {
+    return this[_store].subscribe(orderedEventListenerConfig)
   }
 
   /**
    *
-   * @return {Class<TYPE>}
+   * @return {TYPE.}
    */
   get __type__() {
     return this[_store].type()
+  }
+
+  /**
+   *
+   * @return {TYPE_BUILDER.}
+   */
+  typeBuilder() {
+    return this[_store].typeBuilder()
+
   }
 
   /**
