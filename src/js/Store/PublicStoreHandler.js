@@ -95,4 +95,12 @@ export class PublicStoreHandler {
     return this[_store].listenChanged(clb, priority)
   }
 
+  /**
+   *
+   * @param {(string|Symbol)} token
+   */
+  stopListenChanged(token) {
+    return this[_store].stopListenChanged(token)
+  }
+
 }

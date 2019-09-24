@@ -247,4 +247,12 @@ export class StoreBase extends WithID {
     )
   }
 
+  /**
+   *
+   * @param {(string|Symbol)} token
+   */
+  stopListenChanged(token) {
+    this[_EventHandler].removeEventListener(this.changedEventName(), token)
+  }
+
 }

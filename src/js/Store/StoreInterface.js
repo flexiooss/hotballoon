@@ -64,6 +64,18 @@ export class StoreInterface {
 
   /**
    *
+   * @param {(string|Symbol)} token
+   */
+  stopListenChanged(token) {
+    throw new CoreException(`listenChanged should be override with this signature :
+   /**
+     * @param {(string|Symbol)} token
+   */
+   `, 'METHOD_NOT_OVERRIDE')
+  }
+
+  /**
+   *
    * @callback StoreInterface~changedClb
    * @param {StoreState<TYPE>} state
    * @template TYPE
