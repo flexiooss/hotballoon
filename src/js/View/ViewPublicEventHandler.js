@@ -34,10 +34,11 @@ export class ViewPublicEventHandler {
    *
    * @param {(string|Symbol)}event
    * @param {Function} clb
+   * @param {...*} args
    * @return {String}
    * @protected
    */
-  _subscribeTo(event, clb) {
+  _subscribeTo(event, clb, ...args) {
     assertType(
       isSymbol(event) || isString(event),
       'ViewPublicEventHandler:_subscribe: `event` should be a string or symbol'
@@ -50,7 +51,7 @@ export class ViewPublicEventHandler {
       OrderedEventListenerConfigBuilder
         .listen(event)
         .callback(() => {
-          clb()
+          clb(...args)
         })
         .build()
     )
