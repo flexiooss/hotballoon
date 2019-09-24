@@ -49,12 +49,14 @@ export class StoreInterface {
   /**
    *
    * @param {StoreInterface~changedClb<TYPE>} clb
+   * @param {number} priority
    * @return {string} token
    */
-  listenChanged(clb) {
+  listenChanged(clb, priority) {
     throw new CoreException(`listenChanged should be override with this signature :
    /**
    * @param {StoreInterface~changedClb} clb
+   * @param {number} priority
    * @return {string} token
    */
    `, 'METHOD_NOT_OVERRIDE')

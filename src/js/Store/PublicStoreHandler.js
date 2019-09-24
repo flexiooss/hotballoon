@@ -88,15 +88,11 @@ export class PublicStoreHandler {
   /**
    *
    * @param {StoreInterface~changedClb<TYPE>} clb
+   * @param {number} [priority=100]
    * @return {string} token
    */
-  listenChanged(clb = (state) => true) {
-    assertType(
-      isFunction(clb),
-      'hotballoon:' + this.constructor.name + ':listenChanged: `clb` argument should be callable'
-    )
-
-    return this[_store].listenChanged(clb)
+  listenChanged(clb, priority = 100) {
+    return this[_store].listenChanged(clb, priority)
   }
 
 }

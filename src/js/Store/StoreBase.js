@@ -1,5 +1,5 @@
 import {WithID} from '../abstract/WithID'
-import {assert, assertType, isFunction, isNull} from '@flexio-oss/assert'
+import {assert, assertType, isFunction, isNumber} from '@flexio-oss/assert'
 import {StorageInterface} from './Storage/StorageInterface'
 
 import {OrderedEventHandler} from '../Event/OrderedEventHandler'
@@ -222,12 +222,18 @@ export class StoreBase extends WithID {
   /**
    *
    * @param {StoreInterface~changedClb} clb
+   * @param {number} [priority=100]
    * @return {string} token
    */
-  listenChanged(clb = (state) => true) {
+  listenChanged(clb, priority = 100) {
     assertType(
       isFunction(clb),
       'hotballoon:' + this.constructor.name + ':listenChanged: `clb` argument should be callable'
+    )
+
+    assertType(
+      isNumber(priority),
+      'hotballoon:' + this.constructor.name + ':listenChanged: `priority` argument should be a number'
     )
 
     return this[_EventHandler].on(
@@ -236,6 +242,7 @@ export class StoreBase extends WithID {
         .callback((payload) => {
           clb(payload)
         })
+        .priority(priority)
         .build()
     )
   }
