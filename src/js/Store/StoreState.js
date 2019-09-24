@@ -12,49 +12,35 @@ export class StoreState {
    * @param {TYPE} dataStore
    */
   constructor(storeID, type, dataStore) {
-    Object.defineProperties(this, {
-      storeID: {
-        configurable: false,
-        writable: false,
-        enumerable: true,
-        /**
-         * @params {(string|Symbol)}
-         * @name StoreState#storeID
-         */
-        value: storeID
-      },
-      data: {
-        configurable: false,
-        writable: false,
-        enumerable: true,
-        /**
-         * @params {TYPE}
-         * @name StoreState#data
-         */
-        value: dataStore
-      },
-      time: {
-        configurable: false,
-        writable: false,
-        enumerable: true,
-        /**
-         * @params {Date}
-         * @name StoreState#time
-         */
-        value: new Date()
-      },
-      type: {
-        configurable: false,
-        writable: false,
-        enumerable: true,
-        /**
-         * @params {TYPE.}
-         * @name StoreState#type
-         */
-        value: type
-      }
-    })
-    deepFreezeSeal(this)
+    this.__storeID = storeID
+    this.__data = dataStore
+    this.__time = new Date()
+    this.__type = type
+    return deepFreezeSeal(this)
+  }
+
+  /**
+   *
+   * @return {(string|Symbol)}
+   */
+  get storeID() {
+    return this.__storeID
+  }
+
+  /**
+   *
+   * @return {TYPE}
+   */
+  get data() {
+    return this.__data
+  }
+
+  /**
+   *
+   * @return {Date}
+   */
+  get time() {
+    return this.__time
   }
 
   /**
@@ -63,7 +49,7 @@ export class StoreState {
    * @private
    */
   get __type__() {
-    return this.type
+    return this.__type
   }
 
   /**

@@ -1,73 +1,69 @@
 import {TestCase} from 'code-altimeter-js'
 import {TypeCheck} from '../js/Types/TypeCheck'
-import {StoreBuilder, InMemoryConfig, ProxyConfig} from '../js/Store/StoreBuilder'
-import {StoreTypeConfig} from '../js/Store/StoreTypeConfig'
+import {InMemoryStoreBuilder} from '../js/Store/InMemoryStoreBuilder'
+import { ProxyStoreBuilder} from '../js/Store/ProxyStoreBuilder'
 import {PublicStoreHandler} from '../js/Store/PublicStoreHandler'
 import {HotBalloonApplication} from '../js/Application/HotBalloonApplication'
 import {ComponentContext} from '../js/Component/ComponentContext'
 import {Dispatcher} from '../js/Dispatcher/Dispatcher'
 import {ExecutorInline} from '../js/Job/ExecutorInline'
 import {ExecutorWorker} from '../js/Job/ExecutorWorker'
-import {ActionDispatcherBuilder, PublicActionDispatcherConfig} from '../js/Action/ActionDispatcherBuilder'
-import {ActionTypeConfig} from '../js/Action/ActionTypeConfig'
+import {ActionDispatcherBuilder} from '../js/Action/ActionDispatcherBuilder'
 import {ViewContainer, ViewContainerParameters} from '../js/View/ViewContainer'
 import {View} from '../js/View/View'
 import {FakeLogger} from '@flexio-oss/js-logger'
-
+import {FakeValueObject, FakeValueObjectBuilder} from './FakeValueObject'
 const assert = require('assert')
 
-class FakeValueObject {
 
-}
 
 export class TestTypeCheck extends TestCase {
+
   testIsStoreBase() {
-    const store = StoreBuilder
-      .InMemory(
-        new InMemoryConfig(
-          new StoreTypeConfig(
-            Object,
-            v => v,
-            v => true,
-            o => o
-          ),
-          {}
-        )
-      )
+    /**
+     *
+     * @type {Store<FakeValueObject, FakeValueObjectBuilder>}
+     */
+    const store = new InMemoryStoreBuilder()
+      .type(FakeValueObject)
+      .typeBuilder(FakeValueObjectBuilder)
+      .initialData(new FakeValueObject())
+      .build()
 
     assert(TypeCheck.isStoreBase(store))
 
+    /**
+     *
+     * @type {PublicStoreHandler<FakeValueObject, FakeValueObjectBuilder>}
+     */
     const publicStoreHandler = new PublicStoreHandler(store)
     assert(TypeCheck.isStoreBase(publicStoreHandler))
 
-    const proxyStore = StoreBuilder
-      .Proxy(
-        new ProxyConfig(
-          new StoreTypeConfig(
-            Object,
-            v => v,
-            v => true,
-            o => o
-          ),
-          store,
-          v => v
-        )
-      )
+    /**
+     *
+     * @type {ProxyStore<FakeValueObject, FakeValueObject, FakeValueObjectBuilder>}
+     */
+    const proxyStore = new ProxyStoreBuilder()
+      .store(store)
+      .type(FakeValueObject)
+      .typeBuilder(FakeValueObjectBuilder)
+      .mapper(
+        (data) => FakeValueObjectBuilder.from(data).build())
+      .build()
+
     assert(TypeCheck.isStoreBase(proxyStore))
 
-    const proxyStoreFromPublic = StoreBuilder
-      .Proxy(
-        new ProxyConfig(
-          new StoreTypeConfig(
-            Object,
-            v => v,
-            v => true,
-            o => o
-          ),
-          publicStoreHandler,
-          v => v
-        )
-      )
+    /**
+     *
+     * @type {ProxyStore<FakeValueObject, FakeValueObject, FakeValueObjectBuilder>}
+     */
+    const proxyStoreFromPublic = new ProxyStoreBuilder()
+      .store(publicStoreHandler)
+      .type(FakeValueObject)
+      .typeBuilder(FakeValueObjectBuilder)
+      .mapper(
+        (data) => FakeValueObjectBuilder.from(data).build())
+      .build()
     assert(TypeCheck.isStoreBase(proxyStoreFromPublic))
   }
 
@@ -93,19 +89,13 @@ export class TestTypeCheck extends TestCase {
     assert(TypeCheck.isExecutor(executor))
   }
 
-
-
   testIsActionDispatcher() {
-    const action = ActionDispatcherBuilder.build(
-      new PublicActionDispatcherConfig(
-        new ActionTypeConfig(
-          FakeValueObject,
-          v => v,
-          v => true
-        ),
-        new Dispatcher()
-      )
-    )
+    const action = new ActionDispatcherBuilder()
+      .type(FakeValueObject)
+      .payloadBuilder(FakeValueObjectBuilder)
+      .dispatcher(new Dispatcher())
+      .build()
+
     assert(TypeCheck.isActionDispatcher(action))
   }
 

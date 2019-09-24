@@ -1,10 +1,10 @@
 import {TestCase} from 'code-altimeter-js'
-import {StoreBuilder, InMemoryConfig, ProxyConfig} from '../../js/Store/StoreBuilder'
-import {StoreTypeConfig} from '../../js/Store/StoreTypeConfig'
 import {HotBalloonApplication} from '../../js/Application/HotBalloonApplication'
 import {Dispatcher} from '../../js/Dispatcher/Dispatcher'
 import {ViewContainer, ViewContainerParameters} from '../../js/View/ViewContainer'
 import {FakeLogger} from '@flexio-oss/js-logger'
+import {InMemoryStoreBuilder} from '../../js/Store/InMemoryStoreBuilder'
+import {FakeValueObject, FakeValueObjectBuilder} from '../FakeValueObject'
 
 const assert = require('assert')
 
@@ -51,21 +51,15 @@ export class TestComponentContext extends TestCase {
   }
 
   getStore() {
-    return StoreBuilder
-      .InMemory(
-        new InMemoryConfig(
-          new StoreTypeConfig(
-            Object,
-            v => v,
-            v => true,
-            o => o
-          ),
-          {
-            a: 1,
-            b: 2
-          }
-        )
-      )
+    /**
+     *
+     * @type {Store<FakeValueObject, FakeValueObjectBuilder>}
+     */
+    return new InMemoryStoreBuilder()
+      .type(FakeValueObject)
+      .typeBuilder(FakeValueObjectBuilder)
+      .initialData(new FakeValueObject())
+      .build()
   }
 
   getViewContainer() {

@@ -1,12 +1,9 @@
 import {assertType} from '@flexio-oss/assert'
 import {SymbolStringArray} from '@flexio-oss/extended-flex-types'
-import {EventListenerBuilder} from '@flexio-oss/event-handler'
+import {EventListenerConfigBuilder} from '@flexio-oss/event-handler'
 import {ActionDispatcherArray} from '../Action/ActionDispatcherArray'
 
-/**
- * @extends {EventListenerBuilder}
- */
-export class DispatcherEventListenerBuilder extends EventListenerBuilder {
+export class DispatcherEventListenerConfigBuilder extends EventListenerConfigBuilder {
   /**
    *
    * @param {ActionDispatcherArray} actions
@@ -19,7 +16,7 @@ export class DispatcherEventListenerBuilder extends EventListenerBuilder {
   /**
    *
    * @param {...ActionDispatcher} action
-   * @return {DispatcherEventListenerBuilder}
+   * @return {DispatcherEventListenerConfigBuilder}
    * @constructor
    */
   static listen(...action) {

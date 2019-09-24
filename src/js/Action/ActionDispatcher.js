@@ -2,7 +2,7 @@ import {assertType} from '@flexio-oss/assert'
 import {UID} from '@flexio-oss/js-helpers'
 import {EventAction} from './EventAction'
 import {ActionDispatcherConfig} from './ActionDispatcherConfig'
-import {DispatcherEventListenerBuilder} from '../Dispatcher/DispatcherEventListenerBuilder'
+import {DispatcherEventListenerConfigBuilder} from '../Dispatcher/DispatcherEventListenerConfigBuilder'
 import {WithID} from '../abstract/WithID'
 import {ValidationError} from '../Exception/ValidationError'
 import {
@@ -103,7 +103,7 @@ export class ActionDispatcher extends WithID {
    */
   listenWithCallback(callback) {
     return this[_actionConfig].dispatcher
-      .addActionListener(DispatcherEventListenerBuilder
+      .addActionListener(DispatcherEventListenerConfigBuilder
         .listen(this)
         .callback(callback)
         .build()

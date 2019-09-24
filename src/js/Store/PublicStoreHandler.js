@@ -13,8 +13,7 @@ const _store = Symbol('_store')
 export class PublicStoreHandler {
   /**
    *
-   * @template TYPE
-   * @param {StoreInterface<TYPE>} store
+   * @param {StoreInterface<TYPE, TYPE_BUILDER>} store
    */
   constructor(store) {
     Object.defineProperty(this, CLASS_TAG_NAME, {
@@ -25,7 +24,7 @@ export class PublicStoreHandler {
     })
 
     /**
-     * @params {StoreInterface<TYPE>}
+     * @params {StoreInterface<TYPE, TYPE_BUILDER>}
      */
     this[_store] = store
   }
@@ -88,7 +87,7 @@ export class PublicStoreHandler {
 
   /**
    *
-   * @param {StoreInterface~changedClb} clb
+   * @param {StoreInterface~changedClb<TYPE>} clb
    * @return {string} token
    */
   listenChanged(clb = (state) => true) {

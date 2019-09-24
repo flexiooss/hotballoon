@@ -29,7 +29,7 @@ export class StoreBaseConfig {
      * @type {StoreTypeConfig<TYPE, TYPE_BUILDER>}
      * @protected
      */
-    this._typeConfig = storeTypeConfig
+    this._storeTypeConfig = storeTypeConfig
 
     assertType(storage instanceof StorageInterface,
       'hotballoon:' + this.constructor.name + ':constructor: `storage` argument should be an instance of `StorageInterface`')
@@ -54,7 +54,7 @@ export class StoreBaseConfig {
    * @return {TYPE.}
    */
   get type() {
-    return this._typeConfig.type
+    return this._storeTypeConfig.type
   }
 
   /**
@@ -62,7 +62,7 @@ export class StoreBaseConfig {
    * @return {TYPE_BUILDER.}
    */
   get typeBuilder() {
-    return this._typeConfig.typeBuilder
+    return this._storeTypeConfig.typeBuilder
   }
 
   /**
@@ -70,7 +70,7 @@ export class StoreBaseConfig {
    * @return {StoreTypeConfig~validatorClb<TYPE>}
    */
   get validator() {
-    return this._typeConfig.validator
+    return this._storeTypeConfig.validator
   }
 
   /**
@@ -78,7 +78,7 @@ export class StoreBaseConfig {
    * @return {StoreTypeConfig~defaultCheckerClb<TYPE>}
    */
   get defaultChecker() {
-    return this._typeConfig.defaultChecker
+    return this._storeTypeConfig.defaultChecker
   }
 
   /**

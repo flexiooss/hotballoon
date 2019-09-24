@@ -17,6 +17,7 @@ export class ProxyStoreConfig extends StoreBaseConfig {
     super(id, storeTypeConfig, storage)
 
     assertType(TypeCheck.isStoreBase(store), '`store` argument should be an instance of StoreInterface')
+
     assertType(isFunction(mapper), '`mapper` argument should be a Function')
 
     this._mapper = mapper

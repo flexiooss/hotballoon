@@ -30,12 +30,7 @@ export class ProxyStoreBuilder {
      * @private
      */
     this.__typeBuilder = null
-    /**
-     *
-     * @type {?TYPE}
-     * @private
-     */
-    this.__initialData = null
+
     /**
      *
      * @type  {StoreTypeConfig~validatorClb<TYPE>}
@@ -99,16 +94,6 @@ export class ProxyStoreBuilder {
 
   /**
    *
-   * @param {TYPE} initialData
-   * @return {ProxyStoreBuilder}
-   */
-  initialData(initialData) {
-    this.__initialData = initialData
-    return this
-  }
-
-  /**
-   *
    * @param {StoreTypeConfig~defaultCheckerClb<TYPE>} defaultChecker
    * @return {ProxyStoreBuilder}
    */
@@ -151,7 +136,7 @@ export class ProxyStoreBuilder {
           new StoreState(
             id,
             this.__type,
-            this.__initialData
+            this.__mapper(this.__store.state().data)
           )
         )
       )
