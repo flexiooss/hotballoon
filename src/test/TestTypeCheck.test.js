@@ -90,6 +90,10 @@ export class TestTypeCheck extends TestCase {
   }
 
   testIsActionDispatcher() {
+    /**
+     *
+     * @type {ActionDispatcher<FakeValueObject, FakeValueObjectBuilder>}
+     */
     const action = new ActionDispatcherBuilder()
       .type(FakeValueObject)
       .payloadBuilder(FakeValueObjectBuilder)
