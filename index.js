@@ -3,24 +3,12 @@ export {Dispatcher} from './src/js/Dispatcher/Dispatcher'
 
 export {Component} from './src/js/Component/Component'
 
-export {
-  ActionDispatcherBuilder, PublicActionDispatcherConfig as ActionDispatcherConfig
-}from './src/js/Action/ActionDispatcherBuilder'
-export {ActionTypeConfig} from './src/js/Action/ActionTypeConfig'
+export {ActionDispatcherBuilder}from './src/js/Action/ActionDispatcherBuilder'
 
 export {View} from './src/js/View/View'
 export {ViewContainer, ViewContainerParameters} from './src/js/View/ViewContainer'
 export {ViewContainerPublicEventHandler} from './src/js/View/ViewContainerPublicEventHandler'
-export {
-  ViewPublicEventHandler,
-  VIEW_RENDER,
-  VIEW_RENDERED,
-  VIEW_UPDATE,
-  VIEW_UPDATED,
-  VIEW_STORE_CHANGED,
-  VIEW_MOUNT,
-  VIEW_MOUNTED
-} from './src/js/View/ViewPublicEventHandler'
+export {ViewPublicEventHandler} from './src/js/View/ViewPublicEventHandler'
 
 export {ElementEventListenerBuilder} from './src/js/HotballoonNodeElement/ElementEventListenerBuilder'
 
