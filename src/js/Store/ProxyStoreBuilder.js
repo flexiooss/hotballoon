@@ -24,12 +24,6 @@ export class ProxyStoreBuilder {
      * @private
      */
     this.__type = null
-    /**
-     *
-     * @type {?TYPE_BUILDER.}
-     * @private
-     */
-    this.__typeBuilder = null
 
     /**
      *
@@ -82,17 +76,7 @@ export class ProxyStoreBuilder {
     return this
   }
 
-  /**
-   *
-   * @param {TYPE_BUILDER.} typeBuilder
-   * @return {ProxyStoreBuilder}
-   */
-  typeBuilder(typeBuilder) {
-    this.__typeBuilder = typeBuilder
-    return this
-  }
-
-  /**
+   /**
    *
    * @param {StoreTypeConfig~defaultCheckerClb<TYPE>} defaultChecker
    * @return {ProxyStoreBuilder}
@@ -126,7 +110,6 @@ export class ProxyStoreBuilder {
         this.__store,
         new StoreTypeConfig(
           this.__type,
-          this.__typeBuilder,
           this.__defaultChecker,
           this.__validator
         ),

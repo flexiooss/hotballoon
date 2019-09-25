@@ -118,15 +118,4 @@ export class StoreInterface {
    `, 'METHOD_NOT_OVERRIDE')
   }
 
-  /**
-   *
-   * @return {TYPE_BUILDER.}
-   */
-  typeBuilder() {
-    throw new CoreException(`state should be override with this signature :
-   /**
-   * @return {TYPE_BUILDER.}
-   */
-   `, 'METHOD_NOT_OVERRIDE')
-  }
 }

@@ -105,7 +105,7 @@ export class StoreBase extends WithID {
   }
 
   /**
-   * @returns {!StoreState<TYPE>} state frozen
+   * @returns {StoreState<TYPE>} state frozen
    */
   state() {
     return this[_get]()
@@ -121,10 +121,36 @@ export class StoreBase extends WithID {
 
   /**
    *
-   * @return {TYPE_BUILDER.}
+   * @return {TYPE_BUILDER}
    */
-  typeBuilder() {
-    return this[_storeParams].typeBuilder
+  dataBuilder() {
+    return this[_storeParams].type.builder()
+  }
+
+  /**
+   * @param {Object} object
+   * @return {TYPE_BUILDER}
+   */
+  dataFromObject(object) {
+    return this[_storeParams].type.fromObject(object)
+  }
+
+  /**
+   *
+   * @param {TYPE} instance
+   * @return {TYPE_BUILDER}
+   */
+  dataFrom(instance) {
+    return this[_storeParams].type.from(instance)
+  }
+
+  /**
+   *
+   * @param {string} json
+   * @return {TYPE_BUILDER}
+   */
+  dataFromJSON(json) {
+    return this[_storeParams].type.fromJSON(json)
   }
 
   /**

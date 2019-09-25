@@ -16,12 +16,7 @@ export class InMemoryStoreBuilder {
      * @private
      */
     this.__type = null
-    /**
-     *
-     * @type {?TYPE_BUILDER.}
-     * @private
-     */
-    this.__typeBuilder = null
+
     /**
      *
      * @type {?TYPE}
@@ -49,16 +44,6 @@ export class InMemoryStoreBuilder {
    */
   type(type) {
     this.__type = type
-    return this
-  }
-
-  /**
-   *
-   * @param {TYPE_BUILDER.} typeBuilder
-   * @return {InMemoryStoreBuilder}
-   */
-  typeBuilder(typeBuilder) {
-    this.__typeBuilder = typeBuilder
     return this
   }
 
@@ -105,7 +90,6 @@ export class InMemoryStoreBuilder {
         id,
         new StoreTypeConfig(
           this.__type,
-          this.__typeBuilder,
           this.__defaultChecker,
           this.__validator
         ),

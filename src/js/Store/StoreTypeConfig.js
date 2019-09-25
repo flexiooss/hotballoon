@@ -6,13 +6,11 @@ import {assertType, isClass, isFunction} from '@flexio-oss/assert'
 export class StoreTypeConfig {
   /**
    * @param {TYPE.} type
-   * @param {TYPE_BUILDER.} typeBuilder
    * @param {StoreTypeConfig~defaultCheckerClb<TYPE>} [defaultChecker= v=>v]
    * @param {StoreTypeConfig~validatorClb<TYPE>} [validator= ()=>true]
    */
   constructor(
     type,
-    typeBuilder,
     defaultChecker = v => v,
     validator = () => true,
   ) {
@@ -26,17 +24,6 @@ export class StoreTypeConfig {
      * @protected
      */
     this._type = type
-
-    assertType(
-      isClass(typeBuilder),
-      'hotballoon:StoreTypeConfig:constructor: `typeBuilder` argument should be a Class'
-    )
-    /**
-     *
-     * @type {TYPE_BUILDER}
-     * @protected
-     */
-    this._typeBuilder = typeBuilder
 
     assertType(
       isFunction(validator),
@@ -67,14 +54,6 @@ export class StoreTypeConfig {
    */
   get type() {
     return this._type
-  }
-
-  /**
-   *
-   * @return {TYPE_BUILDER.}
-   */
-  get typeBuilder() {
-    return this._typeBuilder
   }
 
   /**

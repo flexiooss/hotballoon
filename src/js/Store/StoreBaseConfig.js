@@ -59,14 +59,6 @@ export class StoreBaseConfig {
 
   /**
    *
-   * @return {TYPE_BUILDER.}
-   */
-  get typeBuilder() {
-    return this._storeTypeConfig.typeBuilder
-  }
-
-  /**
-   *
    * @return {StoreTypeConfig~validatorClb<TYPE>}
    */
   get validator() {

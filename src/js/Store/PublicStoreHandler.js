@@ -69,15 +69,6 @@ export class PublicStoreHandler {
 
   /**
    *
-   * @return {TYPE_BUILDER.}
-   */
-  typeBuilder() {
-    return this[_store].typeBuilder()
-
-  }
-
-  /**
-   *
    * @param {Class} constructor
    * @return {boolean}
    */
