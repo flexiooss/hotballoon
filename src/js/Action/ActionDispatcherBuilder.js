@@ -16,7 +16,7 @@ export class ActionDispatcherBuilder {
      */
     this.__dispatcher = null
     this.__type = null
-    this.__payloadBuilder = null
+    this.__typeBuilder = null
     this.__validator = () => true
     this.__defaultChecker = v => v
   }
@@ -43,11 +43,11 @@ export class ActionDispatcherBuilder {
 
   /**
    *
-   * @param {TYPE_BUILDER.} payloadBuilder
+   * @param {TYPE_BUILDER.} typeBuilder
    * @return {ActionDispatcherBuilder}
    */
-  payloadBuilder(payloadBuilder) {
-    this.__payloadBuilder = payloadBuilder
+  typeBuilder(typeBuilder) {
+    this.__typeBuilder = typeBuilder
     return this
   }
 
@@ -82,7 +82,7 @@ export class ActionDispatcherBuilder {
         UID(this.__type.name + '_'),
         new ActionTypeConfig(
           this.__type,
-          this.__payloadBuilder,
+          this.__typeBuilder,
           this.__defaultChecker,
           this.__validator
         ),

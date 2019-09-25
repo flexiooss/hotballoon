@@ -51,8 +51,8 @@ export class ActionDispatcher extends WithID {
    *
    * @return {TYPE_BUILDER.}
    */
-  payloadBuilder() {
-    return this[_actionConfig].payloadBuilder
+  typeBuilder() {
+    return this[_actionConfig].typeBuilder
   }
 
   /**

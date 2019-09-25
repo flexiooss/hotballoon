@@ -96,7 +96,7 @@ export class TestTypeCheck extends TestCase {
      */
     const action = new ActionDispatcherBuilder()
       .type(FakeValueObject)
-      .payloadBuilder(FakeValueObjectBuilder)
+      .typeBuilder(FakeValueObjectBuilder)
       .dispatcher(new Dispatcher())
       .build()
 
