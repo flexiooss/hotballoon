@@ -16,7 +16,6 @@ export class ActionDispatcherBuilder {
      */
     this.__dispatcher = null
     this.__type = null
-    this.__typeBuilder = null
     this.__validator = () => true
     this.__defaultChecker = v => v
   }
@@ -41,17 +40,7 @@ export class ActionDispatcherBuilder {
     return this
   }
 
-  /**
-   *
-   * @param {TYPE_BUILDER.} typeBuilder
-   * @return {ActionDispatcherBuilder}
-   */
-  typeBuilder(typeBuilder) {
-    this.__typeBuilder = typeBuilder
-    return this
-  }
-
-  /**
+    /**
    *
    * @param {ActionTypeConfig~defaultCheckerClb<TYPE>} [defaultChecker=data=>data]
    * @return {ActionDispatcherBuilder}
@@ -82,7 +71,6 @@ export class ActionDispatcherBuilder {
         UID(this.__type.name + '_'),
         new ActionTypeConfig(
           this.__type,
-          this.__typeBuilder,
           this.__defaultChecker,
           this.__validator
         ),

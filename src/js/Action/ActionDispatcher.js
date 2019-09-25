@@ -49,10 +49,36 @@ export class ActionDispatcher extends WithID {
 
   /**
    *
-   * @return {TYPE_BUILDER.}
+   * @return {TYPE_BUILDER}
    */
-  typeBuilder() {
-    return this[_actionConfig].typeBuilder
+  payloadBuilder() {
+    return this[_actionConfig].type.builder()
+  }
+
+  /**
+   * @param {Object} object
+   * @return {TYPE_BUILDER}
+   */
+  payloadFromObject(object) {
+    return this[_actionConfig].type.fromObject(object)
+  }
+
+  /**
+   *
+   * @param {TYPE} instance
+   * @return {TYPE_BUILDER}
+   */
+  payloadFrom(instance) {
+    return this[_actionConfig].type.from(instance)
+  }
+
+  /**
+   *
+   * @param {string} json
+   * @return {TYPE_BUILDER}
+   */
+  payloadFromJSON(json) {
+    return this[_actionConfig].type.fromJSON(json)
   }
 
   /**
