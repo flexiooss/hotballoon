@@ -10,7 +10,7 @@ export {ViewContainer, ViewContainerParameters} from './src/js/View/ViewContaine
 export {ViewContainerPublicEventHandler} from './src/js/View/ViewContainerPublicEventHandler'
 export {ViewPublicEventHandler} from './src/js/View/ViewPublicEventHandler'
 
-export {ElementEventListenerBuilder} from './src/js/HotballoonNodeElement/ElementEventListenerBuilder'
+export {ElementEventListenerConfigBuilder} from './src/js/HotballoonNodeElement/ElementEventListenerConfigBuilder'
 
 export {PublicStoreHandler} from './src/js/Store/PublicStoreHandler'
 export {ProxyStoreBuilder} from './src/js/Store/ProxyStoreBuilder'
