@@ -26,7 +26,6 @@ export class TestTypeCheck extends TestCase {
      */
     const store = new InMemoryStoreBuilder()
       .type(FakeValueObject)
-      .typeBuilder(FakeValueObjectBuilder)
       .initialData(new FakeValueObject())
       .build()
 
@@ -46,7 +45,6 @@ export class TestTypeCheck extends TestCase {
     const proxyStore = new ProxyStoreBuilder()
       .store(store)
       .type(FakeValueObject)
-      .typeBuilder(FakeValueObjectBuilder)
       .mapper(
         (data) => FakeValueObjectBuilder.from(data).build())
       .build()
@@ -60,7 +58,6 @@ export class TestTypeCheck extends TestCase {
     const proxyStoreFromPublic = new ProxyStoreBuilder()
       .store(publicStoreHandler)
       .type(FakeValueObject)
-      .typeBuilder(FakeValueObjectBuilder)
       .mapper(
         (data) => FakeValueObjectBuilder.from(data).build())
       .build()
@@ -96,7 +93,6 @@ export class TestTypeCheck extends TestCase {
      */
     const action = new ActionDispatcherBuilder()
       .type(FakeValueObject)
-      .typeBuilder(FakeValueObjectBuilder)
       .dispatcher(new Dispatcher())
       .build()
 

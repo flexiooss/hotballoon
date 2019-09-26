@@ -1,6 +1,4 @@
 import {TestCase} from 'code-altimeter-js'
-import {StoreBuilder, InMemoryConfig, ProxyConfig} from '../../js/Store/StoreBuilder'
-import {StoreTypeConfig} from '../../js/Store/StoreTypeConfig'
 import {InMemoryStoreBuilder} from '../../js/Store/InMemoryStoreBuilder'
 import {ProxyStoreBuilder} from '../../js/Store/ProxyStoreBuilder'
 
@@ -12,7 +10,6 @@ export class TestProxyStore extends TestCase {
   setUp() {
     this.store = new InMemoryStoreBuilder()
       .type(FakeValueObject)
-      .typeBuilder(FakeValueObjectBuilder)
       .initialData(
         new FakeValueObjectBuilder()
           .a(1)
@@ -26,7 +23,6 @@ export class TestProxyStore extends TestCase {
     let invoked = 0
     this.proxyStore = new ProxyStoreBuilder()
       .type(FakeValueObject)
-      .typeBuilder(FakeValueObjectBuilder)
       .store(this.store)
       .mapper(
         /**
@@ -58,7 +54,6 @@ export class TestProxyStore extends TestCase {
 
     this.proxyStore = new ProxyStoreBuilder()
       .type(FakeValueObject)
-      .typeBuilder(FakeValueObjectBuilder)
       .store(this.store)
       .mapper(
         /**

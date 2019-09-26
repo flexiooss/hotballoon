@@ -57,7 +57,6 @@ export class TestComponentContext extends TestCase {
      */
     return new InMemoryStoreBuilder()
       .type(FakeValueObject)
-      .typeBuilder(FakeValueObjectBuilder)
       .initialData(new FakeValueObject())
       .build()
   }

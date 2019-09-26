@@ -11,9 +11,7 @@
   "author": "Thomas Chatelain (https://github.com/TomAchT)",
   "repository": "https://github.com/flexiooss/hotballoon.git",
   "devDependencies": {
-    "code-altimeter-js": "https://github.com/flexiooss/code-altimeter-js.git",
-    "eslint": "^5.13.0",
-    "eslint-plugin-html": "^4.0.1"
+    "code-altimeter-js": "https://github.com/flexiooss/code-altimeter-js.git"
   },
   "dependencies": {
     "@flexio-corp/js-common-parent": "0.0.0-dev",
