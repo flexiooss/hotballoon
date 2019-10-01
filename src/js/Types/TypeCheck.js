@@ -13,6 +13,7 @@ import {
   CLASS_TAG_NAME_EXECUTOR
 } from './HasTagClassNameInterface'
 import {assertType} from '@flexio-oss/assert'
+import {ElementDescription} from '../HotballoonNodeElement/ElementDescription'
 
 class TypeCheck {
   /**
@@ -154,6 +155,15 @@ class TypeCheck {
    */
   static isViewContainerBase(inst) {
     return testClassTagName(inst, CLASS_TAG_NAME_VIEWCONTAINER) || testClassTagName(inst, CLASS_TAG_NAME_VIEW)
+  }
+
+  /**
+   *
+   * @param {*} instance
+   * @return {boolean}
+   */
+  static isElementDescription(instance) {
+    return instance instanceof ElementDescription
   }
 }
 
