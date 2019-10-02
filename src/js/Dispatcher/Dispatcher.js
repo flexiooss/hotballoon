@@ -2,6 +2,7 @@ import {assert, assertType, isArray, isNull} from '@flexio-oss/assert'
 import {EventHandlerBase} from '@flexio-oss/event-handler'
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_DISPATCHER} from '../Types/HasTagClassNameInterface'
 import {EventAction} from '../Action/EventAction'
+import {LoggerInterface} from '@flexio-oss/js-logger'
 
 const dispatcherLogOptions = {
   color: 'pink',
@@ -15,10 +16,15 @@ const dispatcherLogOptions = {
  * @implements HasTagClassNameInterface
  */
 export class Dispatcher extends EventHandlerBase {
-  constructor() {
+  /**
+   * @param {LoggerInterface} logger
+   */
+  constructor(logger) {
     super()
 
-    var logger = null
+    assertType(logger instanceof LoggerInterface,
+      'hotballoon:Dispatcher:constructor: `logger` argument should be an instance of LoggerInterface'
+    )
 
     Object.defineProperties(this, {
       [CLASS_TAG_NAME]: {
@@ -31,7 +37,7 @@ export class Dispatcher extends EventHandlerBase {
         configurable: false,
         enumerable: true,
         /**
-         * @name Store#_storage
+         * @name Dispatcher#_logger
          * @protected
          */
         get: () => logger,
@@ -71,11 +77,11 @@ export class Dispatcher extends EventHandlerBase {
 
   /**
    *
-   * @param {EventListenerParam} eventListenerParam
+   * @param {EventListenerConfig} eventListenerConfig
    * @returns {(String|StringArray)} token
    */
-  addActionListener(eventListenerParam) {
-    return this.addEventListener(eventListenerParam)
+  addActionListener(eventListenerConfig) {
+    return this.addEventListener(eventListenerConfig)
   }
 
   /**
@@ -106,22 +112,6 @@ export class Dispatcher extends EventHandlerBase {
     )
 
     super.dispatch(eventAction.name, eventAction.payload)
-  }
-
-  /**
-   *
-   * @param {LoggerInterface} logger
-   */
-  setLogger(logger) {
-    this._logger = logger
-
-    this.logger().log(
-      this.logger().builder()
-        .debug()
-        .pushLog('Dispatcher added to HotballoonApplication')
-        .pushLog(this),
-      dispatcherLogOptions
-    )
   }
 
   /**

@@ -42,8 +42,6 @@ export class HotBalloonApplication extends WithID {
       'hotballoon:HotBalloonApplication:constructor: `logger` argument should be an instance of LoggerInterface'
     )
 
-    dispatcher.setLogger(logger)
-
     const _componentContexts = new ComponentContextMap()
     const _services = new Map()
     const _sequenceId = new Sequence('hb_')
