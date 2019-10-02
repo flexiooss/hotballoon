@@ -65,17 +65,17 @@ export class TestTypeCheck extends TestCase {
   }
 
   testIsHotballoonApplication() {
-    const app = new HotBalloonApplication('id', new Dispatcher(), new FakeLogger().debug())
+    const app = new HotBalloonApplication('id', new Dispatcher(new FakeLogger()), new FakeLogger().debug())
     assert(TypeCheck.isHotballoonApplication(app))
   }
 
   testIsComponentContext() {
-    const componentContext = new HotBalloonApplication('id', new Dispatcher(), new FakeLogger().debug()).addComponentContext()
+    const componentContext = new HotBalloonApplication('id', new Dispatcher(new FakeLogger()), new FakeLogger().debug()).addComponentContext()
     assert(TypeCheck.isComponentContext(componentContext))
   }
 
   testIsDispatcher() {
-    const dispatcher = new Dispatcher()
+    const dispatcher = new Dispatcher(new FakeLogger())
     assert(TypeCheck.isDispatcher(dispatcher))
   }
 
@@ -93,7 +93,7 @@ export class TestTypeCheck extends TestCase {
      */
     const action = new ActionDispatcherBuilder()
       .type(FakeValueObject)
-      .dispatcher(new Dispatcher())
+      .dispatcher(new Dispatcher(new FakeLogger()))
       .build()
 
     assert(TypeCheck.isActionDispatcher(action))
@@ -102,7 +102,7 @@ export class TestTypeCheck extends TestCase {
   testIsViewContainer() {
     const viewContainer = new ViewContainer(
       new ViewContainerParameters(
-        new ComponentContext(new HotBalloonApplication('test', new Dispatcher(), new FakeLogger())), 'id', {nodeType: 2}
+        new ComponentContext(new HotBalloonApplication('test', new Dispatcher(new FakeLogger()), new FakeLogger())), 'id', {nodeType: 2}
       )
     )
     assert(TypeCheck.isViewContainer(viewContainer))

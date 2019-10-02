@@ -7,7 +7,7 @@ const assert = require('assert')
 
 export class TestHotBalloonApplication extends TestCase {
   setUp() {
-    this.dispatcher = new Dispatcher()
+    this.dispatcher = new Dispatcher(new FakeLogger())
     this.APP = new HotBalloonApplication('id', this.dispatcher, new FakeLogger().debug())
   }
 
