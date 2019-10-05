@@ -33,6 +33,14 @@ const viewLogOptions = {
   titleSize: 2
 }
 
+const requestAFrame = window.requestAnimationFrame
+  || window.webkitRequestAnimationFrame
+  || window.mozRequestAnimationFrame
+  || window.msRequestAnimationFrame
+  || function(cb) {
+    return setTimeout(cb, 16)
+  }
+
 /**
  * @extends {ViewContainerBase}
  * @implements {HasTagClassNameInterface}
@@ -51,11 +59,11 @@ export class View extends ViewContainerBase {
 
     this.parentNode = container.parentNode
 
-    var _node = null
-    var _shouldInit = true
-    var _shouldRender = true
-    var _shouldMount = true
-    var _shouldUpdate = true
+    let _node = null
+    let _shouldInit = true
+    let _shouldRender = true
+    let _shouldMount = true
+    let _shouldUpdate = true
     const _nodeRefs = new Map()
 
     Object.defineProperty(this, CLASS_TAG_NAME, {
@@ -260,7 +268,7 @@ export class View extends ViewContainerBase {
       )
 
       this.dispatch(VIEW_UPDATE, {})
-      this[_update]()
+      requestAFrame(this[_update]())
       this.dispatch(VIEW_UPDATED, {})
     }
     this._shouldUpdate = true
