@@ -268,7 +268,7 @@ export class View extends ViewContainerBase {
       )
 
       this.dispatch(VIEW_UPDATE, {})
-      requestAFrame(this[_update]())
+      requestAFrame(() => this[_update]())
       this.dispatch(VIEW_UPDATED, {})
     }
     this._shouldUpdate = true
