@@ -1,4 +1,4 @@
-import {assertType, isFunction, isSymbol, isString} from '@flexio-oss/assert'
+import {assertType, isFunction, isString, isSymbol} from '@flexio-oss/assert'
 import {OrderedEventListenerConfigBuilder} from '@flexio-oss/event-handler'
 
 export const VIEW_RENDER = 'VIEW_RENDER'
@@ -33,7 +33,7 @@ export class ViewPublicEventHandler {
   /**
    *
    * @param {(string|Symbol)}event
-   * @param {Function} clb
+   * @param {function(payload: *, ...args:*)} clb
    * @param {...*} args
    * @return {String}
    * @protected
@@ -50,8 +50,8 @@ export class ViewPublicEventHandler {
     return this.__subscriber(
       OrderedEventListenerConfigBuilder
         .listen(event)
-        .callback(() => {
-          clb(...args)
+        .callback((payload) => {
+          clb(payload, ...args)
         })
         .build()
     )
