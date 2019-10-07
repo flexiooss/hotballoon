@@ -18,11 +18,11 @@ export class ViewContainerBase extends WithID {
   constructor(id) {
     super(id)
 
-    var _mounted = false
-    var _rendered = false
-    var _tokenEvent = new ArrayMap()
-    var _views = new ViewContainerBaseMap()
-    var parentNode
+    let _mounted = false
+    let _rendered = false
+    let _tokenEvent = new ArrayMap()
+    let _views = new ViewContainerBaseMap()
+    let parentNode
 
     Object.defineProperties(this, {
       _mounted: {
