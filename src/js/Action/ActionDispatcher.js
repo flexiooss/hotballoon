@@ -1,4 +1,4 @@
-import {assertType} from '@flexio-oss/assert'
+import {assertType, isNull} from '@flexio-oss/assert'
 import {UID} from '@flexio-oss/js-helpers'
 import {EventAction} from './EventAction'
 import {ActionDispatcherConfig} from './ActionDispatcherConfig'
@@ -9,7 +9,6 @@ import {
   CLASS_TAG_NAME,
   CLASS_TAG_NAME_ACTION
 } from '../Types/HasTagClassNameInterface'
-import {isNull} from '../../../../assert'
 
 const _actionConfig = Symbol('_actionParams')
 
