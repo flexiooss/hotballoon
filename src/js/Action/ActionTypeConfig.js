@@ -1,4 +1,5 @@
-import {assertType, isFunction, isClass} from '@flexio-oss/assert'
+import {assertType, isFunction, isClass, isNull} from '@flexio-oss/assert'
+import {TypeCheck} from '@flexio-oss/js-validator-helper'
 
 /**
  * @template TYPE, TYPE_BUILDER
@@ -7,19 +8,34 @@ export class ActionTypeConfig {
   /**
    * @param {TYPE.} type
    * @param {ActionTypeConfig~defaultCheckerClb<TYPE>} [defaultChecker=data=>data]
-   * @param {ActionTypeConfig~validatorClb<TYPE>} [validator=data=>true]
+   * @param {?ValueObjectValidator} [validator=null]
    */
   constructor(
     type,
     defaultChecker = data => data,
-    validator = data => true
+    validator = null
   ) {
     assertType(isClass(type), 'hotballoon:ActionTypeConfig:constructor "type" argument should be a Class')
-    assertType(isFunction(validator), 'hotballoon:ActionTypeConfig:constructor "validator" argument should be function')
+    assertType(isNull(validator) || TypeCheck.isValueObjectValidator(validator), 'hotballoon:ActionTypeConfig:constructor "validator" argument should be ValueObjectValidator or null')
     assertType(isFunction(defaultChecker), 'hotballoon:ActionTypeConfig:constructor "defaultChecker" argument should be function')
 
+    /**
+     *
+     * @type {TYPE}
+     * @private
+     */
     this._type = type
+    /**
+     *
+     * @type {?ValueObjectValidator}
+     * @private
+     */
     this._validator = validator
+    /**
+     *
+     * @type {ActionTypeConfig~defaultCheckerClb<TYPE>}
+     * @private
+     */
     this._defaultChecker = defaultChecker
   }
 
@@ -33,18 +49,11 @@ export class ActionTypeConfig {
 
   /**
    *
-   * @return {ActionTypeConfig~validatorClb<TYPE>}
+   * @return {?ValueObjectValidator}
    */
   get validator() {
     return this._validator
   }
-
-  /**
-   * @template TYPE
-   * @callback ActionTypeConfig~validatorClb
-   * @param {TYPE} data
-   * @return {boolean}
-   */
 
   /**
    *

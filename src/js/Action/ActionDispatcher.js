@@ -9,6 +9,7 @@ import {
   CLASS_TAG_NAME,
   CLASS_TAG_NAME_ACTION
 } from '../Types/HasTagClassNameInterface'
+import {isNull} from '../../../../assert'
 
 const _actionConfig = Symbol('_actionParams')
 
@@ -110,8 +111,8 @@ export class ActionDispatcher extends WithID {
       this.__type__.name
     )
 
-    if (!this[_actionConfig].validator(data)) {
-      throw new ValidationError('hotballoon:ActionDispatcher:dispatch "data" argument failed tot validation')
+    if (!isNull(this[_actionConfig].validator) && !this[_actionConfig].validator.isValid(payload)) {
+      throw new ValidationError('hotballoon:ActionDispatcher:dispatch "data" argument failed to validation')
     }
 
     this[_actionConfig].dispatcher.dispatchAction(

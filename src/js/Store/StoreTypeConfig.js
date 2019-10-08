@@ -1,4 +1,5 @@
-import {assertType, isClass, isFunction} from '@flexio-oss/assert'
+import {assertType, isClass, isFunction,isNull} from '@flexio-oss/assert'
+import {TypeCheck} from '@flexio-oss/js-validator-helper'
 
 /**
  * @template TYPE, TYPE_BUILDER
@@ -7,12 +8,12 @@ export class StoreTypeConfig {
   /**
    * @param {TYPE.} type
    * @param {StoreTypeConfig~defaultCheckerClb<TYPE>} [defaultChecker= v=>v]
-   * @param {StoreTypeConfig~validatorClb<TYPE>} [validator= ()=>true]
+   * @param {?ValueObjectValidator} [validator=null]
    */
   constructor(
     type,
     defaultChecker = v => v,
-    validator = () => true,
+    validator = null
   ) {
     assertType(
       isClass(type),
@@ -25,13 +26,10 @@ export class StoreTypeConfig {
      */
     this._type = type
 
-    assertType(
-      isFunction(validator),
-      'hotballoon:StoreTypeConfig:constructor: `validator` argument should be a Function'
-    )
+    assertType(isNull(validator) || TypeCheck.isValueObjectValidator(validator), 'hotballoon:ActionTypeConfig:constructor "validator" argument should be ValueObjectValidator or null')
     /**
      *
-     * @type {StoreTypeConfig~validatorClb<TYPE>}
+     * @type {?ValueObjectValidator}
      * @protected
      */
     this._validator = validator
@@ -58,18 +56,11 @@ export class StoreTypeConfig {
 
   /**
    *
-   * @return {StoreTypeConfig~validatorClb<TYPE>}
+   * @return {?ValueObjectValidator}
    */
   get validator() {
     return this._validator
   }
-
-  /**
-   * @template TYPE
-   * @callback StoreTypeConfig~validatorClb
-   * @param {TYPE} v
-   * @return {boolean}
-   */
 
   /**
    *

@@ -1,5 +1,5 @@
 import {WithID} from '../abstract/WithID'
-import {assert, assertType, isFunction, isNumber} from '@flexio-oss/assert'
+import {assert, assertType, isFunction, isNumber, isNull} from '@flexio-oss/assert'
 import {StorageInterface} from './Storage/StorageInterface'
 
 import {OrderedEventHandler} from '../Event/OrderedEventHandler'
@@ -208,7 +208,7 @@ export class StoreBase extends WithID {
       dataStore.constructor.name
     )
 
-    if (!this[_storeParams].validator(data)) {
+    if (!isNull(this[_storeParams].validator) && !this[_storeParams].validator.isValid(data)) {
       throw new ValidationError('StoreBase:set: `dataStore` failed validation')
     }
 
