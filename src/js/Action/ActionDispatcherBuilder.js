@@ -16,7 +16,7 @@ export class ActionDispatcherBuilder {
      */
     this.__dispatcher = null
     this.__type = null
-    this.__validator = () => true
+    this.__validator = null
     this.__defaultChecker = v => v
   }
 
@@ -40,7 +40,7 @@ export class ActionDispatcherBuilder {
     return this
   }
 
-    /**
+  /**
    *
    * @param {ActionTypeConfig~defaultCheckerClb<TYPE>} [defaultChecker=data=>data]
    * @return {ActionDispatcherBuilder}
@@ -52,7 +52,7 @@ export class ActionDispatcherBuilder {
 
   /**
    *
-   * @param {ActionTypeConfig~validatorClb<TYPE>} [validator=data=>true]
+   * @param {?ValueObjectValidator} validator
    * @return {ActionDispatcherBuilder}
    */
   validator(validator) {

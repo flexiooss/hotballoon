@@ -27,10 +27,10 @@ export class ProxyStoreBuilder {
 
     /**
      *
-     * @type  {StoreTypeConfig~validatorClb<TYPE>}
+     * @type  {?ValueObjectValidator}
      * @private
      */
-    this.__validator = () => true
+    this.__validator = null
     /**
      *
      * @type {StoreTypeConfig~defaultCheckerClb<TYPE>}
@@ -88,7 +88,7 @@ export class ProxyStoreBuilder {
 
   /**
    *
-   * @param {StoreTypeConfig~validatorClb<TYPE>} validator
+   * @param {?ValueObjectValidator} validator
    * @return {ProxyStoreBuilder}
    */
   validator(validator) {

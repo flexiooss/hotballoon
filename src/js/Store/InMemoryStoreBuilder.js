@@ -25,10 +25,10 @@ export class InMemoryStoreBuilder {
     this.__initialData = null
     /**
      *
-     * @type  {StoreTypeConfig~validatorClb<TYPE>}
+     * @type  {?ValueObjectValidator}
      * @private
      */
-    this.__validator = () => true
+    this.__validator = null
     /**
      *
      * @type {StoreTypeConfig~defaultCheckerClb<TYPE>}
@@ -69,7 +69,7 @@ export class InMemoryStoreBuilder {
 
   /**
    *
-   * @param {StoreTypeConfig~validatorClb<TYPE>} validator
+   * @param {?ValueObjectValidator} validator
    * @return {InMemoryStoreBuilder}
    */
   validator(validator) {
