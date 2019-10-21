@@ -48,11 +48,11 @@ export class StoreInterface {
 
   /**
    *
-   * @param {StoreInterface~changedClb<TYPE>} clb
+   * @param {function(state: StoreState<TYPE>)} callback
    * @param {number} priority
    * @return {string} token
    */
-  listenChanged(clb, priority) {
+  listenChanged(callback, priority) {
     throw new CoreException(`listenChanged should be override with this signature :
    /**
    * @param {StoreInterface~changedClb} clb
@@ -73,13 +73,6 @@ export class StoreInterface {
    */
    `, 'METHOD_NOT_OVERRIDE')
   }
-
-  /**
-   *
-   * @callback StoreInterface~changedClb
-   * @param {StoreState<TYPE>} state
-   * @template TYPE
-   */
 
   /**
    * @returns {StoreState<TYPE>} state frozen

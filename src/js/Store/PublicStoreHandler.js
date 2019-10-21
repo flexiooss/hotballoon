@@ -1,5 +1,6 @@
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_PUBLIC_STORE_HANDLER} from '../Types/HasTagClassNameInterface'
 import {assertType, isFunction} from '@flexio-oss/assert'
+import {TypeCheck} from '../Types/TypeCheck'
 
 const _store = Symbol('_store')
 
@@ -16,6 +17,11 @@ export class PublicStoreHandler {
    * @param {StoreInterface<TYPE, TYPE_BUILDER>} store
    */
   constructor(store) {
+
+    assertType(
+      TypeCheck.isStoreBase(store),
+      'PublicStoreHandler:construcotr: `store` should be a StoreBase'
+    )
     Object.defineProperty(this, CLASS_TAG_NAME, {
       configurable: false,
       writable: false,
@@ -27,6 +33,14 @@ export class PublicStoreHandler {
      * @params {StoreInterface<TYPE, TYPE_BUILDER>}
      */
     this[_store] = store
+  }
+
+  /**
+   *
+   * @return {string}
+   */
+  changedEventName() {
+    return this[_store].changedEventName()
   }
 
   /**
@@ -78,12 +92,12 @@ export class PublicStoreHandler {
 
   /**
    *
-   * @param {StoreInterface~changedClb<TYPE>} clb
+   * @param {function(state: StoreState<TYPE>)} callback
    * @param {number} [priority=100]
    * @return {string} token
    */
-  listenChanged(clb, priority = 100) {
-    return this[_store].listenChanged(clb, priority)
+  listenChanged(callback, priority = 100) {
+    return this[_store].listenChanged(callback, priority)
   }
 
   /**

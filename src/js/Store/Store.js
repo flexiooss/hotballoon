@@ -7,8 +7,8 @@ export const STORE_INIT = Symbol('STORE.INIT')
 
 /**
  * @template TYPE, TYPE_BUILDER
- * @extends {StoreBase<TYPE>}
- * @implements {StoreInterface<TYPE>}
+ * @extends {StoreBase<TYPE, TYPE_BUILDER>}
+ * @implements {StoreInterface<TYPE, TYPE_BUILDER>}
  * @implements {GenericType<TYPE>}
  * @implements  {HasTagClassNameInterface}
  */

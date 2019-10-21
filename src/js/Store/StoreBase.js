@@ -247,14 +247,14 @@ export class StoreBase extends WithID {
 
   /**
    *
-   * @param {StoreInterface~changedClb} clb
+   * @param {function(state: StoreState<TYPE>)} callback
    * @param {number} [priority=100]
    * @return {string} token
    */
-  listenChanged(clb, priority = 100) {
+  listenChanged(callback, priority = 100) {
     assertType(
-      isFunction(clb),
-      'hotballoon:' + this.constructor.name + ':listenChanged: `clb` argument should be callable'
+      isFunction(callback),
+      'hotballoon:' + this.constructor.name + ':listenChanged: `callback` argument should be callable'
     )
 
     assertType(
@@ -266,7 +266,7 @@ export class StoreBase extends WithID {
       OrderedEventListenerConfigBuilder
         .listen(this.changedEventName())
         .callback((payload) => {
-          clb(payload)
+          callback(payload)
         })
         .priority(priority)
         .build()

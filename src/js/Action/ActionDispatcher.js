@@ -124,22 +124,24 @@ export class ActionDispatcher extends WithID {
 
   /**
    *
-   * @type {ActionDispatcher~eventClb<TYPE>} callback
+   * @param {function(payload: TYPE, type: (string|Symbol))} callback
    * @returns {String} token
    */
   listenWithCallback(callback) {
     return this[_actionConfig].dispatcher
-      .addActionListener(DispatcherEventListenerConfigBuilder
-        .listen(this)
-        .callback(callback)
-        .build()
+      .addActionListener(
+        DispatcherEventListenerConfigBuilder
+          .listen(this)
+          .callback(callback)
+          .build()
       )
   }
 
   /**
-   * @template TYPE
-   * @callback ActionDispatcher~eventClb
-   * @param {TYPE} payload
-   * @param {(string|Symbol)} type
+   *
+   * @param {...string} token
    */
+  waitFor(...token) {
+    this[_actionConfig].dispatcher.waitFor(this.ID, token)
+  }
 }

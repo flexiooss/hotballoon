@@ -98,7 +98,7 @@ export class HotballoonElementParams extends HyperFlexParams {
 
   /**
    * @static
-   * @param {ElementEventListenerParam} nodeEventListenerParam
+   * @param {ElementEventListenerConfig} nodeEventListenerParam
    * @return {this}
    * @constructor
    */
@@ -108,7 +108,7 @@ export class HotballoonElementParams extends HyperFlexParams {
 
   /**
    *
-   * @param {ElementEventListenerParam} nodeEventListenerParam
+   * @param {ElementEventListenerConfig} nodeEventListenerParam
    * @return {this}
    */
   addEventListener(nodeEventListenerParam) {
