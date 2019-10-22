@@ -78,9 +78,8 @@ class CreateHotBalloonElement extends HyperFlex {
   [_changeIdAndSetNodeRef]() {
     const shortId = this._element.id
     if (shortId) {
-      this._element.id = this._scope.elementIdFromRef(shortId)
-      // TODO : hash ids
-      //this._element.id = Checksum.number32bit(this._scope.elementIdFromRef(shortId))
+      // this._element.id = this._scope.elementIdFromRef(shortId)
+      this._element.id = Checksum.number32bit(this._scope.elementIdFromRef(shortId))
       this[_setNodeRef](shortId, this._element)
     }
     return this
