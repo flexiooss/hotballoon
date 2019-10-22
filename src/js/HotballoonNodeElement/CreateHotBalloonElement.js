@@ -21,10 +21,11 @@ class CreateHotBalloonElement extends HyperFlex {
    * @param {View} scope
    * @param {string} querySelector
    * @param {HotballoonElementParams} hotballoonElementParams
+   * @param {Document} document
    * @return {CreateHotBalloonElement}
    */
-  constructor(scope, querySelector, hotballoonElementParams = new HotballoonElementParams()) {
-    super(querySelector, hotballoonElementParams)
+  constructor(scope, querySelector, hotballoonElementParams = new HotballoonElementParams(), document) {
+    super(querySelector, hotballoonElementParams, document)
     /**
      *
      * @params {View}
@@ -45,13 +46,15 @@ class CreateHotBalloonElement extends HyperFlex {
    * @param {View} scope
    * @param {string} querySelector - tag#id.class[.class,...]
    * @param {HotballoonElementParams} hotballoonElementParams
+   * @param {Document} document
    * @return {Element}
    */
-  static html(scope, querySelector, hotballoonElementParams) {
+  static html(scope, querySelector, hotballoonElementParams, document) {
     return new CreateHotBalloonElement(
       scope,
       querySelector,
-      hotballoonElementParams
+      hotballoonElementParams,
+      document
     )
       .createHtmlElement()[_changeIdAndSetNodeRef]()
       ._element

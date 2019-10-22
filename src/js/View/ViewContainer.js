@@ -229,6 +229,14 @@ export class ViewContainer extends ViewContainerBase {
 
   /**
    *
+   * @return {Document}
+   */
+  document() {
+    return this[_ComponentContext].APP().document()
+  }
+
+  /**
+   *
    * @return {LoggerInterface}
    */
   logger() {

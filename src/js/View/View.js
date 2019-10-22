@@ -208,7 +208,7 @@ export class View extends ViewContainerBase {
    * @return {Element}
    */
   html(element) {
-    return html(this, element.querySelector, element.params)
+    return html(this, element.querySelector, element.params, this.document())
   }
 
   /**
@@ -258,7 +258,7 @@ export class View extends ViewContainerBase {
   }
 
   updateNode() {
-    if (this._rendered && this._shouldUpdate) {
+    if (this.isRendered() && this._shouldUpdate) {
       this.logger().log(
         this.logger().builder()
           .debug()
@@ -364,7 +364,7 @@ export class View extends ViewContainerBase {
    */
   nodeRef(key) {
     if (!this._nodeRefs.has(key)) {
-      this._nodeRefs.set(key, document.getElementById(this.elementIdFromRef(key)))
+      this._nodeRefs.set(key, this.document().getElementById(this.elementIdFromRef(key)))
     }
     return this._nodeRefs.get(key)
   }
@@ -454,6 +454,14 @@ export class View extends ViewContainerBase {
    */
   componentID() {
     return this._container.componentID()
+  }
+
+  /**
+   *
+   * @return {Document}
+   */
+  document() {
+    return this._container.document()
   }
 
   /**

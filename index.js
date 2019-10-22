@@ -1,4 +1,6 @@
 export {HotBalloonApplication} from './src/js/Application/HotBalloonApplication'
+export {ApplicationBuilder} from './src/js/Application/ApplicationBuilder'
+
 export {Dispatcher} from './src/js/Dispatcher/Dispatcher'
 
 export {Component} from './src/js/Component/Component'

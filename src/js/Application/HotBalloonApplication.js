@@ -12,6 +12,7 @@ const _ComponentContexts = Symbol('_ComponentContexts')
 const _Services = Symbol('_Services')
 const _SequenceId = Symbol('_SequenceId')
 const _Logger = Symbol('_Logger')
+const _document = Symbol('_document')
 
 const applicationLogOptions = {
   color: 'magenta',
@@ -31,8 +32,9 @@ export class HotBalloonApplication extends WithID {
    * @param {string} id
    * @param {Dispatcher} dispatcher
    * @param {LoggerInterface} logger
+   * @param {Document} document
    */
-  constructor(id, dispatcher, logger) {
+  constructor(id, dispatcher, logger, document) {
     super(id)
 
     assertType(dispatcher instanceof Dispatcher,
@@ -111,6 +113,18 @@ export class HotBalloonApplication extends WithID {
         set: (v) => {
           assert(false,
             'hotballoon:HotBalloonApplication:constructor:_Logger.set: `_sequenceId` already set'
+          )
+        }
+      },
+      [_document]: {
+        configurable: false,
+        enumerable: false,
+        get: () => {
+          return document
+        },
+        set: (v) => {
+          assert(false,
+            'hotballoon:HotBalloonApplication:constructor:_document.set: `_document` already set'
           )
         }
       }
@@ -213,5 +227,13 @@ export class HotBalloonApplication extends WithID {
    */
   logger() {
     return this[_Logger]
+  }
+
+  /**
+   *
+   * @return {Document}
+   */
+  document() {
+    return this[_document]
   }
 }
