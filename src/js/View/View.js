@@ -258,7 +258,7 @@ export class View extends ViewContainerBase {
   }
 
   updateNode() {
-    if (this._shouldUpdate) {
+    if (this._rendered && this._shouldUpdate) {
       this.logger().log(
         this.logger().builder()
           .debug()
