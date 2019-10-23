@@ -2,7 +2,6 @@ import {HotballoonElementParams} from './HotballoonElementParams'
 import {HyperFlex} from '@flexio-oss/flexio-hyperflex'
 import {$} from './HotBalloonAttributeHandler'
 import {RECONCILIATION_RULES} from '@flexio-oss/flexio-nodes-reconciliation'
-import {Checksum} from '@flexio-oss/js-helpers'
 
 const _changeIdAndSetNodeRef = Symbol('_changeIdAndSetNodeRef')
 const _setNodeRef = Symbol('_setNodeRef')
@@ -78,8 +77,7 @@ class CreateHotBalloonElement extends HyperFlex {
   [_changeIdAndSetNodeRef]() {
     const shortId = this._element.id
     if (shortId) {
-      // this._element.id = this._scope.elementIdFromRef(shortId)
-      this._element.id = Checksum.number32bit(this._scope.elementIdFromRef(shortId))
+      this._element.id = this._scope.elementIdFromRef(shortId)
       this[_setNodeRef](shortId, this._element)
     }
     return this

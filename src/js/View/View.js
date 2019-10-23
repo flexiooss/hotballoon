@@ -1,4 +1,5 @@
 import {CoreException} from '../CoreException'
+import {Checksum} from '@flexio-oss/js-helpers'
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_VIEW} from '../Types/HasTagClassNameInterface'
 import {assertType, isBoolean, isFunction, isNode} from '@flexio-oss/assert'
 import {symbolToString} from '@flexio-oss/js-type-helpers'
@@ -486,7 +487,9 @@ export class View extends ViewContainerBase {
    * @return {string}
    */
   elementIdFromRef(ref) {
-    return `${symbolToString(this.AppID())}-${symbolToString(this.componentID())}-${symbolToString(this.containerID())}-${symbolToString(ref)}`
+    return Checksum.number32bit(
+      `${symbolToString(this.AppID())}-${symbolToString(this.componentID())}-${symbolToString(this.containerID())}-${symbolToString(ref)}`
+    )
   }
 
   /**
