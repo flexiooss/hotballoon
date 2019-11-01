@@ -10,7 +10,7 @@ export class ProxyStoreConfig extends StoreBaseConfig {
    * @param {(Symbol|String)} id
    * @param {StoreInterface<STORE_TYPE>} store
    * @param {StoreTypeConfig<TYPE, TYPE_BUILDER>} storeTypeConfig
-   * @param {ProxyStoreConfig~mapperClb<STORE_TYPE, TYPE>} mapper
+   * @param {{function(state: STORE_TYPE ):TYPE}} mapper
    * @param {StorageInterface<TYPE>} storage
    */
   constructor(id, store, storeTypeConfig, mapper, storage) {
@@ -34,18 +34,11 @@ export class ProxyStoreConfig extends StoreBaseConfig {
 
   /**
    *
-   * @return {ProxyStoreConfig~mapperClb<TYPE>}
+   * @return {function(state: STORE_TYPE ):TYPE}
    */
   get mapper() {
     return this._mapper
   }
-
-  /**
-   * @template STORE_TYPE, TYPE
-   * @callback ProxyStoreConfig~mapperClb
-   * @param {STORE_TYPE} v
-   * @return {TYPE}
-   */
 
   /**
    *

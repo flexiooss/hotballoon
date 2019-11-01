@@ -40,7 +40,7 @@ export class ProxyStoreBuilder {
 
     /**
      *
-     * @type {?ProxyStoreConfig~mapperClb<STORE_TYPE, TYPE>} mapper
+     * @type {?function(state: STORE_TYPE ):TYPE} mapper
      * @private
      */
     this.__mapper = null
@@ -58,7 +58,7 @@ export class ProxyStoreBuilder {
 
   /**
    *
-   * @param {ProxyStoreConfig~mapperClb<STORE_TYPE, TYPE>} mapper
+   * @param {function(state: STORE_TYPE ):TYPE} mapper
    * @return {ProxyStoreBuilder}
    */
   mapper(mapper) {
