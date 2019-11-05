@@ -1,7 +1,7 @@
 import {CoreException} from '../CoreException'
 import {Checksum} from '@flexio-oss/js-helpers'
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_VIEW} from '../Types/HasTagClassNameInterface'
-import {assertType, isBoolean, isFunction, isNode} from '@flexio-oss/assert'
+import {assertType, isBoolean, isFunction, isNode, isNull} from '@flexio-oss/assert'
 import {symbolToString} from '@flexio-oss/js-type-helpers'
 import {UID} from '@flexio-oss/js-helpers'
 import {$} from '../HotballoonNodeElement/HotBalloonAttributeHandler'
@@ -91,15 +91,15 @@ export class View extends ViewContainerBase {
         configurable: false,
         get: () => {
           /**
-           * @property {Element} _node
+           * @property {?Element} _node
            * @name View#_node
            * @private
            */
           return _node
         },
         set: (node) => {
-          assertType(isNode(node),
-            'view:_node:set: `node` argument assert be a Node, `%s` given',
+          assertType(isNode(node) || isNull(node),
+            'view:_node:set: `node` argument assert be a Node or Null, `%s` given',
             typeof node
           )
           _node = node
@@ -197,7 +197,7 @@ export class View extends ViewContainerBase {
   }
 
   /**
-   * @return {Element}
+   * @return {?Element}
    */
   template() {
     throw new CoreException('view should be override', 'METHOD_NOT_OVERRIDE')
@@ -254,8 +254,13 @@ export class View extends ViewContainerBase {
   [_update]() {
     this._nodeRefs.clear()
     const candidate = this.template()
-    $(candidate).setViewRef(this.ID)
-    startReconcile(this.node, candidate, this.parentNode)
+    if (isNull(candidate)) {
+      this[_replaceNode]()
+    } else {
+
+      $(candidate).setViewRef(this.ID)
+      startReconcile(this.node, candidate, this.parentNode)
+    }
   }
 
   updateNode() {
@@ -317,7 +322,9 @@ export class View extends ViewContainerBase {
    * @private
    */
   [_mount]() {
-    this.parentNode.appendChild(this.node)
+    if (!isNull(this.node)) {
+      this.parentNode.appendChild(this.node)
+    }
   }
 
   mount() {
@@ -408,7 +415,9 @@ export class View extends ViewContainerBase {
    * @private
    */
   [_setNodeViewRef]() {
-    $(this.node).setViewRef(this.ID)
+    if (!isNull(this.node)) {
+      $(this.node).setViewRef(this.ID)
+    }
   }
 
   /**
@@ -420,14 +429,14 @@ export class View extends ViewContainerBase {
   }
 
   /**
-   * @return {Element} node
+   * @return {?Element} node
    */
   get node() {
     return this._node
   }
 
   /**
-   * @return {Element} node
+   * @return {?Element} node
    */
   [_replaceNode]() {
     this._node = this.template()
