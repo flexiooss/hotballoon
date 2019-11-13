@@ -142,14 +142,18 @@ export class ViewContainerBase extends WithID {
   }
 
   remove() {
+    this[_EventHandler].clear()
+
     this._tokenEvent.forEach((tokens, storeId) => {
       tokens.forEach(token => {
         this._storesMap.get(storeId).stopListenChanged(token)
       })
     })
+
     this.MapOfView().forEach(v => {
       v.remove()
     })
+    
     this.MapOfView().clear()
     this._tokenEvent.clear()
     this._storesMap.clear()
