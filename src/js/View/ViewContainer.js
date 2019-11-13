@@ -117,20 +117,24 @@ export class ViewContainer extends ViewContainerBase {
    * @description subscribe subView an events of this view
    * @param {StoreInterface} store
    * @param {ViewContainer~storeChanged} clb
+   * @return {string}
    */
   subscribeToStore(store, clb = (state) => true) {
     assertType(isFunction(clb), 'hotballoon:' + this.constructor.name + ':subscribeToStore: `clb` argument should be callable')
 
-    assertType(store instanceof StoreInterface, 'hotballoon:' + this.constructor.name + ':subscribeToStore: `keyStore : %s` not reference an instance of StoreInterface', store.constructor)
+    assertType(TypeCheck.isStoreBase(store), 'hotballoon:' + this.constructor.name + ':subscribeToStore: `keyStore : %s` not reference an instance of StoreInterface', store.constructor.name)
 
+    const token = store.listenChanged(
+      (payload, type) => {
+        clb(payload.data)
+      }
+    )
     this._tokenEvent.push(
       store.storeId(),
-      store.listenChanged(
-        (payload, type) => {
-          clb(payload.data)
-        }
-      )
+      token
     )
+    return token
+
   }
 
   /**
@@ -249,5 +253,17 @@ export class ViewContainer extends ViewContainerBase {
    */
   on() {
     return new ViewContainerPublicEventHandler(a => this._on(a))
+  }
+
+  remove() {
+    this.logger().log(
+      this.logger().builder()
+        .info()
+        .pushLog('Remove : ' + this.ID)
+        .pushLog(this),
+      viewContainerLogOptions
+    )
+
+    super.remove()
   }
 }

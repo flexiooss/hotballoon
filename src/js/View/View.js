@@ -226,17 +226,23 @@ export class View extends ViewContainerBase {
     if (!TypeCheck.isStoreBase(store)) {
       throw TypeError('store argument should be an instance of StoreInterface')
     }
+    const token = store.listenChanged(
+      (payload, type) => {
+        if (clb(payload.data) === true) {
+          this.dispatch(VIEW_STORE_CHANGED, payload)
+          this.updateNode()
+        }
+      }
+    )
+
+    this._storesMap.set(
+      store.storeId(),
+      store
+    )
 
     this._tokenEvent.push(
       store.storeId(),
-      store.listenChanged(
-        (payload, type) => {
-          if (clb(payload.data) === true) {
-            this.dispatch(VIEW_STORE_CHANGED, payload)
-            this.updateNode()
-          }
-        }
-      )
+      token
     )
   }
 
@@ -435,6 +441,25 @@ export class View extends ViewContainerBase {
     return this._node
   }
 
+  remove() {
+    this.logger().log(
+      this.logger().builder()
+        .info()
+        .pushLog('Remove : ' + this.ID)
+        .pushLog(this),
+      viewLogOptions
+    )
+    this._nodeRefs.clear()
+
+    if (isNull(this._node)) {
+      this._node.parentNode.removeChild(this._node)
+    }
+
+    this._node = null
+
+    super.remove()
+  }
+
   /**
    * @return {?Element} node
    */
@@ -498,7 +523,7 @@ export class View extends ViewContainerBase {
   elementIdFromRef(ref) {
     return Checksum.number32bit(
       `${symbolToString(this.AppID())}-${symbolToString(this.componentID())}-${symbolToString(this.containerID())}-${symbolToString(ref)}`
-    )
+    ).toString()
   }
 
   /**

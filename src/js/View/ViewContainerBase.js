@@ -3,6 +3,7 @@ import {ArrayMap} from '@flexio-oss/extended-flex-types'
 import {WithID} from '../abstract/WithID'
 import {OrderedEventHandler} from '../Event/OrderedEventHandler'
 import {ViewContainerBaseMap} from './ViewContainerBaseMap'
+import {StoreBaseMap} from '../Store/StoreBaseMap'
 
 const _EventHandler = Symbol('_EventHandler')
 const _Views = Symbol('_Views')
@@ -21,6 +22,7 @@ export class ViewContainerBase extends WithID {
     let _mounted = false
     let _rendered = false
     let _tokenEvent = new ArrayMap()
+    let _storesMap = new StoreBaseMap()
     let _views = new ViewContainerBaseMap()
     let parentNode
 
@@ -81,6 +83,16 @@ export class ViewContainerBase extends WithID {
          */
         value: _tokenEvent
       },
+      _storesMap: {
+        enumerable: false,
+        configurable: false,
+        /**
+         * @property {StoreBaseMap}
+         * @name ViewContainerBase#_storesMap
+         * @protected
+         */
+        value: _storesMap
+      },
       [_Views]: {
         enumerable: false,
         configurable: false,
@@ -127,6 +139,23 @@ export class ViewContainerBase extends WithID {
    */
   dispatch(eventType, payload) {
     this[_EventHandler].dispatch(eventType, payload)
+  }
+
+  remove() {
+    this._tokenEvent.forEach((tokens, storeId) => {
+      tokens.forEach(token => {
+        this._storesMap.get(storeId).stopListenChanged(token)
+      })
+    })
+    this.MapOfView().forEach(v => {
+      v.remove()
+    })
+    this.MapOfView().clear()
+    this._tokenEvent.clear()
+    this._storesMap.clear()
+    this[_Views].clear()
+    this._mounted = false
+    this._rendered = false
   }
 
   /**
