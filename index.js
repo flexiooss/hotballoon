@@ -13,6 +13,8 @@ export {ViewContainerPublicEventHandler} from './src/js/View/ViewContainerPublic
 export {ViewPublicEventHandler} from './src/js/View/ViewPublicEventHandler'
 
 export {ElementEventListenerConfigBuilder} from './src/js/HotballoonNodeElement/ElementEventListenerConfigBuilder'
+export {UIEventBuilder} from './src/js/HotballoonNodeElement/UIEventBuilder'
+
 
 export {PublicStoreHandler} from './src/js/Store/PublicStoreHandler'
 export {ProxyStoreBuilder} from './src/js/Store/ProxyStoreBuilder'
