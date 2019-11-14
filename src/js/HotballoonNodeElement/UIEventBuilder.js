@@ -1,4 +1,5 @@
 import {ElementEventListenerConfigBuilder} from './ElementEventListenerConfigBuilder'
+import {assertType, isFunction} from '@flexio-oss/assert'
 
 export class UIEventBuilder {
   /**
@@ -15,6 +16,14 @@ export class UIEventBuilder {
    */
   static keyboardEvent() {
     return KeyboardEventBuilder
+  }
+
+  /**
+   *
+   * @return {KeyKeyboardEventBuilder.}
+   */
+  static keyKeyboardEvent() {
+    return KeyKeyboardEventBuilder
   }
 
   /**
@@ -103,6 +112,131 @@ class MouseEventBuilder {
 }
 
 class KeyboardEventBuilder {
+  /**
+   *
+   * @param {function(event:KeyboardEvent)} callback
+   * @return {ElementEventListenerConfig}
+   */
+  static keydown(callback) {
+    return ElementEventListenerConfigBuilder
+      .listen('keydown')
+      .callback(callback)
+      .build()
+  }
+
+  /**
+   *
+   * @param {function(event:KeyboardEvent)} callback
+   * @return {ElementEventListenerConfig}
+   */
+  static keypress(callback) {
+    return ElementEventListenerConfigBuilder
+      .listen('keypress')
+      .callback(callback)
+      .build()
+  }
+
+  /**
+   *
+   * @param {function(event:KeyboardEvent)} callback
+   * @return {ElementEventListenerConfig}
+   */
+  static keyup(callback) {
+    return ElementEventListenerConfigBuilder
+      .listen('keyup')
+      .callback(callback)
+      .build()
+  }
+}
+
+class KeyKeyboardEventBuilder {
+  /**
+   *
+   * @param {function(event:KeyboardEvent): boolean }condition
+   */
+  constructor(condition) {
+    assertType(
+      isFunction(condition),
+      this.constructor.name + ': `condition` should be Function'
+    )
+    /**
+     *
+     * @type {function(KeyboardEvent): boolean}
+     * @private
+     */
+    this.__condition = condition
+  }
+
+  /**
+   *
+   * @param {function(event:KeyboardEvent)} callback
+   * @return {function(event:KeyboardEvent)}
+   * @private
+   */
+  __buildCallback(callback) {
+    return (event) => {
+      if (this.__condition(event)) {
+        callback(event)
+      }
+    }
+  }
+
+  /**
+   *
+   * @param {function(event:KeyboardEvent)} callback
+   * @return {ElementEventListenerConfig}
+   */
+  keydown(callback) {
+    return ElementEventListenerConfigBuilder
+      .listen('keydown')
+      .callback(this.__buildCallback(callback))
+      .build()
+  }
+
+  /**
+   *
+   * @param {function(event:KeyboardEvent)} callback
+   * @return {ElementEventListenerConfig}
+   */
+  keypress(callback) {
+    return ElementEventListenerConfigBuilder
+      .listen('keydown')
+      .callback(this.__buildCallback(callback))
+      .build()
+  }
+
+  /**
+   *
+   * @param {function(event:KeyboardEvent)} callback
+   * @return {ElementEventListenerConfig}
+   */
+  keyup(callback) {
+    return ElementEventListenerConfigBuilder
+      .listen('keydown')
+      .callback(this.__buildCallback(callback))
+      .build()
+  }
+
+  /**
+   *
+   * @return {KeyKeyboardEventBuilder}
+   */
+  static Enter() {
+    return new KeyKeyboardEventBuilder(
+      event => event.key === 'Enter'
+    )
+  }
+
+  /**
+   *
+   * @return {KeyKeyboardEventBuilder}
+   */
+  static CtrlEnter() {
+    return new KeyKeyboardEventBuilder(
+      event => event.ctrlKey && event.key === 'Enter'
+    )
+  }
+
   /**
    *
    * @param {function(event:KeyboardEvent)} callback
