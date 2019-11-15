@@ -446,6 +446,18 @@ class ElementEventBuilder {
       .callback(callback)
       .build()
   }
+
+  /**
+   *
+   * @param {function(event:Event)} callback
+   * @return {ElementEventListenerConfig}
+   */
+  static load(callback) {
+    return ElementEventListenerConfigBuilder
+      .listen('load')
+      .callback(callback)
+      .build()
+  }
 }
 
 class FocusEventBuilder {
