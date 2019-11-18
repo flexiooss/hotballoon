@@ -2,6 +2,15 @@ import {ElementEventListenerConfigBuilder} from './ElementEventListenerConfigBui
 import {assertType, isFunction} from '@flexio-oss/assert'
 
 export class UIEventBuilder {
+
+  /**
+   *
+   * @return {PointerEventBuilder.}
+   */
+  static pointerEvent() {
+    return PointerEventBuilder
+  }
+
   /**
    *
    * @return {MouseEventBuilder.}
@@ -56,6 +65,106 @@ export class UIEventBuilder {
    */
   static elementEvent() {
     return ElementEventBuilder
+  }
+
+}
+
+class PointerEventBuilder {
+
+  /**
+   *
+   * @param {function(event:PointerEvent)} callback
+   * @return {ElementEventListenerConfig}
+   */
+  static over(callback) {
+    return ElementEventListenerConfigBuilder
+      .listen('pointerover')
+      .callback(callback)
+      .build()
+  }
+
+  /**
+   *
+   * @param {function(event:PointerEvent)} callback
+   * @return {ElementEventListenerConfig}
+   */
+  static enter(callback) {
+    return ElementEventListenerConfigBuilder
+      .listen('pointerenter')
+      .callback(callback)
+      .build()
+  }
+
+  /**
+   *
+   * @param {function(event:PointerEvent)} callback
+   * @return {ElementEventListenerConfig}
+   */
+  static move(callback) {
+    return ElementEventListenerConfigBuilder
+      .listen('pointermove')
+      .callback(callback)
+      .build()
+  }
+
+  /**
+   *
+   * @param {function(event:PointerEvent)} callback
+   * @return {ElementEventListenerConfig}
+   */
+  static down(callback) {
+    return ElementEventListenerConfigBuilder
+      .listen('pointerdown')
+      .callback(callback)
+      .build()
+  }
+
+  /**
+   *
+   * @param {function(event:PointerEvent)} callback
+   * @return {ElementEventListenerConfig}
+   */
+  static up(callback) {
+    return ElementEventListenerConfigBuilder
+      .listen('pointerup')
+      .callback(callback)
+      .build()
+  }
+
+  /**
+   *
+   * @param {function(event:PointerEvent)} callback
+   * @return {ElementEventListenerConfig}
+   */
+  static cancel(callback) {
+    return ElementEventListenerConfigBuilder
+      .listen('pointercancel')
+      .callback(callback)
+      .build()
+  }
+
+  /**
+   *
+   * @param {function(event:PointerEvent)} callback
+   * @return {ElementEventListenerConfig}
+   */
+  static out(callback) {
+    return ElementEventListenerConfigBuilder
+      .listen('pointerout')
+      .callback(callback)
+      .build()
+  }
+
+  /**
+   *
+   * @param {function(event:PointerEvent)} callback
+   * @return {ElementEventListenerConfig}
+   */
+  static leave(callback) {
+    return ElementEventListenerConfigBuilder
+      .listen('pointerleave')
+      .callback(callback)
+      .build()
   }
 
 }
