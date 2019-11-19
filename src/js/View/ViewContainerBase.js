@@ -150,9 +150,14 @@ export class ViewContainerBase extends WithID {
       })
     })
 
-    this.MapOfView().forEach(v => {
-      v.remove()
-    })
+    this.MapOfView().forEach(
+      /**
+       *
+       * @param {View} v
+       */
+      v => {
+        v.remove()
+      })
 
     this.MapOfView().clear()
     this._tokenEvent.clear()

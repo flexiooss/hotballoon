@@ -451,11 +451,10 @@ export class View extends ViewContainerBase {
     )
     this._nodeRefs.clear()
 
-    if (isNull(this._node)) {
+    if (!isNull(this._node)) {
       this._node.parentNode.removeChild(this._node)
+      this._node = null
     }
-
-    this._node = null
 
     super.remove()
   }
