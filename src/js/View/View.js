@@ -260,17 +260,24 @@ export class View extends ViewContainerBase {
   [_update]() {
     this._nodeRefs.clear()
     const candidate = this.template()
-    if (isNull(candidate)) {
+
+    if (isNull(candidate) || isNull(this.node)) {
       this[_replaceNode]()
     } else {
 
       $(candidate).setViewRef(this.ID)
       startReconcile(this.node, candidate, this.parentNode)
+
     }
   }
 
   updateNode() {
     if (this.isRendered() && this._shouldUpdate) {
+
+      this.dispatch(VIEW_UPDATE, {})
+      requestAFrame(() => this[_update]())
+      this.dispatch(VIEW_UPDATED, {})
+
       this.logger().log(
         this.logger().builder()
           .debug()
@@ -278,10 +285,6 @@ export class View extends ViewContainerBase {
           .pushLog(this.node),
         viewLogOptions
       )
-
-      this.dispatch(VIEW_UPDATE, {})
-      requestAFrame(() => this[_update]())
-      this.dispatch(VIEW_UPDATED, {})
     }
     this._shouldUpdate = true
   }

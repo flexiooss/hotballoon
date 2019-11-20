@@ -265,5 +265,7 @@ export class ViewContainer extends ViewContainerBase {
     )
 
     super.remove()
+    this[_ComponentContext].removeViewContainer(this.ID)
+
   }
 }

@@ -281,4 +281,9 @@ export class StoreBase extends WithID {
     this[_EventHandler].removeEventListener(this.changedEventName(), token)
   }
 
+  remove() {
+    this[_EventHandler].clear()
+    this[_storage] = this[_storage].set(this.ID, null)
+  }
+
 }

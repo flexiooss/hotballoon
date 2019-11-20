@@ -1,7 +1,7 @@
 import {
   WILL_REMOVE as VIEWCONTAINER_WILL_REMOVE
 } from '../View/ViewContainerPublicEventHandler'
-import {assertType} from '@flexio-oss/assert'
+import {assertType, isString} from '@flexio-oss/assert'
 import {Sequence} from '@flexio-oss/js-helpers'
 import {StoreMap} from '../Store/StoreMap'
 import {ViewContainerMap} from '../View/ViewContainerMap'
@@ -11,6 +11,9 @@ import {
   CLASS_TAG_NAME_COMPONENT
 } from '../Types/HasTagClassNameInterface'
 import {TypeCheck} from '../Types/TypeCheck'
+import {ActionMap} from '../Action/ActionMap'
+
+const _actionsToken = Symbol('_actionsToken')
 
 const componentContextLogOptions = {
   color: 'green',
@@ -37,6 +40,7 @@ export class ComponentContext extends WithID {
     const _sequenceId = new Sequence(this.ID + '_')
     const _stores = new StoreMap()
     const _viewContainers = new ViewContainerMap()
+    const _actionsToken = new ActionMap()
 
     Object.defineProperty(this, CLASS_TAG_NAME, {
       configurable: false,
@@ -108,6 +112,21 @@ export class ComponentContext extends WithID {
           set: (v) => {
             throw new Error('hotballoon:ComponentContext: : `_viewContainers` property already defined')
           }
+        },
+        [_actionsToken]: {
+          configurable: false,
+          enumerable: false,
+          /**
+           * @name ComponentContext#_actionsToken
+           * @return {ActionMap}
+           * @protected
+           */
+          get: () => {
+            return _actionsToken
+          },
+          set: (v) => {
+            throw new Error('hotballoon:ComponentContext: : `_actionsToken` property already defined')
+          }
         }
 
       }
@@ -123,6 +142,35 @@ export class ComponentContext extends WithID {
    */
   static create(hotballoonApplication) {
     return new this(hotballoonApplication)
+  }
+
+  /**
+   *
+   * @param {string} token
+   * @param {ActionDispatcher} action
+   * @return {ComponentContext}
+   */
+  addActionToken(token, action) {
+    assertType(
+      isString(token),
+      `${this.constructor.name}: 'token' should be string`
+    )
+    this[_actionsToken].add(token, action.ID)
+    return this
+  }
+
+  /**
+   *
+   * @param {string} token
+   * @return {ComponentContext}
+   */
+  removeActionToken(token) {
+    assertType(
+      isString(token),
+      `${this.constructor.name}: 'token' should be string`
+    )
+    this[_actionsToken].delete(token)
+    return this
   }
 
   /**
@@ -204,11 +252,30 @@ export class ComponentContext extends WithID {
   service(key) {
     return this.APP().service(key)
   }
+
   /**
    *
    * @return {LoggerInterface}
    */
   logger() {
     return this.APP().logger()
+  }
+
+  remove() {
+    this[_actionsToken].forEach((v, k) => this.dispatcher().removeActionListener(k, v))
+    this[_actionsToken].clear()
+
+    this._stores.forEach(v => v.remove())
+    this._stores.clear()
+    this._viewContainers.forEach(v => v.remove())
+
+    this.logger().log(
+      this.logger().builder()
+        .info()
+        .pushLog('Remove : ' + this.ID)
+        .pushLog(this),
+      componentContextLogOptions
+    )
+
   }
 }
