@@ -11,9 +11,11 @@ import {
   CLASS_TAG_NAME_COMPONENT
 } from '../Types/HasTagClassNameInterface'
 import {TypeCheck} from '../Types/TypeCheck'
-import {ActionMap} from '../Action/ActionMap'
 
-const _actionsToken = Symbol('_actionsToken')
+const __actionsToken = Symbol('__actionsToken')
+const __sequenceId = Symbol('__sequenceId')
+const __stores = Symbol('__stores')
+const __viewContainers = Symbol('__viewContainers')
 
 const componentContextLogOptions = {
   color: 'green',
@@ -40,7 +42,7 @@ export class ComponentContext extends WithID {
     const _sequenceId = new Sequence(this.ID + '_')
     const _stores = new StoreMap()
     const _viewContainers = new ViewContainerMap()
-    const _actionsToken = new ActionMap()
+    const _actionsToken = new Map()
 
     Object.defineProperty(this, CLASS_TAG_NAME, {
       configurable: false,
@@ -65,7 +67,7 @@ export class ComponentContext extends WithID {
             throw new Error('hotballoon:ComponentContext: : `_APP` property already defined')
           }
         },
-        _sequenceId: {
+        [__sequenceId]: {
           configurable: false,
           enumerable: false,
           /**
@@ -82,7 +84,7 @@ export class ComponentContext extends WithID {
           }
         },
 
-        _stores: {
+        [__stores]: {
           configurable: false,
           enumerable: false,
           /**
@@ -98,7 +100,7 @@ export class ComponentContext extends WithID {
           }
         },
 
-        _viewContainers: {
+        [__viewContainers]: {
           configurable: false,
           enumerable: false,
           /**
@@ -113,7 +115,7 @@ export class ComponentContext extends WithID {
             throw new Error('hotballoon:ComponentContext: : `_viewContainers` property already defined')
           }
         },
-        [_actionsToken]: {
+        [__actionsToken]: {
           configurable: false,
           enumerable: false,
           /**
@@ -155,7 +157,7 @@ export class ComponentContext extends WithID {
       isString(token),
       `${this.constructor.name}: 'token' should be string`
     )
-    this[_actionsToken].add(token, action.ID)
+    this[__actionsToken].add(token, action.ID)
     return this
   }
 
@@ -169,7 +171,10 @@ export class ComponentContext extends WithID {
       isString(token),
       `${this.constructor.name}: 'token' should be string`
     )
-    this[_actionsToken].delete(token)
+    if (this[__actionsToken].has(token)) {
+      this.dispatcher().removeActionListener(this[__actionsToken].delete(token), token)
+      this[__actionsToken].delete(token)
+    }
     return this
   }
 
@@ -178,7 +183,7 @@ export class ComponentContext extends WithID {
    * @returns {Store} store
    */
   addStore(store) {
-    this._stores.set(store.ID, store)
+    this[__stores].set(store.ID, store)
     store.setLogger(this.logger())
     return store
   }
@@ -189,7 +194,7 @@ export class ComponentContext extends WithID {
    * @returns {StoreInterface} store
    */
   store(tokenStore) {
-    return this._stores.get(tokenStore)
+    return this[__stores].get(tokenStore)
   }
 
   /**
@@ -198,7 +203,7 @@ export class ComponentContext extends WithID {
    * @returns {ViewContainer} viewContainer
    */
   addViewContainer(viewContainer) {
-    this._viewContainers.set(viewContainer.ID, viewContainer)
+    this[__viewContainers].set(viewContainer.ID, viewContainer)
     return viewContainer
   }
 
@@ -208,9 +213,9 @@ export class ComponentContext extends WithID {
    * @returns {void}
    */
   removeViewContainer(tokenViewContainer) {
-    if (this._viewContainers.has(tokenViewContainer)) {
+    if (this[__viewContainers].has(tokenViewContainer)) {
       this.viewContainer(tokenViewContainer).dispatch(VIEWCONTAINER_WILL_REMOVE, {})
-      this._viewContainers.delete(tokenViewContainer)
+      this[__viewContainers].delete(tokenViewContainer)
     }
   }
 
@@ -220,7 +225,7 @@ export class ComponentContext extends WithID {
    * @returns {?ViewContainer} viewContainer
    */
   viewContainer(key) {
-    return this._viewContainers.has(key) ? this._viewContainers.get(key) : null
+    return this[__viewContainers].has(key) ? this[__viewContainers].get(key) : null
   }
 
   /**
@@ -229,7 +234,7 @@ export class ComponentContext extends WithID {
    * @returns {String}
    */
   nextID(prefix = '') {
-    return prefix + this._sequenceId.nextID()
+    return prefix + this[__sequenceId].nextID()
   }
 
   /**
@@ -262,12 +267,11 @@ export class ComponentContext extends WithID {
   }
 
   remove() {
-    this[_actionsToken].forEach((v, k) => this.dispatcher().removeActionListener(k, v))
-    this[_actionsToken].clear()
+    this[__actionsToken].forEach((v) => this.removeActionToken(v))
 
-    this._stores.forEach(v => v.remove())
-    this._stores.clear()
-    this._viewContainers.forEach(v => v.remove())
+    this[__stores].forEach(v => v.remove())
+    this[__stores].clear()
+    this[__viewContainers].forEach(v => v.remove())
 
     this.logger().log(
       this.logger().builder()
