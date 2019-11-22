@@ -65,6 +65,7 @@ export class View extends ViewContainerBase {
     let _shouldRender = true
     let _shouldMount = true
     let _shouldUpdate = true
+    let _synchronous = false
     const _nodeRefs = new Map()
 
     Object.defineProperty(this, CLASS_TAG_NAME, {
@@ -160,6 +161,24 @@ export class View extends ViewContainerBase {
         }
       },
       /**
+       * @property {boolean} _synchronous
+       * @name View#_synchronous
+       * @protected
+       */
+      _synchronous: {
+        configurable: false,
+        enumerable: false,
+        get: () => {
+          return _synchronous
+        },
+        set: (v) => {
+          assertType(!!isBoolean(v),
+            'hotballoon:view:constructor: `_synchronous` argument should be a boolean'
+          )
+          _synchronous = v
+        }
+      },
+      /**
        * @property {boolean} _shouldUpdate
        * @name View#_shouldUpdate
        * @protected
@@ -215,8 +234,9 @@ export class View extends ViewContainerBase {
   /**
    *
    * @description subscribe subView an events of this view
-   * @param {StoreInterface} store
-   * @param {View~updateCallback} clb
+   * @param {StoreInterface<TYPE,TYPE_BUILDER>} store
+   * @param {function(data:StoreState<TYPE>):boolean} clb
+   * @return {this}
    */
   subscribeToStore(store, clb = (state) => true) {
     assertType(
@@ -228,7 +248,7 @@ export class View extends ViewContainerBase {
     }
     const token = store.listenChanged(
       (payload, type) => {
-        if (clb(payload.data) === true) {
+        if (clb(payload) === true) {
           this.dispatch(VIEW_STORE_CHANGED, payload)
           this.updateNode()
         }
@@ -244,14 +264,9 @@ export class View extends ViewContainerBase {
       store.storeId(),
       token
     )
+    return this
   }
 
-  /**
-   *
-   * @callback View~updateCallback
-   * @param {StoreState} state
-   * @return {boolean}
-   */
 
   /**
    * @private
@@ -269,28 +284,71 @@ export class View extends ViewContainerBase {
       startReconcile(this.node, candidate, this.parentNode)
 
     }
+    this.dispatch(VIEW_UPDATED, {})
+    this.logger().log(
+      this.logger().builder()
+        .debug()
+        .pushLog('UpdateNode : ' + this.ID)
+        .pushLog(this.node),
+      viewLogOptions
+    )
   }
 
+  /**
+   *
+   * @return {View}
+   */
   updateNode() {
     if (this.isRendered() && this._shouldUpdate) {
 
       this.dispatch(VIEW_UPDATE, {})
-      requestAFrame(() => this[_update]())
-      this.dispatch(VIEW_UPDATED, {})
 
-      this.logger().log(
-        this.logger().builder()
-          .debug()
-          .pushLog('UpdateNode : ' + this.ID)
-          .pushLog(this.node),
-        viewLogOptions
-      )
+      if (this.isSynchronous()) {
+        this[_update]()
+      } else {
+        requestAFrame(() => {
+          this[_update]()
+        })
+      }
+
     }
     this._shouldUpdate = true
+    return this
   }
 
+  /**
+   *
+   * @return {View}
+   */
+  setSynchronous() {
+    this._synchronous = true
+    return this
+  }
+
+  /**
+   *
+   * @return {View}
+   */
+  setAsynchronous() {
+    this._synchronous = false
+    return this
+  }
+
+  /**
+   *
+   * @return {boolean}
+   */
+  isSynchronous() {
+    return this._synchronous === true
+  }
+
+  /**
+   *
+   * @return {View}
+   */
   shouldNotUpdate() {
     this._shouldUpdate = false
+    return this
   }
 
   /**
@@ -302,7 +360,7 @@ export class View extends ViewContainerBase {
   }
 
   /**
-   * @return {Element} _node
+   * @return {Element}
    */
   render() {
     this.logger().log(
@@ -323,8 +381,13 @@ export class View extends ViewContainerBase {
     return this.node
   }
 
+  /**
+   *
+   * @return {View}
+   */
   shouldNotRender() {
     this._shouldRender = false
+    return this
   }
 
   /**
@@ -358,21 +421,33 @@ export class View extends ViewContainerBase {
     return element
   }
 
+  /**
+   *
+   * @return {View}
+   */
   shouldNotMount() {
     this._shouldMount = false
+    return this
   }
 
+  /**
+   *
+   * @return {View}
+   */
   renderAndMount() {
     this.render()
     this.mount()
+    return this
   }
 
   /**
    * @param {String} key
    * @param {View} view
+   * @return {this}
    */
   addNodeView(key, view) {
     this[_setNodeViewRef]()
+    return this
   }
 
   /**
@@ -399,7 +474,6 @@ export class View extends ViewContainerBase {
    * @param {String} key
    * @param {Element} node
    * @return {Element}
-   * @instance
    */
   addNodeRef(key, node) {
     if (!this._rendered && !this._nodeRefs.has(key)) {
@@ -438,7 +512,7 @@ export class View extends ViewContainerBase {
   }
 
   /**
-   * @return {?Element} node
+   * @return {?Element}
    */
   get node() {
     return this._node
