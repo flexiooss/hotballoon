@@ -157,7 +157,7 @@ export class ComponentContext extends WithID {
       isString(token),
       `${this.constructor.name}: 'token' should be string`
     )
-    this[__actionsToken].add(token, action.ID)
+    this[__actionsToken].set(token, action.ID)
     return this
   }
 
