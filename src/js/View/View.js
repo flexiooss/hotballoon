@@ -267,7 +267,6 @@ export class View extends ViewContainerBase {
     return this
   }
 
-
   /**
    * @private
    * @description update the node reference of this View
@@ -397,17 +396,28 @@ export class View extends ViewContainerBase {
     if (!isNull(this.node)) {
       this.parentNode.appendChild(this.node)
     }
+    this._mounted = true
+    this.dispatch(VIEW_MOUNTED, {})
+    this._shouldMount = true
+
   }
 
   mount() {
     if (this._shouldMount) {
       this.dispatch(VIEW_MOUNT, {})
-      this[_mount]()
-      this._mounted = true
-      this.dispatch(VIEW_MOUNTED, {})
+
+      if (this.isSynchronous()) {
+        this[_mount]()
+      } else {
+        requestAFrame(() => {
+          this[_mount]()
+        })
+      }
+
+    } else {
+      this._shouldMount = true
     }
 
-    this._shouldMount = true
   }
 
   /**
@@ -528,12 +538,29 @@ export class View extends ViewContainerBase {
     )
     this._nodeRefs.clear()
 
-    if (!isNull(this._node)) {
-      this._node.parentNode.removeChild(this._node)
-      this._node = null
+    if (this.isSynchronous()) {
+      this.__removeNode()
+    } else {
+      requestAFrame(() => {
+        this.__removeNode()
+      })
     }
 
+    this._node = null
+    
     super.remove()
+  }
+
+  /**
+   *
+   * @return {View}
+   * @private
+   */
+  __removeNode() {
+    if (!isNull(this._node)) {
+      this._node.parentNode.removeChild(this._node)
+    }
+    return this
   }
 
   /**
