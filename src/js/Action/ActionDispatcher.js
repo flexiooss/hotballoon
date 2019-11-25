@@ -9,7 +9,7 @@ import {
   CLASS_TAG_NAME,
   CLASS_TAG_NAME_ACTION
 } from '../Types/HasTagClassNameInterface'
-import {TypeCheck} from '../../..'
+import {TypeCheck} from '../Types/TypeCheck'
 
 const _actionConfig = Symbol('_actionParams')
 
