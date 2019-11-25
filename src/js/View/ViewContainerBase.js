@@ -162,7 +162,6 @@ export class ViewContainerBase extends WithID {
     this.MapOfView().clear()
     this._tokenEvent.clear()
     this._storesMap.clear()
-    this[_Views].clear()
     this._mounted = false
     this._rendered = false
   }
@@ -170,26 +169,37 @@ export class ViewContainerBase extends WithID {
   /**
    *
    * @param {View} view
-   * @param {?string} key
    * @return {View}
    */
-  addView(view, key = null) {
-    this[_Views].set(key || view.ID, view)
+  addView(view) {
+    this[_Views].set(view.ID, view)
     return view
   }
 
   /**
    *
-   * @param {String|Symbol} key
-   * @return {View}
+   * @param {View} view
+   * @return {this}
    */
-  view(key) {
-    return this[_Views].get(key)
+  removeView(view) {
+    if (this[_Views].has(view.ID)) {
+      this[_Views].delete(view.ID)
+    }
+    return this
   }
 
   /**
    *
-   * @return {Map<String, View>}
+   * @param {String} viewId
+   * @return {View}
+   */
+  view(viewId) {
+    return this[_Views].get(viewId)
+  }
+
+  /**
+   *
+   * @return {ViewContainerBaseMap}
    */
   MapOfView() {
     return this[_Views]

@@ -546,7 +546,9 @@ export class View extends ViewContainerBase {
       })
     }
 
+
     super.remove()
+    this.container().removeView(this)
   }
 
   /**
