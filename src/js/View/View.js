@@ -546,8 +546,6 @@ export class View extends ViewContainerBase {
       })
     }
 
-    this._node = null
-
     super.remove()
   }
 
@@ -559,6 +557,7 @@ export class View extends ViewContainerBase {
   __removeNode() {
     if (!isNull(this._node)) {
       this._node.parentNode.removeChild(this._node)
+      this._node = null
     }
     return this
   }
