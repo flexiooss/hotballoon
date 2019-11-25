@@ -9,6 +9,7 @@ import {
   CLASS_TAG_NAME,
   CLASS_TAG_NAME_ACTION
 } from '../Types/HasTagClassNameInterface'
+import {TypeCheck} from '../../..'
 
 const _actionConfig = Symbol('_actionParams')
 
@@ -125,15 +126,25 @@ export class ActionDispatcher extends WithID {
   /**
    *
    * @param {function(payload: TYPE, type: (string|Symbol))} callback
+   * @param {ComponentContext} componentContext
    * @returns {String} token
    */
-  listenWithCallback(callback) {
-    return this[_actionConfig].dispatcher
-      .addActionListener(
-        DispatcherEventListenerConfigBuilder
-          .listen(this)
-          .callback(callback)
-          .build()
+  listenWithCallback(callback, componentContext) {
+    assertType(
+      TypeCheck.isComponentContext(componentContext),
+      '`componentContext` should be ComponentContext'
+    )
+
+    return componentContext
+      .addActionToken(
+        this[_actionConfig].dispatcher
+          .addActionListener(
+            DispatcherEventListenerConfigBuilder
+              .listen(this)
+              .callback(callback)
+              .build()
+          ),
+        this
       )
   }
 

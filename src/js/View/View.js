@@ -232,10 +232,10 @@ export class View extends ViewContainerBase {
   }
 
   /**
-   *
+   * @template STORE_TYPE,STORE_TYPE_BUILDER
    * @description subscribe subView an events of this view
-   * @param {StoreInterface<TYPE,TYPE_BUILDER>} store
-   * @param {function(data:StoreState<TYPE>):boolean} clb
+   * @param {StoreInterface<STORE_TYPE,STORE_TYPE_BUILDER>} store
+   * @param {function(data:StoreState<STORE_TYPE>):boolean} clb
    * @return {this}
    */
   subscribeToStore(store, clb = (state) => true) {
@@ -547,7 +547,7 @@ export class View extends ViewContainerBase {
     }
 
     this._node = null
-    
+
     super.remove()
   }
 

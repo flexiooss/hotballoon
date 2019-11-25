@@ -30,7 +30,9 @@ export class ActionDispatcherTest extends TestCase {
     actionDispatcher.listenWithCallback(
       (payload, type) => {
         throw new Error('listenWithCallback')
-      })
+      },
+      this.componentContext
+    )
 
     const payloadDispatched = new FakeObjectBuilder()
       .prop1('toto')
@@ -64,7 +66,9 @@ export class ActionDispatcherTest extends TestCase {
       (payload, type) => {
         p = payload
         t = type
-      })
+      },
+      this.componentContext
+    )
 
     const payloadDispatched = new FakeObjectBuilder()
       .prop1('toto')
@@ -93,12 +97,16 @@ export class ActionDispatcherTest extends TestCase {
     actionDispatcher.listenWithCallback(
       (payload, type) => {
         p.push(1)
-      })
+      },
+      this.componentContext
+    )
 
     actionDispatcher.listenWithCallback(
       (payload, type) => {
         p.push(2)
-      })
+      },
+      this.componentContext
+    )
 
     const payloadDispatched = new FakeObjectBuilder()
       .prop1('toto')
@@ -128,13 +136,17 @@ export class ActionDispatcherTest extends TestCase {
       (payload, type) => {
         actionDispatcher.waitFor(token2)
         p.push(1)
-      })
+      },
+      this.componentContext
+    )
 
     const token2 = actionDispatcher.listenWithCallback(
       (payload, type) => {
         a = true
         p.push(2)
-      })
+      },
+      this.componentContext
+    )
 
     const payloadDispatched = new FakeObjectBuilder()
       .prop1('toto')

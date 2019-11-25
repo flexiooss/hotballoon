@@ -150,7 +150,7 @@ export class ComponentContext extends WithID {
    *
    * @param {string} token
    * @param {ActionDispatcher} action
-   * @return {ComponentContext}
+   * @return {string}
    */
   addActionToken(token, action) {
     assertType(
@@ -158,7 +158,7 @@ export class ComponentContext extends WithID {
       `${this.constructor.name}: 'token' should be string`
     )
     this[__actionsToken].set(token, action.ID)
-    return this
+    return token
   }
 
   /**
@@ -212,10 +212,22 @@ export class ComponentContext extends WithID {
    * @param {String} tokenViewContainer
    * @returns {void}
    */
-  removeViewContainer(tokenViewContainer) {
+  removeViewContainerEntry(tokenViewContainer) {
     if (this[__viewContainers].has(tokenViewContainer)) {
       this.viewContainer(tokenViewContainer).dispatch(VIEWCONTAINER_WILL_REMOVE, {})
       this[__viewContainers].delete(tokenViewContainer)
+    }
+  }
+
+  /**
+   *
+   * @param {String} tokenViewContainer
+   * @returns {void}
+   */
+  removeViewContainer(tokenViewContainer) {
+    if (this[__viewContainers].has(tokenViewContainer)) {
+      this.viewContainer(tokenViewContainer).dispatch(VIEWCONTAINER_WILL_REMOVE, {})
+      this.viewContainer(tokenViewContainer).remove()
     }
   }
 
