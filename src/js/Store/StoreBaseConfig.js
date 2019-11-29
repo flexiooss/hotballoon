@@ -1,5 +1,5 @@
 import {StorageInterface} from './Storage/StorageInterface'
-import {assertType, isSymbol, isString} from '@flexio-oss/assert'
+import {assertType, isString, isSymbol} from '@flexio-oss/assert'
 import {StoreTypeConfig} from './StoreTypeConfig'
 
 /**
@@ -9,10 +9,11 @@ export class StoreBaseConfig {
   /**
    * @constructor
    * @param {(Symbol|String)} id
+   * @param {TYPE} initialData
    * @param {StoreTypeConfig<TYPE, TYPE_BUILDER>} storeTypeConfig
    * @param {StorageInterface<TYPE>} storage
    */
-  constructor(id, storeTypeConfig, storage) {
+  constructor(id, initialData, storeTypeConfig, storage) {
     assertType(isSymbol(id) || isString(id),
       'hotballoon:' + this.constructor.name + ':constructor: `id` argument should be an should be a string or Symbol')
     /**
@@ -39,6 +40,8 @@ export class StoreBaseConfig {
      * @protected
      */
     this._storage = storage
+
+    this._initialData = initialData
   }
 
   /**
@@ -79,5 +82,13 @@ export class StoreBaseConfig {
    */
   get storage() {
     return this._storage
+  }
+
+  /**
+   *
+   * @returns {TYPE}
+   */
+  get initialData() {
+    return this._initialData
   }
 }

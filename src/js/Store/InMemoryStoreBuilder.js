@@ -88,6 +88,7 @@ export class InMemoryStoreBuilder {
     return new Store(
       new StoreConfig(
         id,
+        this.__initialData,
         new StoreTypeConfig(
           this.__type,
           this.__defaultChecker,
