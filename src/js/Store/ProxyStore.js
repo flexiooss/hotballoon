@@ -22,6 +22,7 @@ export class ProxyStore extends StoreBase {
     super(
       new StoreBaseConfig(
         proxyStoreConfig.id,
+        proxyStoreConfig.initialData,
         proxyStoreConfig.storeTypeConfig,
         proxyStoreConfig.storage
       )

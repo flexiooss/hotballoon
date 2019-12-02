@@ -8,13 +8,14 @@ import {TypeCheck} from '../Types/TypeCheck'
 export class ProxyStoreConfig extends StoreBaseConfig {
   /**
    * @param {(Symbol|String)} id
+   * @param {TYPE} initialData
    * @param {StoreInterface<STORE_TYPE>} store
    * @param {StoreTypeConfig<TYPE, TYPE_BUILDER>} storeTypeConfig
    * @param {{function(state: STORE_TYPE ):TYPE}} mapper
    * @param {StorageInterface<TYPE>} storage
    */
-  constructor(id, store, storeTypeConfig, mapper, storage) {
-    super(id, storeTypeConfig, storage)
+  constructor(id, initialData, store, storeTypeConfig, mapper, storage) {
+    super(id, initialData, storeTypeConfig, storage)
 
     assertType(TypeCheck.isStoreBase(store), '`store` argument should be an instance of StoreInterface')
 

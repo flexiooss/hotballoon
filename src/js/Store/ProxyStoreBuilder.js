@@ -76,7 +76,7 @@ export class ProxyStoreBuilder {
     return this
   }
 
-   /**
+  /**
    *
    * @param {StoreTypeConfig~defaultCheckerClb<TYPE>} defaultChecker
    * @return {ProxyStoreBuilder}
@@ -103,10 +103,12 @@ export class ProxyStoreBuilder {
   build() {
 
     const id = UID(this.__type.name + '_')
+    const initialData = this.__mapper(this.__store.state().data)
 
     return new ProxyStore(
       new ProxyStoreConfig(
         id,
+        initialData,
         this.__store,
         new StoreTypeConfig(
           this.__type,
@@ -119,7 +121,7 @@ export class ProxyStoreBuilder {
           new StoreState(
             id,
             this.__type,
-            this.__mapper(this.__store.state().data)
+            initialData
           )
         )
       )

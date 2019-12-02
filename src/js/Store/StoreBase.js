@@ -36,6 +36,7 @@ export class StoreBase extends WithID {
     super(storeBaseConfig.id)
     let storage = storeBaseConfig.storage
     let logger = fakeLogger
+    this.__initialData = storeBaseConfig.initialData
 
     assertType(storeBaseConfig instanceof StoreBaseConfig,
       'hotballoon:' + this.constructor.name + ':constructor: `storeBaseConfig` argument should be an instance of `StoreBaseConfig`')
@@ -286,4 +287,10 @@ export class StoreBase extends WithID {
     this[_storage] = this[_storage].set(this.ID, null)
   }
 
+  /**
+   * Set value to initial data
+   */
+  reset(){
+    this[_set](this.__initialData)
+  }
 }
