@@ -87,7 +87,7 @@ export class ProxyStore extends StoreBase {
    * @private
    */
   __mapAndUpdate(payload, eventType) {
-    this[_set](this[_mapper](payload.data))
+    this[_set](this[_mapper](payload.data()))
   }
 
 }

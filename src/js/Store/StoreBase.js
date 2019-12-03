@@ -125,7 +125,7 @@ export class StoreBase extends WithID {
    * @return {TYPE_BUILDER}
    */
   dataBuilder() {
-    return this[_storeParams].type.builder()
+    return this[_storeParams].type().builder()
   }
 
   /**
@@ -133,7 +133,7 @@ export class StoreBase extends WithID {
    * @return {TYPE_BUILDER}
    */
   dataFromObject(object) {
-    return this[_storeParams].type.fromObject(object)
+    return this[_storeParams].type().fromObject(object)
   }
 
   /**
@@ -142,7 +142,7 @@ export class StoreBase extends WithID {
    * @return {TYPE_BUILDER}
    */
   dataFrom(instance) {
-    return this[_storeParams].type.from(instance)
+    return this[_storeParams].type().from(instance)
   }
 
   /**
@@ -151,7 +151,7 @@ export class StoreBase extends WithID {
    * @return {TYPE_BUILDER}
    */
   dataFromJSON(json) {
-    return this[_storeParams].type.fromJSON(json)
+    return this[_storeParams].type().fromJSON(json)
   }
 
   /**
@@ -160,7 +160,7 @@ export class StoreBase extends WithID {
    * @return {boolean}
    */
   isTypeOf(constructor) {
-    return this.__type__ === constructor
+    return this.__type__() === constructor
   }
 
   /**

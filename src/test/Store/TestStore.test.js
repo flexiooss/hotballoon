@@ -20,13 +20,13 @@ export class TestStore extends TestCase {
   testReset() {
     this.store.set(new FakeValueObjectBuilder().a(0).b(0).build())
     assert.deepEqual(
-      this.store.state().data,
+      this.store.state().data(),
       new FakeValueObjectBuilder().a(0).b(0).build()
     )
 
     this.store.reset()
     assert.deepEqual(
-      this.store.state().data,
+      this.store.state().data(),
       new FakeValueObjectBuilder().a(1).b(10).build()
     )
   }

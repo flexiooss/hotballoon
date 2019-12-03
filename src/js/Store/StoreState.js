@@ -23,7 +23,7 @@ export class StoreState {
    *
    * @return {(string|Symbol)}
    */
-  get storeID() {
+   storeID() {
     return this.__storeID
   }
 
@@ -31,7 +31,7 @@ export class StoreState {
    *
    * @return {TYPE}
    */
-  get data() {
+   data() {
     return this.__data
   }
 
@@ -39,7 +39,7 @@ export class StoreState {
    *
    * @return {Date}
    */
-  get time() {
+   time() {
     return this.__time
   }
 
@@ -48,7 +48,7 @@ export class StoreState {
    * @return {TYPE.}
    * @private
    */
-  get __type__() {
+   __type__() {
     return this.__type
   }
 
@@ -58,6 +58,6 @@ export class StoreState {
    * @return {boolean}
    */
   isTypeOf(constructor) {
-    return constructor === this.__type__
+    return constructor === this.__type__()
   }
 }

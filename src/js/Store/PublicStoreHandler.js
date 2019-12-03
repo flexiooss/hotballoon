@@ -54,7 +54,7 @@ export class PublicStoreHandler {
    * @return {TYPE} state#data
    */
   data() {
-    return this.state().data
+    return this.state().data()
   }
 
   /**
@@ -77,7 +77,7 @@ export class PublicStoreHandler {
    *
    * @return {TYPE.}
    */
-  get __type__() {
+  __type__() {
     return this[_store].type()
   }
 

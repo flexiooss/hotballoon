@@ -41,7 +41,7 @@ export class TestProxyStore extends TestCase {
     assert.strictEqual(invoked, 1, 'Mapper should be invoked once at init')
 
     assert.deepEqual(
-      this.proxyStore.state().data,
+      this.proxyStore.state().data(),
       new FakeValueObjectBuilder()
         .a(2)
         .b(20)
@@ -79,7 +79,7 @@ export class TestProxyStore extends TestCase {
     assert.strictEqual(invoked, 2, 'Mapper should be invoked at init and at set')
 
     assert.deepEqual(
-      this.proxyStore.state().data,
+      this.proxyStore.state().data(),
       new FakeValueObjectBuilder()
         .a(11)
         .b(30)

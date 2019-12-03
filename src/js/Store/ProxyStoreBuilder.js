@@ -103,7 +103,8 @@ export class ProxyStoreBuilder {
   build() {
 
     const id = UID(this.__type.name + '_')
-    const initialData = this.__mapper(this.__store.state().data)
+    const data = this.__store.state().data()
+    const initialData = this.__mapper(data)
 
     return new ProxyStore(
       new ProxyStoreConfig(
