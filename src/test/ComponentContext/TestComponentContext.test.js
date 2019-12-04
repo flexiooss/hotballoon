@@ -16,37 +16,36 @@ export class TestComponentContext extends TestCase {
   }
 
   testGetApplicationFromComponentContext() {
-    //TODO update assert => strict equal
-    assert(this.componentContext.APP() === this.APP)
+    assert.deepStrictEqual(this.componentContext.APP(), this.APP)
   }
 
   testGetDispatcherFromComponentContext() {
-    assert(this.componentContext.dispatcher() === this.dispatcher)
+    assert.deepStrictEqual(this.componentContext.dispatcher(), this.dispatcher)
   }
 
   testNextId() {
     const id1 = this.componentContext.nextID()
     const id2 = this.componentContext.nextID()
-    assert(id1 !== id2)
+    assert.notEqual(id1, id2)
   }
 
   testAddStore() {
     const store = this.getStore()
     this.componentContext.addStore(store)
-    assert(this.componentContext.store(store.ID()) === store)
+    assert.deepStrictEqual(this.componentContext.store(store.ID()), store)
   }
 
   testAddViewContainer() {
     const viewContainer = this.getViewContainer()
     this.componentContext.addViewContainer(viewContainer)
-    assert(this.componentContext.viewContainer(viewContainer.ID()) === viewContainer)
+    assert.deepStrictEqual(this.componentContext.viewContainer(viewContainer.ID()), viewContainer)
   }
 
   testRemoveViewContainer() {
     const viewContainer = this.getViewContainer()
     this.componentContext.addViewContainer(viewContainer)
     this.componentContext.removeViewContainerEntry(viewContainer.ID())
-    assert(this.componentContext.viewContainer(viewContainer.ID()) === null)
+    assert.deepStrictEqual(this.componentContext.viewContainer(viewContainer.ID()), null)
   }
 
   getStore() {
