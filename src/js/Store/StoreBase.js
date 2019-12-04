@@ -93,7 +93,6 @@ export class StoreBase extends WithID {
           logger = v
         }
       }
-
     })
   }
 
