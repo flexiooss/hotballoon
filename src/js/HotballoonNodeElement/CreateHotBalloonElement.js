@@ -66,7 +66,7 @@ class CreateHotBalloonElement extends HyperFlex {
   _setParams() {
     this._$element = $(this._element)
     super._setParams()
-    return this[_setViews](this._params.views)[_setReconciliationRule](this._params.reconciliationRules)[_setReconciliationProperties](Object.keys(this._params.properties))[_setEventListeners](this._params.eventListeners)
+    return this[_setViews](this._params.views())[_setReconciliationRule](this._params.reconciliationRules())[_setReconciliationProperties](Object.keys(this._params.properties()))[_setEventListeners](this._params.eventListeners())
   }
 
   /**
