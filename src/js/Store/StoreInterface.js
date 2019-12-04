@@ -89,7 +89,7 @@ export class StoreInterface {
    *
    * @return {TYPE.}
    */
-  get __type__() {
+  __type__() {
     throw new CoreException(`state should be override with this signature :
    /**
    * @return {TYPE.}

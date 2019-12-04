@@ -47,6 +47,6 @@ export class HasTagClassNameInterface {
   /**
    * return {Symbol}
    */
-  get [CLASS_TAG_NAME]() {
+  [CLASS_TAG_NAME]() {
   }
 }

@@ -76,7 +76,7 @@ export class InMemoryStorage extends StorageInterface {
    * @return {TYPE.}
    * @private
    */
-  get __type__() {
+  __type__() {
     return this.type
   }
 
@@ -86,6 +86,6 @@ export class InMemoryStorage extends StorageInterface {
    * @return {boolean}
    */
   isTypeOf(constructor) {
-    return constructor === this.__type__
+    return constructor === this.__type__()
   }
 }

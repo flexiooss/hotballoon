@@ -1,5 +1,5 @@
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_PUBLIC_STORE_HANDLER} from '../Types/HasTagClassNameInterface'
-import {assertType, isFunction} from '@flexio-oss/assert'
+import {assertType} from '@flexio-oss/assert'
 import {TypeCheck} from '../Types/TypeCheck'
 
 const _store = Symbol('_store')

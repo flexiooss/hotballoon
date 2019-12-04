@@ -1,15 +1,10 @@
-import {
-  WILL_REMOVE as VIEWCONTAINER_WILL_REMOVE
-} from '../View/ViewContainerPublicEventHandler'
+import {WILL_REMOVE as VIEWCONTAINER_WILL_REMOVE} from '../View/ViewContainerPublicEventHandler'
 import {assertType, isString} from '@flexio-oss/assert'
 import {Sequence} from '@flexio-oss/js-helpers'
 import {StoreMap} from '../Store/StoreMap'
 import {ViewContainerMap} from '../View/ViewContainerMap'
 import {WithID} from '../abstract/WithID'
-import {
-  CLASS_TAG_NAME,
-  CLASS_TAG_NAME_COMPONENT
-} from '../Types/HasTagClassNameInterface'
+import {CLASS_TAG_NAME, CLASS_TAG_NAME_COMPONENT} from '../Types/HasTagClassNameInterface'
 import {TypeCheck} from '../Types/TypeCheck'
 
 const __actionsToken = Symbol('__actionsToken')
@@ -39,7 +34,7 @@ export class ComponentContext extends WithID {
 
     super(hotBalloonApplication.nextID())
 
-    const _sequenceId = new Sequence(this.ID + '_')
+    const _sequenceId = new Sequence(this.ID() + '_')
     const _stores = new StoreMap()
     const _viewContainers = new ViewContainerMap()
     const _actionsToken = new Map()
@@ -157,7 +152,7 @@ export class ComponentContext extends WithID {
       isString(token),
       `${this.constructor.name}: 'token' should be string`
     )
-    this[__actionsToken].set(token, action.ID)
+    this[__actionsToken].set(token, action.ID())
     return token
   }
 
@@ -183,7 +178,7 @@ export class ComponentContext extends WithID {
    * @returns {Store} store
    */
   addStore(store) {
-    this[__stores].set(store.ID, store)
+    this[__stores].set(store.ID(), store)
     store.setLogger(this.logger())
     return store
   }
@@ -203,7 +198,7 @@ export class ComponentContext extends WithID {
    * @returns {ViewContainer} viewContainer
    */
   addViewContainer(viewContainer) {
-    this[__viewContainers].set(viewContainer.ID, viewContainer)
+    this[__viewContainers].set(viewContainer.ID(), viewContainer)
     return viewContainer
   }
 
@@ -288,10 +283,9 @@ export class ComponentContext extends WithID {
     this.logger().log(
       this.logger().builder()
         .info()
-        .pushLog('Remove : ' + this.ID)
+        .pushLog('Remove : ' + this.ID())
         .pushLog(this),
       componentContextLogOptions
     )
-
   }
 }

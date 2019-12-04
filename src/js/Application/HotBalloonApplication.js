@@ -158,7 +158,7 @@ export class HotBalloonApplication extends WithID {
    */
   addComponentContext() {
     const componentContext = new ComponentContext(this)
-    this[_ComponentContexts].set(componentContext.ID, componentContext)
+    this[_ComponentContexts].set(componentContext.ID(), componentContext)
     return componentContext
   }
 

@@ -49,7 +49,7 @@ export class ActionDispatcherTest extends TestCase {
 
   }
 
-  testListenDispatchValue() {
+  testListenDispatchValueListenDispatchValue() {
     /**
      *
      * @type {ActionDispatcher<FakeObject, FakeObjectBuilder>}
@@ -61,6 +61,7 @@ export class ActionDispatcherTest extends TestCase {
 
     let p = null
     let t = null
+    console.log('plok')
 
     actionDispatcher.listenWithCallback(
       (payload, type) => {
@@ -69,17 +70,20 @@ export class ActionDispatcherTest extends TestCase {
       },
       this.componentContext
     )
+    console.log('plok1')
 
     const payloadDispatched = new FakeObjectBuilder()
       .prop1('toto')
       .prop2(true)
       .prop3(3)
       .build()
-
+    console.log('plok2')
     actionDispatcher.dispatch(payloadDispatched)
 
+    console.log('plok3')
+
     assert.deepStrictEqual(p, payloadDispatched)
-    assert.equal(t, actionDispatcher.ID)
+    assert.equal(t, actionDispatcher.ID())
   }
 
   testListenDispatchOrder() {

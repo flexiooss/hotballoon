@@ -1,7 +1,7 @@
 import {HotBalloonApplication} from './HotBalloonApplication'
 
 export class ApplicationBuilder {
-  
+
   constructor() {
     /**
      *

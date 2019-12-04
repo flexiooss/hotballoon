@@ -1,7 +1,5 @@
-import {globalFlexioImport} from '@flexio-oss/global-import-registry'
-import {assertType, isBoolean, isObject, assert, isNumber, isNull, isString} from '@flexio-oss/assert'
+import {assertType, isBoolean, isNull, isNumber, isObject, isString} from '@flexio-oss/assert'
 import {deepFreezeSeal} from '@flexio-oss/js-generator-helpers'
-import {FlexArray} from '@flexio-oss/flex-types'
 
 class FakeObject {
   /**
@@ -27,6 +25,37 @@ class FakeObject {
     this._prop3 = prop3
 
     deepFreezeSeal(this)
+  }
+
+  /**
+   * @returns {FakeObjectBuilder}
+   */
+  static builder() {
+    return new FakeObjectBuilder()
+  }
+
+  /**
+   * @param {FakeObject} instance
+   * @returns {FakeObjectBuilder}
+   */
+  static from(instance) {
+    return FakeObjectBuilder.from(instance)
+  }
+
+  /**
+   * @param {Object} jsonObject
+   * @returns {FakeObjectBuilder}
+   */
+  static fromObject(jsonObject) {
+    return FakeObjectBuilder.fromObject(jsonObject)
+  }
+
+  /**
+   * @param {string} json
+   * @returns {FakeObjectBuilder}
+   */
+  static fromJson(json) {
+    return FakeObjectBuilder.fromJson(json)
   }
 
   /**
@@ -81,37 +110,6 @@ class FakeObject {
   }
 
   /**
-   * @returns {FakeObjectBuilder}
-   */
-  static builder() {
-    return new FakeObjectBuilder()
-  }
-
-  /**
-   * @param {FakeObject} instance
-   * @returns {FakeObjectBuilder}
-   */
-  static from(instance) {
-    return FakeObjectBuilder.from(instance)
-  }
-
-  /**
-   * @param {Object} jsonObject
-   * @returns {FakeObjectBuilder}
-   */
-  static fromObject(jsonObject) {
-    return FakeObjectBuilder.fromObject(jsonObject)
-  }
-
-  /**
-   * @param {string} json
-   * @returns {FakeObjectBuilder}
-   */
-  static fromJson(json) {
-    return FakeObjectBuilder.fromJson(json)
-  }
-
-  /**
    * @returns {Object}
    */
   toObject() {
@@ -146,6 +144,48 @@ class FakeObjectBuilder {
     this._prop1 = null
     this._prop2 = null
     this._prop3 = null
+  }
+
+  /**
+   * @param {Object} jsonObject
+   * @returns {FakeObjectBuilder}
+   */
+  static fromObject(jsonObject) {
+    assertType(isObject(jsonObject), 'input should be an object')
+    let builder = new FakeObjectBuilder()
+    if (jsonObject['prop1'] !== undefined && !isNull(jsonObject['prop1'])) {
+      builder.prop1(jsonObject['prop1'])
+    }
+    if (jsonObject['prop2'] !== undefined && !isNull(jsonObject['prop2'])) {
+      builder.prop2(jsonObject['prop2'])
+    }
+    if (jsonObject['prop3'] !== undefined && !isNull(jsonObject['prop3'])) {
+      builder.prop3(parseInt(jsonObject['prop3']))
+    }
+    return builder
+  }
+
+  /**
+   * @param {string} json
+   * @returns {FakeObjectBuilder}
+   */
+  static fromJson(json) {
+    assertType(isString(json), 'input should be a string')
+    let jsonObject = JSON.parse(json)
+    return this.fromObject(jsonObject)
+  }
+
+  /**
+   * @param {FakeObject} instance
+   * @returns {FakeObjectBuilder}
+   */
+  static from(instance) {
+    assertType(instance instanceof FakeObject, 'input should be an instance of FakeObject')
+    let builder = new FakeObjectBuilder()
+    builder.prop1(instance.prop1())
+    builder.prop2(instance.prop2())
+    builder.prop3(instance.prop3())
+    return builder
   }
 
   /**
@@ -189,48 +229,6 @@ class FakeObjectBuilder {
    */
   build() {
     return new FakeObject(this._prop1, this._prop2, this._prop3)
-  }
-
-  /**
-   * @param {Object} jsonObject
-   * @returns {FakeObjectBuilder}
-   */
-  static fromObject(jsonObject) {
-    assertType(isObject(jsonObject), 'input should be an object')
-    let builder = new FakeObjectBuilder()
-    if (jsonObject['prop1'] !== undefined && !isNull(jsonObject['prop1'])) {
-      builder.prop1(jsonObject['prop1'])
-    }
-    if (jsonObject['prop2'] !== undefined && !isNull(jsonObject['prop2'])) {
-      builder.prop2(jsonObject['prop2'])
-    }
-    if (jsonObject['prop3'] !== undefined && !isNull(jsonObject['prop3'])) {
-      builder.prop3(parseInt(jsonObject['prop3']))
-    }
-    return builder
-  }
-
-  /**
-   * @param {string} json
-   * @returns {FakeObjectBuilder}
-   */
-  static fromJson(json) {
-    assertType(isString(json), 'input should be a string')
-    let jsonObject = JSON.parse(json)
-    return this.fromObject(jsonObject)
-  }
-
-  /**
-   * @param {FakeObject} instance
-   * @returns {FakeObjectBuilder}
-   */
-  static from(instance) {
-    assertType(instance instanceof FakeObject, 'input should be an instance of FakeObject')
-    let builder = new FakeObjectBuilder()
-    builder.prop1(instance.prop1())
-    builder.prop2(instance.prop2())
-    builder.prop3(instance.prop3())
-    return builder
   }
 }
 

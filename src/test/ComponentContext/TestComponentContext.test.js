@@ -16,6 +16,7 @@ export class TestComponentContext extends TestCase {
   }
 
   testGetApplicationFromComponentContext() {
+    //TODO update assert => strict equal
     assert(this.componentContext.APP() === this.APP)
   }
 
@@ -32,22 +33,20 @@ export class TestComponentContext extends TestCase {
   testAddStore() {
     const store = this.getStore()
     this.componentContext.addStore(store)
-    assert(this.componentContext.store(store.ID) === store)
+    assert(this.componentContext.store(store.ID()) === store)
   }
 
   testAddViewContainer() {
     const viewContainer = this.getViewContainer()
     this.componentContext.addViewContainer(viewContainer)
-    assert(this.componentContext.viewContainer(viewContainer.ID) === viewContainer)
+    assert(this.componentContext.viewContainer(viewContainer.ID()) === viewContainer)
   }
 
   testRemoveViewContainer() {
     const viewContainer = this.getViewContainer()
     this.componentContext.addViewContainer(viewContainer)
-    // console.log(this.componentContext.viewContainer(viewContainer.ID))
-    this.componentContext.removeViewContainerEntry(viewContainer.ID)
-    // console.log(this.componentContext.viewContainer(viewContainer.ID))
-    assert(this.componentContext.viewContainer(viewContainer.ID) === null)
+    this.componentContext.removeViewContainerEntry(viewContainer.ID())
+    assert(this.componentContext.viewContainer(viewContainer.ID()) === null)
   }
 
   getStore() {

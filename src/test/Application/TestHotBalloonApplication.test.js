@@ -13,7 +13,7 @@ export class TestHotBalloonApplication extends TestCase {
 
   testAddComponentContext() {
     const componentContext = this.APP.addComponentContext()
-    assert(this.APP.componentContext(componentContext.ID) === componentContext)
+    assert(this.APP.componentContext(componentContext.ID()) === componentContext)
   }
 
   /* testRemoveComponentContext() {

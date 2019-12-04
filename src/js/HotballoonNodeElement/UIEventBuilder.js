@@ -278,56 +278,6 @@ class KeyKeyboardEventBuilder {
 
   /**
    *
-   * @param {function(event:KeyboardEvent)} callback
-   * @return {function(event:KeyboardEvent)}
-   * @private
-   */
-  __buildCallback(callback) {
-    return (event) => {
-      if (this.__condition(event)) {
-        callback(event)
-      }
-    }
-  }
-
-  /**
-   *
-   * @param {function(event:KeyboardEvent)} callback
-   * @return {ElementEventListenerConfig}
-   */
-  keydown(callback) {
-    return ElementEventListenerConfigBuilder
-      .listen('keydown')
-      .callback(this.__buildCallback(callback))
-      .build()
-  }
-
-  /**
-   *
-   * @param {function(event:KeyboardEvent)} callback
-   * @return {ElementEventListenerConfig}
-   */
-  keypress(callback) {
-    return ElementEventListenerConfigBuilder
-      .listen('keydown')
-      .callback(this.__buildCallback(callback))
-      .build()
-  }
-
-  /**
-   *
-   * @param {function(event:KeyboardEvent)} callback
-   * @return {ElementEventListenerConfig}
-   */
-  keyup(callback) {
-    return ElementEventListenerConfigBuilder
-      .listen('keydown')
-      .callback(this.__buildCallback(callback))
-      .build()
-  }
-
-  /**
-   *
    * @return {KeyKeyboardEventBuilder}
    */
   static Enter() {
@@ -379,6 +329,56 @@ class KeyKeyboardEventBuilder {
     return ElementEventListenerConfigBuilder
       .listen('keyup')
       .callback(callback)
+      .build()
+  }
+
+  /**
+   *
+   * @param {function(event:KeyboardEvent)} callback
+   * @return {function(event:KeyboardEvent)}
+   * @private
+   */
+  __buildCallback(callback) {
+    return (event) => {
+      if (this.__condition(event)) {
+        callback(event)
+      }
+    }
+  }
+
+  /**
+   *
+   * @param {function(event:KeyboardEvent)} callback
+   * @return {ElementEventListenerConfig}
+   */
+  keydown(callback) {
+    return ElementEventListenerConfigBuilder
+      .listen('keydown')
+      .callback(this.__buildCallback(callback))
+      .build()
+  }
+
+  /**
+   *
+   * @param {function(event:KeyboardEvent)} callback
+   * @return {ElementEventListenerConfig}
+   */
+  keypress(callback) {
+    return ElementEventListenerConfigBuilder
+      .listen('keydown')
+      .callback(this.__buildCallback(callback))
+      .build()
+  }
+
+  /**
+   *
+   * @param {function(event:KeyboardEvent)} callback
+   * @return {ElementEventListenerConfig}
+   */
+  keyup(callback) {
+    return ElementEventListenerConfigBuilder
+      .listen('keydown')
+      .callback(this.__buildCallback(callback))
       .build()
   }
 }

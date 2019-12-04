@@ -48,7 +48,7 @@ export class StoreBaseConfig {
    *
    * @return {(symbol|String)}
    */
-  get id() {
+  id() {
     return this._id
   }
 
@@ -56,31 +56,31 @@ export class StoreBaseConfig {
    *
    * @return {TYPE.}
    */
-  get type() {
-    return this._storeTypeConfig.type
+  type() {
+    return this._storeTypeConfig.type()
   }
 
   /**
    *
    * @return {StoreTypeConfig~validatorClb<TYPE>}
    */
-  get validator() {
-    return this._storeTypeConfig.validator
+  validator() {
+    return this._storeTypeConfig.validator()
   }
 
   /**
    *
    * @return {StoreTypeConfig~defaultCheckerClb<TYPE>}
    */
-  get defaultChecker() {
-    return this._storeTypeConfig.defaultChecker
+  defaultChecker() {
+    return this._storeTypeConfig.defaultChecker()
   }
 
   /**
    *
    * @return {StorageInterface<TYPE>}
    */
-  get storage() {
+  storage() {
     return this._storage
   }
 
@@ -88,7 +88,7 @@ export class StoreBaseConfig {
    *
    * @returns {TYPE}
    */
-  get initialData() {
+  initialData() {
     return this._initialData
   }
 }

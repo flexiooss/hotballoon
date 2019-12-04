@@ -1,4 +1,4 @@
-import {isBoolean, isNode, assert} from '@flexio-oss/assert'
+import {assert, isBoolean, isNode} from '@flexio-oss/assert'
 import {ArrayMap} from '@flexio-oss/extended-flex-types'
 import {WithID} from '../abstract/WithID'
 import {OrderedEventHandler} from '../Event/OrderedEventHandler'
@@ -172,7 +172,7 @@ export class ViewContainerBase extends WithID {
    * @return {View}
    */
   addView(view) {
-    this[_Views].set(view.ID, view)
+    this[_Views].set(view.ID(), view)
     return view
   }
 
@@ -182,8 +182,8 @@ export class ViewContainerBase extends WithID {
    * @return {this}
    */
   removeView(view) {
-    if (this[_Views].has(view.ID)) {
-      this[_Views].delete(view.ID)
+    if (this[_Views].has(view.ID())) {
+      this[_Views].delete(view.ID())
     }
     return this
   }

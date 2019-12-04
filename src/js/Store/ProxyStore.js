@@ -1,7 +1,7 @@
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_PROXYSTORE} from '../Types/HasTagClassNameInterface'
-import {StoreBase, _set} from './StoreBase'
+import {_set, StoreBase} from './StoreBase'
 import {StoreBaseConfig} from './StoreBaseConfig'
-import {assertType, isFunction} from '@flexio-oss/assert'
+import {assertType} from '@flexio-oss/assert'
 import {ProxyStoreConfig} from './ProxyStoreConfig'
 
 const _store = Symbol('_store')
@@ -21,10 +21,10 @@ export class ProxyStore extends StoreBase {
   constructor(proxyStoreConfig) {
     super(
       new StoreBaseConfig(
-        proxyStoreConfig.id,
-        proxyStoreConfig.initialData,
-        proxyStoreConfig.storeTypeConfig,
-        proxyStoreConfig.storage
+        proxyStoreConfig.id(),
+        proxyStoreConfig.initialData(),
+        proxyStoreConfig.storeTypeConfig(),
+        proxyStoreConfig.storage()
       )
     )
 
@@ -50,7 +50,7 @@ export class ProxyStore extends StoreBase {
          * @name ProxyStore#_Store
          * @private
          */
-        value: proxyStoreConfig.store
+        value: proxyStoreConfig.store()
       },
 
       [_mapper]: {
@@ -61,7 +61,7 @@ export class ProxyStore extends StoreBase {
          * @name ProxyStore#_mapper
          * @private
          */
-        value: proxyStoreConfig.mapper
+        value: proxyStoreConfig.mapper()
       }
 
     })
@@ -89,5 +89,4 @@ export class ProxyStore extends StoreBase {
   __mapAndUpdate(payload, eventType) {
     this[_set](this[_mapper](payload.data()))
   }
-
 }

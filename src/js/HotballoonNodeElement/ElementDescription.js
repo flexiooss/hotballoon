@@ -15,7 +15,7 @@ export class ElementDescription {
    *
    * @return {string}
    */
-  get querySelector() {
+  querySelector() {
     return this._querySelector
   }
 
@@ -23,7 +23,7 @@ export class ElementDescription {
    *
    * @return {HotballoonElementParams}
    */
-  get params() {
+  params() {
     return this._params
   }
 

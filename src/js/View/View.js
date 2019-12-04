@@ -1,23 +1,22 @@
 import {CoreException} from '../CoreException'
-import {Checksum} from '@flexio-oss/js-helpers'
+import {Checksum, UID} from '@flexio-oss/js-helpers'
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_VIEW} from '../Types/HasTagClassNameInterface'
 import {assertType, isBoolean, isFunction, isNode, isNull} from '@flexio-oss/assert'
 import {symbolToString} from '@flexio-oss/js-type-helpers'
-import {UID} from '@flexio-oss/js-helpers'
 import {$} from '../HotballoonNodeElement/HotBalloonAttributeHandler'
 import {startReconcile} from '../HotballoonNodeElement/HotballoonElementReconciliation'
 import {html} from '../HotballoonNodeElement/CreateHotBalloonElement'
 import {ViewContainerBase} from './ViewContainerBase'
 import {TypeCheck} from '../Types/TypeCheck'
 import {
-  ViewPublicEventHandler,
+  VIEW_MOUNT,
+  VIEW_MOUNTED,
   VIEW_RENDER,
   VIEW_RENDERED,
+  VIEW_STORE_CHANGED,
   VIEW_UPDATE,
   VIEW_UPDATED,
-  VIEW_STORE_CHANGED,
-  VIEW_MOUNT,
-  VIEW_MOUNTED
+  ViewPublicEventHandler
 } from './ViewPublicEventHandler'
 
 export const ATTRIBUTE_NODEREF = '_hb_noderef'
@@ -38,7 +37,7 @@ const requestAFrame = window.requestAnimationFrame
   || window.webkitRequestAnimationFrame
   || window.mozRequestAnimationFrame
   || window.msRequestAnimationFrame
-  || function(cb) {
+  || function (cb) {
     return setTimeout(cb, 16)
   }
 
@@ -228,7 +227,7 @@ export class View extends ViewContainerBase {
    * @return {Element}
    */
   html(element) {
-    return html(this, element.querySelector, element.params, this.document())
+    return html(this, element.querySelector(), element.params(), this.document())
   }
 
   /**
@@ -275,20 +274,20 @@ export class View extends ViewContainerBase {
     this._nodeRefs.clear()
     const candidate = this.template()
 
-    if (isNull(candidate) || isNull(this.node)) {
+    if (isNull(candidate) || isNull(this.node())) {
       this[_replaceNode]()
     } else {
 
-      $(candidate).setViewRef(this.ID)
-      startReconcile(this.node, candidate, this.parentNode)
+      $(candidate).setViewRef(this.ID())
+      startReconcile(this.node(), candidate, this.parentNode)
 
     }
     this.dispatch(VIEW_UPDATED, {})
     this.logger().log(
       this.logger().builder()
         .debug()
-        .pushLog('UpdateNode : ' + this.ID)
-        .pushLog(this.node),
+        .pushLog('UpdateNode : ' + this.ID())
+        .pushLog(this.node()),
       viewLogOptions
     )
   }
@@ -365,7 +364,7 @@ export class View extends ViewContainerBase {
     this.logger().log(
       this.logger().builder()
         .info()
-        .pushLog('Render : ' + this.ID),
+        .pushLog('Render : ' + this.ID()),
       viewLogOptions
     )
 
@@ -377,7 +376,7 @@ export class View extends ViewContainerBase {
     }
 
     this._shouldRender = true
-    return this.node
+    return this.node()
   }
 
   /**
@@ -394,7 +393,7 @@ export class View extends ViewContainerBase {
    */
   [_mount]() {
     if (!isNull(this.node)) {
-      this.parentNode.appendChild(this.node)
+      this.parentNode.appendChild(this.node())
     }
     this._mounted = true
     this.dispatch(VIEW_MOUNTED, {})
@@ -508,8 +507,8 @@ export class View extends ViewContainerBase {
    * @private
    */
   [_setNodeViewRef]() {
-    if (!isNull(this.node)) {
-      $(this.node).setViewRef(this.ID)
+    if (!isNull(this.node())) {
+      $(this.node()).setViewRef(this.ID())
     }
   }
 
@@ -518,13 +517,13 @@ export class View extends ViewContainerBase {
    * @return {string}
    */
   viewRef() {
-    return this.ID
+    return this.ID()
   }
 
   /**
    * @return {?Element}
    */
-  get node() {
+  node() {
     return this._node
   }
 
@@ -532,7 +531,7 @@ export class View extends ViewContainerBase {
     this.logger().log(
       this.logger().builder()
         .info()
-        .pushLog('Remove : ' + this.ID)
+        .pushLog('Remove : ' + this.ID())
         .pushLog(this),
       viewLogOptions
     )
@@ -608,7 +607,7 @@ export class View extends ViewContainerBase {
    * @return {string}
    */
   containerID() {
-    return this._container.ID
+    return this._container.ID()
   }
 
   /**

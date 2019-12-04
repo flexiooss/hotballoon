@@ -42,7 +42,7 @@ export class ActionDispatcherConfig {
    *
    * @return {(symbol|String)}
    */
-  get id() {
+  id() {
     return this._id
   }
 
@@ -50,39 +50,40 @@ export class ActionDispatcherConfig {
    *
    * @return {TYPE.}
    */
-  get type() {
-    return this._params.type
+  type() {
+    return this._params.type()
   }
 
   /**
    *
    * @return {TYPE_BUILDER.}
    */
-  get payloadBuilder() {
-    return this._params.payloadBuilder
+  payloadBuilder() {
+    return this._params.payloadBuilder()
   }
 
   /**
    *
    * @return {ActionTypeConfig~validatorClb<TYPE>}
    */
-  get validator() {
-    return this._params.validator
+  validator() {
+    //Todo
+    return this._params.validator()
   }
 
   /**
    *
    * @return {ActionTypeConfig~defaultCheckerClb<TYPE>}
    */
-  get defaultChecker() {
-    return this._params.defaultChecker
+  defaultChecker() {
+    return this._params.defaultChecker()
   }
 
   /**
    *
    * @return {Dispatcher}
    */
-  get dispatcher() {
+  dispatcher() {
     return this._dispatcher
   }
 }

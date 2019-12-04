@@ -5,10 +5,7 @@ import {ActionDispatcherConfig} from './ActionDispatcherConfig'
 import {DispatcherEventListenerConfigBuilder} from '../Dispatcher/DispatcherEventListenerConfigBuilder'
 import {WithID} from '../abstract/WithID'
 import {ValidationError} from '../Exception/ValidationError'
-import {
-  CLASS_TAG_NAME,
-  CLASS_TAG_NAME_ACTION
-} from '../Types/HasTagClassNameInterface'
+import {CLASS_TAG_NAME, CLASS_TAG_NAME_ACTION} from '../Types/HasTagClassNameInterface'
 import {TypeCheck} from '../Types/TypeCheck'
 
 const _actionConfig = Symbol('_actionParams')
@@ -44,7 +41,6 @@ export class ActionDispatcher extends WithID {
         writable: false,
         value: actionConfig
       }
-
     })
   }
 
@@ -53,7 +49,7 @@ export class ActionDispatcher extends WithID {
    * @return {TYPE_BUILDER}
    */
   payloadBuilder() {
-    return this[_actionConfig].type.builder()
+    return this[_actionConfig].type().builder()
   }
 
   /**
@@ -61,7 +57,7 @@ export class ActionDispatcher extends WithID {
    * @return {TYPE_BUILDER}
    */
   payloadFromObject(object) {
-    return this[_actionConfig].type.fromObject(object)
+    return this[_actionConfig].type().fromObject(object)
   }
 
   /**
@@ -70,7 +66,7 @@ export class ActionDispatcher extends WithID {
    * @return {TYPE_BUILDER}
    */
   payloadFrom(instance) {
-    return this[_actionConfig].type.from(instance)
+    return this[_actionConfig].type().from(instance)
   }
 
   /**
@@ -79,15 +75,15 @@ export class ActionDispatcher extends WithID {
    * @return {TYPE_BUILDER}
    */
   payloadFromJSON(json) {
-    return this[_actionConfig].type.fromJSON(json)
+    return this[_actionConfig].type().fromJSON(json)
   }
 
   /**
    *
    * @return {TYPE.}
    */
-  get __type__() {
-    return this[_actionConfig].type
+  __type__() {
+    return this[_actionConfig].type()
   }
 
   /**
@@ -96,28 +92,29 @@ export class ActionDispatcher extends WithID {
    * @return {boolean}
    */
   isTypeOf(constructor) {
-    return constructor === this.__type__
+    return constructor === this.__type__()
   }
 
   /**
    * @param {TYPE} payload
    */
   dispatch(payload) {
-    const data = this[_actionConfig].defaultChecker(payload)
+    const checker = this[_actionConfig].defaultChecker()
+    const data = checker(payload)
 
     assertType(
-      data instanceof this.__type__,
+      data instanceof this.__type__(),
       'hotballoon:ActionDispatcher:dispatch "data" argument should be an instance of %s',
-      this.__type__.name
+      this.__type__().name
     )
 
-    if (!isNull(this[_actionConfig].validator) && !this[_actionConfig].validator.isValid(payload)) {
+    if (!isNull(this[_actionConfig].validator()) && !this[_actionConfig].validator().isValid(payload)) {
       throw new ValidationError('hotballoon:ActionDispatcher:dispatch "data" argument failed to validation')
     }
 
-    this[_actionConfig].dispatcher.dispatchAction(
+    this[_actionConfig].dispatcher().dispatchAction(
       EventAction.create(
-        this.ID,
+        this.ID(),
         payload
       )
     )
@@ -137,7 +134,7 @@ export class ActionDispatcher extends WithID {
 
     return componentContext
       .addActionToken(
-        this[_actionConfig].dispatcher
+        this[_actionConfig].dispatcher()
           .addActionListener(
             DispatcherEventListenerConfigBuilder
               .listen(this)
@@ -153,6 +150,6 @@ export class ActionDispatcher extends WithID {
    * @param {...string} token
    */
   waitFor(...token) {
-    this[_actionConfig].dispatcher.waitFor(this.ID, token)
+    this[_actionConfig].dispatcher().waitFor(this.ID(), token)
   }
 }

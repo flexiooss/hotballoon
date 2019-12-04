@@ -10,7 +10,7 @@ export class DispatcherEventListenerConfigBuilder extends EventListenerConfigBui
    */
   constructor(actions) {
     assertType(actions instanceof ActionDispatcherArray, 'hotballoon:DispatcherEventListenerFactory:constructor: `actions` argument should be an instance of ActionDispatcherArray ')
-    super(actions.mapTo(new SymbolStringArray(), action => action.ID))
+    super(actions.mapTo(new SymbolStringArray(), action => action.ID()))
   }
 
   /**

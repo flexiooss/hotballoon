@@ -114,12 +114,12 @@ export class Dispatcher extends EventHandlerBase {
     this.logger().log(
       this.logger().builder()
         .info()
-        .pushLog('ActionDispatcher dispatched : ' + eventAction.name)
-        .pushLog(eventAction.payload),
+        .pushLog('ActionDispatcher dispatched : ' + eventAction.name())
+        .pushLog(eventAction.payload()),
       dispatcherLogOptions
     )
 
-    super.dispatch(eventAction.name, eventAction.payload)
+    super.dispatch(eventAction.name(), eventAction.payload())
   }
 
   /**

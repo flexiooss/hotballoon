@@ -23,6 +23,7 @@ class HBException {
     return `${this._name} : ${this._message} | ${this.getCode(this._code)}`
   }
 }
+
 export {
   HBException
 }

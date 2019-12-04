@@ -1,12 +1,12 @@
 import {WithID} from '../abstract/WithID'
-import {assert, assertType, isFunction, isNumber, isNull} from '@flexio-oss/assert'
+import {assert, assertType, isFunction, isNull, isNumber} from '@flexio-oss/assert'
 import {StorageInterface} from './Storage/StorageInterface'
 
 import {OrderedEventHandler} from '../Event/OrderedEventHandler'
 import {STORE_CHANGED} from './StoreInterface'
 import {ValidationError} from '../Exception/ValidationError'
 import {OrderedEventListenerConfigBuilder} from '@flexio-oss/event-handler'
-import {LoggerInterface, FakeLogger} from '@flexio-oss/js-logger'
+import {FakeLogger, LoggerInterface} from '@flexio-oss/js-logger'
 import {StoreBaseConfig} from './StoreBaseConfig'
 
 export const _storage = Symbol('_storage')
@@ -33,10 +33,10 @@ export class StoreBase extends WithID {
    * @param {StoreBaseConfig<TYPE, TYPE_BUILDER>} storeBaseConfig
    */
   constructor(storeBaseConfig) {
-    super(storeBaseConfig.id)
-    let storage = storeBaseConfig.storage
+    super(storeBaseConfig.id())
+    let storage = storeBaseConfig.storage()
     let logger = fakeLogger
-    this.__initialData = storeBaseConfig.initialData
+    this.__initialData = storeBaseConfig.initialData()
 
     assertType(storeBaseConfig instanceof StoreBaseConfig,
       'hotballoon:' + this.constructor.name + ':constructor: `storeBaseConfig` argument should be an instance of `StoreBaseConfig`')
@@ -116,8 +116,8 @@ export class StoreBase extends WithID {
    *
    * @return {TYPE.}
    */
-  get __type__() {
-    return this[_storeParams].type
+  __type__() {
+    return this[_storeParams].type()
   }
 
   /**
@@ -168,7 +168,7 @@ export class StoreBase extends WithID {
    * @return {(Symbol|string)}
    */
   storeId() {
-    return this.ID
+    return this.ID()
   }
 
   /**
@@ -201,19 +201,20 @@ export class StoreBase extends WithID {
    * @param {TYPE} dataStore
    */
   [_set](dataStore) {
-    const data = this[_storeParams].defaultChecker(dataStore)
+    const checker = this[_storeParams].defaultChecker()
+    const data = checker(dataStore)
 
-    assertType(data instanceof this.__type__,
+    assertType(data instanceof this.__type__(),
       'StoreBase:set: `dataStore` should be an instanceof `%s`, `%s` given',
-      this.__type__.name,
+      this.__type__().name,
       dataStore.constructor.name
     )
 
-    if (!isNull(this[_storeParams].validator) && !this[_storeParams].validator.isValid(data)) {
+    if (!isNull(this[_storeParams].validator()) && !this[_storeParams].validator().isValid(data)) {
       throw new ValidationError('StoreBase:set: `dataStore` failed validation')
     }
 
-    this[_storage] = this[_storage].set(this.ID, data)
+    this[_storage] = this[_storage].set(this.ID(), data)
   }
 
   /**
@@ -231,7 +232,7 @@ export class StoreBase extends WithID {
     this.logger().log(
       this.logger().builder()
         .info()
-        .pushLog('STORE STORE_CHANGED : ' + this.ID)
+        .pushLog('STORE STORE_CHANGED : ' + this.ID())
         .pushLog(this.state()),
       storeBaseLogOptions
     )
@@ -284,13 +285,13 @@ export class StoreBase extends WithID {
 
   remove() {
     this[_EventHandler].clear()
-    this[_storage] = this[_storage].set(this.ID, null)
+    this[_storage] = this[_storage].set(this.ID(), null)
   }
 
   /**
    * Set value to initial data
    */
-  reset(){
+  reset() {
     this[_set](this.__initialData)
   }
 }

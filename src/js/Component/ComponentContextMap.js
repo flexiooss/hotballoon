@@ -9,5 +9,4 @@ export class ComponentContextMap extends FlexMap {
   _validate(v) {
     assertType(TypeCheck.isComponentContext(v), 'ComponentContextMap: input should be a ComponentContext')
   }
-
 }

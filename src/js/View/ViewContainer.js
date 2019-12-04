@@ -1,5 +1,5 @@
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_VIEWCONTAINER} from '../Types/HasTagClassNameInterface'
-import {isNode, isString, assert, assertType, isFunction} from '@flexio-oss/assert'
+import {assertType, isFunction, isNode, isString} from '@flexio-oss/assert'
 import {StoreInterface} from '../Store/StoreInterface'
 import {ViewContainerBase} from './ViewContainerBase'
 import {ViewContainerPublicEventHandler} from './ViewContainerPublicEventHandler'
@@ -126,7 +126,7 @@ export class ViewContainer extends ViewContainerBase {
 
     const token = store.listenChanged(
       (payload, type) => {
-        clb(payload.data)
+        clb(payload.data())
       }
     )
     this._tokenEvent.push(
@@ -197,7 +197,7 @@ export class ViewContainer extends ViewContainerBase {
     this.logger().log(
       this.logger().builder()
         .info()
-        .pushLog('Render And Mount : ' + this.ID)
+        .pushLog('Render And Mount : ' + this.ID())
         .pushLog(this),
       viewContainerLogOptions
     )
@@ -220,7 +220,7 @@ export class ViewContainer extends ViewContainerBase {
    * @return {string}
    */
   AppID() {
-    return this[_ComponentContext].APP().ID
+    return this[_ComponentContext].APP().ID()
   }
 
   /**
@@ -228,7 +228,7 @@ export class ViewContainer extends ViewContainerBase {
    * @return {string}
    */
   componentID() {
-    return this[_ComponentContext].ID
+    return this[_ComponentContext].ID()
   }
 
   /**
@@ -259,13 +259,13 @@ export class ViewContainer extends ViewContainerBase {
     this.logger().log(
       this.logger().builder()
         .info()
-        .pushLog('Remove : ' + this.ID)
+        .pushLog('Remove : ' + this.ID())
         .pushLog(this),
       viewContainerLogOptions
     )
 
     super.remove()
-    this[_ComponentContext].removeViewContainerEntry(this.ID)
+    this[_ComponentContext].removeViewContainerEntry(this.ID())
 
   }
 }

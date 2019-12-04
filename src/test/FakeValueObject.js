@@ -21,6 +21,17 @@ export class FakeValueObjectBuilder {
 
   /**
    *
+   * @param {FakeValueObject} instance
+   * @return {FakeValueObjectBuilder}
+   */
+  static from(instance) {
+    return new FakeValueObjectBuilder()
+      .a(instance.a())
+      .b(instance.b())
+  }
+
+  /**
+   *
    * @param a
    * @return {FakeValueObjectBuilder}
    */
@@ -37,17 +48,6 @@ export class FakeValueObjectBuilder {
   b(b) {
     this.__b = b
     return this
-  }
-
-  /**
-   *
-   * @param {FakeValueObject} instance
-   * @return {FakeValueObjectBuilder}
-   */
-  static from(instance) {
-    return new FakeValueObjectBuilder()
-      .a(instance.a())
-      .b(instance.b())
   }
 
   /**

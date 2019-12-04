@@ -30,6 +30,19 @@ export class TestStore extends TestCase {
       new FakeValueObjectBuilder().a(1).b(10).build()
     )
   }
+
+  testSet() {
+    const valueObject = new FakeValueObjectBuilder()
+      .a(0)
+      .b(0)
+      .build()
+    this.store.set(valueObject)
+
+    assert.deepEqual(
+      this.store.state().data(),
+      new FakeValueObjectBuilder().a(0).b(0).build()
+    )
+  }
 }
 
 runTest(TestStore)

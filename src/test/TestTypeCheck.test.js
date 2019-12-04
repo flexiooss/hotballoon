@@ -1,7 +1,7 @@
 import {TestCase} from 'code-altimeter-js'
 import {TypeCheck} from '../js/Types/TypeCheck'
 import {InMemoryStoreBuilder} from '../js/Store/InMemoryStoreBuilder'
-import { ProxyStoreBuilder} from '../js/Store/ProxyStoreBuilder'
+import {ProxyStoreBuilder} from '../js/Store/ProxyStoreBuilder'
 import {PublicStoreHandler} from '../js/Store/PublicStoreHandler'
 import {HotBalloonApplication} from '../js/Application/HotBalloonApplication'
 import {ComponentContext} from '../js/Component/ComponentContext'
@@ -13,9 +13,8 @@ import {ViewContainer, ViewContainerParameters} from '../js/View/ViewContainer'
 import {View} from '../js/View/View'
 import {FakeLogger} from '@flexio-oss/js-logger'
 import {FakeValueObject, FakeValueObjectBuilder} from './FakeValueObject'
+
 const assert = require('assert')
-
-
 
 export class TestTypeCheck extends TestCase {
 

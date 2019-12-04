@@ -7,7 +7,7 @@ export class GenericType {
    *
    * @return {Class<TYPE>}
    */
-  get __type__() {
+  __type__() {
     throw new Error('not implemented')
   }
 

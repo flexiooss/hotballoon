@@ -2,7 +2,6 @@ import {ActionDispatcher} from './ActionDispatcher'
 import {ActionDispatcherConfig} from './ActionDispatcherConfig'
 import {ActionTypeConfig} from './ActionTypeConfig'
 import {UID} from '@flexio-oss/js-helpers'
-import {assertType} from '@flexio-oss/assert'
 
 /**
  * @template TYPE, TYPE_BUILDER

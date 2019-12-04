@@ -28,30 +28,6 @@ export class HotballoonElementParams extends HyperFlexParams {
   }
 
   /**
-   *
-   * @return {Array.<string>}
-   */
-  get reconciliationRules() {
-    return this._reconciliationRules
-  }
-
-  /**
-   *
-   * @return {Array.<View>}
-   */
-  get views() {
-    return this._views
-  }
-
-  /**
-   *
-   * @return {Array.<ElementEventListenerParam>}
-   */
-  get eventListeners() {
-    return this._eventListeners
-  }
-
-  /**
    * @static
    * @param {Array.<View>} views
    * @return {HyperFlexParams}
@@ -61,16 +37,6 @@ export class HotballoonElementParams extends HyperFlexParams {
     const i = new this()
     i._views = views
     return i
-  }
-
-  /**
-   *
-   * @param {Array.<View>} views
-   * @return {HotballoonElementParams}
-   */
-  addViews(views) {
-    this._views = views
-    return this
   }
 
   /**
@@ -84,6 +50,50 @@ export class HotballoonElementParams extends HyperFlexParams {
   }
 
   /**
+   * @static
+   * @param {ElementEventListenerConfig} nodeEventListenerParam
+   * @return {this}
+   * @constructor
+   */
+  static withEventListener(nodeEventListenerParam) {
+    return new this().addEventListener(nodeEventListenerParam)
+  }
+
+  /**
+   *
+   * @return {Array.<string>}
+   */
+  reconciliationRules() {
+    return this._reconciliationRules
+  }
+
+  /**
+   *
+   * @return {Array.<View>}
+   */
+  views() {
+    return this._views
+  }
+
+  /**
+   *
+   * @return {Array.<ElementEventListenerParam>}
+   */
+  eventListeners() {
+    return this._eventListeners
+  }
+
+  /**
+   *
+   * @param {Array.<View>} views
+   * @return {HotballoonElementParams}
+   */
+  addViews(views) {
+    this._views = views
+    return this
+  }
+
+  /**
    *
    * @param {...string} reconciliationRules
    * @return {this}
@@ -94,16 +104,6 @@ export class HotballoonElementParams extends HyperFlexParams {
     })
 
     return this
-  }
-
-  /**
-   * @static
-   * @param {ElementEventListenerConfig} nodeEventListenerParam
-   * @return {this}
-   * @constructor
-   */
-  static withEventListener(nodeEventListenerParam) {
-    return new this().addEventListener(nodeEventListenerParam)
   }
 
   /**

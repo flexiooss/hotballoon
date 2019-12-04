@@ -23,7 +23,7 @@ export class StoreState {
    *
    * @return {(string|Symbol)}
    */
-   storeID() {
+  storeID() {
     return this.__storeID
   }
 
@@ -31,7 +31,7 @@ export class StoreState {
    *
    * @return {TYPE}
    */
-   data() {
+  data() {
     return this.__data
   }
 
@@ -39,7 +39,7 @@ export class StoreState {
    *
    * @return {Date}
    */
-   time() {
+  time() {
     return this.__time
   }
 
@@ -48,7 +48,7 @@ export class StoreState {
    * @return {TYPE.}
    * @private
    */
-   __type__() {
+  __type__() {
     return this.__type
   }
 

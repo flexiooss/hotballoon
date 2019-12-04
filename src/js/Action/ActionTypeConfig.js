@@ -1,4 +1,4 @@
-import {assertType, isFunction, isClass, isNull} from '@flexio-oss/assert'
+import {assertType, isClass, isFunction, isNull} from '@flexio-oss/assert'
 import {TypeCheck} from '@flexio-oss/js-validator-helper'
 
 /**
@@ -43,7 +43,7 @@ export class ActionTypeConfig {
    *
    * @return {TYPE.}
    */
-  get type() {
+  type() {
     return this._type
   }
 
@@ -51,7 +51,7 @@ export class ActionTypeConfig {
    *
    * @return {?ValueObjectValidator}
    */
-  get validator() {
+  validator() {
     return this._validator
   }
 
@@ -59,7 +59,7 @@ export class ActionTypeConfig {
    *
    * @return {ActionTypeConfig~defaultCheckerClb<TYPE>}
    */
-  get defaultChecker() {
+  defaultChecker() {
     return this._defaultChecker
   }
 

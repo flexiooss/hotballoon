@@ -29,7 +29,7 @@ export class ProxyStoreConfig extends StoreBaseConfig {
    *
    * @return {StoreInterface<STORE_TYPE>}
    */
-  get store() {
+  store() {
     return this._store
   }
 
@@ -37,7 +37,7 @@ export class ProxyStoreConfig extends StoreBaseConfig {
    *
    * @return {function(state: STORE_TYPE ):TYPE}
    */
-  get mapper() {
+  mapper() {
     return this._mapper
   }
 
@@ -45,7 +45,7 @@ export class ProxyStoreConfig extends StoreBaseConfig {
    *
    * @return {StoreTypeConfig<TYPE, TYPE_BUILDER>}
    */
-  get storeTypeConfig() {
+  storeTypeConfig() {
     return this._storeTypeConfig
   }
 
@@ -53,7 +53,7 @@ export class ProxyStoreConfig extends StoreBaseConfig {
    *
    * @return {StorageInterface<TYPE>}
    */
-  get storage() {
+  storage() {
     return this._storage
   }
 }
