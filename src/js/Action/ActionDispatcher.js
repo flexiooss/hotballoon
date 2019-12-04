@@ -100,6 +100,10 @@ export class ActionDispatcher extends WithID {
    */
   dispatch(payload) {
     const checker = this[_actionConfig].defaultChecker()
+    /**
+     *
+     * @type {TYPE}
+     */
     const data = checker(payload)
 
     assertType(

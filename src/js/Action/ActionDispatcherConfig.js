@@ -40,7 +40,7 @@ export class ActionDispatcherConfig {
 
   /**
    *
-   * @return {(symbol|String)}
+   * @return {(Symbol|String)}
    */
   id() {
     return this._id
@@ -64,10 +64,9 @@ export class ActionDispatcherConfig {
 
   /**
    *
-   * @return {ActionTypeConfig~validatorClb<TYPE>}
+   * @return {?ValueObjectValidator}
    */
   validator() {
-    //Todo
     return this._params.validator()
   }
 

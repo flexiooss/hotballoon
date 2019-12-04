@@ -10,7 +10,7 @@ export class ActionDispatcherBuilder {
   constructor() {
     /**
      *
-     * @type {?{Dispatcher}}
+     * @type {?Dispatcher}
      * @private
      */
     this.__dispatcher = null
@@ -41,7 +41,7 @@ export class ActionDispatcherBuilder {
 
   /**
    *
-   * @param {ActionTypeConfig~defaultCheckerClb<TYPE>} [defaultChecker=data=>data]
+   * @param {function(data:TYPE):TYPE} [defaultChecker=data=>data]
    * @return {ActionDispatcherBuilder}
    */
   defaultChecker(defaultChecker) {
