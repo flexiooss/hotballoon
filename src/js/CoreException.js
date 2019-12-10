@@ -1,7 +1,4 @@
-'use strict'
-import {
-  HBException
-} from './HBException'
+import {HBException} from './HBException'
 
 class CoreException extends HBException {
   constructor(message, code) {

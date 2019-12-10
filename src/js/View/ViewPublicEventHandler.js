@@ -1,5 +1,5 @@
-import {assertType, isFunction} from 'flexio-jshelpers'
-import {EventListenerOrderedBuilder} from '../Event/EventListenerOrderedBuilder'
+import {assertType, isFunction, isString, isSymbol} from '@flexio-oss/assert'
+import {OrderedEventListenerConfigBuilder} from '@flexio-oss/event-handler'
 
 export const VIEW_RENDER = 'VIEW_RENDER'
 export const VIEW_RENDERED = 'VIEW_RENDERED'
@@ -8,6 +8,7 @@ export const VIEW_UPDATED = 'VIEW_UPDATED'
 export const VIEW_STORE_CHANGED = 'VIEW_STORE_CHANGED'
 export const VIEW_MOUNT = 'VIEW_MOUNT'
 export const VIEW_MOUNTED = 'VIEW_MOUNTED'
+
 export class ViewPublicEventHandler {
   /***
    *
@@ -18,16 +19,43 @@ export class ViewPublicEventHandler {
     /**
      *
      * @type {ViewPublicEventHandler~subscriberClb}
-     * @protected
+     * @private
      */
-    this._subscriber = subscriber
+    this.__subscriber = subscriber
   }
 
   /**
    * @callback ViewPublicEventHandler~subscriberClb
-   * @param {EventListenerOrderedParam} eventListenerOrderedParam
+   * @param {OrderedEventListenerConfig} orderedEventListenerConfig
    * @return {String} token
    */
+
+  /**
+   *
+   * @param {(string|Symbol)}event
+   * @param {function(payload: *, ...args:*)} clb
+   * @param {...*} args
+   * @return {String}
+   * @protected
+   */
+  _subscribeTo(event, clb, ...args) {
+    assertType(
+      isSymbol(event) || isString(event),
+      'ViewPublicEventHandler:_subscribe: `event` should be a string or symbol'
+    )
+    assertType(
+      isFunction(clb),
+      'ViewPublicEventHandler:_subscribe: `clb` should be a function'
+    )
+    return this.__subscriber(
+      OrderedEventListenerConfigBuilder
+        .listen(event)
+        .callback((payload) => {
+          clb(payload, ...args)
+        })
+        .build()
+    )
+  }
 
   /**
    *
@@ -35,18 +63,7 @@ export class ViewPublicEventHandler {
    * @return {String}
    */
   update(clb) {
-    assertType(
-      isFunction(clb),
-      'ViewContainerPublicEventHandler:update: `clb` should be a function'
-    )
-    return this._subscriber(
-      EventListenerOrderedBuilder
-        .listen(VIEW_UPDATE)
-        .callback(() => {
-          clb()
-        })
-        .build()
-    )
+    return this._subscribeTo(VIEW_UPDATE, clb)
   }
 
   /**
@@ -59,18 +76,7 @@ export class ViewPublicEventHandler {
    * @return {String}
    */
   updated(clb) {
-    assertType(
-      isFunction(clb),
-      'ViewContainerPublicEventHandler:updated: `clb` should be a function'
-    )
-    return this._subscriber(
-      EventListenerOrderedBuilder
-        .listen(VIEW_UPDATED)
-        .callback(() => {
-          clb()
-        })
-        .build()
-    )
+    return this._subscribeTo(VIEW_UPDATED, clb)
   }
 
   /**
@@ -83,18 +89,7 @@ export class ViewPublicEventHandler {
    * @return {String}
    */
   render(clb) {
-    assertType(
-      isFunction(clb),
-      'ViewContainerPublicEventHandler:render: `clb` should be a function'
-    )
-    return this._subscriber(
-      EventListenerOrderedBuilder
-        .listen(VIEW_RENDER)
-        .callback(() => {
-          clb()
-        })
-        .build()
-    )
+    return this._subscribeTo(VIEW_RENDER, clb)
   }
 
   /**
@@ -107,18 +102,7 @@ export class ViewPublicEventHandler {
    * @return {String}
    */
   rendered(clb) {
-    assertType(
-      isFunction(clb),
-      'ViewContainerPublicEventHandler:rendered: `clb` should be a function'
-    )
-    return this._subscriber(
-      EventListenerOrderedBuilder
-        .listen(VIEW_RENDERED)
-        .callback(() => {
-          clb()
-        })
-        .build()
-    )
+    return this._subscribeTo(VIEW_RENDERED, clb)
   }
 
   /**
@@ -131,18 +115,7 @@ export class ViewPublicEventHandler {
    * @return {String}
    */
   mount(clb) {
-    assertType(
-      isFunction(clb),
-      'ViewContainerPublicEventHandler:mount: `clb` should be a function'
-    )
-    return this._subscriber(
-      EventListenerOrderedBuilder
-        .listen(VIEW_MOUNT)
-        .callback(() => {
-          clb()
-        })
-        .build()
-    )
+    return this._subscribeTo(VIEW_MOUNT, clb)
   }
 
   /**
@@ -155,18 +128,7 @@ export class ViewPublicEventHandler {
    * @return {String}
    */
   mounted(clb) {
-    assertType(
-      isFunction(clb),
-      'ViewContainerPublicEventHandler:mounted: `clb` should be a function'
-    )
-    return this._subscriber(
-      EventListenerOrderedBuilder
-        .listen(VIEW_MOUNTED)
-        .callback(() => {
-          clb()
-        })
-        .build()
-    )
+    return this._subscribeTo(VIEW_MOUNTED, clb)
   }
 
   /**
@@ -179,18 +141,7 @@ export class ViewPublicEventHandler {
    * @return {String}
    */
   storeChanged(clb) {
-    assertType(
-      isFunction(clb),
-      'ViewContainerPublicEventHandler:storeChanged: `clb` should be a function'
-    )
-    return this._subscriber(
-      EventListenerOrderedBuilder
-        .listen(VIEW_STORE_CHANGED)
-        .callback(() => {
-          clb()
-        })
-        .build()
-    )
+    return this._subscribeTo(VIEW_STORE_CHANGED, clb)
   }
 
   /**

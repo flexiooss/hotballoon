@@ -1,24 +1,27 @@
-import {CLASS_TAG_NAME, CLASS_TAG_NAME_PUBLIC_STORE_HANDLER} from '../HasTagClassNameInterface'
-import {STORE_CHANGED} from './StoreInterface'
-import {EventListenerOrderedBuilder} from '../Event/EventListenerOrderedBuilder'
-import {assertType, isFunction} from 'flexio-jshelpers'
+import {CLASS_TAG_NAME, CLASS_TAG_NAME_PUBLIC_STORE_HANDLER} from '../Types/HasTagClassNameInterface'
+import {assertType} from '@flexio-oss/assert'
+import {TypeCheck} from '../Types/TypeCheck'
 
 const _store = Symbol('_store')
 
 /**
  *
- * @implements {StoreInterface<TYPE>}
+ * @implements {StoreInterface<TYPE, TYPE_BUILDER>}
  * @implements  {HasTagClassNameInterface}
  * @implements {GenericType<TYPE>}
- * @template TYPE
+ * @template TYPE, TYPE_BUILDER
  */
 export class PublicStoreHandler {
   /**
    *
-   * @template TYPE
-   * @param {StoreInterface<TYPE>} store
+   * @param {StoreInterface<TYPE, TYPE_BUILDER>} store
    */
   constructor(store) {
+
+    assertType(
+      TypeCheck.isStoreBase(store),
+      'PublicStoreHandler:construcotr: `store` should be a StoreBase'
+    )
     Object.defineProperty(this, CLASS_TAG_NAME, {
       configurable: false,
       writable: false,
@@ -27,9 +30,17 @@ export class PublicStoreHandler {
     })
 
     /**
-     * @params {StoreInterface<TYPE>}
+     * @params {StoreInterface<TYPE, TYPE_BUILDER>}
      */
     this[_store] = store
+  }
+
+  /**
+   *
+   * @return {string}
+   */
+  changedEventName() {
+    return this[_store].changedEventName()
   }
 
   /**
@@ -43,7 +54,7 @@ export class PublicStoreHandler {
    * @return {TYPE} state#data
    */
   data() {
-    return this.state().data
+    return this.state().data()
   }
 
   /**
@@ -55,18 +66,18 @@ export class PublicStoreHandler {
   }
 
   /**
-   * @param {EventListenerOrderedParam} eventListenerOrderedParam
+   * @param {OrderedEventListenerConfig} orderedEventListenerConfig
    * @return {String} token
    */
-  subscribe(eventListenerOrderedParam) {
-    return this[_store].subscribe(eventListenerOrderedParam)
+  subscribe(orderedEventListenerConfig) {
+    return this[_store].subscribe(orderedEventListenerConfig)
   }
 
   /**
    *
-   * @return {Class<TYPE>}
+   * @return {TYPE.}
    */
-  get __type__() {
+  __type__() {
     return this[_store].type()
   }
 
@@ -81,28 +92,20 @@ export class PublicStoreHandler {
 
   /**
    *
-   * @param {PublicStoreHandler~changedClb} clb
+   * @param {function(state: StoreState<TYPE>)} callback
+   * @param {number} [priority=100]
    * @return {string} token
    */
-  listenChanged(clb = (state) => true) {
-    assertType(
-      isFunction(clb),
-      'hotballoon:' + this.constructor.name + ':listenChanged: `clb` argument should be callable'
-    )
-
-    return this[_store].subscribe(
-      EventListenerOrderedBuilder
-        .listen(STORE_CHANGED)
-        .callback((payload) => {
-          clb(payload)
-        })
-        .build()
-    )
+  listenChanged(callback, priority = 100) {
+    return this[_store].listenChanged(callback, priority)
   }
 
   /**
    *
-   * @callback PublicStoreHandler~changedClb
-   * @param {StoreState} state
+   * @param {(string|Symbol)} token
    */
+  stopListenChanged(token) {
+    return this[_store].stopListenChanged(token)
+  }
+
 }

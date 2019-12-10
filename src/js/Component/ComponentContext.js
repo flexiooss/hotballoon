@@ -1,26 +1,27 @@
-'use strict'
-import {Store} from '../Store/Store'
-import {
-  ViewContainer
-} from '../View/ViewContainer'
-import {
-  WILL_REMOVE as VIEWCONTAINER_WILL_REMOVE
-} from '../View/ViewContainerPublicEventHandler'
-import {MapOfInstance, Sequence, assertType} from 'flexio-jshelpers'
-import {WithIDBase} from '../bases/WithIDBase'
-import {
-  CLASS_TAG_NAME,
-  CLASS_TAG_NAME_COMPONENT
-} from '../HasTagClassNameInterface'
-import {TypeCheck} from '../TypeCheck'
+import {WILL_REMOVE as VIEWCONTAINER_WILL_REMOVE} from '../View/ViewContainerPublicEventHandler'
+import {assertType, isString} from '@flexio-oss/assert'
+import {Sequence} from '@flexio-oss/js-helpers'
+import {StoreMap} from '../Store/StoreMap'
+import {ViewContainerMap} from '../View/ViewContainerMap'
+import {WithID} from '../abstract/WithID'
+import {CLASS_TAG_NAME, CLASS_TAG_NAME_COMPONENT} from '../Types/HasTagClassNameInterface'
+import {TypeCheck} from '../Types/TypeCheck'
+
+const __actionsToken = Symbol('__actionsToken')
+const __sequenceId = Symbol('__sequenceId')
+const __stores = Symbol('__stores')
+const __viewContainers = Symbol('__viewContainers')
+
+const componentContextLogOptions = {
+  color: 'green',
+  titleSize: 2
+}
 
 /**
- * @class
- * @description The componentContext is the entry point of the module
- * @extends WithIDBase
+ * @extends WithID
  * @implements HasTagClassNameInterface
  */
-export class ComponentContext extends WithIDBase {
+export class ComponentContext extends WithID {
   /**
    *
    * @param {HotBalloonApplication} hotBalloonApplication
@@ -33,11 +34,10 @@ export class ComponentContext extends WithIDBase {
 
     super(hotBalloonApplication.nextID())
 
-    this.debug.color = 'green'
-
-    const _sequenceId = new Sequence(this.ID + '_')
-    const _stores = new MapOfInstance(Store)
-    const _viewContainers = new MapOfInstance(ViewContainer)
+    const _sequenceId = new Sequence(this.ID() + '_')
+    const _stores = new StoreMap()
+    const _viewContainers = new ViewContainerMap()
+    const _actionsToken = new Map()
 
     Object.defineProperty(this, CLASS_TAG_NAME, {
       configurable: false,
@@ -47,67 +47,86 @@ export class ComponentContext extends WithIDBase {
     })
 
     Object.defineProperties(this, {
-      /**
+        /**
          * @name ComponentContext#_APP
          * @params {HotBalloonApplication}
+         * @protected
          */
-      _APP: {
-        configurable: false,
-        enumerable: false,
-        get: () => {
-          return hotBalloonApplication
+        _APP: {
+          configurable: false,
+          enumerable: false,
+          get: () => {
+            return hotBalloonApplication
+          },
+          set: (v) => {
+            throw new Error('hotballoon:ComponentContext: : `_APP` property already defined')
+          }
         },
-        set: (v) => {
-          throw new Error('hotballoon:ComponentContext: : `_APP` property already defined')
-        }
-      },
-      _sequenceId: {
-        configurable: false,
-        enumerable: false,
-        /**
+        [__sequenceId]: {
+          configurable: false,
+          enumerable: false,
+          /**
            *
            * @name ComponentContext#_sequenceId
            * @return {Sequence}
+           * @protected
            */
-        get: () => {
-          return _sequenceId
+          get: () => {
+            return _sequenceId
+          },
+          set: (v) => {
+            throw new Error('hotballoon:ComponentContext: : `_sequenceId` property already defined')
+          }
         },
-        set: (v) => {
-          throw new Error('hotballoon:ComponentContext: : `_sequenceId` property already defined')
-        }
-      },
 
-      _stores: {
-        configurable: false,
-        enumerable: false,
-        /**
+        [__stores]: {
+          configurable: false,
+          enumerable: false,
+          /**
            * @name ComponentContext#_stores
-           * @return {MapOfInstance}
+           * @return {StoreMap}
+           * @protected
            */
-        get: () => {
-          return _stores
+          get: () => {
+            return _stores
+          },
+          set: (v) => {
+            throw new Error('hotballoon:ComponentContext: : `_stores` property already defined')
+          }
         },
-        set: (v) => {
-          throw new Error('hotballoon:ComponentContext: : `_stores` property already defined')
-        }
-      },
 
-      _viewContainers: {
-        configurable: false,
-        enumerable: false,
-        /**
+        [__viewContainers]: {
+          configurable: false,
+          enumerable: false,
+          /**
            * @name ComponentContext#_viewContainers
-           * @return {MapOfInstance}
+           * @return {ViewContainerMap}
+           * @protected
            */
-        get: () => {
-          return _viewContainers
+          get: () => {
+            return _viewContainers
+          },
+          set: (v) => {
+            throw new Error('hotballoon:ComponentContext: : `_viewContainers` property already defined')
+          }
         },
-        set: (v) => {
-          throw new Error('hotballoon:ComponentContext: : `_viewContainers` property already defined')
+        [__actionsToken]: {
+          configurable: false,
+          enumerable: false,
+          /**
+           * @name ComponentContext#_actionsToken
+           * @return {ActionMap}
+           * @protected
+           */
+          get: () => {
+            return _actionsToken
+          },
+          set: (v) => {
+            throw new Error('hotballoon:ComponentContext: : `_actionsToken` property already defined')
+          }
         }
-      }
 
-    }
+      }
     )
   }
 
@@ -123,11 +142,44 @@ export class ComponentContext extends WithIDBase {
   }
 
   /**
+   *
+   * @param {string} token
+   * @param {ActionDispatcher} action
+   * @return {string}
+   */
+  addActionToken(token, action) {
+    assertType(
+      isString(token),
+      `${this.constructor.name}: 'token' should be string`
+    )
+    this[__actionsToken].set(token, action.ID())
+    return token
+  }
+
+  /**
+   *
+   * @param {string} token
+   * @return {ComponentContext}
+   */
+  removeActionToken(token) {
+    assertType(
+      isString(token),
+      `${this.constructor.name}: 'token' should be string`
+    )
+    if (this[__actionsToken].has(token)) {
+      this.dispatcher().removeActionListener(this[__actionsToken].delete(token), token)
+      this[__actionsToken].delete(token)
+    }
+    return this
+  }
+
+  /**
    * @param {Store} store
    * @returns {Store} store
    */
   addStore(store) {
-    this._stores.add(store.ID, store)
+    this[__stores].set(store.ID(), store)
+    store.setLogger(this.logger())
     return store
   }
 
@@ -137,7 +189,7 @@ export class ComponentContext extends WithIDBase {
    * @returns {StoreInterface} store
    */
   store(tokenStore) {
-    return this._stores.get(tokenStore)
+    return this[__stores].get(tokenStore)
   }
 
   /**
@@ -146,7 +198,7 @@ export class ComponentContext extends WithIDBase {
    * @returns {ViewContainer} viewContainer
    */
   addViewContainer(viewContainer) {
-    this._viewContainers.add(viewContainer.ID, viewContainer)
+    this[__viewContainers].set(viewContainer.ID(), viewContainer)
     return viewContainer
   }
 
@@ -155,20 +207,32 @@ export class ComponentContext extends WithIDBase {
    * @param {String} tokenViewContainer
    * @returns {void}
    */
-  removeViewContainer(tokenViewContainer) {
-    if (this._viewContainers.has(tokenViewContainer)) {
+  removeViewContainerEntry(tokenViewContainer) {
+    if (this[__viewContainers].has(tokenViewContainer)) {
       this.viewContainer(tokenViewContainer).dispatch(VIEWCONTAINER_WILL_REMOVE, {})
-      this._viewContainers.delete(tokenViewContainer)
+      this[__viewContainers].delete(tokenViewContainer)
+    }
+  }
+
+  /**
+   *
+   * @param {String} tokenViewContainer
+   * @returns {void}
+   */
+  removeViewContainer(tokenViewContainer) {
+    if (this[__viewContainers].has(tokenViewContainer)) {
+      this.viewContainer(tokenViewContainer).dispatch(VIEWCONTAINER_WILL_REMOVE, {})
+      this.viewContainer(tokenViewContainer).remove()
     }
   }
 
   /**
    *
    * @param {String} key
-   * @returns {viewContainer} viewContainer
+   * @returns {?ViewContainer} viewContainer
    */
   viewContainer(key) {
-    return this._viewContainers.get(key)
+    return this[__viewContainers].has(key) ? this[__viewContainers].get(key) : null
   }
 
   /**
@@ -177,7 +241,7 @@ export class ComponentContext extends WithIDBase {
    * @returns {String}
    */
   nextID(prefix = '') {
-    return prefix + this._sequenceId.nextID()
+    return prefix + this[__sequenceId].nextID()
   }
 
   /**
@@ -199,5 +263,29 @@ export class ComponentContext extends WithIDBase {
    */
   service(key) {
     return this.APP().service(key)
+  }
+
+  /**
+   *
+   * @return {LoggerInterface}
+   */
+  logger() {
+    return this.APP().logger()
+  }
+
+  remove() {
+    this[__actionsToken].forEach((v) => this.removeActionToken(v))
+
+    this[__stores].forEach(v => v.remove())
+    this[__stores].clear()
+    this[__viewContainers].forEach(v => v.remove())
+
+    this.logger().log(
+      this.logger().builder()
+        .info()
+        .pushLog('Remove : ' + this.ID())
+        .pushLog(this),
+      componentContextLogOptions
+    )
   }
 }

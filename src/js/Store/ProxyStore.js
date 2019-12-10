@@ -1,7 +1,8 @@
-import {EventListenerOrderedBuilder} from '../Event/EventListenerOrderedBuilder'
-import {CLASS_TAG_NAME, CLASS_TAG_NAME_PROXYSTORE} from '../HasTagClassNameInterface'
-import {STORE_CHANGED} from './StoreInterface'
-import {StoreBase, _set} from './StoreBase'
+import {CLASS_TAG_NAME, CLASS_TAG_NAME_PROXYSTORE} from '../Types/HasTagClassNameInterface'
+import {_set, StoreBase} from './StoreBase'
+import {StoreBaseConfig} from './StoreBaseConfig'
+import {assertType} from '@flexio-oss/assert'
+import {ProxyStoreConfig} from './ProxyStoreConfig'
 
 const _store = Symbol('_store')
 const _mapper = Symbol('_mapper')
@@ -10,17 +11,27 @@ const _mapper = Symbol('_mapper')
  * @implements {StoreInterface<TYPE>}
  * @implements {HasTagClassNameInterface}
  * @implements {GenericType<TYPE>}
- * @template STORE_TYPE, TYPE
+ * @template STORE_TYPE, TYPE, TYPE_BUILDER
  */
 export class ProxyStore extends StoreBase {
   /**
    *
-   * @param {ProxyStoreParams} proxyStoreParams
+   * @param {ProxyStoreConfig<STORE_TYPE, TYPE, TYPE_BUILDER>} proxyStoreConfig
    */
-  constructor(proxyStoreParams) {
-    super(proxyStoreParams)
+  constructor(proxyStoreConfig) {
+    super(
+      new StoreBaseConfig(
+        proxyStoreConfig.id(),
+        proxyStoreConfig.initialData(),
+        proxyStoreConfig.storeTypeConfig(),
+        proxyStoreConfig.storage()
+      )
+    )
 
-    this.debug.color = 'magenta'
+    assertType(
+      proxyStoreConfig instanceof ProxyStoreConfig,
+      '`proxyStoreConfig` argument should be a ProxyStoreConfig'
+    )
 
     Object.defineProperty(this, CLASS_TAG_NAME, {
       configurable: false,
@@ -39,34 +50,33 @@ export class ProxyStore extends StoreBase {
          * @name ProxyStore#_Store
          * @private
          */
-        value: proxyStoreParams.store
+        value: proxyStoreConfig.store()
       },
 
       [_mapper]: {
         enumerable: false,
         configurable: false,
         /**
-         * @property {ProxyStoreParams~mapperClb<TYPE>}
+         * @property {ProxyStoreConfig~mapperClb<STORE_TYPE, TYPE>}
          * @name ProxyStore#_mapper
          * @private
          */
-        value: proxyStoreParams.mapper
+        value: proxyStoreConfig.mapper()
       }
 
     })
+    if (this[_store].hasOwnProperty('logger')) {
+      this.setLogger(this[_store].logger())
+    }
 
     this.__subscribeToStore()
   }
 
   __subscribeToStore() {
-    this[_store].subscribe(
-      EventListenerOrderedBuilder.listen(STORE_CHANGED)
-        .callback((payload, eventType) => {
-          console.log('la')
-          this.__mapAndUpdate(payload, eventType)
-        })
-        .priority(20)
-        .build(this)
+    this[_store].listenChanged(
+      (payload, eventType) => {
+        this.__mapAndUpdate(payload, eventType)
+      }
     )
   }
 
@@ -77,6 +87,6 @@ export class ProxyStore extends StoreBase {
    * @private
    */
   __mapAndUpdate(payload, eventType) {
-    this[_set](this[_mapper](payload.data))
+    this[_set](this[_mapper](payload.data()))
   }
 }

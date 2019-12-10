@@ -1,9 +1,7 @@
-'use strict'
 import {HotballoonElementParams} from './HotballoonElementParams'
-import {HyperFlex} from 'flexio-hyperflex'
+import {HyperFlex} from '@flexio-oss/flexio-hyperflex'
 import {$} from './HotBalloonAttributeHandler'
-import {toString} from 'flexio-jshelpers'
-import {RECONCILIATION_RULES} from 'flexio-nodes-reconciliation'
+import {RECONCILIATION_RULES} from '@flexio-oss/flexio-nodes-reconciliation'
 
 const _changeIdAndSetNodeRef = Symbol('_changeIdAndSetNodeRef')
 const _setNodeRef = Symbol('_setNodeRef')
@@ -22,10 +20,11 @@ class CreateHotBalloonElement extends HyperFlex {
    * @param {View} scope
    * @param {string} querySelector
    * @param {HotballoonElementParams} hotballoonElementParams
+   * @param {Document} document
    * @return {CreateHotBalloonElement}
    */
-  constructor(scope, querySelector, hotballoonElementParams = new HotballoonElementParams()) {
-    super(querySelector, hotballoonElementParams)
+  constructor(scope, querySelector, hotballoonElementParams = new HotballoonElementParams(), document) {
+    super(querySelector, hotballoonElementParams, document)
     /**
      *
      * @params {View}
@@ -46,13 +45,15 @@ class CreateHotBalloonElement extends HyperFlex {
    * @param {View} scope
    * @param {string} querySelector - tag#id.class[.class,...]
    * @param {HotballoonElementParams} hotballoonElementParams
+   * @param {Document} document
    * @return {Element}
    */
-  static html(scope, querySelector, hotballoonElementParams) {
+  static html(scope, querySelector, hotballoonElementParams, document) {
     return new CreateHotBalloonElement(
       scope,
       querySelector,
-      hotballoonElementParams
+      hotballoonElementParams,
+      document
     )
       .createHtmlElement()[_changeIdAndSetNodeRef]()
       ._element
@@ -65,7 +66,7 @@ class CreateHotBalloonElement extends HyperFlex {
   _setParams() {
     this._$element = $(this._element)
     super._setParams()
-    return this[_setViews](this._params.views)[_setReconciliationRule](this._params.reconciliationRules)[_setReconciliationProperties](Object.keys(this._params.properties))[_setEventListeners](this._params.eventListeners)
+    return this[_setViews](this._params.views())[_setReconciliationRule](this._params.reconciliationRules())[_setReconciliationProperties](Object.keys(this._params.properties()))[_setEventListeners](this._params.eventListeners())
   }
 
   /**
@@ -148,7 +149,7 @@ class CreateHotBalloonElement extends HyperFlex {
 
   /**
    * @private
-   * @param {Array.<ElementEventListenerParam>} listeners
+   * @param {Array.<ElementEventListenerConfig>} listeners
    * @return {CreateHotBalloonElement}
    */
   [_setEventListeners](listeners) {

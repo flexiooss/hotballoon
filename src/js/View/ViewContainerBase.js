@@ -1,15 +1,17 @@
-'use strict'
-import {MapOfArray, isBoolean, isNode, assert} from 'flexio-jshelpers'
-import {WithIDBase} from '../bases/WithIDBase'
-import {EventOrderedHandler} from '../Event/EventOrderedHandler'
+import {assert, isBoolean, isNode} from '@flexio-oss/assert'
+import {ArrayMap} from '@flexio-oss/extended-flex-types'
+import {WithID} from '../abstract/WithID'
+import {OrderedEventHandler} from '../Event/OrderedEventHandler'
+import {ViewContainerBaseMap} from './ViewContainerBaseMap'
+import {StoreBaseMap} from '../Store/StoreBaseMap'
 
 const _EventHandler = Symbol('_EventHandler')
 const _Views = Symbol('_Views')
 
 /**
- * @extends WithIDBase
+ * @extends WithID
  */
-export class ViewContainerBase extends WithIDBase {
+export class ViewContainerBase extends WithID {
   /**
    *
    * @param {String} id
@@ -17,11 +19,12 @@ export class ViewContainerBase extends WithIDBase {
   constructor(id) {
     super(id)
 
-    var _mounted = false
-    var _rendered = false
-    var _tokenEvent = new MapOfArray()
-    var _views = new Map()
-    var parentNode
+    let _mounted = false
+    let _rendered = false
+    let _tokenEvent = new ArrayMap()
+    let _storesMap = new StoreBaseMap()
+    let _views = new ViewContainerBaseMap()
+    let parentNode
 
     Object.defineProperties(this, {
       _mounted: {
@@ -64,34 +67,44 @@ export class ViewContainerBase extends WithIDBase {
         enumerable: false,
         configurable: false,
         /**
-         * @property {EventOrderedHandler}
+         * @property {OrderedEventHandler}
          * @name ViewContainerBase#_EventHandler
          * @protected
          */
-        value: Object.seal(new EventOrderedHandler())
+        value: Object.seal(new OrderedEventHandler())
       },
       _tokenEvent: {
         enumerable: false,
         configurable: false,
         /**
-         * @property {MapOfArray}
+         * @property {ArrayMap}
          * @name ViewContainerBase#_tokenEvent
          * @protected
          */
         value: _tokenEvent
       },
+      _storesMap: {
+        enumerable: false,
+        configurable: false,
+        /**
+         * @property {StoreBaseMap}
+         * @name ViewContainerBase#_storesMap
+         * @protected
+         */
+        value: _storesMap
+      },
       [_Views]: {
         enumerable: false,
         configurable: false,
         /**
-         * @property {Map<view>}
+         * @property {ViewContainerBaseMap}
          * @name ViewContainerBase#_Views
          * @protected
          */
         value: _views
       },
       /**
-       * @params {Node}
+       * @params {Element}
        * @name ViewContainerBase#parentNode
        * @protected
        */
@@ -103,7 +116,7 @@ export class ViewContainerBase extends WithIDBase {
         },
         set: (v) => {
           assert(!!isNode(v),
-            'hotballoon:view:constructor: `parentNode` argument should be a Node'
+            'hotballoon:view:constructor: `parentNode` argument should be a Element'
           )
           parentNode = v
         }
@@ -113,11 +126,11 @@ export class ViewContainerBase extends WithIDBase {
 
   /**
    * @protected
-   * @param {EventListenerOrderedParam} eventListenerOrderedParam
+   * @param {OrderedEventListenerConfig} orderedEventListenerConfig
    * @return {(String|StringArray)} token
    */
-  _on(eventListenerOrderedParam) {
-    return this[_EventHandler].on(eventListenerOrderedParam)
+  _on(orderedEventListenerConfig) {
+    return this[_EventHandler].on(orderedEventListenerConfig)
   }
 
   /**
@@ -128,29 +141,65 @@ export class ViewContainerBase extends WithIDBase {
     this[_EventHandler].dispatch(eventType, payload)
   }
 
+  remove() {
+    this[_EventHandler].clear()
+
+    this._tokenEvent.forEach((tokens, storeId) => {
+      tokens.forEach(token => {
+        this._storesMap.get(storeId).stopListenChanged(token)
+      })
+    })
+
+    this.MapOfView().forEach(
+      /**
+       *
+       * @param {View} v
+       */
+      v => {
+        v.remove()
+      })
+
+    this.MapOfView().clear()
+    this._tokenEvent.clear()
+    this._storesMap.clear()
+    this._mounted = false
+    this._rendered = false
+  }
+
   /**
    *
    * @param {View} view
-   * @param {?string} key
    * @return {View}
    */
-  addView(view, key = null) {
-    this[_Views].set(key || view.ID, view)
+  addView(view) {
+    this[_Views].set(view.ID(), view)
     return view
   }
 
   /**
    *
-   * @param {String|Symbol} key
-   * @return {View}
+   * @param {View} view
+   * @return {this}
    */
-  view(key) {
-    return this[_Views].get(key)
+  removeView(view) {
+    if (this[_Views].has(view.ID())) {
+      this[_Views].delete(view.ID())
+    }
+    return this
   }
 
   /**
    *
-   * @return {Map<String, View>}
+   * @param {String} viewId
+   * @return {View}
+   */
+  view(viewId) {
+    return this[_Views].get(viewId)
+  }
+
+  /**
+   *
+   * @return {ViewContainerBaseMap}
    */
   MapOfView() {
     return this[_Views]

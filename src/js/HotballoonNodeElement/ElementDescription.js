@@ -1,5 +1,6 @@
 import {HotballoonElementParams} from './HotballoonElementParams'
 
+
 export class ElementDescription {
   /**
    *
@@ -14,7 +15,7 @@ export class ElementDescription {
    *
    * @return {string}
    */
-  get querySelector() {
+  querySelector() {
     return this._querySelector
   }
 
@@ -22,7 +23,7 @@ export class ElementDescription {
    *
    * @return {HotballoonElementParams}
    */
-  get params() {
+  params() {
     return this._params
   }
 
@@ -38,7 +39,7 @@ export class ElementDescription {
 
   /**
    *
-   * @param {ElementEventListenerParam} nodeEventListenerParam
+   * @param {ElementEventListenerConfig} nodeEventListenerParam
    * @return {ElementDescription}
    */
   listenEvent(nodeEventListenerParam) {
@@ -68,11 +69,37 @@ export class ElementDescription {
 
   /**
    *
+   * @param {String} key
+   * @param {(boolean|function():boolean)} statement
+   * @param {(String|function():String)} attribute
+   * @param {(String|function():String)} [attributeFalse=null]
+   * @return {this}
+   */
+  bindAttribute(key, statement, attribute, attributeFalse = null) {
+    this._params.bindAttribute(key, statement, attribute, attributeFalse)
+    return this
+  }
+
+  /**
+   *
    * @param {Object.<String, String>} attributes
    * @return {ElementDescription}
    */
   attributes(attributes) {
     this._params.addAttributes(attributes)
+    return this
+  }
+
+  /**
+   *
+   * @param {String} key
+   * @param {(boolean|function():boolean)} statement
+   * @param {(String|function():String)} property
+   * @param {(String|function():String)} [propertyFalse=null]
+   * @return {this}
+   */
+  bindProperty(key, statement, property, propertyFalse = null) {
+    this._params.bindProperty(key, statement, property, propertyFalse)
     return this
   }
 
@@ -98,6 +125,19 @@ export class ElementDescription {
 
   /**
    *
+   * @param {String} property
+   * @param {(boolean|function():boolean)} statement
+   * @param {(String|function():String)} value
+   * @param {(String|function():String)} [valueFalse=null]
+   * @return {this}
+   */
+  bindStyle(property, statement, value, valueFalse = null) {
+    this._params.bindStyle(property, statement, value, valueFalse)
+    return this
+  }
+
+  /**
+   *
    * @param {Object.<String, String>} styles
    * @returns {ElementDescription}
    */
@@ -108,12 +148,13 @@ export class ElementDescription {
 
   /**
    *
-   * @param {String} className
    * @param { boolean} statement
+   * @param {String} classNameTrue
+   * @param {String} [classNameFalse=null]
    * @return {ElementDescription}
    */
-  bindClassName(className, statement) {
-    this._params.bindClassName(className, statement)
+  bindClassName(statement, classNameTrue, classNameFalse = null) {
+    this._params.bindClassName(statement, classNameTrue, classNameFalse)
     return this
   }
 
@@ -127,6 +168,7 @@ export class ElementDescription {
     return this
   }
 }
+
 
 /**
  *

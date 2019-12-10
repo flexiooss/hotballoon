@@ -1,37 +1,51 @@
-'use strict'
 import {Dispatcher} from '../Dispatcher/Dispatcher'
-import {MapExtended, MapOfInstance, Sequence, assert} from 'flexio-jshelpers'
+import {assert, assertType} from '@flexio-oss/assert'
+import {Sequence} from '@flexio-oss/js-helpers'
+import {ComponentContextMap} from '../Component/ComponentContextMap'
 import {ComponentContext} from '../Component/ComponentContext'
-import {WithIDBase} from '../bases/WithIDBase'
-import {CLASS_TAG_NAME, CLASS_TAG_NAME_HOTBALLOON_APPLICATION} from '../HasTagClassNameInterface'
+import {WithID} from '../abstract/WithID'
+import {CLASS_TAG_NAME, CLASS_TAG_NAME_HOTBALLOON_APPLICATION} from '../Types/HasTagClassNameInterface'
+import {LoggerInterface} from '@flexio-oss/js-logger'
 
 const _Dispatcher = Symbol('_Dispatcher')
 const _ComponentContexts = Symbol('_ComponentContexts')
 const _Services = Symbol('_Services')
 const _SequenceId = Symbol('_SequenceId')
+const _Logger = Symbol('_Logger')
+const _document = Symbol('_document')
+
+const applicationLogOptions = {
+  color: 'magenta',
+  titleSize: 2
+}
 
 /**
  *
  * @class
  * @description HotBalloonApplication is the container for a loop hotballoon
- * @extends WithIDBase
+ * @extends WithID
  * @implements HasTagClassNameInterface
  */
-export class HotBalloonApplication extends WithIDBase {
+export class HotBalloonApplication extends WithID {
   /**
    * @constructor
    * @param {string} id
    * @param {Dispatcher} dispatcher
+   * @param {LoggerInterface} logger
+   * @param {Document} document
    */
-  constructor(id, dispatcher) {
+  constructor(id, dispatcher, logger, document) {
     super(id)
 
-    assert(dispatcher instanceof Dispatcher,
+    assertType(dispatcher instanceof Dispatcher,
       'hotballoon:HotBalloonApplication:constructor: `dispatcher` argument should be an instance of hotballoon/dispatcher'
     )
+    assertType(logger instanceof LoggerInterface,
+      'hotballoon:HotBalloonApplication:constructor: `logger` argument should be an instance of LoggerInterface'
+    )
 
-    const _componentContexts = new MapOfInstance(ComponentContext)
-    const _services = new MapExtended()
+    const _componentContexts = new ComponentContextMap()
+    const _services = new Map()
     const _sequenceId = new Sequence('hb_')
 
     Object.defineProperty(this, CLASS_TAG_NAME, {
@@ -89,8 +103,40 @@ export class HotBalloonApplication extends WithIDBase {
             'hotballoon:HotBalloonApplication:constructor:_sequenceId.set: `_sequenceId` already set'
           )
         }
+      },
+      [_Logger]: {
+        configurable: false,
+        enumerable: false,
+        get: () => {
+          return logger
+        },
+        set: (v) => {
+          assert(false,
+            'hotballoon:HotBalloonApplication:constructor:_Logger.set: `_sequenceId` already set'
+          )
+        }
+      },
+      [_document]: {
+        configurable: false,
+        enumerable: false,
+        get: () => {
+          return document
+        },
+        set: (v) => {
+          assert(false,
+            'hotballoon:HotBalloonApplication:constructor:_document.set: `_document` already set'
+          )
+        }
       }
     })
+
+    this.logger().log(
+      this.logger().builder()
+        .debug()
+        .pushLog('HotballoonApplication:init: ' + id)
+        .pushLog(this),
+      applicationLogOptions
+    )
   }
 
   /**
@@ -112,7 +158,7 @@ export class HotBalloonApplication extends WithIDBase {
    */
   addComponentContext() {
     const componentContext = new ComponentContext(this)
-    this[_ComponentContexts].add(componentContext.ID, componentContext)
+    this[_ComponentContexts].set(componentContext.ID(), componentContext)
     return componentContext
   }
 
@@ -123,13 +169,10 @@ export class HotBalloonApplication extends WithIDBase {
    */
   removeComponentContext(componentID) {
     if (this[_ComponentContexts].has(componentID)) {
-      const removable = this.componentContext(componentID).willRemove()
-      if (removable !== false) {
-        this[_ComponentContexts].delete(componentID)
-        return true
-      }
-      return false
+      this[_ComponentContexts].delete(componentID)
+      return true
     }
+    return false
   }
 
   /**
@@ -152,7 +195,7 @@ export class HotBalloonApplication extends WithIDBase {
       'hotballoon:HotBalloonApplication:addService: `serviceName` : `%s` is already set',
       serviceName
     )
-    return this[_Services].add(serviceName, service)
+    return this[_Services].set(serviceName, service)
   }
 
   /**
@@ -176,5 +219,21 @@ export class HotBalloonApplication extends WithIDBase {
    */
   service(serviceName) {
     return this[_Services].get(serviceName)
+  }
+
+  /**
+   *
+   * @return {LoggerInterface}
+   */
+  logger() {
+    return this[_Logger]
+  }
+
+  /**
+   *
+   * @return {Document}
+   */
+  document() {
+    return this[_document]
   }
 }

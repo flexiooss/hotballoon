@@ -1,82 +1,80 @@
 import {TestCase} from 'code-altimeter-js'
-import {TypeCheck} from '../js/TypeCheck'
-import {StoreBuilder, InMemoryParams, ProxyParams} from '../js/Store/StoreBuilder'
-import {StoreTypeParam} from '../js/Store/StoreTypeParam'
+import {TypeCheck} from '../js/Types/TypeCheck'
+import {InMemoryStoreBuilder} from '../js/Store/InMemoryStoreBuilder'
+import {ProxyStoreBuilder} from '../js/Store/ProxyStoreBuilder'
 import {PublicStoreHandler} from '../js/Store/PublicStoreHandler'
 import {HotBalloonApplication} from '../js/Application/HotBalloonApplication'
+import {ComponentContext} from '../js/Component/ComponentContext'
 import {Dispatcher} from '../js/Dispatcher/Dispatcher'
 import {ExecutorInline} from '../js/Job/ExecutorInline'
 import {ExecutorWorker} from '../js/Job/ExecutorWorker'
-import {ActionBuilder, PublicActionParams} from '../js/Action/ActionBuilder'
-import {ActionTypeParam} from '../js/Action/ActionTypeParam'
+import {ActionDispatcherBuilder} from '../js/Action/ActionDispatcherBuilder'
 import {ViewContainer, ViewContainerParameters} from '../js/View/ViewContainer'
 import {View} from '../js/View/View'
+import {FakeLogger} from '@flexio-oss/js-logger'
+import {FakeValueObject, FakeValueObjectBuilder} from './FakeValueObject'
 
 const assert = require('assert')
 
 export class TestTypeCheck extends TestCase {
+
   testIsStoreBase() {
-    const store = StoreBuilder
-      .InMemory(
-        new InMemoryParams(
-          new StoreTypeParam(
-            Object,
-            v => v,
-            v => true,
-            o => o
-          ),
-          {}
-        )
-      )
+    /**
+     *
+     * @type {Store<FakeValueObject, FakeValueObjectBuilder>}
+     */
+    const store = new InMemoryStoreBuilder()
+      .type(FakeValueObject)
+      .initialData(new FakeValueObject())
+      .build()
 
     assert(TypeCheck.isStoreBase(store))
 
+    /**
+     *
+     * @type {PublicStoreHandler<FakeValueObject, FakeValueObjectBuilder>}
+     */
     const publicStoreHandler = new PublicStoreHandler(store)
     assert(TypeCheck.isStoreBase(publicStoreHandler))
 
-    const proxyStore = StoreBuilder
-      .Proxy(
-        new ProxyParams(
-          new StoreTypeParam(
-            Object,
-            v => v,
-            v => true,
-            o => o
-          ),
-          store,
-          v => v
-        )
-      )
+    /**
+     *
+     * @type {ProxyStore<FakeValueObject, FakeValueObject, FakeValueObjectBuilder>}
+     */
+    const proxyStore = new ProxyStoreBuilder()
+      .store(store)
+      .type(FakeValueObject)
+      .mapper(
+        (data) => FakeValueObjectBuilder.from(data).build())
+      .build()
+
     assert(TypeCheck.isStoreBase(proxyStore))
 
-    const proxyStoreFromPublic = StoreBuilder
-      .Proxy(
-        new ProxyParams(
-          new StoreTypeParam(
-            Object,
-            v => v,
-            v => true,
-            o => o
-          ),
-          publicStoreHandler,
-          v => v
-        )
-      )
+    /**
+     *
+     * @type {ProxyStore<FakeValueObject, FakeValueObject, FakeValueObjectBuilder>}
+     */
+    const proxyStoreFromPublic = new ProxyStoreBuilder()
+      .store(publicStoreHandler)
+      .type(FakeValueObject)
+      .mapper(
+        (data) => FakeValueObjectBuilder.from(data).build())
+      .build()
     assert(TypeCheck.isStoreBase(proxyStoreFromPublic))
   }
 
   testIsHotballoonApplication() {
-    const app = new HotBalloonApplication('id', new Dispatcher())
+    const app = new HotBalloonApplication('id', new Dispatcher(new FakeLogger()), new FakeLogger().debug())
     assert(TypeCheck.isHotballoonApplication(app))
   }
 
   testIsComponentContext() {
-    const componentContext = new HotBalloonApplication('id', new Dispatcher()).addComponentContext()
+    const componentContext = new HotBalloonApplication('id', new Dispatcher(new FakeLogger()), new FakeLogger().debug()).addComponentContext()
     assert(TypeCheck.isComponentContext(componentContext))
   }
 
   testIsDispatcher() {
-    const dispatcher = new Dispatcher()
+    const dispatcher = new Dispatcher(new FakeLogger())
     assert(TypeCheck.isDispatcher(dispatcher))
   }
 
@@ -87,24 +85,23 @@ export class TestTypeCheck extends TestCase {
     assert(TypeCheck.isExecutor(executor))
   }
 
-  testIsAction() {
-    const action = ActionBuilder.build(
-      new PublicActionParams(
-        new ActionTypeParam(
-          Object,
-          v => v,
-          v => true
-        ),
-        new Dispatcher()
-      )
-    )
-    assert(TypeCheck.isAction(action))
+  testIsActionDispatcher() {
+    /**
+     *
+     * @type {ActionDispatcher<FakeValueObject, FakeValueObjectBuilder>}
+     */
+    const action = new ActionDispatcherBuilder()
+      .type(FakeValueObject)
+      .dispatcher(new Dispatcher(new FakeLogger()))
+      .build()
+
+    assert(TypeCheck.isActionDispatcher(action))
   }
 
   testIsViewContainer() {
     const viewContainer = new ViewContainer(
       new ViewContainerParameters(
-        Object, 'id', {nodeType: 2}
+        new ComponentContext(new HotBalloonApplication('test', new Dispatcher(new FakeLogger()), new FakeLogger())), 'id', {nodeType: 2}
       )
     )
     assert(TypeCheck.isViewContainer(viewContainer))

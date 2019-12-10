@@ -1,28 +1,23 @@
-'use strict'
-
-import {CLASS_TAG_NAME, CLASS_TAG_NAME_STORE} from '../HasTagClassNameInterface'
-import {StoreInterface, STORE_CHANGED} from './StoreInterface'
-
-import {StoreBase, _set, _dispatch} from './StoreBase'
+import {CLASS_TAG_NAME, CLASS_TAG_NAME_STORE} from '../Types/HasTagClassNameInterface'
+import {StoreInterface} from './StoreInterface'
+import {_dispatch, _set, StoreBase} from './StoreBase'
 
 export const STORE_INIT = Symbol('STORE.INIT')
 
 /**
- * @template TYPE
- * @extends {StoreBase<TYPE>}
- * @implements {StoreInterface<TYPE>}
+ * @template TYPE, TYPE_BUILDER
+ * @extends {StoreBase<TYPE, TYPE_BUILDER>}
+ * @implements {StoreInterface<TYPE, TYPE_BUILDER>}
  * @implements {GenericType<TYPE>}
  * @implements  {HasTagClassNameInterface}
  */
 export class Store extends StoreBase {
   /**
    * @constructor
-   * @param {StoreParams} storeParams
+   * @param {StoreConfig<TYPE, TYPE_BUILDER>} storeConfig
    */
-  constructor(storeParams) {
-    super(storeParams)
-
-    this.debug.color = 'magentaDark'
+  constructor(storeConfig) {
+    super(storeConfig)
 
     Object.defineProperty(this, CLASS_TAG_NAME, {
       configurable: false,

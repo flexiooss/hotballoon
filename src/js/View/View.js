@@ -1,23 +1,22 @@
-'use strict'
 import {CoreException} from '../CoreException'
-import {CLASS_TAG_NAME, CLASS_TAG_NAME_VIEW} from '../HasTagClassNameInterface'
-import {assertType, isBoolean, isFunction, isNode, toString, UID} from 'flexio-jshelpers'
+import {Checksum, UID} from '@flexio-oss/js-helpers'
+import {CLASS_TAG_NAME, CLASS_TAG_NAME_VIEW} from '../Types/HasTagClassNameInterface'
+import {assertType, isBoolean, isFunction, isNode, isNull} from '@flexio-oss/assert'
+import {symbolToString} from '@flexio-oss/js-type-helpers'
 import {$} from '../HotballoonNodeElement/HotBalloonAttributeHandler'
 import {startReconcile} from '../HotballoonNodeElement/HotballoonElementReconciliation'
 import {html} from '../HotballoonNodeElement/CreateHotBalloonElement'
 import {ViewContainerBase} from './ViewContainerBase'
-import {STORE_CHANGED} from '../Store/StoreInterface'
-import {EventListenerOrderedBuilder} from '../Event/EventListenerOrderedBuilder'
-import {TypeCheck} from '../TypeCheck'
+import {TypeCheck} from '../Types/TypeCheck'
 import {
-  ViewPublicEventHandler,
+  VIEW_MOUNT,
+  VIEW_MOUNTED,
   VIEW_RENDER,
   VIEW_RENDERED,
+  VIEW_STORE_CHANGED,
   VIEW_UPDATE,
   VIEW_UPDATED,
-  VIEW_STORE_CHANGED,
-  VIEW_MOUNT,
-  VIEW_MOUNTED
+  ViewPublicEventHandler
 } from './ViewPublicEventHandler'
 
 export const ATTRIBUTE_NODEREF = '_hb_noderef'
@@ -28,6 +27,19 @@ const _render = Symbol('_render')
 const _replaceNode = Symbol('_replaceNode')
 const _addNodeRef = Symbol('_addNodeRef')
 const _setNodeViewRef = Symbol('_setNodeViewRef')
+
+const viewLogOptions = {
+  color: 'blue',
+  titleSize: 2
+}
+
+const requestAFrame = window.requestAnimationFrame
+  || window.webkitRequestAnimationFrame
+  || window.mozRequestAnimationFrame
+  || window.msRequestAnimationFrame
+  || function (cb) {
+    return setTimeout(cb, 16)
+  }
 
 /**
  * @extends {ViewContainerBase}
@@ -45,14 +57,14 @@ export class View extends ViewContainerBase {
       'hotballoon:' + this.constructor.name + ':constructor: `container` should be an instance of ViewContainerBase'
     )
 
-    this.debug.color = 'blue'
     this.parentNode = container.parentNode
 
-    var _node = null
-    var _shouldInit = true
-    var _shouldRender = true
-    var _shouldMount = true
-    var _shouldUpdate = true
+    let _node = null
+    let _shouldInit = true
+    let _shouldRender = true
+    let _shouldMount = true
+    let _shouldUpdate = true
+    let _synchronous = false
     const _nodeRefs = new Map()
 
     Object.defineProperty(this, CLASS_TAG_NAME, {
@@ -79,15 +91,15 @@ export class View extends ViewContainerBase {
         configurable: false,
         get: () => {
           /**
-           * @property {Element} _node
+           * @property {?Element} _node
            * @name View#_node
            * @private
            */
           return _node
         },
         set: (node) => {
-          assertType(isNode(node),
-            'view:_node:set: `node` argument assert be a Node, `%s` given',
+          assertType(isNode(node) || isNull(node),
+            'view:_node:set: `node` argument assert be a Node or Null, `%s` given',
             typeof node
           )
           _node = node
@@ -148,6 +160,24 @@ export class View extends ViewContainerBase {
         }
       },
       /**
+       * @property {boolean} _synchronous
+       * @name View#_synchronous
+       * @protected
+       */
+      _synchronous: {
+        configurable: false,
+        enumerable: false,
+        get: () => {
+          return _synchronous
+        },
+        set: (v) => {
+          assertType(!!isBoolean(v),
+            'hotballoon:view:constructor: `_synchronous` argument should be a boolean'
+          )
+          _synchronous = v
+        }
+      },
+      /**
        * @property {boolean} _shouldUpdate
        * @name View#_shouldUpdate
        * @protected
@@ -185,7 +215,7 @@ export class View extends ViewContainerBase {
   }
 
   /**
-   * @return {Element}
+   * @return {?Element}
    */
   template() {
     throw new CoreException('view should be override', 'METHOD_NOT_OVERRIDE')
@@ -197,14 +227,15 @@ export class View extends ViewContainerBase {
    * @return {Element}
    */
   html(element) {
-    return html(this, element.querySelector, element.params)
+    return html(this, element.querySelector(), element.params(), this.document())
   }
 
   /**
-   *
+   * @template STORE_TYPE,STORE_TYPE_BUILDER
    * @description subscribe subView an events of this view
-   * @param {StoreInterface} store
-   * @param {View~updateCallback} clb
+   * @param {StoreInterface<STORE_TYPE,STORE_TYPE_BUILDER>} store
+   * @param {function(data:StoreState<STORE_TYPE>):boolean} clb
+   * @return {this}
    */
   subscribeToStore(store, clb = (state) => true) {
     assertType(
@@ -214,29 +245,26 @@ export class View extends ViewContainerBase {
     if (!TypeCheck.isStoreBase(store)) {
       throw TypeError('store argument should be an instance of StoreInterface')
     }
-
-    this._tokenEvent.add(
-      store.storeId(),
-      store.subscribe(
-        EventListenerOrderedBuilder
-          .listen(STORE_CHANGED)
-          .callback((payload, type) => {
-            if (clb(payload.data) === true) {
-              this.dispatch(VIEW_STORE_CHANGED, payload)
-              this.updateNode()
-            }
-          })
-          .build()
-      )
+    const token = store.listenChanged(
+      (payload, type) => {
+        if (clb(payload) === true) {
+          this.dispatch(VIEW_STORE_CHANGED, payload)
+          this.updateNode()
+        }
+      }
     )
-  }
 
-  /**
-   *
-   * @callback View~updateCallback
-   * @param {StoreState} state
-   * @return {boolean}
-   */
+    this._storesMap.set(
+      store.storeId(),
+      store
+    )
+
+    this._tokenEvent.push(
+      store.storeId(),
+      token
+    )
+    return this
+  }
 
   /**
    * @private
@@ -245,23 +273,80 @@ export class View extends ViewContainerBase {
   [_update]() {
     this._nodeRefs.clear()
     const candidate = this.template()
-    $(candidate).setViewRef(this.ID)
-    startReconcile(this.node, candidate, this.parentNode)
+
+    if (isNull(candidate) || isNull(this.node())) {
+      this[_replaceNode]()
+    } else {
+
+      $(candidate).setViewRef(this.ID())
+      startReconcile(this.node(), candidate, this.parentNode)
+
+    }
+    this.dispatch(VIEW_UPDATED, {})
+    this.logger().log(
+      this.logger().builder()
+        .debug()
+        .pushLog('UpdateNode : ' + this.ID())
+        .pushLog(this.node()),
+      viewLogOptions
+    )
   }
 
+  /**
+   *
+   * @return {View}
+   */
   updateNode() {
-    if (this._shouldUpdate) {
-      this.debug.log('updateNode').background()
-      this.debug.print()
+    if (this.isRendered() && this._shouldUpdate) {
+
       this.dispatch(VIEW_UPDATE, {})
-      this[_update]()
-      this.dispatch(VIEW_UPDATED, {})
+
+      if (this.isSynchronous()) {
+        this[_update]()
+      } else {
+        requestAFrame(() => {
+          this[_update]()
+        })
+      }
+
     }
     this._shouldUpdate = true
+    return this
   }
 
+  /**
+   *
+   * @return {View}
+   */
+  setSynchronous() {
+    this._synchronous = true
+    return this
+  }
+
+  /**
+   *
+   * @return {View}
+   */
+  setAsynchronous() {
+    this._synchronous = false
+    return this
+  }
+
+  /**
+   *
+   * @return {boolean}
+   */
+  isSynchronous() {
+    return this._synchronous === true
+  }
+
+  /**
+   *
+   * @return {View}
+   */
   shouldNotUpdate() {
     this._shouldUpdate = false
+    return this
   }
 
   /**
@@ -273,11 +358,15 @@ export class View extends ViewContainerBase {
   }
 
   /**
-   * @return {Element} _node
+   * @return {Element}
    */
   render() {
-    this.debug.log('render').size(2)
-    this.debug.print()
+    this.logger().log(
+      this.logger().builder()
+        .info()
+        .pushLog('Render : ' + this.ID()),
+      viewLogOptions
+    )
 
     if (this._shouldRender) {
       this.dispatch(VIEW_RENDER, {})
@@ -287,29 +376,47 @@ export class View extends ViewContainerBase {
     }
 
     this._shouldRender = true
-    return this.node
+    return this.node()
   }
 
+  /**
+   *
+   * @return {View}
+   */
   shouldNotRender() {
     this._shouldRender = false
+    return this
   }
 
   /**
    * @private
    */
   [_mount]() {
-    this.parentNode.appendChild(this.node)
+    if (!isNull(this.node)) {
+      this.parentNode.appendChild(this.node())
+    }
+    this._mounted = true
+    this.dispatch(VIEW_MOUNTED, {})
+    this._shouldMount = true
+
   }
 
   mount() {
     if (this._shouldMount) {
       this.dispatch(VIEW_MOUNT, {})
-      this[_mount]()
-      this._mounted = true
-      this.dispatch(VIEW_MOUNTED, {})
+
+      if (this.isSynchronous()) {
+        this[_mount]()
+      } else {
+        requestAFrame(() => {
+          this[_mount]()
+        })
+      }
+
+    } else {
+      this._shouldMount = true
     }
 
-    this._shouldMount = true
   }
 
   /**
@@ -323,21 +430,33 @@ export class View extends ViewContainerBase {
     return element
   }
 
+  /**
+   *
+   * @return {View}
+   */
   shouldNotMount() {
     this._shouldMount = false
+    return this
   }
 
+  /**
+   *
+   * @return {View}
+   */
   renderAndMount() {
     this.render()
     this.mount()
+    return this
   }
 
   /**
    * @param {String} key
    * @param {View} view
+   * @return {this}
    */
   addNodeView(key, view) {
     this[_setNodeViewRef]()
+    return this
   }
 
   /**
@@ -346,7 +465,7 @@ export class View extends ViewContainerBase {
    */
   nodeRef(key) {
     if (!this._nodeRefs.has(key)) {
-      this._nodeRefs.set(key, document.getElementById(this.elementIdFromRef(key)))
+      this._nodeRefs.set(key, this.document().getElementById(this.elementIdFromRef(key)))
     }
     return this._nodeRefs.get(key)
   }
@@ -364,7 +483,6 @@ export class View extends ViewContainerBase {
    * @param {String} key
    * @param {Element} node
    * @return {Element}
-   * @instance
    */
   addNodeRef(key, node) {
     if (!this._rendered && !this._nodeRefs.has(key)) {
@@ -389,7 +507,9 @@ export class View extends ViewContainerBase {
    * @private
    */
   [_setNodeViewRef]() {
-    $(this.node).setViewRef(this.ID)
+    if (!isNull(this.node())) {
+      $(this.node()).setViewRef(this.ID())
+    }
   }
 
   /**
@@ -397,18 +517,54 @@ export class View extends ViewContainerBase {
    * @return {string}
    */
   viewRef() {
-    return this.ID
+    return this.ID()
   }
 
   /**
-   * @return {Element} node
+   * @return {?Element}
    */
-  get node() {
+  node() {
     return this._node
   }
 
+  remove() {
+    this.logger().log(
+      this.logger().builder()
+        .info()
+        .pushLog('Remove : ' + this.ID())
+        .pushLog(this),
+      viewLogOptions
+    )
+    this._nodeRefs.clear()
+
+    if (this.isSynchronous()) {
+      this.__removeNode()
+    } else {
+      requestAFrame(() => {
+        this.__removeNode()
+      })
+    }
+
+
+    super.remove()
+    this.container().removeView(this)
+  }
+
   /**
-   * @return {Element} node
+   *
+   * @return {View}
+   * @private
+   */
+  __removeNode() {
+    if (!isNull(this._node)) {
+      this._node.parentNode.removeChild(this._node)
+      this._node = null
+    }
+    return this
+  }
+
+  /**
+   * @return {?Element} node
    */
   [_replaceNode]() {
     this._node = this.template()
@@ -440,10 +596,18 @@ export class View extends ViewContainerBase {
 
   /**
    *
+   * @return {Document}
+   */
+  document() {
+    return this._container.document()
+  }
+
+  /**
+   *
    * @return {string}
    */
   containerID() {
-    return this._container.ID
+    return this._container.ID()
   }
 
   /**
@@ -460,6 +624,16 @@ export class View extends ViewContainerBase {
    * @return {string}
    */
   elementIdFromRef(ref) {
-    return `${toString(this.AppID())}-${toString(this.componentID())}-${toString(this.containerID())}-${toString(ref)}`
+    return Checksum.number32bit(
+      `${symbolToString(this.AppID())}-${symbolToString(this.componentID())}-${symbolToString(this.containerID())}-${symbolToString(ref)}`
+    ).toString()
+  }
+
+  /**
+   *
+   * @return {LoggerInterface}
+   */
+  logger() {
+    return this.container().logger()
   }
 }

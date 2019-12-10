@@ -1,5 +1,6 @@
-import {assertType, isFunction} from 'flexio-jshelpers'
-import {EventListenerOrderedBuilder} from '../Event/EventListenerOrderedBuilder'
+import {assertType, isFunction} from '@flexio-oss/assert'
+import {OrderedEventListenerConfigBuilder} from '@flexio-oss/event-handler'
+
 export const WILL_REMOVE = 'WILL_REMOVE'
 
 export class ViewContainerPublicEventHandler {
@@ -19,7 +20,7 @@ export class ViewContainerPublicEventHandler {
 
   /**
    * @callback ViewContainerPublicEventHandler~subscriberClb
-   * @param {EventListenerOrderedParam} eventListenerOrderedParam
+   * @param {OrderedEventListenerConfig} orderedEventListenerConfig
    * @return {String} token
    */
 
@@ -34,7 +35,7 @@ export class ViewContainerPublicEventHandler {
       'ViewContainerPublicEventHandler:beforeRemove: `clb` should be a function'
     )
     return this._subscriber(
-      EventListenerOrderedBuilder
+      OrderedEventListenerConfigBuilder
         .listen(WILL_REMOVE)
         .callback(() => {
           clb()

@@ -1,4 +1,4 @@
-import {CLASS_TAG_NAME, CLASS_TAG_NAME_JOB} from '../HasTagClassNameInterface'
+import {CLASS_TAG_NAME, CLASS_TAG_NAME_JOB} from '../Types/HasTagClassNameInterface'
 
 /**
  * @interface

@@ -1,11 +1,14 @@
+import {CoreException} from '../CoreException'
+
 /**
  * @interface
  */
 export class Component {
+
   /**
    *
-   * @return {Component}
    */
-  mountView() {
+  remove() {
+    throw new CoreException(`mountView should be override`)
   }
 }

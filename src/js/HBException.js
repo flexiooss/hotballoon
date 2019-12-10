@@ -1,4 +1,3 @@
-'use strict'
 class HBException {
   constructor(message, code) {
     this._message = message || ''
@@ -24,6 +23,7 @@ class HBException {
     return `${this._name} : ${this._message} | ${this.getCode(this._code)}`
   }
 }
+
 export {
   HBException
 }

@@ -1,18 +1,19 @@
 import {TestCase} from 'code-altimeter-js'
 import {HotBalloonApplication} from '../../js/Application/HotBalloonApplication'
 import {Dispatcher} from '../../js/Dispatcher/Dispatcher'
+import {FakeLogger} from '@flexio-oss/js-logger'
 
 const assert = require('assert')
 
 export class TestHotBalloonApplication extends TestCase {
   setUp() {
-    this.dispatcher = new Dispatcher()
-    this.APP = new HotBalloonApplication('id', this.dispatcher)
+    this.dispatcher = new Dispatcher(new FakeLogger())
+    this.APP = new HotBalloonApplication('id', this.dispatcher, new FakeLogger().debug())
   }
 
   testAddComponentContext() {
     const componentContext = this.APP.addComponentContext()
-    assert(this.APP.componentContext(componentContext.ID) === componentContext)
+    assert.deepStrictEqual(this.APP.componentContext(componentContext.ID()), componentContext)
   }
 
   /* testRemoveComponentContext() {

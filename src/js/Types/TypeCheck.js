@@ -1,18 +1,19 @@
 import {
-  testClassTagName,
-  CLASS_TAG_NAME_HOTBALLOON_APPLICATION,
-  CLASS_TAG_NAME_DISPATCHER,
-  CLASS_TAG_NAME_COMPONENT,
   CLASS_TAG_NAME_ACTION,
-  CLASS_TAG_NAME_STORE,
-  CLASS_TAG_NAME_PROXYSTORE,
-  CLASS_TAG_NAME_VIEWCONTAINER,
-  CLASS_TAG_NAME_VIEW,
-  CLASS_TAG_NAME_PUBLIC_STORE_HANDLER,
+  CLASS_TAG_NAME_COMPONENT,
+  CLASS_TAG_NAME_DISPATCHER,
+  CLASS_TAG_NAME_EXECUTOR,
+  CLASS_TAG_NAME_HOTBALLOON_APPLICATION,
   CLASS_TAG_NAME_JOB,
-  CLASS_TAG_NAME_EXECUTOR
+  CLASS_TAG_NAME_PROXYSTORE,
+  CLASS_TAG_NAME_PUBLIC_STORE_HANDLER,
+  CLASS_TAG_NAME_STORE,
+  CLASS_TAG_NAME_VIEW,
+  CLASS_TAG_NAME_VIEWCONTAINER,
+  testClassTagName
 } from './HasTagClassNameInterface'
-import {assertType} from 'flexio-jshelpers'
+import {assertType} from '@flexio-oss/assert'
+import {ElementDescription} from '../HotballoonNodeElement/ElementDescription'
 
 class TypeCheck {
   /**
@@ -47,18 +48,18 @@ class TypeCheck {
    * @param {Object} inst
    * @return {boolean}
    */
-  static isAction(inst) {
+  static isActionDispatcher(inst) {
     return testClassTagName(inst, CLASS_TAG_NAME_ACTION)
   }
 
   /**
    *
-   * @param {Action} inst
-   * @return {Action}
+   * @param {ActionDispatcher} inst
+   * @return {ActionDispatcher}
    */
-  static assertIsAction(inst) {
-    assertType(TypeCheck.isAction(inst),
-      'TypeCheck:assertIsAction: `inst` argument should be an Action'
+  static assertIsActionDispatcher(inst) {
+    assertType(TypeCheck.isActionDispatcher(inst),
+      'TypeCheck:assertIsActionDispatcher: `inst` argument should be an ActionDispatcher'
     )
     return inst
   }
@@ -154,6 +155,15 @@ class TypeCheck {
    */
   static isViewContainerBase(inst) {
     return testClassTagName(inst, CLASS_TAG_NAME_VIEWCONTAINER) || testClassTagName(inst, CLASS_TAG_NAME_VIEW)
+  }
+
+  /**
+   *
+   * @param {*} instance
+   * @return {boolean}
+   */
+  static isElementDescription(instance) {
+    return instance instanceof ElementDescription
   }
 }
 

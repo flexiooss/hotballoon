@@ -1,4 +1,5 @@
-import {deepFreezeSeal, assert, isPrimitive} from 'flexio-jshelpers'
+import {assert, isPrimitive} from '@flexio-oss/assert'
+import {deepFreezeSeal} from '@flexio-oss/js-type-helpers'
 
 /**
  *
@@ -23,9 +24,19 @@ export class EventAction {
 
   /**
    *
+   * @param {(string|Symbol)} name
+   * @param {TYPE} payload
+   * @return {EventAction}
+   */
+  static create(name, payload) {
+    return deepFreezeSeal(new this(name, payload))
+  }
+
+  /**
+   *
    * @return {(string|Symbol)}
    */
-  get name() {
+  name() {
     return this.__name
   }
 
@@ -33,17 +44,7 @@ export class EventAction {
    *
    * @return {TYPE}
    */
-  get payload() {
+  payload() {
     return this.__payload
-  }
-
-  /**
-   *
-   * @param {(string|Symbol)} name
-   * @param {TYPE} payload
-   * @return {EventAction}
-   */
-  static create(name, payload) {
-    return deepFreezeSeal(new this(name, payload))
   }
 }
