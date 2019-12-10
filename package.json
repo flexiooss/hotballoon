@@ -3,7 +3,7 @@
   "description": "Small JavaScript library for building interfaces by Flexio",
   "main": "index.js",
   "module": "index.js",
-  "version": "0.1.0-dev",
+  "version": "0.2.0-dev",
   "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/flexiooss/hotballoon/issues"
@@ -17,9 +17,9 @@
     "@flexio-oss/js-validator-helper": ">0.0.0"
   },
   "dependencies": {
-    "@flexio-corp/js-common-parent": "0.0.0-dev",
-    "@flexio-oss/flexio-hyperflex": "0.1.0-dev",
-    "@flexio-oss/flexio-nodes-reconciliation": "0.0.0-dev"
+    "@flexio-corp/js-common-parent": "0.0.0",
+    "@flexio-oss/flexio-hyperflex": "0.1.0",
+    "@flexio-oss/flexio-nodes-reconciliation": "0.0.0"
   },
   "hotballoon-shed": {
     "build": {
