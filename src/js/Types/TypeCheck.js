@@ -132,6 +132,18 @@ class TypeCheck {
 
   /**
    *
+   * @param {View} inst
+   * @return {View}
+   */
+  static assertIsView(inst) {
+    assertType(TypeCheck.isView(inst),
+      'TypeCheck:assertIsView: `inst` argument should be a View'
+    )
+    return inst
+  }
+
+  /**
+   *
    * @param {Object} inst
    * @return {boolean}
    */
