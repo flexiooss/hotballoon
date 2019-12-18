@@ -233,7 +233,7 @@ export class HotBalloonApplication extends WithID {
    */
   service(serviceName) {
     if (this[_Services].has(serviceName)) {
-      return this.service(serviceName)
+      return this[_Services].get(serviceName)
     }
     return null
   }
