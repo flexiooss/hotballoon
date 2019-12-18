@@ -10,10 +10,12 @@ import {
   CLASS_TAG_NAME_STORE,
   CLASS_TAG_NAME_VIEW,
   CLASS_TAG_NAME_VIEWCONTAINER,
+  CLASS_TAG_NAME_SERVICE,
   testClassTagName
 } from './HasTagClassNameInterface'
 import {assertType} from '@flexio-oss/assert'
 import {ElementDescription} from '../HotballoonNodeElement/ElementDescription'
+
 
 class TypeCheck {
   /**
@@ -162,6 +164,15 @@ class TypeCheck {
 
   /**
    *
+   * @param {HotballoonService} inst
+   * @return {boolean}
+   */
+  static isService(inst) {
+    return testClassTagName(inst, CLASS_TAG_NAME_SERVICE)
+  }
+
+  /**
+   *
    * @param {Object} inst
    * @return {boolean}
    */
@@ -178,5 +189,6 @@ class TypeCheck {
     return instance instanceof ElementDescription
   }
 }
+
 
 export {TypeCheck}

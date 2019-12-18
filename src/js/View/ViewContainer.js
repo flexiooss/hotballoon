@@ -208,7 +208,7 @@ export class ViewContainer extends ViewContainerBase {
 
   /**
    * @param {String} key
-   * @return {service}
+   * @return {?HotballoonService}
    * @instance
    */
   service(key) {

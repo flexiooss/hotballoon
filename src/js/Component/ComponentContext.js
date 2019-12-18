@@ -259,7 +259,7 @@ export class ComponentContext extends WithID {
   }
 
   /**
-   * @return {service}
+   * @return {?HotballoonService}
    */
   service(key) {
     return this.APP().service(key)
