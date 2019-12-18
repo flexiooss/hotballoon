@@ -18,6 +18,13 @@ export class HotballoonService {
   /**
    * @return {string}
    */
+  static name() {
+    throw new Error('should be override')
+  }
+
+  /**
+   * @return {string}
+   */
   name() {
     throw new Error('should be override')
   }
