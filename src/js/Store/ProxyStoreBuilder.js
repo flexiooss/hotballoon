@@ -7,7 +7,7 @@ import {ProxyStoreConfig} from './ProxyStoreConfig'
 
 /**
  *
- * @template  STORE_TYPE, TYPE, TYPE_BUILDER
+ * @template  STORE_TYPE, STORE_TYPE_BUILDER,  TYPE, TYPE_BUILDER
  */
 export class ProxyStoreBuilder {
   constructor() {
@@ -48,7 +48,7 @@ export class ProxyStoreBuilder {
 
   /**
    *
-   * @param {StoreInterface<STORE_TYPE>} store
+   * @param {StoreInterface<STORE_TYPE, STORE_TYPE_BUILDER>} store
    * @return {ProxyStoreBuilder}
    */
   store(store) {
