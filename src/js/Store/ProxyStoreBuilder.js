@@ -98,7 +98,7 @@ export class ProxyStoreBuilder {
 
   /**
    *
-   * @return {ProxyStore<STORE_TYPE, TYPE, TYPE_BUILDER>}
+   * @return {ProxyStore<STORE_TYPE, STORE_TYPE_BUILDER, TYPE, TYPE_BUILDER>}
    */
   build() {
 
