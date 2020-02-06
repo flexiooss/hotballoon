@@ -94,7 +94,7 @@ export class PublicStoreHandler {
    *
    * @param {function(state: StoreState<TYPE>)} callback
    * @param {number} [priority=100]
-   * @return {string} token
+   * @return {ListenedStore}
    */
   listenChanged(callback, priority = 100) {
     return this[_store].listenChanged(callback, priority)
