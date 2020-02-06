@@ -7,8 +7,11 @@ import {WithID} from '../abstract/WithID'
 import {ValidationError} from '../Exception/ValidationError'
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_ACTION} from '../Types/HasTagClassNameInterface'
 import {TypeCheck} from '../Types/TypeCheck'
+import {ListenedAction} from './ListenedAction'
+
 
 const _actionConfig = Symbol('_actionParams')
+
 
 /**
  * @implements {HasTagClassNameInterface}
@@ -128,7 +131,7 @@ export class ActionDispatcher extends WithID {
    *
    * @param {function(payload: TYPE, type: (string|Symbol))} callback
    * @param {ComponentContext} componentContext
-   * @returns {String} token
+   * @returns {ListenedAction}
    */
   listenWithCallback(callback, componentContext) {
     assertType(
@@ -136,7 +139,7 @@ export class ActionDispatcher extends WithID {
       '`componentContext` should be ComponentContext'
     )
 
-    return componentContext
+    const token = componentContext
       .addActionToken(
         this[_actionConfig].dispatcher()
           .addActionListener(
@@ -147,6 +150,8 @@ export class ActionDispatcher extends WithID {
           ),
         this
       )
+    
+    return new ListenedAction(this[_actionConfig].dispatcher(), this.ID(), token)
   }
 
   /**

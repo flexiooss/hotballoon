@@ -5,7 +5,9 @@ import {FakeLogger} from '@flexio-oss/js-logger'
 import {ActionDispatcherBuilder} from '../../js/Action/ActionDispatcherBuilder'
 import {FakeObject, FakeObjectBuilder} from './FakeObject'
 
+
 const assert = require('assert')
+
 
 export class ActionDispatcherTest extends TestCase {
   setUp() {
@@ -133,7 +135,7 @@ export class ActionDispatcherTest extends TestCase {
 
     const token1 = actionDispatcher.listenWithCallback(
       (payload, type) => {
-        actionDispatcher.waitFor(token2)
+        actionDispatcher.waitFor(token2.token())
         p.push(1)
       },
       this.componentContext
@@ -158,6 +160,44 @@ export class ActionDispatcherTest extends TestCase {
     assert.deepStrictEqual(p, [2, 1])
   }
 
+  testListenedAction() {
+    /**
+     *
+     * @type {ActionDispatcher<FakeObject, FakeObjectBuilder>}
+     */
+    const actionDispatcher = new ActionDispatcherBuilder()
+      .type(FakeObject)
+      .dispatcher(this.componentContext.dispatcher())
+      .build()
+
+    let a = 0
+
+    const action = actionDispatcher.listenWithCallback(
+      (payload) => {
+      a++
+    },this.componentContext)
+
+    const payloadDispatched = new FakeObjectBuilder()
+      .prop1('toto')
+      .prop2(true)
+      .prop3(3)
+      .build()
+
+    actionDispatcher.dispatch(payloadDispatched)
+
+    assert.equal(a,1, 'action should be invoked')
+
+    actionDispatcher.dispatch(payloadDispatched)
+
+    assert.equal(a,2, 'action should be invoked')
+
+    action.remove()
+    actionDispatcher.dispatch(payloadDispatched)
+
+    assert.equal(a,2, 'action should be removed')
+  }
+
 }
+
 
 runTest(ActionDispatcherTest)

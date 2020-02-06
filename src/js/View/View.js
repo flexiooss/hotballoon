@@ -266,7 +266,13 @@ export class View extends ViewContainerBase {
     if (!TypeCheck.isStoreBase(store)) {
       throw TypeError('store argument should be an instance of StoreInterface')
     }
-    const token = store.listenChanged(
+
+
+    /**
+     *
+     * @type {ListenedStore}
+     */
+    const listenedStore = store.listenChanged(
       (payload, type) => {
         if (clb(payload) === true) {
           this.dispatch(VIEW_STORE_CHANGED, payload)
@@ -282,8 +288,9 @@ export class View extends ViewContainerBase {
 
     this._tokenEvent.push(
       store.storeId(),
-      token
+      listenedStore
     )
+
     return this
   }
 

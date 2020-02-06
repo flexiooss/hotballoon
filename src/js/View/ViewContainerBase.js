@@ -21,6 +21,12 @@ export class ViewContainerBase extends WithID {
 
     let _mounted = false
     let _rendered = false
+
+    /**
+     *
+     * @type {ArrayMap<string,>}
+     * @private
+     */
     let _tokenEvent = new ArrayMap()
     let _storesMap = new StoreBaseMap()
     let _views = new ViewContainerBaseMap()
@@ -144,9 +150,20 @@ export class ViewContainerBase extends WithID {
   remove() {
     this[_EventHandler].clear()
 
-    this._tokenEvent.forEach((tokens, storeId) => {
-      tokens.forEach(token => {
-        this._storesMap.get(storeId).stopListenChanged(token)
+    this._tokenEvent.forEach(
+      /**
+       *
+       * @param {ListenedStore[]} listenedStores
+       * @param storeId
+       */
+      (listenedStores, storeId) => {
+      listenedStores.forEach(
+        /**
+         *
+         * @param {ListenedStore} listenedStore
+         */
+        listenedStore => {
+          listenedStore.remove()
       })
     })
 

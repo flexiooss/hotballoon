@@ -1,6 +1,8 @@
 import {CoreException} from '../CoreException'
 
+
 export const STORE_CHANGED = '__HB__.STORE.CHANGED'
+
 
 /**
  * @interface
@@ -50,14 +52,14 @@ export class StoreInterface {
    *
    * @param {function(state: StoreState<TYPE>)} callback
    * @param {number} priority
-   * @return {string} token
+   * @return {ListenedStore}
    */
   listenChanged(callback, priority) {
     throw new CoreException(`listenChanged should be override with this signature :
    /**
    * @param {StoreInterface~changedClb} clb
    * @param {number} priority
-   * @return {string} token
+   * @return {ListenedStore} 
    */
    `, 'METHOD_NOT_OVERRIDE')
   }

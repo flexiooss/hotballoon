@@ -117,24 +117,29 @@ export class ViewContainer extends ViewContainerBase {
    * @description subscribe subView an events of this view
    * @param {StoreInterface} store
    * @param {ViewContainer~storeChanged} clb
-   * @return {string}
+   * @return {ListenedStore}
    */
   subscribeToStore(store, clb = (state) => true) {
     assertType(isFunction(clb), 'hotballoon:' + this.constructor.name + ':subscribeToStore: `clb` argument should be callable')
 
     assertType(TypeCheck.isStoreBase(store), 'hotballoon:' + this.constructor.name + ':subscribeToStore: `keyStore : %s` not reference an instance of StoreInterface', store.constructor.name)
 
-    const token = store.listenChanged(
+    /**
+     *
+     * @type {ListenedStore}
+     */
+    const listenedStore = store.listenChanged(
       (payload, type) => {
         clb(payload.data())
       }
     )
+
     this._tokenEvent.push(
       store.storeId(),
-      token
+      listenedStore
     )
-    return token
 
+    return listenedStore
   }
 
   /**

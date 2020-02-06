@@ -8,6 +8,8 @@ import {ValidationError} from '../Exception/ValidationError'
 import {OrderedEventListenerConfigBuilder} from '@flexio-oss/event-handler'
 import {FakeLogger, LoggerInterface} from '@flexio-oss/js-logger'
 import {StoreBaseConfig} from './StoreBaseConfig'
+import {ListenedStore} from './ListenedStore'
+
 
 export const _storage = Symbol('_storage')
 export const _EventHandler = Symbol('_EventHandler')
@@ -22,6 +24,7 @@ const storeBaseLogOptions = {
   titleSize: 2
 }
 const fakeLogger = new FakeLogger()
+
 
 /**
  * @template TYPE, TYPE_BUILDER
@@ -250,7 +253,7 @@ export class StoreBase extends WithID {
    *
    * @param {function(state: StoreState<TYPE>)} callback
    * @param {number} [priority=100]
-   * @return {string} token
+   * @return {ListenedStore}
    */
   listenChanged(callback, priority = 100) {
     assertType(
@@ -263,7 +266,7 @@ export class StoreBase extends WithID {
       'hotballoon:' + this.constructor.name + ':listenChanged: `priority` argument should be a number'
     )
 
-    return this[_EventHandler].on(
+    const token = this[_EventHandler].on(
       OrderedEventListenerConfigBuilder
         .listen(this.changedEventName())
         .callback((payload) => {
@@ -271,6 +274,13 @@ export class StoreBase extends WithID {
         })
         .priority(priority)
         .build()
+    )
+
+    return new ListenedStore(
+      () => {
+        this.stopListenChanged(token)
+      },
+      token
     )
   }
 
