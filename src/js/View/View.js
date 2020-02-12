@@ -307,7 +307,10 @@ export class View extends ViewContainerBase {
     } else {
 
       $(candidate).setViewRef(this.ID())
-      startReconcile(this.node(), candidate, this.parentNode)
+
+      if(startReconcile(this.node(), candidate, this.parentNode)){
+        this._node = candidate
+      }
 
     }
     this.dispatch(VIEW_UPDATED, {})
