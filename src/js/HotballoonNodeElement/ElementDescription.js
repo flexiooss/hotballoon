@@ -69,6 +69,18 @@ export class ElementDescription {
 
   /**
    *
+   * @param {(boolean|function():boolean)} statement
+   * @param {(Element[]|function():Element[])} value
+   * @param {?(Element[]|function():Element[])} [valueFalse=null]
+   * @return {this}
+   */
+  bindChildNodes(statement, value, valueFalse = null) {
+    this._params.bindChildNodes(statement, value, valueFalse)
+    return this
+  }
+
+  /**
+   *
    * @param {String} key
    * @param {(boolean|function():boolean)} statement
    * @param {(String|function():String)} attribute
