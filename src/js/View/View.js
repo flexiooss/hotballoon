@@ -19,6 +19,7 @@ import {
   ViewPublicEventHandler
 } from './ViewPublicEventHandler'
 
+
 export const ATTRIBUTE_NODEREF = '_hb_noderef'
 
 const _mount = Symbol('_mount')
@@ -37,9 +38,10 @@ const requestAFrame = window.requestAnimationFrame
   || window.webkitRequestAnimationFrame
   || window.mozRequestAnimationFrame
   || window.msRequestAnimationFrame
-  || function (cb) {
+  || function(cb) {
     return setTimeout(cb, 16)
   }
+
 
 /**
  * @extends {ViewContainerBase}
@@ -64,7 +66,8 @@ export class View extends ViewContainerBase {
     let _shouldRender = true
     let _shouldMount = true
     let _shouldUpdate = true
-    let _synchronous = false
+    let _synchronousUpdate = false
+    let _synchronousRender = false
     const _nodeRefs = new Map()
 
     Object.defineProperty(this, CLASS_TAG_NAME, {
@@ -160,21 +163,39 @@ export class View extends ViewContainerBase {
         }
       },
       /**
-       * @property {boolean} _synchronous
-       * @name View#_synchronous
+       * @property {boolean} _synchronousUpdate
+       * @name View#_synchronousUpdate
        * @protected
        */
-      _synchronous: {
+      _synchronousUpdate: {
         configurable: false,
         enumerable: false,
         get: () => {
-          return _synchronous
+          return _synchronousUpdate
         },
         set: (v) => {
           assertType(!!isBoolean(v),
-            'hotballoon:view:constructor: `_synchronous` argument should be a boolean'
+            'hotballoon:view:constructor: `_synchronousUpdate` argument should be a boolean'
           )
-          _synchronous = v
+          _synchronousUpdate = v
+        }
+      },
+      /**
+       * @property {boolean} _synchronousRender
+       * @name View#_synchronousRender
+       * @protected
+       */
+      _synchronousRender: {
+        configurable: false,
+        enumerable: false,
+        get: () => {
+          return _synchronousRender
+        },
+        set: (v) => {
+          assertType(!!isBoolean(v),
+            'hotballoon:view:constructor: `_synchronousRender` argument should be a boolean'
+          )
+          _synchronousRender = v
         }
       },
       /**
@@ -245,7 +266,13 @@ export class View extends ViewContainerBase {
     if (!TypeCheck.isStoreBase(store)) {
       throw TypeError('store argument should be an instance of StoreInterface')
     }
-    const token = store.listenChanged(
+
+
+    /**
+     *
+     * @type {ListenedStore}
+     */
+    const listenedStore = store.listenChanged(
       (payload, type) => {
         if (clb(payload) === true) {
           this.dispatch(VIEW_STORE_CHANGED, payload)
@@ -261,8 +288,9 @@ export class View extends ViewContainerBase {
 
     this._tokenEvent.push(
       store.storeId(),
-      token
+      listenedStore
     )
+
     return this
   }
 
@@ -279,7 +307,10 @@ export class View extends ViewContainerBase {
     } else {
 
       $(candidate).setViewRef(this.ID())
-      startReconcile(this.node(), candidate, this.parentNode)
+
+      if(startReconcile(this.node(), candidate, this.parentNode)){
+        this._node = candidate
+      }
 
     }
     this.dispatch(VIEW_UPDATED, {})
@@ -301,7 +332,7 @@ export class View extends ViewContainerBase {
 
       this.dispatch(VIEW_UPDATE, {})
 
-      if (this.isSynchronous()) {
+      if (this.isSynchronous() || this.isSynchronousUpdate()) {
         this[_update]()
       } else {
         requestAFrame(() => {
@@ -318,8 +349,8 @@ export class View extends ViewContainerBase {
    *
    * @return {View}
    */
-  setSynchronous() {
-    this._synchronous = true
+  setSynchronousRender() {
+    this._synchronousRender = true
     return this
   }
 
@@ -327,8 +358,18 @@ export class View extends ViewContainerBase {
    *
    * @return {View}
    */
-  setAsynchronous() {
-    this._synchronous = false
+  setSynchronousUpdate() {
+    this._synchronousUpdate = true
+    return this
+  }
+
+  /**
+   *
+   * @return {View}
+   */
+  setSynchronous() {
+    this.setSynchronousRender()
+    this.setSynchronousUpdate()
     return this
   }
 
@@ -337,7 +378,23 @@ export class View extends ViewContainerBase {
    * @return {boolean}
    */
   isSynchronous() {
-    return this._synchronous === true
+    return this.isSynchronousRender() && this.isSynchronousUpdate()
+  }
+
+  /**
+   *
+   * @return {boolean}
+   */
+  isSynchronousRender() {
+    return this._synchronousRender === true
+  }
+
+  /**
+   *
+   * @return {boolean}
+   */
+  isSynchronousUpdate() {
+    return this._synchronousUpdate === true
   }
 
   /**
@@ -405,7 +462,7 @@ export class View extends ViewContainerBase {
     if (this._shouldMount) {
       this.dispatch(VIEW_MOUNT, {})
 
-      if (this.isSynchronous()) {
+      if (this.isSynchronous() || this.isSynchronousRender()) {
         this[_mount]()
       } else {
         requestAFrame(() => {
@@ -537,14 +594,13 @@ export class View extends ViewContainerBase {
     )
     this._nodeRefs.clear()
 
-    if (this.isSynchronous()) {
+    if (this.isSynchronous() || this.isSynchronousUpdate()) {
       this.__removeNode()
     } else {
       requestAFrame(() => {
         this.__removeNode()
       })
     }
-
 
     super.remove()
     this.container().removeView(this)
@@ -635,5 +691,14 @@ export class View extends ViewContainerBase {
    */
   logger() {
     return this.container().logger()
+  }
+
+  /**
+   * @param {String} key
+   * @return {?HotballoonService}
+   * @instance
+   */
+  service(key) {
+    return this._container.service(key)
   }
 }

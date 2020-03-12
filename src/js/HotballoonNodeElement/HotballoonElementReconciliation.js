@@ -7,9 +7,10 @@ class HotballoonElementReconciliation extends Reconciliation {
    * @param {Element} current
    * @param {Element} candidate
    * @param {Element} parentCurrent Parent of current element
+   * @return {boolean}
    */
   static reconciliation(current, candidate, parentCurrent) {
-    new HotballoonElementReconciliation(current, candidate, parentCurrent).reconcile()
+    return new HotballoonElementReconciliation(current, candidate, parentCurrent).reconcile()
   }
 
   /**
@@ -17,9 +18,10 @@ class HotballoonElementReconciliation extends Reconciliation {
    * @param {Element} current
    * @param {Element} candidate
    * @param {Element} parentCurrent Parent of current element
+   * @return {boolean}
    */
   static startReconciliation(current, candidate, parentCurrent) {
-    new HotballoonElementReconciliation(current, candidate, parentCurrent)
+    return new HotballoonElementReconciliation(current, candidate, parentCurrent)
       .withRootReconciliation(true)
       .reconcile()
   }
@@ -28,9 +30,10 @@ class HotballoonElementReconciliation extends Reconciliation {
    * @param {Element} current
    * @param {Element} candidate
    * @param {Element} parentCurrent Parent of current element
+   * @return {boolean}
    */
   reconciliation(current, candidate, parentCurrent) {
-    HotballoonElementReconciliation.reconciliation(current, candidate, parentCurrent)
+    return HotballoonElementReconciliation.reconciliation(current, candidate, parentCurrent)
   }
 
   /**

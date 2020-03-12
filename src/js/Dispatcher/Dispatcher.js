@@ -4,10 +4,12 @@ import {CLASS_TAG_NAME, CLASS_TAG_NAME_DISPATCHER} from '../Types/HasTagClassNam
 import {EventAction} from '../Action/EventAction'
 import {LoggerInterface} from '@flexio-oss/js-logger'
 
+
 const dispatcherLogOptions = {
   color: 'pink',
   titleSize: 2
 }
+
 
 /**
  * @class
@@ -18,9 +20,10 @@ const dispatcherLogOptions = {
 export class Dispatcher extends EventHandlerBase {
   /**
    * @param {LoggerInterface} logger
+   * @param {number} maxExecution
    */
-  constructor(logger) {
-    super()
+  constructor(logger, maxExecution = 100) {
+    super(maxExecution)
 
     assertType(logger instanceof LoggerInterface,
       'hotballoon:Dispatcher:constructor: `logger` argument should be an instance of LoggerInterface'
@@ -64,19 +67,17 @@ export class Dispatcher extends EventHandlerBase {
       'hotballoon:dispatcher:waitFor: `ids` argument should be Array params'
     )
 
-    let countOfIds = ids.length
-    for (let i = 0; i < countOfIds; i++) {
-      let id = ids[i]
-      if (!this._isPending.has(id)) {
+    for (const listenerToken of ids) {
+      /**
+       *
+       * @type {?DispatchExecution}
+       */
+      const execution = this.currentExecution()
 
-        assert(!this._isHandled.has(id),
-          'hotballoon:dispatcher:waitFor: `id` : `%s` already handled',
-          id)
-        assert(this._listeners.get(type).has(id),
-          'hotballoon:dispatcher:waitFor: `id` : `%s` not defined',
-          id)
-        this._invokeCallback(type, id)
-        while (!this._isHandled.has(id)) {
+      if (!isNull(execution)) {
+        if (!execution.isHandled(listenerToken)) {
+
+          this._invokeCallback(execution, listenerToken, execution.listeners().get(listenerToken).callback)
         }
 
       }

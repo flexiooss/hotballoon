@@ -12,6 +12,7 @@ export const CLASS_TAG_NAME_VIEWCONTAINER = Symbol.for('__HB__VIEWCONTAINER__')
 export const CLASS_TAG_NAME_VIEW = Symbol.for('__HB__VIEW__')
 export const CLASS_TAG_NAME_EXECUTOR = Symbol.for('__HB__CLASS_TAG_NAME_EXECUTOR__')
 export const CLASS_TAG_NAME_JOB = Symbol.for('__HB__CLASS_TAG_NAME_JOB__')
+export const CLASS_TAG_NAME_SERVICE = Symbol.for('__HB__CLASS_TAG_NAME_SERVICE__')
 
 /**
  *

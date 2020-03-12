@@ -5,7 +5,7 @@ export {Dispatcher} from './src/js/Dispatcher/Dispatcher'
 
 export {Component} from './src/js/Component/Component'
 
-export {ActionDispatcherBuilder}from './src/js/Action/ActionDispatcherBuilder'
+export {ActionDispatcherBuilder} from './src/js/Action/ActionDispatcherBuilder'
 
 export {View} from './src/js/View/View'
 export {ViewContainer, ViewContainerParameters} from './src/js/View/ViewContainer'
@@ -14,7 +14,6 @@ export {ViewPublicEventHandler} from './src/js/View/ViewPublicEventHandler'
 
 export {ElementEventListenerConfigBuilder} from './src/js/HotballoonNodeElement/ElementEventListenerConfigBuilder'
 export {UIEventBuilder} from './src/js/HotballoonNodeElement/UIEventBuilder'
-
 
 export {PublicStoreHandler} from './src/js/Store/PublicStoreHandler'
 export {ProxyStoreBuilder} from './src/js/Store/ProxyStoreBuilder'
@@ -31,3 +30,4 @@ export {ExecutorInline} from './src/js/Job/ExecutorInline'
 
 export {OrderedEventListenerConfigBuilder} from '@flexio-oss/event-handler'
 
+export {HotballoonService} from './src/js/Service/HotballoonService'
