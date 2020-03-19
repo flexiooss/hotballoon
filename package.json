@@ -17,9 +17,9 @@
     "@flexio-oss/js-validator-helper": ">0.0.0"
   },
   "dependencies": {
-    "@flexio-corp/js-common-parent": "0.1.0",
-    "@flexio-oss/flexio-hyperflex": "0.2.0",
-    "@flexio-oss/flexio-nodes-reconciliation": "0.1.0"
+    "@flexio-corp/js-common-parent": "0.2.0-dev",
+    "@flexio-oss/flexio-nodes-reconciliation": "0.2.0-dev",
+    "@flexio-oss/flexio-hyperflex": "0.3.0-dev"
   },
   "hotballoon-shed": {
     "build": {
