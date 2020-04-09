@@ -83,8 +83,6 @@ export class ViewContainer extends ViewContainerBase {
     super(viewContainerParameters.id)
     this.parentNode = viewContainerParameters.parentNode
 
-    viewContainerParameters.componentContext.addViewContainer(this)
-
     Object.defineProperty(this, CLASS_TAG_NAME, {
       configurable: false,
       writable: false,
@@ -105,6 +103,8 @@ export class ViewContainer extends ViewContainerBase {
         value: viewContainerParameters.componentContext
       }
     })
+
+    viewContainerParameters.componentContext.addViewContainer(this)
   }
 
   /**

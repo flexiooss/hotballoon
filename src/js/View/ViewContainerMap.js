@@ -7,6 +7,6 @@ import {TypeCheck} from '../Types/TypeCheck'
  */
 export class ViewContainerMap extends FlexMap {
   _validate(v) {
-    assertType(TypeCheck.isViewContainer(v), 'StoreMap: input should be a ViewContainer')
+    assertType(TypeCheck.isViewContainer(v), 'ViewContainerMap: input should be a ViewContainer')
   }
 }
