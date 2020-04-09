@@ -267,7 +267,6 @@ export class View extends ViewContainerBase {
       throw TypeError('store argument should be an instance of StoreInterface')
     }
 
-
     /**
      *
      * @type {ListenedStore}
@@ -308,7 +307,7 @@ export class View extends ViewContainerBase {
 
       $(candidate).setViewRef(this.ID())
 
-      if(startReconcile(this.node(), candidate, this.parentNode)){
+      if (startReconcile(this.node(), candidate, this.parentNode)) {
         this._node = candidate
       }
 
@@ -680,9 +679,9 @@ export class View extends ViewContainerBase {
    * @return {string}
    */
   elementIdFromRef(ref) {
-    return Checksum.number32bit(
+    return '_' + Checksum.number32bit(
       `${symbolToString(this.AppID())}-${symbolToString(this.componentID())}-${symbolToString(this.containerID())}-${symbolToString(ref)}`
-    ).toString()
+    ).toString() + '_'
   }
 
   /**
