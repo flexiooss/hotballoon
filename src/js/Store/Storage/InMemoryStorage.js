@@ -1,5 +1,5 @@
-import {assertType, isClass} from '@flexio-oss/assert'
-import {deepFreezeSeal} from '@flexio-oss/js-type-helpers'
+import {assertType, isClass} from '@flexio-oss/js-commons-bundle/assert'
+import {deepFreezeSeal} from '@flexio-oss/js-commons-bundle/js-type-helpers'
 import {StoreState} from '../StoreState'
 import {StorageInterface} from './StorageInterface'
 

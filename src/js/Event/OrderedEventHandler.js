@@ -1,5 +1,4 @@
-import {StringArray} from '@flexio-oss/extended-flex-types'
-import {OrderedEventHandler as OrderedEventHandlerBase} from '@flexio-oss/event-handler'
+import {OrderedEventHandler as OrderedEventHandlerBase} from '@flexio-oss/js-commons-bundle/event-handler'
 
 export class OrderedEventHandler extends OrderedEventHandlerBase {
   /**

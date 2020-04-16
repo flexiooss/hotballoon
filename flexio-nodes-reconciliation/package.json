@@ -1,0 +1,29 @@
+{
+  "name": "flexio-nodes-reconciliation",
+  "description": "Attempt to reconcile 2 nodes elements",
+  "main": "index.js",
+  "author": "Thomas Chatelain (https://github.com/TomAchT)",
+  "license": "Apache-2.0",
+  "hotballoon-shed": {
+    "module": {
+      "parent": {
+        "name": "@flexio-oss/hotballoon"
+      },
+      "dependencies": [
+        "@flexio-oss/js-commons-bundle",
+        "flexio-hyperflex"
+      ],
+      "devDependencies": [
+        "code-altimeter-js"
+      ]
+    }
+  },
+  "build": {
+    "builder": "webpack4"
+  },
+  "test": {
+    "tester": "code-altimeter-js",
+    "path": "src/test"
+  }
+}
+}

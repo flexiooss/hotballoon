@@ -1,4 +1,4 @@
-import {isObject} from '@flexio-oss/assert'
+import {isObject} from '@flexio-oss/js-commons-bundle/assert'
 
 export const CLASS_TAG_NAME = Symbol.for('__HB__CLASSNAME__')
 export const CLASS_TAG_NAME_HOTBALLOON_APPLICATION = Symbol.for('__HB__APPLICATION__')

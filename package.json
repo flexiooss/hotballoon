@@ -13,29 +13,14 @@
   "devDependencies": {
     "code-altimeter-js": "https://github.com/flexiooss/code-altimeter-js.git"
   },
-  "peerDependencies": {
-    "@flexio-oss/extended-flex-types": "latest",
-    "@flexio-oss/js-validator-helper": "latest",
-    "@flexio-oss/flex-types": "latest",
-    "code-altimeter-js": "latest",
-    "@flexio-corp/js-common-parent": "latest",
-    "@flexio-oss/js-type-helpers": "latest",
-    "@flexio-corp/js-api-client-parent": "latest",
-    "@flexio-oss/flexio-nodes-reconciliation": "latest",
-    "@flexio-oss/js-helpers": "latest",
-    "@flexio-oss/event-handler": "latest",
-    "@flexio-oss/js-generator-helpers": "latest",
-    "@flexio-oss/assert": "latest",
-    "@flexio-oss/flexio-hyperflex": "latest",
-    "@flexio-oss/global-import-registry": "latest",
-    "@flexio-oss/js-logger": "latest"
-  },
   "dependencies": {
-    "@flexio-corp/js-common-parent": "0.2.0-dev",
-    "@flexio-oss/flexio-nodes-reconciliation": "0.2.0-dev",
-    "@flexio-oss/flexio-hyperflex": "0.3.0-dev"
+    "@flexio-oss/js-commons-bundle": "0.1.0-dev"
   },
   "hotballoon-shed": {
+    "modules": [
+      "flexio-nodes-reconciliation",
+      "flexio-hyperflex"
+    ],
     "build": {
       "builder": "webpack4"
     },

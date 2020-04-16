@@ -1,11 +1,11 @@
 import {Dispatcher} from '../Dispatcher/Dispatcher'
-import {assert, assertType, TypeCheck as PrimitiveTypeCheck, isNull} from '@flexio-oss/assert'
-import {Sequence} from '@flexio-oss/js-helpers'
+import {assert, assertType, TypeCheck as PrimitiveTypeCheck, isNull} from '@flexio-oss/js-commons-bundle/assert'
+import {Sequence} from '@flexio-oss/js-commons-bundle/js-helpers'
 import {ComponentContextMap} from '../Component/ComponentContextMap'
 import {ComponentContext} from '../Component/ComponentContext'
 import {WithID} from '../abstract/WithID'
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_HOTBALLOON_APPLICATION} from '../Types/HasTagClassNameInterface'
-import {LoggerInterface} from '@flexio-oss/js-logger'
+import {LoggerInterface} from '@flexio-oss/js-commons-bundle/js-logger'
 import {TypeCheck} from '../Types/TypeCheck'
 
 

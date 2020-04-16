@@ -1,5 +1,5 @@
-import {assert, isBoolean, isNode} from '@flexio-oss/assert'
-import {ArrayMap} from '@flexio-oss/extended-flex-types'
+import {assert, isBoolean, isNode} from '@flexio-oss/js-commons-bundle/assert'
+import {ArrayMap} from '@flexio-oss/js-commons-bundle/extended-flex-types'
 import {WithID} from '../abstract/WithID'
 import {OrderedEventHandler} from '../Event/OrderedEventHandler'
 import {ViewContainerBaseMap} from './ViewContainerBaseMap'

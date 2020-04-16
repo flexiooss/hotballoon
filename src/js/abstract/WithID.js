@@ -1,4 +1,4 @@
-import {assert} from '@flexio-oss/assert'
+import {assert} from '@flexio-oss/js-commons-bundle/assert'
 
 const _ID = Symbol('_ID')
 

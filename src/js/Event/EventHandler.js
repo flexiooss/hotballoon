@@ -1,4 +1,4 @@
-import {EventHandlerBase} from '@flexio-oss/event-handler'
+import {EventHandlerBase} from '@flexio-oss/js-commons-bundle/event-handler'
 
 /**
  * @extends {EventHandlerBase}

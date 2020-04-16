@@ -1,5 +1,5 @@
 import {StorageInterface} from './Storage/StorageInterface'
-import {assertType, isString, isSymbol} from '@flexio-oss/assert'
+import {assertType, isString, isSymbol} from '@flexio-oss/js-commons-bundle/assert'
 import {StoreTypeConfig} from './StoreTypeConfig'
 
 /**
