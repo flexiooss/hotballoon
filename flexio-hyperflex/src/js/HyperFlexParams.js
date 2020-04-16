@@ -1,6 +1,6 @@
 import {deepMerge} from '@flexio-oss/js-commons-bundle/js-type-helpers'
 import {isNull, isFunction} from '@flexio-oss/js-commons-bundle/assert'
-import {globalFlexioImport} from '@flexio-oss/global-import-registry'
+import {globalFlexioImport} from '@flexio-oss/js-commons-bundle/global-import-registry'
 
 
 /**

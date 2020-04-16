@@ -1,5 +1,6 @@
 import {assertType, isFunction, isObject} from '@flexio-oss/js-commons-bundle/assert'
-import {deepFreezeSeal, mergeWithoutPrototype} from '@flexio-oss/js-commons-bundle/js-type-helpers'
+import { mergeWithoutPrototype} from '@flexio-oss/js-commons-bundle/js-type-helpers'
+import {deepFreezeSeal} from '@flexio-oss/js-commons-bundle/js-generator-helpers'
 
 export class EventListenerConfig {
   /**

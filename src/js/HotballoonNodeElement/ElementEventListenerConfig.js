@@ -1,4 +1,4 @@
-import {deepFreezeSeal} from '@flexio-oss/js-commons-bundle/js-type-helpers'
+import {deepFreezeSeal} from '@flexio-oss/js-commons-bundle/js-generator-helpers'
 import {EventListenerConfig} from '../__import__flexio-nodes-reconciliation'
 
 export class ElementEventListenerConfig extends EventListenerConfig {
