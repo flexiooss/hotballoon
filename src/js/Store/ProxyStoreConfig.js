@@ -1,5 +1,5 @@
 import {StoreBaseConfig} from './StoreBaseConfig'
-import {assertType, isFunction} from '@flexio-oss/assert'
+import {assertType, isFunction} from '@flexio-oss/js-commons-bundle/assert'
 import {TypeCheck} from '../Types/TypeCheck'
 
 /**

@@ -1,5 +1,6 @@
-import {assert, isPrimitive} from '@flexio-oss/assert'
-import {deepFreezeSeal} from '@flexio-oss/js-type-helpers'
+import {assert, isPrimitive} from '@flexio-oss/js-commons-bundle/assert'
+import {deepFreezeSeal} from '@flexio-oss/js-commons-bundle/js-generator-helpers'
+
 
 /**
  *

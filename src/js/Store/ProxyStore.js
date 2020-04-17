@@ -1,7 +1,7 @@
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_PROXYSTORE} from '../Types/HasTagClassNameInterface'
 import {_set, StoreBase} from './StoreBase'
 import {StoreBaseConfig} from './StoreBaseConfig'
-import {assertType} from '@flexio-oss/assert'
+import {assertType} from '@flexio-oss/js-commons-bundle/assert'
 import {ProxyStoreConfig} from './ProxyStoreConfig'
 
 const _store = Symbol('_store')

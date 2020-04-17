@@ -1,4 +1,4 @@
-import {assertType} from '@flexio-oss/assert'
+import {assertType} from '@flexio-oss/js-commons-bundle/assert'
 import {TypeCheck} from '../Types/TypeCheck'
 import {ActionTypeConfig} from './ActionTypeConfig'
 

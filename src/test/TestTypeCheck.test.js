@@ -11,7 +11,7 @@ import {ExecutorWorker} from '../js/Job/ExecutorWorker'
 import {ActionDispatcherBuilder} from '../js/Action/ActionDispatcherBuilder'
 import {ViewContainer, ViewContainerParameters} from '../js/View/ViewContainer'
 import {View} from '../js/View/View'
-import {FakeLogger} from '@flexio-oss/js-logger'
+import {FakeLogger} from '@flexio-oss/js-commons-bundle/js-logger'
 import {FakeValueObject, FakeValueObjectBuilder} from './FakeValueObject'
 
 const assert = require('assert')

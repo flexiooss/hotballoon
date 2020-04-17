@@ -1,4 +1,4 @@
-import {deepFreezeSeal} from '@flexio-oss/js-type-helpers'
+import {deepFreezeSeal} from '@flexio-oss/js-commons-bundle/js-generator-helpers'
 
 /**
  * @implements {GenericType<TYPE>}

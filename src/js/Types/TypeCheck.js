@@ -13,7 +13,7 @@ import {
   CLASS_TAG_NAME_SERVICE,
   testClassTagName
 } from './HasTagClassNameInterface'
-import {assertType} from '@flexio-oss/assert'
+import {assertType} from '@flexio-oss/js-commons-bundle/assert'
 import {ElementDescription} from '../HotballoonNodeElement/ElementDescription'
 
 

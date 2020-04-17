@@ -1,5 +1,5 @@
-import {assertType} from '@flexio-oss/assert'
-import {FlexArray} from '@flexio-oss/flex-types'
+import {assertType} from '@flexio-oss/js-commons-bundle/assert'
+import {FlexArray} from '@flexio-oss/js-commons-bundle/flex-types'
 import {TypeCheck} from '../Types/TypeCheck'
 
 /**

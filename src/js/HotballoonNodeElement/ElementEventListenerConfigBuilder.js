@@ -1,4 +1,4 @@
-import {EventListenerConfigBuilder} from '@flexio-oss/flexio-nodes-reconciliation'
+import {EventListenerConfigBuilder} from '../__import__flexio-nodes-reconciliation'
 import {ElementEventListenerConfig} from './ElementEventListenerConfig'
 
 export class ElementEventListenerConfigBuilder extends EventListenerConfigBuilder {

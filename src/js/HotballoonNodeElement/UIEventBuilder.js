@@ -1,5 +1,5 @@
 import {ElementEventListenerConfigBuilder} from './ElementEventListenerConfigBuilder'
-import {assertType, isFunction} from '@flexio-oss/assert'
+import {assertType, isFunction} from '@flexio-oss/js-commons-bundle/assert'
 
 export class UIEventBuilder {
 

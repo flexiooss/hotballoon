@@ -1,5 +1,5 @@
-import {assertType, isFunction, isString, isSymbol} from '@flexio-oss/assert'
-import {OrderedEventListenerConfigBuilder} from '@flexio-oss/event-handler'
+import {assertType, isFunction, isString, isSymbol} from '@flexio-oss/js-commons-bundle/assert'
+import {OrderedEventListenerConfigBuilder} from '@flexio-oss/js-commons-bundle/event-handler'
 
 export const VIEW_RENDER = 'VIEW_RENDER'
 export const VIEW_RENDERED = 'VIEW_RENDERED'

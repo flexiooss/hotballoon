@@ -1,6 +1,6 @@
 import {WILL_REMOVE as VIEWCONTAINER_WILL_REMOVE} from '../View/ViewContainerPublicEventHandler'
-import {assertType, isString} from '@flexio-oss/assert'
-import {Sequence} from '@flexio-oss/js-helpers'
+import {assertType, isString} from '@flexio-oss/js-commons-bundle/assert'
+import {Sequence} from '@flexio-oss/js-commons-bundle/js-helpers'
 import {StoreMap} from '../Store/StoreMap'
 import {ViewContainerMap} from '../View/ViewContainerMap'
 import {WithID} from '../abstract/WithID'

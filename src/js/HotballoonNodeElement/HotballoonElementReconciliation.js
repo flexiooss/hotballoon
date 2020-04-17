@@ -1,4 +1,4 @@
-import {Reconciliation, RECONCILIATION_RULES as R} from '@flexio-oss/flexio-nodes-reconciliation'
+import {Reconciliation, RECONCILIATION_RULES as R} from '../__import__flexio-nodes-reconciliation'
 import {select} from './HotBalloonAttributeHandler'
 
 class HotballoonElementReconciliation extends Reconciliation {

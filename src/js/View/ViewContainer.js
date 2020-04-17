@@ -1,5 +1,5 @@
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_VIEWCONTAINER} from '../Types/HasTagClassNameInterface'
-import {assertType, isFunction, isNode, isString} from '@flexio-oss/assert'
+import {assertType, isFunction, isNode, isString} from '@flexio-oss/js-commons-bundle/assert'
 import {StoreInterface} from '../Store/StoreInterface'
 import {ViewContainerBase} from './ViewContainerBase'
 import {ViewContainerPublicEventHandler} from './ViewContainerPublicEventHandler'
@@ -103,6 +103,8 @@ export class ViewContainer extends ViewContainerBase {
         value: viewContainerParameters.componentContext
       }
     })
+
+    viewContainerParameters.componentContext.addViewContainer(this)
   }
 
   /**

@@ -1,5 +1,5 @@
-import {assertType, isNull} from '@flexio-oss/assert'
-import {UID} from '@flexio-oss/js-helpers'
+import {assertType, isNull} from '@flexio-oss/js-commons-bundle/assert'
+import {UID} from '@flexio-oss/js-commons-bundle/js-helpers'
 import {EventAction} from './EventAction'
 import {ActionDispatcherConfig} from './ActionDispatcherConfig'
 import {DispatcherEventListenerConfigBuilder} from '../Dispatcher/DispatcherEventListenerConfigBuilder'
@@ -150,7 +150,7 @@ export class ActionDispatcher extends WithID {
           ),
         this
       )
-    
+
     return new ListenedAction(this[_actionConfig].dispatcher(), this.ID(), token)
   }
 

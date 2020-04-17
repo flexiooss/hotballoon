@@ -1,6 +1,6 @@
-import {assertType} from '@flexio-oss/assert'
-import {SymbolStringArray} from '@flexio-oss/extended-flex-types'
-import {EventListenerConfigBuilder} from '@flexio-oss/event-handler'
+import {assertType} from '@flexio-oss/js-commons-bundle/assert'
+import {SymbolStringArray} from '@flexio-oss/js-commons-bundle/extended-flex-types'
+import {EventListenerConfigBuilder} from '@flexio-oss/js-commons-bundle/event-handler'
 import {ActionDispatcherArray} from '../Action/ActionDispatcherArray'
 
 export class DispatcherEventListenerConfigBuilder extends EventListenerConfigBuilder {

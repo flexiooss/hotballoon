@@ -1,7 +1,7 @@
 import {ActionDispatcher} from './ActionDispatcher'
 import {ActionDispatcherConfig} from './ActionDispatcherConfig'
 import {ActionTypeConfig} from './ActionTypeConfig'
-import {UID} from '@flexio-oss/js-helpers'
+import {UID} from '@flexio-oss/js-commons-bundle/js-helpers'
 
 /**
  * @template TYPE, TYPE_BUILDER

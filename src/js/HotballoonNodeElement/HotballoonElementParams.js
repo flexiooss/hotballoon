@@ -1,4 +1,4 @@
-import {HyperFlexParams} from '@flexio-oss/flexio-hyperflex'
+import {HyperFlexParams} from '../__import__flexio-hyperflex'
 
 /**
  *

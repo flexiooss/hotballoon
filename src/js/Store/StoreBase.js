@@ -1,12 +1,12 @@
 import {WithID} from '../abstract/WithID'
-import {assert, assertType, isFunction, isNull, isNumber} from '@flexio-oss/assert'
+import {assert, assertType, isFunction, isNull, isNumber} from '@flexio-oss/js-commons-bundle/assert'
 import {StorageInterface} from './Storage/StorageInterface'
 
 import {OrderedEventHandler} from '../Event/OrderedEventHandler'
 import {STORE_CHANGED} from './StoreInterface'
 import {ValidationError} from '../Exception/ValidationError'
-import {OrderedEventListenerConfigBuilder} from '@flexio-oss/event-handler'
-import {FakeLogger, LoggerInterface} from '@flexio-oss/js-logger'
+import {OrderedEventListenerConfigBuilder} from '@flexio-oss/js-commons-bundle/event-handler'
+import {FakeLogger, LoggerInterface} from '@flexio-oss/js-commons-bundle/js-logger'
 import {StoreBaseConfig} from './StoreBaseConfig'
 import {ListenedStore} from './ListenedStore'
 

@@ -3,7 +3,7 @@
   "description": "Small JavaScript library for building interfaces by Flexio",
   "main": "index.js",
   "module": "index.js",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/flexiooss/hotballoon/issues"
@@ -13,15 +13,14 @@
   "devDependencies": {
     "code-altimeter-js": "https://github.com/flexiooss/code-altimeter-js.git"
   },
-  "peerDependencies": {
-    "@flexio-oss/js-validator-helper": ">0.0.0"
-  },
   "dependencies": {
-    "@flexio-corp/js-common-parent": "0.1.0",
-    "@flexio-oss/flexio-hyperflex": "0.2.0",
-    "@flexio-oss/flexio-nodes-reconciliation": "0.1.0"
+    "@flexio-oss/js-commons-bundle": "1.0.0"
   },
   "hotballoon-shed": {
+    "modules": [
+      "flexio-nodes-reconciliation",
+      "flexio-hyperflex"
+    ],
     "build": {
       "builder": "webpack4"
     },
@@ -29,5 +28,10 @@
       "tester": "code-altimeter-js",
       "path": "src/test"
     }
+  },
+  "peerDependencies": {
+    "@flexio-oss/hotballoon": "0.3.0-dev",
+    "@flexio-oss/js-commons-bundle": "1.0.0",
+    "code-altimeter-js": "1.0.0"
   }
 }

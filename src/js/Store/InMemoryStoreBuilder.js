@@ -1,4 +1,4 @@
-import {UID} from '@flexio-oss/js-helpers'
+import {UID} from '@flexio-oss/js-commons-bundle/js-helpers'
 import {Store} from './Store'
 import {StoreConfig} from './StoreConfig'
 import {InMemoryStorage} from './Storage/InMemoryStorage'

@@ -1,5 +1,5 @@
-import {assertType} from '@flexio-oss/assert'
-import {FlexMap} from '@flexio-oss/flex-types'
+import {assertType} from '@flexio-oss/js-commons-bundle/assert'
+import {FlexMap} from '@flexio-oss/js-commons-bundle/flex-types'
 import {TypeCheck} from '../Types/TypeCheck'
 
 /**
@@ -7,6 +7,6 @@ import {TypeCheck} from '../Types/TypeCheck'
  */
 export class ViewContainerMap extends FlexMap {
   _validate(v) {
-    assertType(TypeCheck.isViewContainer(v), 'StoreMap: input should be a ViewContainer')
+    assertType(TypeCheck.isViewContainer(v), 'ViewContainerMap: input should be a ViewContainer')
   }
 }

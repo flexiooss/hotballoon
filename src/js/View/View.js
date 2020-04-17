@@ -1,8 +1,8 @@
 import {CoreException} from '../CoreException'
-import {Checksum, UID} from '@flexio-oss/js-helpers'
+import {Checksum, UID} from '@flexio-oss/js-commons-bundle/js-helpers'
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_VIEW} from '../Types/HasTagClassNameInterface'
-import {assertType, isBoolean, isFunction, isNode, isNull} from '@flexio-oss/assert'
-import {symbolToString} from '@flexio-oss/js-type-helpers'
+import {assertType, isBoolean, isFunction, isNode, isNull} from '@flexio-oss/js-commons-bundle/assert'
+import {symbolToString} from '@flexio-oss/js-commons-bundle/js-type-helpers'
 import {$} from '../HotballoonNodeElement/HotBalloonAttributeHandler'
 import {startReconcile} from '../HotballoonNodeElement/HotballoonElementReconciliation'
 import {html} from '../HotballoonNodeElement/CreateHotBalloonElement'
@@ -267,7 +267,6 @@ export class View extends ViewContainerBase {
       throw TypeError('store argument should be an instance of StoreInterface')
     }
 
-
     /**
      *
      * @type {ListenedStore}
@@ -308,7 +307,7 @@ export class View extends ViewContainerBase {
 
       $(candidate).setViewRef(this.ID())
 
-      if(startReconcile(this.node(), candidate, this.parentNode)){
+      if (startReconcile(this.node(), candidate, this.parentNode)) {
         this._node = candidate
       }
 
@@ -680,9 +679,9 @@ export class View extends ViewContainerBase {
    * @return {string}
    */
   elementIdFromRef(ref) {
-    return Checksum.number32bit(
+    return '_' + Checksum.number32bit(
       `${symbolToString(this.AppID())}-${symbolToString(this.componentID())}-${symbolToString(this.containerID())}-${symbolToString(ref)}`
-    ).toString()
+    ).toString() + '_'
   }
 
   /**

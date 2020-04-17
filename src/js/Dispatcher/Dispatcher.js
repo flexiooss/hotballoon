@@ -1,8 +1,8 @@
-import {assert, assertType, isArray, isNull} from '@flexio-oss/assert'
-import {EventHandlerBase} from '@flexio-oss/event-handler'
+import {assert, assertType, isArray, isNull} from '@flexio-oss/js-commons-bundle/assert'
+import {EventHandlerBase} from '@flexio-oss/js-commons-bundle/event-handler'
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_DISPATCHER} from '../Types/HasTagClassNameInterface'
 import {EventAction} from '../Action/EventAction'
-import {LoggerInterface} from '@flexio-oss/js-logger'
+import {LoggerInterface} from '@flexio-oss/js-commons-bundle/js-logger'
 
 
 const dispatcherLogOptions = {
