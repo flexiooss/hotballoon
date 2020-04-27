@@ -167,7 +167,7 @@ export class ComponentContext extends WithID {
       `${this.constructor.name}: 'token' should be string`
     )
     if (this[__actionsToken].has(token)) {
-      this.dispatcher().removeActionListener(this[__actionsToken].delete(token), token)
+      this.dispatcher().removeActionListener(this[__actionsToken].get(token), token)
       this[__actionsToken].delete(token)
     }
     return this
