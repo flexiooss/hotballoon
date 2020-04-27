@@ -20,7 +20,7 @@ export {ProxyStoreBuilder} from './src/js/Store/ProxyStoreBuilder'
 export {InMemoryStoreBuilder} from './src/js/Store/InMemoryStoreBuilder'
 
 export {e} from './src/js/HotballoonNodeElement/ElementDescription'
-export {RECONCILIATION_RULES} from '@flexio-oss/flexio-nodes-reconciliation'
+export {RECONCILIATION_RULES} from './flexio-nodes-reconciliation'
 
 export {TypeCheck} from './src/js/Types/TypeCheck'
 

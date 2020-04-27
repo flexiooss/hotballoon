@@ -15,7 +15,7 @@ export class StoreBaseConfig {
    */
   constructor(id, initialData, storeTypeConfig, storage) {
     assertType(isSymbol(id) || isString(id),
-      'hotballoon:' + this.constructor.name + ':constructor: `id` argument should be an should be a string or Symbol')
+      'hotballoon:' + this.constructor.name + ':constructor: `id` argument should be a string or Symbol')
     /**
      *
      * @type {Symbol|String}

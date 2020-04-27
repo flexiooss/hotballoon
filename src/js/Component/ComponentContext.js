@@ -167,7 +167,7 @@ export class ComponentContext extends WithID {
       `${this.constructor.name}: 'token' should be string`
     )
     if (this[__actionsToken].has(token)) {
-      this.dispatcher().removeActionListener(this[__actionsToken].delete(token), token)
+      this.dispatcher().removeActionListener(this[__actionsToken].get(token), token)
       this[__actionsToken].delete(token)
     }
     return this
@@ -274,7 +274,9 @@ export class ComponentContext extends WithID {
   }
 
   remove() {
-    this[__actionsToken].forEach((v) => this.removeActionToken(v))
+    for (let [token, value] of this[__actionsToken].entries()) {
+      this.removeActionToken(token)
+    }
 
     this[__stores].forEach(v => v.remove())
     this[__stores].clear()

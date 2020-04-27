@@ -16,7 +16,7 @@ export class StoreInterface {
    *@return {(Symbol|string)}
    */
   storeId() {
-    throw new CoreException(`storeId should be override with this signature :
+    throw new CoreException(`storeId should be overridden with this signature :
    /**
    *@return {(Symbol|string)}
    */
@@ -28,7 +28,7 @@ export class StoreInterface {
    * @return {string}
    */
   changedEventName() {
-    throw new CoreException(`changedEventName should be override with this signature :
+    throw new CoreException(`changedEventName should be overridden with this signature :
    /**
    *@return {string}
    */
@@ -40,7 +40,7 @@ export class StoreInterface {
    * @return {String} token
    */
   subscribe(orderedEventListenerConfig) {
-    throw new CoreException(`subscribe should be override with this signature :
+    throw new CoreException(`subscribe should be overridden with this signature :
    /**
    * @param {OrderedEventListenerConfig} orderedEventListenerConfig
    * @return {String} token
@@ -55,7 +55,7 @@ export class StoreInterface {
    * @return {ListenedStore}
    */
   listenChanged(callback, priority) {
-    throw new CoreException(`listenChanged should be override with this signature :
+    throw new CoreException(`listenChanged should be overridden with this signature :
    /**
    * @param {StoreInterface~changedClb} clb
    * @param {number} priority
@@ -69,7 +69,7 @@ export class StoreInterface {
    * @param {(string|Symbol)} token
    */
   stopListenChanged(token) {
-    throw new CoreException(`listenChanged should be override with this signature :
+    throw new CoreException(`stopListenChanged should be overridden with this signature :
    /**
      * @param {(string|Symbol)} token
    */
@@ -80,7 +80,7 @@ export class StoreInterface {
    * @returns {StoreState<TYPE>} state frozen
    */
   state() {
-    throw new CoreException(`state should be override with this signature :
+    throw new CoreException(`state should be overridden with this signature :
    /**
    * @return {State} state frozen
    */
@@ -92,7 +92,7 @@ export class StoreInterface {
    * @return {TYPE.}
    */
   __type__() {
-    throw new CoreException(`state should be override with this signature :
+    throw new CoreException(`__type__ should be overridden with this signature :
    /**
    * @return {TYPE.}
    */
@@ -105,7 +105,7 @@ export class StoreInterface {
    * @return {boolean}
    */
   isTypeOf(constructor) {
-    throw new CoreException(`state should be override with this signature :
+    throw new CoreException(`isTypeOf should be overridden with this signature :
    /**
    * @param {Class} constructor
    * @return {boolean}
