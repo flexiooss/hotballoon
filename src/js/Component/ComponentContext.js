@@ -274,7 +274,9 @@ export class ComponentContext extends WithID {
   }
 
   remove() {
-    this[__actionsToken].forEach((v) => this.removeActionToken(v))
+    for (let [token, value] of this[__actionsToken].entries()) {
+      this.removeActionToken(token)
+    }
 
     this[__stores].forEach(v => v.remove())
     this[__stores].clear()
