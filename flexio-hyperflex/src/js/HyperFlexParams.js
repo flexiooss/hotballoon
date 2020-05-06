@@ -241,12 +241,15 @@ export class HyperFlexParams {
    * @return {this}
    */
   bindStyle(property, statement, value, valueFalse = null) {
-    valueFalse = isFunction(valueFalse) ? valueFalse() : valueFalse
+    const st = (isFunction(statement) ? statement() : statement)
 
-    if ((isFunction(statement) ? statement() : statement) === true) {
+    if (st === true) {
       this._styles[property] = (isFunction(value) ? value() : value)
-    } else if (!isNull(valueFalse)) {
-      this._styles[property] = valueFalse
+    } else {
+      valueFalse = isFunction(valueFalse) ? valueFalse() : valueFalse
+      if (!isNull(valueFalse)) {
+        this._styles[property] = isFunction(valueFalse) ? valueFalse() : valueFalse
+      }
     }
     return this
   }
