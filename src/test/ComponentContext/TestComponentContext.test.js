@@ -5,13 +5,21 @@ import {ViewContainer, ViewContainerParameters} from '../../js/View/ViewContaine
 import {FakeLogger} from '@flexio-oss/js-commons-bundle/js-logger'
 import {InMemoryStoreBuilder} from '../../js/Store/InMemoryStoreBuilder'
 import {FakeValueObject, FakeValueObjectBuilder} from '../FakeValueObject'
+import {ViewRenderConfig} from '../../js/Application/ViewRenderConfig'
 
 const assert = require('assert')
 
 export class TestComponentContext extends TestCase {
+  /**
+   * @return {HotBalloonApplication}
+   */
+  app(){
+    return new HotBalloonApplication('id', new Dispatcher(new FakeLogger()), new FakeLogger().debug(), new ViewRenderConfig(null, false))
+  }
+
   setUp() {
     this.dispatcher = new Dispatcher(new FakeLogger())
-    this.APP = new HotBalloonApplication('id', this.dispatcher, new FakeLogger().debug())
+    this.APP = this.app()
     this.componentContext = this.APP.addComponentContext()
   }
 

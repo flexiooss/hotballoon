@@ -1,7 +1,12 @@
 import {CoreException} from '../CoreException'
 import {Checksum, UID} from '@flexio-oss/js-commons-bundle/js-helpers'
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_VIEW} from '../Types/HasTagClassNameInterface'
-import {assertType, isBoolean, isFunction, isNode, isNull} from '@flexio-oss/js-commons-bundle/assert'
+import {
+  assertType,
+  isNode,
+  isNull,
+  TypeCheck as TypeTypeCheck
+} from '@flexio-oss/js-commons-bundle/assert'
 import {symbolToString} from '@flexio-oss/js-commons-bundle/js-type-helpers'
 import {$} from '../HotballoonNodeElement/HotBalloonAttributeHandler'
 import {startReconcile} from '../HotballoonNodeElement/HotballoonElementReconciliation'
@@ -56,18 +61,50 @@ export class View extends ViewContainerBase {
 
     assertType(
       TypeCheck.isViewContainerBase(container),
-      'hotballoon:' + this.constructor.name + ':constructor: `container` should be an instance of ViewContainerBase'
+      '`container` should be ViewContainerBase'
     )
 
     this.parentNode = container.parentNode
 
+    /**
+     * @type {?Node}
+     * @private
+     */
     let _node = null
+    /**
+     * @type {boolean}
+     * @private
+     */
     let _shouldInit = true
+    /**
+     * @type {boolean}
+     * @private
+     */
     let _shouldRender = true
+    /**
+     * @type {boolean}
+     * @private
+     */
     let _shouldMount = true
+    /**
+     * @type {boolean}
+     * @private
+     */
     let _shouldUpdate = true
+    /**
+     * @type {boolean}
+     * @private
+     */
     let _synchronousUpdate = false
+    /**
+     * @type {boolean}
+     * @private
+     */
     let _synchronousRender = false
+    /**
+     * @type {Map<string, Element>}
+     * @private
+     */
     const _nodeRefs = new Map()
 
     Object.defineProperty(this, CLASS_TAG_NAME, {
@@ -76,7 +113,6 @@ export class View extends ViewContainerBase {
       enumerable: true,
       value: CLASS_TAG_NAME_VIEW
     })
-    this.weakNodeRefs = new WeakSet()
 
     Object.defineProperties(this, {
       _container: {
@@ -102,7 +138,7 @@ export class View extends ViewContainerBase {
         },
         set: (node) => {
           assertType(isNode(node) || isNull(node),
-            'view:_node:set: `node` argument assert be a Node or Null, `%s` given',
+            '`node` should be a Node or Null, `%s` given',
             typeof node
           )
           _node = node
@@ -116,14 +152,9 @@ export class View extends ViewContainerBase {
       _shouldInit: {
         configurable: false,
         enumerable: false,
-        get: () => {
-          return _shouldInit
-        },
+        get: () => _shouldInit,
         set: (v) => {
-          assertType(!!isBoolean(v),
-            'hotballoon:view:constructor: `_shouldInit` argument should be a boolean'
-          )
-          _shouldInit = v
+          _shouldInit = TypeTypeCheck.assertIsBoolean(v)
         }
       },
       /**
@@ -134,14 +165,9 @@ export class View extends ViewContainerBase {
       _shouldRender: {
         configurable: false,
         enumerable: false,
-        get: () => {
-          return _shouldRender
-        },
+        get: () => _shouldRender,
         set: (v) => {
-          assertType(!!isBoolean(v),
-            'hotballoon:view:constructor: `_shouldRender` argument should be a boolean'
-          )
-          _shouldRender = v
+          _shouldRender = TypeTypeCheck.assertIsBoolean(v)
         }
       },
       /**
@@ -156,10 +182,7 @@ export class View extends ViewContainerBase {
           return _shouldMount
         },
         set: (v) => {
-          assertType(!!isBoolean(v),
-            'hotballoon:view:constructor: `_shouldMount` argument should be a boolean'
-          )
-          _shouldMount = v
+          _shouldMount = TypeTypeCheck.assertIsBoolean(v)
         }
       },
       /**
@@ -174,10 +197,7 @@ export class View extends ViewContainerBase {
           return _synchronousUpdate
         },
         set: (v) => {
-          assertType(!!isBoolean(v),
-            'hotballoon:view:constructor: `_synchronousUpdate` argument should be a boolean'
-          )
-          _synchronousUpdate = v
+          _synchronousUpdate = TypeTypeCheck.assertIsBoolean(v)
         }
       },
       /**
@@ -192,10 +212,7 @@ export class View extends ViewContainerBase {
           return _synchronousRender
         },
         set: (v) => {
-          assertType(!!isBoolean(v),
-            'hotballoon:view:constructor: `_synchronousRender` argument should be a boolean'
-          )
-          _synchronousRender = v
+          _synchronousRender = TypeTypeCheck.assertIsBoolean(v)
         }
       },
       /**
@@ -210,10 +227,7 @@ export class View extends ViewContainerBase {
           return _shouldUpdate
         },
         set: (v) => {
-          assertType(!!isBoolean(v),
-            'hotballoon:view:constructor: `_shouldUpdate` argument should be a boolean'
-          )
-          _shouldUpdate = v
+          _shouldUpdate = TypeTypeCheck.assertIsBoolean(v)
         }
       },
       /**
@@ -248,7 +262,7 @@ export class View extends ViewContainerBase {
    * @return {Element}
    */
   html(element) {
-    return html(this, element.querySelector(), element.params(), this.document())
+    return html(this, element.querySelector(), element.params(), this.viewRenderConfig().document())
   }
 
   /**
@@ -259,16 +273,11 @@ export class View extends ViewContainerBase {
    * @return {this}
    */
   subscribeToStore(store, clb = (state) => true) {
-    assertType(
-      isFunction(clb),
-      'hotballoon:' + this.constructor.name + ':subscribeToStore: `clb` argument should be callable'
+    TypeTypeCheck.assertIsFunction(clb)
+    assertType(      TypeCheck.isStoreBase(store),'store  should StoreInterface'
     )
-    if (!TypeCheck.isStoreBase(store)) {
-      throw TypeError('store argument should be an instance of StoreInterface')
-    }
 
     /**
-     *
      * @type {ListenedStore}
      */
     const listenedStore = store.listenChanged(
@@ -363,7 +372,6 @@ export class View extends ViewContainerBase {
   }
 
   /**
-   *
    * @return {View}
    */
   setSynchronous() {
@@ -373,7 +381,6 @@ export class View extends ViewContainerBase {
   }
 
   /**
-   *
    * @return {boolean}
    */
   isSynchronous() {
@@ -381,7 +388,6 @@ export class View extends ViewContainerBase {
   }
 
   /**
-   *
    * @return {boolean}
    */
   isSynchronousRender() {
@@ -389,7 +395,6 @@ export class View extends ViewContainerBase {
   }
 
   /**
-   *
    * @return {boolean}
    */
   isSynchronousUpdate() {
@@ -397,7 +402,6 @@ export class View extends ViewContainerBase {
   }
 
   /**
-   *
    * @return {View}
    */
   shouldNotUpdate() {
@@ -436,7 +440,6 @@ export class View extends ViewContainerBase {
   }
 
   /**
-   *
    * @return {View}
    */
   shouldNotRender() {
@@ -476,7 +479,6 @@ export class View extends ViewContainerBase {
   }
 
   /**
-   *
    * @param {Element} element
    * @return {Element}
    */
@@ -487,7 +489,6 @@ export class View extends ViewContainerBase {
   }
 
   /**
-   *
    * @return {View}
    */
   shouldNotMount() {
@@ -496,7 +497,6 @@ export class View extends ViewContainerBase {
   }
 
   /**
-   *
    * @return {View}
    */
   renderAndMount() {
@@ -521,7 +521,7 @@ export class View extends ViewContainerBase {
    */
   nodeRef(key) {
     if (!this._nodeRefs.has(key)) {
-      this._nodeRefs.set(key, this.document().getElementById(this.elementIdFromRef(key)))
+      this._nodeRefs.set(key, this.viewRenderConfig().document().getElementById(this.elementIdFromRef(key)))
     }
     return this._nodeRefs.get(key)
   }
@@ -555,7 +555,9 @@ export class View extends ViewContainerBase {
    */
   [_addNodeRef](key, node) {
     $(node).setNodeRef(key)
-    node.setAttribute(ATTRIBUTE_NODEREF, key)
+    if (this.viewRenderConfig().debug()) {
+      node.setAttribute(ATTRIBUTE_NODEREF, key)
+    }
     return node
   }
 
@@ -569,7 +571,6 @@ export class View extends ViewContainerBase {
   }
 
   /**
-   *
    * @return {string}
    */
   viewRef() {
@@ -581,6 +582,82 @@ export class View extends ViewContainerBase {
    */
   node() {
     return this._node
+  }
+
+  /**
+   * @return {?Element} node
+   */
+  [_replaceNode]() {
+    this._node = this.template()
+    return this._node
+  }
+
+  /**
+   * @return {ViewContainerBase}
+   */
+  container() {
+    return this._container
+  }
+
+  /**
+   * @return {string}
+   */
+  AppID() {
+    return this._container.AppID()
+  }
+
+  /**
+   * @return {string}
+   */
+  componentID() {
+    return this._container.componentID()
+  }
+
+  /**
+   * @return {ViewRenderConfig}
+   */
+  viewRenderConfig() {
+    return this._container.viewRenderConfig()
+  }
+
+  /**
+   * @return {string}
+   */
+  containerID() {
+    return this._container.ID()
+  }
+
+  /**
+   * @return {ViewPublicEventHandler}
+   */
+  on() {
+    return new ViewPublicEventHandler(a => this._on(a))
+  }
+
+  /**
+   * @param {string} ref
+   * @return {string}
+   */
+  elementIdFromRef(ref) {
+    return '_' + Checksum.number32bit(
+      `${symbolToString(this.AppID())}-${symbolToString(this.componentID())}-${symbolToString(this.containerID())}-${symbolToString(ref)}`
+    ).toString() + '_'
+  }
+
+  /**
+   * @return {LoggerInterface}
+   */
+  logger() {
+    return this.container().logger()
+  }
+
+  /**
+   * @param {String} key
+   * @return {?HotballoonService}
+   * @instance
+   */
+  service(key) {
+    return this._container.service(key)
   }
 
   remove() {
@@ -606,7 +683,6 @@ export class View extends ViewContainerBase {
   }
 
   /**
-   *
    * @return {View}
    * @private
    */
@@ -616,88 +692,5 @@ export class View extends ViewContainerBase {
       this._node = null
     }
     return this
-  }
-
-  /**
-   * @return {?Element} node
-   */
-  [_replaceNode]() {
-    this._node = this.template()
-    return this._node
-  }
-
-  /**
-   * @return {ViewContainerBase}
-   */
-  container() {
-    return this._container
-  }
-
-  /**
-   *
-   * @return {string}
-   */
-  AppID() {
-    return this._container.AppID()
-  }
-
-  /**
-   *
-   * @return {string}
-   */
-  componentID() {
-    return this._container.componentID()
-  }
-
-  /**
-   *
-   * @return {Document}
-   */
-  document() {
-    return this._container.document()
-  }
-
-  /**
-   *
-   * @return {string}
-   */
-  containerID() {
-    return this._container.ID()
-  }
-
-  /**
-   *
-   * @return {ViewPublicEventHandler}
-   */
-  on() {
-    return new ViewPublicEventHandler(a => this._on(a))
-  }
-
-  /**
-   *
-   * @param {string} ref
-   * @return {string}
-   */
-  elementIdFromRef(ref) {
-    return '_' + Checksum.number32bit(
-      `${symbolToString(this.AppID())}-${symbolToString(this.componentID())}-${symbolToString(this.containerID())}-${symbolToString(ref)}`
-    ).toString() + '_'
-  }
-
-  /**
-   *
-   * @return {LoggerInterface}
-   */
-  logger() {
-    return this.container().logger()
-  }
-
-  /**
-   * @param {String} key
-   * @return {?HotballoonService}
-   * @instance
-   */
-  service(key) {
-    return this._container.service(key)
   }
 }

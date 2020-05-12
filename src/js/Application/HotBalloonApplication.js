@@ -7,6 +7,7 @@ import {WithID} from '../abstract/WithID'
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_HOTBALLOON_APPLICATION} from '../Types/HasTagClassNameInterface'
 import {LoggerInterface} from '@flexio-oss/js-commons-bundle/js-logger'
 import {TypeCheck} from '../Types/TypeCheck'
+import {ViewRenderConfig} from './ViewRenderConfig'
 
 
 const _Dispatcher = Symbol('_Dispatcher')
@@ -15,6 +16,7 @@ const _Services = Symbol('_Services')
 const _SequenceId = Symbol('_SequenceId')
 const _Logger = Symbol('_Logger')
 const _document = Symbol('_document')
+const _viewRenderConfig = Symbol('_viewRenderConfig')
 
 const applicationLogOptions = {
   color: 'magenta',
@@ -23,9 +25,6 @@ const applicationLogOptions = {
 
 
 /**
- *
- * @class
- * @description HotBalloonApplication is the container for a loop hotballoon
  * @extends WithID
  * @implements HasTagClassNameInterface
  */
@@ -35,16 +34,19 @@ export class HotBalloonApplication extends WithID {
    * @param {string} id
    * @param {Dispatcher} dispatcher
    * @param {LoggerInterface} logger
-   * @param {Document} document
+   * @param {ViewRenderConfig} viewRenderConfig
    */
-  constructor(id, dispatcher, logger, document) {
+  constructor(id, dispatcher, logger,  viewRenderConfig) {
     super(id)
 
     assertType(dispatcher instanceof Dispatcher,
-      'hotballoon:HotBalloonApplication:constructor: `dispatcher` argument should be an instance of hotballoon/dispatcher'
+      '`dispatcher` should be  hotballoon/dispatcher'
     )
     assertType(logger instanceof LoggerInterface,
-      'hotballoon:HotBalloonApplication:constructor: `logger` argument should be an instance of LoggerInterface'
+      '`logger` should be LoggerInterface'
+    )
+    assertType(viewRenderConfig instanceof ViewRenderConfig,
+      '`viewRenderConfig` should be ViewRenderConfig'
     )
 
     const _componentContexts = new ComponentContextMap()
@@ -67,72 +69,61 @@ export class HotBalloonApplication extends WithID {
       [_Dispatcher]: {
         configurable: false,
         enumerable: false,
-        get: () => {
-          return dispatcher
-        },
+        get: () => dispatcher,
         set: (v) => {
           assert(false,
-            'hotballoon:HotBalloonApplication:constructor:_dispatcher.set: `dispatcher` already set'
+            '`dispatcher` already set'
           )
         }
       },
       [_ComponentContexts]: {
         configurable: false,
         enumerable: false,
-        get: () => {
-          return _componentContexts
-        },
+        get: () => _componentContexts
+        ,
         set: (v) => {
           assert(false,
-            'hotballoon:HotBalloonApplication:constructor:_ComponentContexts.set: `components` already set'
+            '`_ComponentContexts` already set'
           )
         }
       },
       [_Services]: {
         configurable: false,
         enumerable: false,
-        get: () => {
-          return _services
-        },
+        get: () => _services,
         set: (v) => {
           assert(false,
-            'hotballoon:HotBalloonApplication:constructor:_services.set: `services` already set'
+            '`services` already set'
           )
         }
       },
       [_SequenceId]: {
         configurable: false,
         enumerable: false,
-        get: () => {
-          return _sequenceId
-        },
+        get: () => _sequenceId,
         set: (v) => {
           assert(false,
-            'hotballoon:HotBalloonApplication:constructor:_sequenceId.set: `_sequenceId` already set'
+            '`_sequenceId` already set'
           )
         }
       },
       [_Logger]: {
         configurable: false,
         enumerable: false,
-        get: () => {
-          return logger
-        },
+        get: () => logger,
         set: (v) => {
           assert(false,
-            'hotballoon:HotBalloonApplication:constructor:_Logger.set: `_sequenceId` already set'
+            '`_Logger` already set'
           )
         }
       },
-      [_document]: {
+      [_viewRenderConfig]: {
         configurable: false,
         enumerable: false,
-        get: () => {
-          return document
-        },
+        get: () => viewRenderConfig,
         set: (v) => {
           assert(false,
-            'hotballoon:HotBalloonApplication:constructor:_document.set: `_document` already set'
+            '`_viewRenderConfig` already set'
           )
         }
       }
@@ -171,7 +162,6 @@ export class HotBalloonApplication extends WithID {
   }
 
   /**
-   *
    * @param {String} componentID
    * @returns {boolean} removed ?
    */
@@ -184,7 +174,6 @@ export class HotBalloonApplication extends WithID {
   }
 
   /**
-   *
    * @param {String} componentID
    * @returns {ComponentContext}
    */
@@ -193,7 +182,6 @@ export class HotBalloonApplication extends WithID {
   }
 
   /**
-   *
    * @param {HotballoonService} service
    * @returns {HotballoonService} service
    */
@@ -213,7 +201,6 @@ export class HotBalloonApplication extends WithID {
   }
 
   /**
-   *
    * @param {String} serviceName
    * @return {HotBalloonApplication}
    */
@@ -227,7 +214,6 @@ export class HotBalloonApplication extends WithID {
   }
 
   /**
-   *
    * @param {String} serviceName
    * @return {?HotballoonService}
    */
@@ -239,7 +225,6 @@ export class HotBalloonApplication extends WithID {
   }
 
   /**
-   *
    * @return {LoggerInterface}
    */
   logger() {
@@ -247,10 +232,9 @@ export class HotBalloonApplication extends WithID {
   }
 
   /**
-   *
-   * @return {Document}
+   * @return {ViewRenderConfig}
    */
-  document() {
-    return this[_document]
+  viewRenderConfig(){
+    return this[_viewRenderConfig]
   }
 }

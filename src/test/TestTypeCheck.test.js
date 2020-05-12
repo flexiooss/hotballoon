@@ -13,11 +13,17 @@ import {ViewContainer, ViewContainerParameters} from '../js/View/ViewContainer'
 import {View} from '../js/View/View'
 import {FakeLogger} from '@flexio-oss/js-commons-bundle/js-logger'
 import {FakeValueObject, FakeValueObjectBuilder} from './FakeValueObject'
+import {ViewRenderConfig} from '../js/Application/ViewRenderConfig'
 
 const assert = require('assert')
 
 export class TestTypeCheck extends TestCase {
-
+  /**
+   * @return {HotBalloonApplication}
+   */
+  app() {
+    return new HotBalloonApplication('id', new Dispatcher(new FakeLogger()), new FakeLogger().debug(), new ViewRenderConfig(null, false))
+  }
   testIsStoreBase() {
     /**
      *
@@ -64,12 +70,11 @@ export class TestTypeCheck extends TestCase {
   }
 
   testIsHotballoonApplication() {
-    const app = new HotBalloonApplication('id', new Dispatcher(new FakeLogger()), new FakeLogger().debug())
-    assert(TypeCheck.isHotballoonApplication(app))
+    assert(TypeCheck.isHotballoonApplication(this.app()))
   }
 
   testIsComponentContext() {
-    const componentContext = new HotBalloonApplication('id', new Dispatcher(new FakeLogger()), new FakeLogger().debug()).addComponentContext()
+    const componentContext = this.app().addComponentContext()
     assert(TypeCheck.isComponentContext(componentContext))
   }
 
@@ -101,7 +106,7 @@ export class TestTypeCheck extends TestCase {
   testIsViewContainer() {
     const viewContainer = new ViewContainer(
       new ViewContainerParameters(
-        new ComponentContext(new HotBalloonApplication('test', new Dispatcher(new FakeLogger()), new FakeLogger())), 'id', {nodeType: 2}
+        new ComponentContext(this.app()), 'id', {nodeType: 2}
       )
     )
     assert(TypeCheck.isViewContainer(viewContainer))

@@ -240,10 +240,10 @@ export class ViewContainer extends ViewContainerBase {
 
   /**
    *
-   * @return {Document}
+   * @return {ViewRenderConfig}
    */
-  document() {
-    return this[_ComponentContext].APP().document()
+  viewRenderConfig() {
+    return this[_ComponentContext].APP().viewRenderConfig()
   }
 
   /**
