@@ -21,6 +21,7 @@ import {
   VIEW_STORE_CHANGED,
   VIEW_UPDATE,
   VIEW_UPDATED,
+  VIEW_REMOVE,
   ViewPublicEventHandler
 } from './ViewPublicEventHandler'
 
@@ -668,6 +669,8 @@ export class View extends ViewContainerBase {
         .pushLog(this),
       viewLogOptions
     )
+    this.dispatch(VIEW_REMOVE, {})
+
     this._nodeRefs.clear()
 
     if (this.isSynchronous() || this.isSynchronousUpdate()) {
