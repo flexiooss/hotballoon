@@ -1,5 +1,6 @@
 import {AbstractReconcileNode} from './AbstractReconcileNode'
 
+
 /**
  * @implements ReconcileNodeInterface
  * @extends AbstractReconcileNode
@@ -9,21 +10,39 @@ export class ReconcileNodeClassList extends AbstractReconcileNode {
    * @override
    */
   process() {
+    /**
+     * @type {DOMTokenList|Array<string>}
+     */
     const candidateClassList = this._candidate.classList
+    /**
+     * @type {DOMTokenList|Array<string>}
+     */
     const currentClassList = this._current.classList
-    if (candidateClassList && candidateClassList.length) {
-      candidateClassList.forEach((value, key, list) => {
-        if (!currentClassList.contains(value)) {
-          currentClassList.add(value)
-        }
-      })
+
+    /**
+     * @type {Array<string>}
+     */
+    const add = []
+    candidateClassList.forEach((value, key, list) => {
+      if (!currentClassList.contains(value)) {
+        add.push(value)
+      }
+    })
+    if (add.length) {
+      currentClassList.add(...add)
     }
-    if (candidateClassList && candidateClassList.length) {
-      currentClassList.forEach((value, key, list) => {
-        if (((currentClassList && currentClassList.length) && !candidateClassList.contains(value))) {
-          currentClassList.remove(value)
-        }
-      })
+
+    /**
+     * @type {Array<string>}
+     */
+    const remove = []
+    currentClassList.forEach((value, key, list) => {
+      if (!candidateClassList.contains(value)) {
+        remove.push(value)
+      }
+    })
+    if (remove.length) {
+      currentClassList.remove(...remove)
     }
   }
 }
