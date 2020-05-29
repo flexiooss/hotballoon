@@ -26,6 +26,17 @@ class TypeCheck {
   static isHotballoonApplication(inst) {
     return testClassTagName(inst, CLASS_TAG_NAME_HOTBALLOON_APPLICATION)
   }
+  /**
+   * @param {HotBalloonApplication} inst
+   * @return {HotBalloonApplication}
+   * @throws {TypeError}
+   */
+  static assertIsHotBalloonApplication(inst) {
+    assertType(TypeCheck.isComponentContext(inst),
+      '`inst` should be an HotballoonApplication'
+    )
+    return inst
+  }
 
   /**
    *
@@ -44,6 +55,17 @@ class TypeCheck {
   static isComponentContext(inst) {
     return testClassTagName(inst, CLASS_TAG_NAME_COMPONENT)
   }
+  /**
+   * @param {ComponentContext} inst
+   * @return {ComponentContext}
+   * @throws {TypeError}
+   */
+  static assertIsComponentContext(inst) {
+    assertType(TypeCheck.isComponentContext(inst),
+      '`inst` should be an ComponentContext'
+    )
+    return inst
+  }
 
   /**
    *
@@ -55,9 +77,9 @@ class TypeCheck {
   }
 
   /**
-   *
    * @param {ActionDispatcher} inst
    * @return {ActionDispatcher}
+   * @throws {TypeError}
    */
   static assertIsActionDispatcher(inst) {
     assertType(TypeCheck.isActionDispatcher(inst),
@@ -133,7 +155,6 @@ class TypeCheck {
   }
 
   /**
-   *
    * @param {View} inst
    * @return {View}
    */
