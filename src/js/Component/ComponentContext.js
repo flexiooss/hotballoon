@@ -289,5 +289,6 @@ export class ComponentContext extends WithID {
         .pushLog(this),
       componentContextLogOptions
     )
+    this.APP().removeComponentContext(this.ID())
   }
 }
