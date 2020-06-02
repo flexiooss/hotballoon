@@ -17,7 +17,7 @@ export class StorageInterface {
   }
 
   /**
-   * @returns {StoreState<TYPE>}
+   * @returns {?StoreState<TYPE>}
    */
   get() {
     throw new CoreException(`get should be override`, 'METHOD_NOT_OVERRIDE')

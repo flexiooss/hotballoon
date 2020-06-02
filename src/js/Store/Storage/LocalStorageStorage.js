@@ -2,8 +2,7 @@ import {assertType, isClass} from '@flexio-oss/js-commons-bundle/assert'
 import {deepFreezeSeal} from '@flexio-oss/js-commons-bundle/js-generator-helpers'
 import {StoreState} from '../StoreState'
 import {StorageInterface} from './StorageInterface'
-
-const _state = Symbol.for('_state')
+import {StoreStateBuilder} from '../StoreState'
 
 /**
  * @template TYPE
@@ -11,13 +10,15 @@ const _state = Symbol.for('_state')
  * @implements {GenericType<TYPE>}
  * @extends {StorageInterface<TYPE>}
  */
-export class InMemoryStorage extends StorageInterface {
+export class LocalStorageStorage extends StorageInterface {
   /**
    * @constructor
    * @param {TYPE.} type
-   * @param {StoreState<TYPE>} state
+   * @param {string} storeID
+   * @param {Window} window
+   * @param {string} key
    */
-  constructor(type, state) {
+  constructor(type, storeID, window, key) {
     super()
 
     assertType(
@@ -25,15 +26,16 @@ export class InMemoryStorage extends StorageInterface {
       'hotballoon:Storage:constructor: `type` argument should be a Class'
     )
 
-    assertType(state instanceof StoreState,
-      'hotballoon:Storage:constructor: `state` argument should be a `StoreState` instance')
-
     Object.defineProperties(this, {
-      [_state]: {
-        enumerable: false,
+      storeID: {
         configurable: false,
         writable: false,
-        value: state
+        enumerable: true,
+        /**
+         * @params {string}
+         * @name InMemoryStorage#storeID
+         */
+        value: type
       },
       type: {
         configurable: false,
@@ -44,6 +46,26 @@ export class InMemoryStorage extends StorageInterface {
          * @name InMemoryStorage#type
          */
         value: type
+      },
+      __key: {
+        configurable: false,
+        writable: false,
+        enumerable: true,
+        /**
+         * @params {string}
+         * @name InMemoryStorage#key
+         */
+        value: key
+      },
+      __window: {
+        configurable: false,
+        writable: false,
+        enumerable: false,
+        /**
+         * @params {Window}
+         * @name InMemoryStorage#__window
+         */
+        value: window
       }
 
     })
@@ -52,23 +74,34 @@ export class InMemoryStorage extends StorageInterface {
   }
 
   /**
+   * @return {string}
+   */
+  key() {
+    return this.__key
+  }
+
+  /**
    *
    * @param {(string|Symbol)} storeID
    * @param {TYPE} data
-   * @return {InMemoryStorage<TYPE>}
+   * @return {LocalStorageStorage<TYPE>}
    */
   set(storeID, data) {
-    return new InMemoryStorage(
-      this.type,
-      new StoreState(storeID, this.type, data)
-    )
+
+    this.__window.localStorage.setItem(this.key(), JSON.stringify(new StoreState(storeID, this.type, data)))
+    return this
   }
 
   /**
    * @returns {?StoreState<TYPE>}
    */
   get() {
-    return this[_state]
+    let config = this.__window.localStorage.getItem(this.key())
+
+    if (!isNull(config)) {
+      return StoreStateBuilder.fromJSON(config).build()
+    }
+    return null
   }
 
   /**
