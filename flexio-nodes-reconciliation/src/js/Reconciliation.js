@@ -10,7 +10,6 @@ const MAX_SLIBINGS_NODES_UPDATE_BY_ID = 50
 
 
 /**
- *
  * @param {Element} current
  * @param {Element} candidate
  * @param {Element} parentCurrent Parent of current element
@@ -18,7 +17,6 @@ const MAX_SLIBINGS_NODES_UPDATE_BY_ID = 50
 
 export class Reconciliation {
   /**
-   *
    * @param {Element} current
    * @param {Element} candidate
    * @param {Element} parentCurrent
@@ -29,12 +27,10 @@ export class Reconciliation {
       typeof current, typeof candidate)
 
     /**
-     *
      * @params {Element}
      */
     this.current = current
     /**
-     *
      * @params {Element | null}
      */
     this.parentCurrent = parentCurrent
@@ -44,40 +40,33 @@ export class Reconciliation {
      */
     this.$parentCurrent = this.castAttributes(parentCurrent)
     /**
-     *
      * @params {Element}
      */
     this.candidate = candidate
     /**
-     *
      * @params {ListenerAttributeHandler}
      */
     this.$current = this.castAttributes(current)
     /**
-     *
      * @params {ListenerAttributeHandler}
      */
     this.$candidate = this.castAttributes(candidate)
     /**
-     *
      * @params {(null|boolean)}
      * @private
      */
     this._equalNode = null
     /**
-     *
      * @params {(null|boolean)}
      * @private
      */
     this._equalListeners = null
     /**
-     *
      * @params {(null | boolean)}
      * @private
      */
     this._equalWithoutChildren = null
     /**
-     *
      * @params {boolean}
      * @private
      */
@@ -91,7 +80,6 @@ export class Reconciliation {
   }
 
   /**
-   *
    * @param {boolean} rootReconciliation
    * @return {Reconciliation}
    */
@@ -101,7 +89,6 @@ export class Reconciliation {
   }
 
   /**
-   *
    * @return {boolean}
    */
   isRootElementReconcile() {
@@ -109,7 +96,6 @@ export class Reconciliation {
   }
 
   /**
-   *
    * @param {Element} element
    * @return {AttributeHandler}
    */
@@ -152,11 +138,10 @@ export class Reconciliation {
   }
 
   /**
-   *
    * @return {boolean}
    */
   reconcile() {
-    if (this._hasByPassRule() || (this.__isEqualNode() && this.__isEqualListeners())) {
+    if (this._hasByPassRule() || (this.__isEqualNode() && (!this._hasReconcileListenersRule() || (this._hasReconcileListenersRule() && !this.__isEqualListeners())))) {
       return this._abort()
     }
 
@@ -173,7 +158,7 @@ export class Reconciliation {
       }
     }
 
-    if (!this._hasOnlyChildrenRule() && !this._hasExcludeListenersRule() && !this._isCurrentReplaced && !this.__isEqualListeners()) {
+    if (!this._hasOnlyChildrenRule() && this._hasReconcileListenersRule() && !this._isCurrentReplaced && !this.__isEqualListeners()) {
 
       listenerReconcile(this.current, this.$current, this.candidate, this.$candidate)
     }
@@ -182,7 +167,6 @@ export class Reconciliation {
   }
 
   /**
-   *
    * @private
    */
   __updateCurrent() {
@@ -205,7 +189,6 @@ export class Reconciliation {
   /**
    * @private
    * @description traverse and reconcile slibing's nodes
-   *
    */
   __traverseChildNodes() {
     /**
@@ -265,7 +248,6 @@ export class Reconciliation {
   }
 
   /**
-   *
    * @param {number} childOrder
    * @param {string} id
    * @return {?Element}
@@ -280,7 +262,6 @@ export class Reconciliation {
       return this.current.childNodes[childOrder]
     } else {
       /**
-       *
        * @type {?Element}
        */
       let el = this.__findNodeByIdInChildNodes(this.current, id, childOrder)
@@ -310,7 +291,6 @@ export class Reconciliation {
   }
 
   /**
-   *
    * @return {boolean}
    * @private
    */
@@ -322,7 +302,6 @@ export class Reconciliation {
   }
 
   /**
-   *
    * @return {boolean}
    * @private
    */
@@ -334,7 +313,6 @@ export class Reconciliation {
   }
 
   /**
-   *
    * @return {boolean}
    * @private
    */
@@ -346,7 +324,6 @@ export class Reconciliation {
   }
 
   /**
-   *
    * @return {boolean}
    * @protected
    */
@@ -355,7 +332,6 @@ export class Reconciliation {
   }
 
   /**
-   *
    * @return {boolean}
    * @protected
    */
@@ -364,7 +340,6 @@ export class Reconciliation {
   }
 
   /**
-   *
    * @return {boolean}
    * @protected
    */
@@ -373,16 +348,14 @@ export class Reconciliation {
   }
 
   /**
-   *
    * @return {boolean}
    * @protected
    */
-  _hasExcludeListenersRule() {
-    return this.$candidate.hasReconciliationRule(R.BYPASS_LISTENERS)
+  _hasReconcileListenersRule() {
+    return this.$candidate.hasReconciliationRule(R.RECONCILE_LISTENERS)
   }
 
   /**
-   *
    * @return {boolean}
    * @protected
    */
@@ -391,7 +364,6 @@ export class Reconciliation {
   }
 
   /**
-   *
    * @return {boolean}
    * @protected
    */
@@ -400,7 +372,6 @@ export class Reconciliation {
   }
 
   /**
-   *
    * @return {boolean} false
    * @protected
    */
