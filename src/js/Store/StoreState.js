@@ -1,5 +1,5 @@
 import {deepFreezeSeal} from '@flexio-oss/js-commons-bundle/js-generator-helpers'
-import {assertType} from '@flexio-oss/js-commons-bundle/assert/src/js/assert'
+import {assertType, isNull} from '@flexio-oss/js-commons-bundle/assert'
 
 /**
  * @implements {GenericType<TYPE>}
@@ -31,7 +31,7 @@ export class StoreState {
      * @type {Date}
      * @private
      */
-    this.__time = time || new Date()
+    this.__time = time
     /**
      * @type {TYPE.}
      * @private
@@ -87,10 +87,8 @@ export class StoreState {
    */
   toJSON() {
     return {
-      storeID: this.__storeID,
       time: this.__time,
-      data: this.__data,
-      type: this.__type.constructor.name
+      data: this.__data
     }
   }
 
@@ -125,6 +123,24 @@ export class StoreStateBuilder {
   }
 
   /**
+   * @param {string} value
+   * @return {StoreStateBuilder}
+   */
+  storeID(value) {
+    this.__storeID = value
+    return this
+  }
+
+  /**
+   * @param {?TYPE} value
+   * @return {StoreStateBuilder}
+   */
+  data(value) {
+    this.__data = value
+    return this
+  }
+
+  /**
    * @param {?Class<TYPE>} value
    * @return {StoreStateBuilder}
    */
@@ -134,10 +150,20 @@ export class StoreStateBuilder {
   }
 
   /**
-   * @param {string} json
+   * @param {Date} value
    * @return {StoreStateBuilder}
    */
-  static fromJSON(json) {
+  time(value) {
+    this.__time = value
+    return this
+  }
+
+  /**
+   * @param {string} json
+   * @param {?Class<TYPE>} type
+   * @return {StoreStateBuilder}
+   */
+  static fromJSON(json, type) {
     /**
      * @type {Object}
      */
@@ -145,23 +171,13 @@ export class StoreStateBuilder {
 
     const builder = new StoreStateBuilder()
 
-    if(    jsonObject['storeID'] !== undefined && !isNull( jsonObject['storeID'])){
-      this.__storeID = jsonObject['storeID']
-    }
-    if(    jsonObject['time'] !== undefined && !isNull( jsonObject['time'])){
-      this.__time = Date.parse(jsonObject['time'])
-    }
-    if(    jsonObject['type'] !== undefined && !isNull( jsonObject['type'])){
-      if(isNull(this.__type)){
-        throw new Error('should have `type` property')
-      }
-      if(this.__type.constructor.name !== jsonObject['type']){
-        throw new Error('`type` mismatch')
-      }
+    builder.type(type)
 
+    if (jsonObject['time'] !== undefined && !isNull(jsonObject['time'])) {
+      builder.time(new Date(jsonObject['time']))
     }
-    if(    jsonObject['data'] !== undefined && !isNull( jsonObject['data'])){
-      this.__data = this.__type.fromOject(jsonObject['data']).build()
+    if (jsonObject['data'] !== undefined && !isNull(jsonObject['data'])) {
+      builder.data(type.fromObject(jsonObject['data']).build())
     }
     return builder
   }

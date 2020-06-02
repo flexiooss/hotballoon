@@ -1,4 +1,4 @@
-import {assertType, isClass} from '@flexio-oss/js-commons-bundle/assert'
+import {assertType, isClass, isNull} from '@flexio-oss/js-commons-bundle/assert'
 import {deepFreezeSeal} from '@flexio-oss/js-commons-bundle/js-generator-helpers'
 import {StoreState} from '../StoreState'
 import {StorageInterface} from './StorageInterface'
@@ -96,16 +96,18 @@ export class LocalStorageStorage extends StorageInterface {
    * @returns {?StoreState<TYPE>}
    */
   get() {
-    let config = this.__window.localStorage.getItem(this.key())
+    let data = this.__window.localStorage.getItem(this.key())
 
-    if (!isNull(config)) {
-      return StoreStateBuilder.fromJSON(config).build()
+    if (!isNull(data)) {
+      return StoreStateBuilder
+        .fromJSON(data, this.type)
+        .storeID(this.storeID)
+        .build()
     }
     return null
   }
 
   /**
-   *
    * @return {TYPE.}
    * @private
    */
@@ -114,7 +116,6 @@ export class LocalStorageStorage extends StorageInterface {
   }
 
   /**
-   *
    * @param {Class} constructor
    * @return {boolean}
    */

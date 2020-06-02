@@ -4,6 +4,7 @@ import {StoreConfig} from './StoreConfig'
 import {LocalStorageStorage} from './Storage/LocalStorageStorage'
 import {StoreState} from './StoreState'
 import {StoreTypeConfig} from './StoreTypeConfig'
+import {isNull} from '@flexio-oss/js-commons-bundle/assert'
 
 /**
  * @template TYPE, TYPE_BUILDER
@@ -117,6 +118,7 @@ export class LocalStorageStoreBuilder {
       this.__window,
       this.__key
     )
+
     if (isNull(storage.get())) {
       storage.set(id, this.__initialData)
     }
