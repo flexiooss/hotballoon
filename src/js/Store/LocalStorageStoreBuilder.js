@@ -117,7 +117,9 @@ export class LocalStorageStoreBuilder {
       this.__window,
       this.__key
     )
-    storage.set(id, this.__initialData)
+    if (isNull(storage.get())) {
+      storage.set(id, this.__initialData)
+    }
 
     return new Store(
       new StoreConfig(
