@@ -33,10 +33,10 @@ export class LocalStorageStoreBuilder {
      */
     this.__defaultChecker = v => v
     /**
-     * @type {?Window}
+     * @type {?Storage}
      * @private
      */
-    this.__window = null
+    this.__storage = null
     /**
      * @type {?string}
      * @private
@@ -83,11 +83,11 @@ export class LocalStorageStoreBuilder {
   }
 
   /**
-   * @param {Window} value
+   * @param {Storage} value
    * @return {LocalStorageStoreBuilder}
    */
-  window(value) {
-    this.__window = value
+  storage(value) {
+    this.__storage = value
     return this
   }
 
@@ -115,7 +115,7 @@ export class LocalStorageStoreBuilder {
     const storage = new LocalStorageStorage(
       this.__type,
       id,
-      this.__window,
+      this.__storage,
       this.__key
     )
 

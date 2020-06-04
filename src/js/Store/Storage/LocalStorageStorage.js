@@ -15,10 +15,10 @@ export class LocalStorageStorage extends StorageInterface {
    * @constructor
    * @param {TYPE.} type
    * @param {string} storeID
-   * @param {Window} window
+   * @param {Storage} storage
    * @param {string} key
    */
-  constructor(type, storeID, window, key) {
+  constructor(type, storeID, storage, key) {
     super()
 
     assertType(
@@ -57,15 +57,15 @@ export class LocalStorageStorage extends StorageInterface {
          */
         value: key
       },
-      __window: {
+      __storage: {
         configurable: false,
         writable: false,
         enumerable: false,
         /**
-         * @params {Window}
-         * @name InMemoryStorage#__window
+         * @params {Storage}
+         * @name InMemoryStorage#__storage
          */
-        value: window
+        value: storage
       }
 
     })
@@ -81,14 +81,13 @@ export class LocalStorageStorage extends StorageInterface {
   }
 
   /**
-   *
    * @param {(string|Symbol)} storeID
    * @param {TYPE} data
    * @return {LocalStorageStorage<TYPE>}
    */
   set(storeID, data) {
 
-    this.__window.localStorage.setItem(this.key(), JSON.stringify(new StoreState(storeID, this.type, data)))
+    this.__storage.setItem(this.key(), JSON.stringify(new StoreState(storeID, this.type, data)))
     return this
   }
 
@@ -96,7 +95,7 @@ export class LocalStorageStorage extends StorageInterface {
    * @returns {?StoreState<TYPE>}
    */
   get() {
-    let data = this.__window.localStorage.getItem(this.key())
+    let data = this.__storage.getItem(this.key())
 
     if (!isNull(data)) {
       return StoreStateBuilder
