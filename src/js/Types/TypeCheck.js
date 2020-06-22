@@ -32,7 +32,7 @@ class TypeCheck {
    * @throws {TypeError}
    */
   static assertIsHotBalloonApplication(inst) {
-    assertType(TypeCheck.isComponentContext(inst),
+    assertType(TypeCheck.isHotballoonApplication(inst),
       '`inst` should be an HotballoonApplication'
     )
     return inst
