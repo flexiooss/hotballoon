@@ -19,7 +19,7 @@ export {UIEventBuilder} from './src/js/HotballoonNodeElement/UIEventBuilder'
 export {PublicStoreHandler} from './src/js/Store/PublicStoreHandler'
 export {ProxyStoreBuilder} from './src/js/Store/ProxyStoreBuilder'
 export {InMemoryStoreBuilder} from './src/js/Store/InMemoryStoreBuilder'
-export {LocalStorageStoreBuilder} from './src/js/Store/LocalStorageStoreBuilder'
+export {JsStorageStoreBuilder} from './src/js/Store/JsStorageStoreBuilder'
 
 export {e} from './src/js/HotballoonNodeElement/ElementDescription'
 export {RECONCILIATION_RULES} from './flexio-nodes-reconciliation'

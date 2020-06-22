@@ -1,7 +1,7 @@
 import {UID} from '@flexio-oss/js-commons-bundle/js-helpers'
 import {Store} from './Store'
 import {StoreConfig} from './StoreConfig'
-import {LocalStorageStorage} from './Storage/LocalStorageStorage'
+import {JsStorageImplStorage} from './Storage/JsStorageImplStorage'
 import {StoreState} from './StoreState'
 import {StoreTypeConfig} from './StoreTypeConfig'
 import {isNull} from '@flexio-oss/js-commons-bundle/assert'
@@ -9,7 +9,7 @@ import {isNull} from '@flexio-oss/js-commons-bundle/assert'
 /**
  * @template TYPE, TYPE_BUILDER
  */
-export class LocalStorageStoreBuilder {
+export class JsStorageStoreBuilder {
   constructor() {
     /**
      * @type {?TYPE.}
@@ -112,7 +112,7 @@ export class LocalStorageStoreBuilder {
     /**
      * @type {LocalStorageStorage}
      */
-    const storage = new LocalStorageStorage(
+    const storage = new JsStorageImplStorage(
       this.__type,
       id,
       this.__storage,

@@ -10,7 +10,7 @@ import {StoreStateBuilder} from '../StoreState'
  * @implements {GenericType<TYPE>}
  * @extends {StorageInterface<TYPE>}
  */
-export class LocalStorageStorage extends StorageInterface {
+export class JsStorageImplStorage extends StorageInterface {
   /**
    * @constructor
    * @param {TYPE.} type
