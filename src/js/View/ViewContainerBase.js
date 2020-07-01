@@ -21,6 +21,7 @@ export class ViewContainerBase extends WithID {
 
     let _mounted = false
     let _rendered = false
+    let _removed = false
 
     /**
      * @type {ArrayMap<string,[]>}
@@ -35,7 +36,7 @@ export class ViewContainerBase extends WithID {
       _mounted: {
         configurable: false,
         enumerable: false,
-        get: () =>  _mounted,
+        get: () => _mounted,
         set: (v) => {
           _mounted = TypeTypeCheck.assertIsBoolean(v)
         }
@@ -52,6 +53,18 @@ export class ViewContainerBase extends WithID {
         set: (v) => {
 
           _rendered = TypeTypeCheck.assertIsBoolean(v)
+        }
+      }, /**
+       * @property {boolean}
+       * @name ViewContainerBase#_removed
+       * @protected
+       */
+      _removed: {
+        configurable: false,
+        enumerable: false,
+        get: () => _removed,
+        set: (v) => {
+          _removed = TypeTypeCheck.assertIsBoolean(v)
         }
       },
       [_EventHandler]: {
@@ -128,6 +141,7 @@ export class ViewContainerBase extends WithID {
   }
 
   remove() {
+    this._removed = true
     this[_EventHandler].clear()
 
     this._tokenEvent.forEach(
@@ -137,15 +151,15 @@ export class ViewContainerBase extends WithID {
        * @param storeId
        */
       (listenedStores, storeId) => {
-      listenedStores.forEach(
-        /**
-         *
-         * @param {ListenedStore} listenedStore
-         */
-        listenedStore => {
-          listenedStore.remove()
+        listenedStores.forEach(
+          /**
+           *
+           * @param {ListenedStore} listenedStore
+           */
+          listenedStore => {
+            listenedStore.remove()
+          })
       })
-    })
 
     this.MapOfView().forEach(
       /**
@@ -209,5 +223,12 @@ export class ViewContainerBase extends WithID {
    */
   isMounted() {
     return this._mounted === true
+  }
+
+  /**
+   * @return {boolean}
+   */
+  isRemoved() {
+    return this._removed === true
   }
 }

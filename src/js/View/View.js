@@ -44,7 +44,7 @@ const requestAFrame = window.requestAnimationFrame
   || window.webkitRequestAnimationFrame
   || window.mozRequestAnimationFrame
   || window.msRequestAnimationFrame
-  || function(cb) {
+  || function (cb) {
     return setTimeout(cb, 16)
   }
 
@@ -275,7 +275,7 @@ export class View extends ViewContainerBase {
    */
   subscribeToStore(store, clb = (state) => true) {
     TypeTypeCheck.assertIsFunction(clb)
-    assertType(      TypeCheck.isStoreBase(store),'store  should StoreInterface'
+    assertType(TypeCheck.isStoreBase(store), 'store  should StoreInterface'
     )
 
     /**
@@ -283,9 +283,11 @@ export class View extends ViewContainerBase {
      */
     const listenedStore = store.listenChanged(
       (payload, type) => {
-        if (clb(payload) === true) {
-          this.dispatch(VIEW_STORE_CHANGED, payload)
-          this.updateNode()
+        if (!this.isRemoved()) {
+          if (clb(payload) === true) {
+            this.dispatch(VIEW_STORE_CHANGED, payload)
+            this.updateNode()
+          }
         }
       }
     )
@@ -308,28 +310,31 @@ export class View extends ViewContainerBase {
    * @description update the node reference of this View
    */
   [_update]() {
-    this._nodeRefs.clear()
-    const candidate = this.template()
+    if (!this.isRemoved()) {
 
-    if (isNull(candidate) || isNull(this.node())) {
-      this[_replaceNode]()
-    } else {
+      this._nodeRefs.clear()
+      const candidate = this.template()
 
-      $(candidate).setViewRef(this.ID())
+      if (isNull(candidate) || isNull(this.node())) {
+        this[_replaceNode]()
+      } else {
 
-      if (startReconcile(this.node(), candidate, this.parentNode)) {
-        this._node = candidate
+        $(candidate).setViewRef(this.ID())
+
+        if (startReconcile(this.node(), candidate, this.parentNode)) {
+          this._node = candidate
+        }
+
       }
-
+      this.dispatch(VIEW_UPDATED, {})
+      this.logger().log(
+        this.logger().builder()
+          .debug()
+          .pushLog('UpdateNode : ' + this.ID())
+          .pushLog(this.node()),
+        viewLogOptions
+      )
     }
-    this.dispatch(VIEW_UPDATED, {})
-    this.logger().log(
-      this.logger().builder()
-        .debug()
-        .pushLog('UpdateNode : ' + this.ID())
-        .pushLog(this.node()),
-      viewLogOptions
-    )
   }
 
   /**
@@ -662,6 +667,7 @@ export class View extends ViewContainerBase {
   }
 
   remove() {
+    this._removed = true
     this.logger().log(
       this.logger().builder()
         .info()

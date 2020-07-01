@@ -132,7 +132,9 @@ export class ViewContainer extends ViewContainerBase {
      */
     const listenedStore = store.listenChanged(
       (payload, type) => {
-        clb(payload.data())
+        if(!this.isRemoved()){
+          clb(payload.data())
+        }
       }
     )
 
