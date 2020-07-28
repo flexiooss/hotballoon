@@ -2,6 +2,7 @@ import {ActionDispatcher} from './ActionDispatcher'
 import {ActionDispatcherConfig} from './ActionDispatcherConfig'
 import {ActionTypeConfig} from './ActionTypeConfig'
 import {UID} from '@flexio-oss/js-commons-bundle/js-helpers'
+import {isNull} from '@flexio-oss/js-commons-bundle/assert'
 
 /**
  * @template TYPE, TYPE_BUILDER
@@ -9,18 +10,42 @@ import {UID} from '@flexio-oss/js-commons-bundle/js-helpers'
 export class ActionDispatcherBuilder {
   constructor() {
     /**
-     *
      * @type {?Dispatcher}
      * @private
      */
     this.__dispatcher = null
+    /**
+     * @type {?TYPE.}
+     * @private
+     */
     this.__type = null
+    /**
+     * @type {?ValueObjectValidator}
+     * @private
+     */
     this.__validator = null
+    /**
+     * @type {function(data:TYPE):TYPE}
+     * @private
+     */
     this.__defaultChecker = v => v
+    /**
+     * @type {?string}
+     * @private
+     */
+    this.__name = null
   }
 
   /**
-   *
+   * @param {string} name
+   * @return {ActionDispatcherBuilder}
+   */
+  name(name) {
+    this.__name = name.replace(new RegExp('\\s+', 'g'), '')
+    return this
+  }
+
+  /**
    * @param {Dispatcher} dispatcher
    * @return {ActionDispatcherBuilder}
    */
@@ -30,7 +55,6 @@ export class ActionDispatcherBuilder {
   }
 
   /**
-   *
    * @param {TYPE.} type
    * @return {ActionDispatcherBuilder}
    */
@@ -40,7 +64,6 @@ export class ActionDispatcherBuilder {
   }
 
   /**
-   *
    * @param {function(data:TYPE):TYPE} [defaultChecker=data=>data]
    * @return {ActionDispatcherBuilder}
    */
@@ -50,7 +73,6 @@ export class ActionDispatcherBuilder {
   }
 
   /**
-   *
    * @param {?ValueObjectValidator} validator
    * @return {ActionDispatcherBuilder}
    */
@@ -60,14 +82,21 @@ export class ActionDispatcherBuilder {
   }
 
   /**
-   *
+   * @return {string}
+   * @private
+   */
+  __uniqName() {
+    return UID((isNull(this.__name) ? this.__type.name : this.__name) + '_')
+  }
+
+  /**
    * @return {ActionDispatcher<TYPE, TYPE_BUILDER>}
    */
   build() {
 
     return new ActionDispatcher(
       new ActionDispatcherConfig(
-        UID(this.__type.name + '_'),
+        this.__uniqName(),
         new ActionTypeConfig(
           this.__type,
           this.__defaultChecker,
