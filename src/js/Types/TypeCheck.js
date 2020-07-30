@@ -26,6 +26,7 @@ class TypeCheck {
   static isHotballoonApplication(inst) {
     return testClassTagName(inst, CLASS_TAG_NAME_HOTBALLOON_APPLICATION)
   }
+
   /**
    * @param {HotBalloonApplication} inst
    * @return {HotBalloonApplication}
@@ -55,6 +56,7 @@ class TypeCheck {
   static isComponentContext(inst) {
     return testClassTagName(inst, CLASS_TAG_NAME_COMPONENT)
   }
+
   /**
    * @param {ComponentContext} inst
    * @return {ComponentContext}
@@ -90,11 +92,21 @@ class TypeCheck {
 
   /**
    *
-   * @param {Object} inst
+   * @param {Store} inst
    * @return {boolean}
    */
   static isStore(inst) {
     return testClassTagName(inst, CLASS_TAG_NAME_STORE)
+  }
+
+  /**
+   * @param {Store} inst
+   * @return {Store}
+   * @throws {TypeError}
+   */
+  static assertIsStore(inst) {
+    assertType(TypeCheck.isStore(inst), '`inst` should be `Store`')
+    return inst
   }
 
   /**
