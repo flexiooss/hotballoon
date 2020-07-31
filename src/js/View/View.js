@@ -60,13 +60,11 @@ export class View extends ViewContainerBase {
   constructor(container) {
     super(UID('View_' + container.constructor.name + '_'))
 
-    assertType(
-      TypeCheck.isViewContainerBase(container),
-      '`container` should be ViewContainerBase'
-    )
-
+    assertType(TypeCheck.isViewContainerBase(container), '`container` should be ViewContainerBase')
+    /**
+     * @type {Element}
+     */
     this.parentNode = container.parentNode
-
     /**
      * @type {?Node}
      * @private
@@ -107,6 +105,11 @@ export class View extends ViewContainerBase {
      * @private
      */
     const _nodeRefs = new Map()
+    /**
+     * @type {number}
+     * @private
+     */
+    let _updateRequests = 0
 
     Object.defineProperty(this, CLASS_TAG_NAME, {
       configurable: false,
@@ -245,6 +248,22 @@ export class View extends ViewContainerBase {
         set: (v) => {
           return false
         }
+      },
+      /**
+       * @property {number} _updateRequests
+       * @name View#_nodeRefs
+       * @protected
+       */
+      _updateRequests: {
+        configurable: false,
+        enumerable: false,
+        get: () => {
+          return _updateRequests
+        },
+        set: (v) => {
+
+          _updateRequests = TypeTypeCheck.assertIsNumber(v)
+        }
       }
 
     })
@@ -310,7 +329,7 @@ export class View extends ViewContainerBase {
    * @description update the node reference of this View
    */
   [_update]() {
-    if (!this.isRemoved()) {
+    if (!this.isRemoved() && this._updateRequests === 1) {
 
       this._nodeRefs.clear()
       const candidate = this.template()
@@ -335,6 +354,7 @@ export class View extends ViewContainerBase {
         viewLogOptions
       )
     }
+    this._updateRequests--
   }
 
   /**
@@ -346,6 +366,7 @@ export class View extends ViewContainerBase {
 
       this.dispatch(VIEW_UPDATE, {})
 
+      this._updateRequests++
       if (this.isSynchronous() || this.isSynchronousUpdate()) {
         this[_update]()
       } else {
