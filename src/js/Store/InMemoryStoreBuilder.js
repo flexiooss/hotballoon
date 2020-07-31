@@ -4,6 +4,7 @@ import {StoreConfig} from './StoreConfig'
 import {InMemoryStorage} from './Storage/InMemoryStorage'
 import {StoreState} from './StoreState'
 import {StoreTypeConfig} from './StoreTypeConfig'
+import {isNull} from '@flexio-oss/js-commons-bundle/assert'
 
 /**
  * @template TYPE, TYPE_BUILDER
@@ -11,34 +12,43 @@ import {StoreTypeConfig} from './StoreTypeConfig'
 export class InMemoryStoreBuilder {
   constructor() {
     /**
-     *
      * @type {?TYPE.}
      * @private
      */
     this.__type = null
 
     /**
-     *
      * @type {?TYPE}
      * @private
      */
     this.__initialData = null
     /**
-     *
      * @type  {?ValueObjectValidator}
      * @private
      */
     this.__validator = null
     /**
-     *
      * @type {StoreTypeConfig~defaultCheckerClb<TYPE>}
      * @private
      */
     this.__defaultChecker = v => v
+    /**
+     * @type {?string}
+     * @private
+     */
+    this.__name = null
   }
 
   /**
-   *
+   * @param {string} name
+   * @return {ActionDispatcherBuilder}
+   */
+  name(name) {
+    this.__name = name.replace(new RegExp('\\s+', 'g'), '')
+    return this
+  }
+
+  /**
    * @param {TYPE.} type
    * @return {InMemoryStoreBuilder}
    */
@@ -48,7 +58,6 @@ export class InMemoryStoreBuilder {
   }
 
   /**
-   *
    * @param {TYPE} initialData
    * @return {InMemoryStoreBuilder}
    */
@@ -58,7 +67,6 @@ export class InMemoryStoreBuilder {
   }
 
   /**
-   *
    * @param {StoreTypeConfig~defaultCheckerClb<TYPE>} defaultChecker
    * @return {InMemoryStoreBuilder}
    */
@@ -68,7 +76,6 @@ export class InMemoryStoreBuilder {
   }
 
   /**
-   *
    * @param {?ValueObjectValidator} validator
    * @return {InMemoryStoreBuilder}
    */
@@ -78,12 +85,19 @@ export class InMemoryStoreBuilder {
   }
 
   /**
-   *
+   * @return {string}
+   * @private
+   */
+  __uniqName() {
+    return UID((isNull(this.__name) ? this.__type.name : this.__name) + '_')
+  }
+
+  /**
    * @return {Store<TYPE, TYPE_BUILDER>}
    */
   build() {
 
-    const id = UID(this.__type.name + '_')
+    const id = this.__uniqName()
 
     return new Store(
       new StoreConfig(

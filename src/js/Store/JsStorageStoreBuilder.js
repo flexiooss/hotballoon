@@ -42,6 +42,20 @@ export class JsStorageStoreBuilder {
      * @private
      */
     this.__key = null
+    /**
+     * @type {?string}
+     * @private
+     */
+    this.__name = null
+  }
+
+  /**
+   * @param {string} name
+   * @return {ActionDispatcherBuilder}
+   */
+  name(name) {
+    this.__name = name.replace(new RegExp('\\s+', 'g'), '')
+    return this
   }
 
   /**
@@ -101,6 +115,14 @@ export class JsStorageStoreBuilder {
   }
 
   /**
+   * @return {string}
+   * @private
+   */
+  __uniqName() {
+    return UID((isNull(this.__name) ? this.__type.name : this.__name) + '_')
+  }
+
+  /**
    *
    * @return {Store<TYPE, TYPE_BUILDER>}
    */
@@ -108,7 +130,7 @@ export class JsStorageStoreBuilder {
     /**
      * @type {string}
      */
-    const id = UID(this.__type.name + '_')
+    const id = this.__uniqName()
     /**
      * @type {LocalStorageStorage}
      */
