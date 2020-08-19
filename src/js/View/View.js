@@ -267,6 +267,8 @@ export class View extends ViewContainerBase {
       }
 
     })
+
+    container.addView(this)
   }
 
   /**
