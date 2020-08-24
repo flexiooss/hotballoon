@@ -188,10 +188,6 @@ export class ElementDescription {
     this._params.addClassName(...className)
     return this
   }
-
-  id(id){
-
-  }
 }
 
 
