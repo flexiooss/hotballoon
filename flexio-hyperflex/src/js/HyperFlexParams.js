@@ -1,5 +1,5 @@
 import {deepMerge} from '@flexio-oss/js-commons-bundle/js-type-helpers'
-import {isNull, isFunction} from '@flexio-oss/js-commons-bundle/assert'
+import {isNull, isFunction, TypeCheck} from '@flexio-oss/js-commons-bundle/assert'
 import {globalFlexioImport} from '@flexio-oss/js-commons-bundle/global-import-registry'
 
 
@@ -44,6 +44,11 @@ export class HyperFlexParams {
      * @private
      */
     this._classList = new globalFlexioImport.io.flexio.flex_types.arrays.StringArray()
+    /**
+     * @params {?String}
+     * @private
+     */
+    this._id = null
   }
 
   /**
@@ -76,6 +81,14 @@ export class HyperFlexParams {
    */
   text() {
     return this._text
+  }
+
+  /**
+   *
+   * @return {String}
+   */
+  id() {
+    return this._id
   }
 
   /**
@@ -198,6 +211,15 @@ export class HyperFlexParams {
    */
   addText(text) {
     this._text += text
+    return this
+  }
+
+  /**
+   * @param {String} id
+   * @return {this}
+   */
+  setId(id) {
+    this._id = TypeCheck.assertIsString(id)
     return this
   }
 

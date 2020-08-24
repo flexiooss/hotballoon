@@ -275,7 +275,7 @@ export class View extends ViewContainerBase {
    * @return {?Element}
    */
   template() {
-    throw new CoreException('view should be override', 'METHOD_NOT_OVERRIDE')
+    throw new CoreException('fieldView should be override', 'METHOD_NOT_OVERRIDE')
   }
 
   /**
@@ -289,7 +289,7 @@ export class View extends ViewContainerBase {
 
   /**
    * @template STORE_TYPE,STORE_TYPE_BUILDER
-   * @description subscribe subView an events of this view
+   * @description subscribe subView an events of this fieldView
    * @param {StoreInterface<STORE_TYPE,STORE_TYPE_BUILDER>} store
    * @param {function(data:StoreState<STORE_TYPE>):boolean} clb
    * @return {this}

@@ -21,7 +21,7 @@ export class ViewContainerParameters {
       'hotballoon:ViewContainerParameters: `id` argument assert be a String'
     )
     assertType(!!isNode(parentNode),
-      'hotballoon:view:ViewContainerParameters: `parentNode` argument should be a Node'
+      'hotballoon:fieldView:ViewContainerParameters: `parentNode` argument should be a Node'
     )
 
     Object.defineProperties(this, {
@@ -116,7 +116,7 @@ export class ViewContainer extends ViewContainerBase {
 
   /**
    *
-   * @description subscribe subView an events of this view
+   * @description subscribe subView an events of this fieldView
    * @param {StoreInterface} store
    * @param {ViewContainer~storeChanged} clb
    * @return {ListenedStore}
