@@ -65,7 +65,7 @@ export class InMemoryStorage extends StorageInterface {
   }
 
   /**
-   * @returns {StoreState<TYPE>}
+   * @returns {?StoreState<TYPE>}
    */
   get() {
     return this[_state]

@@ -1,16 +1,17 @@
 import {WILL_REMOVE as VIEWCONTAINER_WILL_REMOVE} from '../View/ViewContainerPublicEventHandler'
-import {assertType, isString} from '@flexio-oss/js-commons-bundle/assert'
+import {assertType, isString, TypeCheck} from '@flexio-oss/js-commons-bundle/assert'
 import {Sequence} from '@flexio-oss/js-commons-bundle/js-helpers'
 import {StoreMap} from '../Store/StoreMap'
 import {ViewContainerMap} from '../View/ViewContainerMap'
 import {WithID} from '../abstract/WithID'
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_COMPONENT} from '../Types/HasTagClassNameInterface'
-import {TypeCheck} from '../Types/TypeCheck'
+import {TypeCheck as HBTypeCheck} from '../Types/TypeCheck'
 
 const __actionsToken = Symbol('__actionsToken')
 const __sequenceId = Symbol('__sequenceId')
 const __stores = Symbol('__stores')
 const __viewContainers = Symbol('__viewContainers')
+const __removing = Symbol('__removing')
 
 const componentContextLogOptions = {
   color: 'green',
@@ -23,20 +24,20 @@ const componentContextLogOptions = {
  */
 export class ComponentContext extends WithID {
   /**
-   *
    * @param {HotBalloonApplication} hotBalloonApplication
    */
   constructor(hotBalloonApplication) {
-    assertType(TypeCheck.isHotballoonApplication(hotBalloonApplication),
-      'hotballoon:componentContext:constructor:  `hotBalloonApplication` argument should be an instance of ̀ hotballoon/HotBalloonApplication`, `%s` given',
-      typeof hotBalloonApplication
-    )
-
+    HBTypeCheck.assertIsHotBalloonApplication(hotBalloonApplication)
     super(hotBalloonApplication.nextID())
 
     const _sequenceId = new Sequence(this.ID() + '_')
     const _stores = new StoreMap()
     const _viewContainers = new ViewContainerMap()
+    let _removing = false
+    /**
+     * @type {Map<string, string>}
+     * @private
+     */
     const _actionsToken = new Map()
 
     Object.defineProperty(this, CLASS_TAG_NAME, {
@@ -66,7 +67,6 @@ export class ComponentContext extends WithID {
           configurable: false,
           enumerable: false,
           /**
-           *
            * @name ComponentContext#_sequenceId
            * @return {Sequence}
            * @protected
@@ -124,6 +124,24 @@ export class ComponentContext extends WithID {
           set: (v) => {
             throw new Error('hotballoon:ComponentContext: : `_actionsToken` property already defined')
           }
+        },
+        [__removing]: {
+          configurable: false,
+          enumerable: true,
+          /**
+           * @name ComponentContext#_actionsToken
+           * @return {boolean}
+           * @protected
+           */
+          get: () => {
+            return _removing
+          },
+          /**
+           * @param {boolean} v
+           */
+          set: (v) => {
+            _removing = TypeCheck.assertIsBoolean(v)
+          }
         }
 
       }
@@ -131,7 +149,6 @@ export class ComponentContext extends WithID {
   }
 
   /**
-   *
    * @param {HotBalloonApplication} hotballoonApplication
    * @return {ComponentContext}
    * @constructor
@@ -142,7 +159,6 @@ export class ComponentContext extends WithID {
   }
 
   /**
-   *
    * @param {string} token
    * @param {ActionDispatcher} action
    * @return {string}
@@ -157,7 +173,6 @@ export class ComponentContext extends WithID {
   }
 
   /**
-   *
    * @param {string} token
    * @return {ComponentContext}
    */
@@ -184,7 +199,6 @@ export class ComponentContext extends WithID {
   }
 
   /**
-   *
    * @param {String}  tokenStore
    * @returns {StoreInterface} store
    */
@@ -193,7 +207,6 @@ export class ComponentContext extends WithID {
   }
 
   /**
-   *
    * @param {ViewContainer} viewContainer
    * @returns {ViewContainer} viewContainer
    */
@@ -203,7 +216,6 @@ export class ComponentContext extends WithID {
   }
 
   /**
-   *
    * @param {String} tokenViewContainer
    * @returns {void}
    */
@@ -215,7 +227,6 @@ export class ComponentContext extends WithID {
   }
 
   /**
-   *
    * @param {String} tokenViewContainer
    * @returns {void}
    */
@@ -227,7 +238,6 @@ export class ComponentContext extends WithID {
   }
 
   /**
-   *
    * @param {String} key
    * @returns {?ViewContainer} viewContainer
    */
@@ -236,7 +246,6 @@ export class ComponentContext extends WithID {
   }
 
   /**
-   *
    * @param {String} prefix
    * @returns {String}
    */
@@ -266,7 +275,6 @@ export class ComponentContext extends WithID {
   }
 
   /**
-   *
    * @return {LoggerInterface}
    */
   logger() {
@@ -274,6 +282,7 @@ export class ComponentContext extends WithID {
   }
 
   remove() {
+    this[__removing] = true
     for (let [token, value] of this[__actionsToken].entries()) {
       this.removeActionToken(token)
     }
@@ -282,6 +291,8 @@ export class ComponentContext extends WithID {
     this[__stores].clear()
     this[__viewContainers].forEach(v => v.remove())
 
+    this.APP().removeComponentContext(this.ID())
+
     this.logger().log(
       this.logger().builder()
         .info()
@@ -289,5 +300,12 @@ export class ComponentContext extends WithID {
         .pushLog(this),
       componentContextLogOptions
     )
+  }
+
+  /**
+   * @return {boolean}
+   */
+  isRemoving() {
+    return this[__removing]
   }
 }

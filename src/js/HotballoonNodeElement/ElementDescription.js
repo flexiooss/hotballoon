@@ -136,6 +136,15 @@ export class ElementDescription {
   }
 
   /**
+   * @param {String} id
+   * @return {ElementDescription}
+   */
+  id(id) {
+    this._params.setId(id)
+    return this
+  }
+
+  /**
    *
    * @param {String} property
    * @param {(boolean|function():boolean)} statement

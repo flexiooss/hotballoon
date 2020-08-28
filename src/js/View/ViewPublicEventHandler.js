@@ -8,6 +8,7 @@ export const VIEW_UPDATED = 'VIEW_UPDATED'
 export const VIEW_STORE_CHANGED = 'VIEW_STORE_CHANGED'
 export const VIEW_MOUNT = 'VIEW_MOUNT'
 export const VIEW_MOUNTED = 'VIEW_MOUNTED'
+export const VIEW_REMOVE = 'VIEW_REMOVE'
 
 export class ViewPublicEventHandler {
   /***
@@ -148,4 +149,15 @@ export class ViewPublicEventHandler {
    * @callback ViewCounterEvent~storeChanged
    * @param {StoreState} payload
    */
+
+  /**
+   *
+   * @param {function()} clb
+   * @return {String}
+   */
+  remove(clb) {
+    return this._subscribeTo(VIEW_REMOVE, clb)
+  }
+
+
 }

@@ -1,4 +1,4 @@
-import {assert, assertType, isObject, isString} from '@flexio-oss/js-commons-bundle/assert'
+import {assert, assertType, isNull, isObject, isString} from '@flexio-oss/js-commons-bundle/assert'
 import {HyperFlexParams} from './HyperFlexParams'
 
 const _querySelector_ = Symbol.for('_querySelector_')
@@ -128,6 +128,9 @@ class HyperFlex {
   _setId(id) {
     if (id) {
       this._element.id = id
+    }
+    if (!isNull(this._params.id())) {
+      this._element.id = this._params.id()
     }
     return this
   }

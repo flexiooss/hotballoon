@@ -1,16 +1,16 @@
 import {HotBalloonApplication} from './HotBalloonApplication'
+import {ViewRenderConfig} from './ViewRenderConfig'
+
 
 export class ApplicationBuilder {
 
   constructor() {
     /**
-     *
      * @type {?string}
      * @private
      */
     this.__id = null
     /**
-     *
      * @type {?Dispatcher}
      * @private
      */
@@ -22,15 +22,18 @@ export class ApplicationBuilder {
      */
     this.__logger = null
     /**
-     *
      * @type {?Document}
      * @private
      */
     this.__document = null
+    /**
+     * @type {boolean}
+     * @private
+     */
+    this.__viewDebug = false
   }
 
   /**
-   *
    * @param {string} value
    * @return {ApplicationBuilder}
    */
@@ -40,7 +43,6 @@ export class ApplicationBuilder {
   }
 
   /**
-   *
    * @param {Dispatcher} value
    * @return {ApplicationBuilder}
    */
@@ -60,7 +62,6 @@ export class ApplicationBuilder {
   }
 
   /**
-   *
    * @param {Document} value
    * @return {ApplicationBuilder}
    */
@@ -70,10 +71,19 @@ export class ApplicationBuilder {
   }
 
   /**
+   * @param {boolean} value
+   * @return {ApplicationBuilder}
+   */
+  viewDebug(value) {
+    this.__viewDebug = value
+    return this
+  }
+
+  /**
    *
    * @return {HotBalloonApplication}
    */
   build() {
-    return new HotBalloonApplication(this.__id, this.__dispatcher, this.__logger, this.__document)
+    return new HotBalloonApplication(this.__id, this.__dispatcher, this.__logger, new ViewRenderConfig(this.__document, this.__viewDebug))
   }
 }

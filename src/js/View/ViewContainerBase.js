@@ -1,4 +1,4 @@
-import {assert, isBoolean, isNode} from '@flexio-oss/js-commons-bundle/assert'
+import {TypeCheck as TypeTypeCheck} from '@flexio-oss/js-commons-bundle/assert'
 import {ArrayMap} from '@flexio-oss/js-commons-bundle/extended-flex-types'
 import {WithID} from '../abstract/WithID'
 import {OrderedEventHandler} from '../Event/OrderedEventHandler'
@@ -21,10 +21,10 @@ export class ViewContainerBase extends WithID {
 
     let _mounted = false
     let _rendered = false
+    let _removed = false
 
     /**
-     *
-     * @type {ArrayMap<string,>}
+     * @type {ArrayMap<string,[]>}
      * @private
      */
     let _tokenEvent = new ArrayMap()
@@ -36,19 +36,9 @@ export class ViewContainerBase extends WithID {
       _mounted: {
         configurable: false,
         enumerable: false,
-        get: () => {
-          /**
-           * @property {boolean}
-           * @name ViewContainerBase#_mounted
-           * @protected
-           */
-          return _mounted
-        },
+        get: () => _mounted,
         set: (v) => {
-          assert(!!isBoolean(v),
-            'hotballoon:ViewContainerBase:constructor: `__mounted` argument should be a boolean'
-          )
-          _mounted = v
+          _mounted = TypeTypeCheck.assertIsBoolean(v)
         }
       },
       /**
@@ -59,14 +49,22 @@ export class ViewContainerBase extends WithID {
       _rendered: {
         configurable: false,
         enumerable: false,
-        get: () => {
-          return _rendered
-        },
+        get: () => _rendered,
         set: (v) => {
-          assert(!!isBoolean(v),
-            'hotballoon:ViewContainerBase:constructor: `rendered` argument should be a boolean'
-          )
-          _rendered = v
+
+          _rendered = TypeTypeCheck.assertIsBoolean(v)
+        }
+      }, /**
+       * @property {boolean}
+       * @name ViewContainerBase#_removed
+       * @protected
+       */
+      _removed: {
+        configurable: false,
+        enumerable: false,
+        get: () => _removed,
+        set: (v) => {
+          _removed = TypeTypeCheck.assertIsBoolean(v)
         }
       },
       [_EventHandler]: {
@@ -117,14 +115,9 @@ export class ViewContainerBase extends WithID {
       parentNode: {
         configurable: false,
         enumerable: true,
-        get: () => {
-          return parentNode
-        },
+        get: () => parentNode,
         set: (v) => {
-          assert(!!isNode(v),
-            'hotballoon:view:constructor: `parentNode` argument should be a Element'
-          )
-          parentNode = v
+          parentNode = TypeTypeCheck.assertIsNode(v)
         }
       }
     })
@@ -148,6 +141,7 @@ export class ViewContainerBase extends WithID {
   }
 
   remove() {
+    this._removed = true
     this[_EventHandler].clear()
 
     this._tokenEvent.forEach(
@@ -157,19 +151,18 @@ export class ViewContainerBase extends WithID {
        * @param storeId
        */
       (listenedStores, storeId) => {
-      listenedStores.forEach(
-        /**
-         *
-         * @param {ListenedStore} listenedStore
-         */
-        listenedStore => {
-          listenedStore.remove()
+        listenedStores.forEach(
+          /**
+           *
+           * @param {ListenedStore} listenedStore
+           */
+          listenedStore => {
+            listenedStore.remove()
+          })
       })
-    })
 
     this.MapOfView().forEach(
       /**
-       *
        * @param {View} v
        */
       v => {
@@ -184,7 +177,6 @@ export class ViewContainerBase extends WithID {
   }
 
   /**
-   *
    * @param {View} view
    * @return {View}
    */
@@ -194,7 +186,6 @@ export class ViewContainerBase extends WithID {
   }
 
   /**
-   *
    * @param {View} view
    * @return {this}
    */
@@ -206,7 +197,6 @@ export class ViewContainerBase extends WithID {
   }
 
   /**
-   *
    * @param {String} viewId
    * @return {View}
    */
@@ -215,7 +205,6 @@ export class ViewContainerBase extends WithID {
   }
 
   /**
-   *
    * @return {ViewContainerBaseMap}
    */
   MapOfView() {
@@ -223,7 +212,6 @@ export class ViewContainerBase extends WithID {
   }
 
   /**
-   *
    * @return {boolean}
    */
   isRendered() {
@@ -231,10 +219,16 @@ export class ViewContainerBase extends WithID {
   }
 
   /**
-   *
    * @return {boolean}
    */
   isMounted() {
     return this._mounted === true
+  }
+
+  /**
+   * @return {boolean}
+   */
+  isRemoved() {
+    return this._removed === true
   }
 }

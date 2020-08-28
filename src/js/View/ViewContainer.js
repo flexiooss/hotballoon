@@ -21,7 +21,7 @@ export class ViewContainerParameters {
       'hotballoon:ViewContainerParameters: `id` argument assert be a String'
     )
     assertType(!!isNode(parentNode),
-      'hotballoon:view:ViewContainerParameters: `parentNode` argument should be a Node'
+      'hotballoon:fieldView:ViewContainerParameters: `parentNode` argument should be a Node'
     )
 
     Object.defineProperties(this, {
@@ -116,7 +116,7 @@ export class ViewContainer extends ViewContainerBase {
 
   /**
    *
-   * @description subscribe subView an events of this view
+   * @description subscribe subView an events of this fieldView
    * @param {StoreInterface} store
    * @param {ViewContainer~storeChanged} clb
    * @return {ListenedStore}
@@ -132,7 +132,9 @@ export class ViewContainer extends ViewContainerBase {
      */
     const listenedStore = store.listenChanged(
       (payload, type) => {
-        clb(payload.data())
+        if(!this.isRemoved()){
+          clb(payload.data())
+        }
       }
     )
 
@@ -240,10 +242,10 @@ export class ViewContainer extends ViewContainerBase {
 
   /**
    *
-   * @return {Document}
+   * @return {ViewRenderConfig}
    */
-  document() {
-    return this[_ComponentContext].APP().document()
+  viewRenderConfig() {
+    return this[_ComponentContext].APP().viewRenderConfig()
   }
 
   /**

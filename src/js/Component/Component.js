@@ -1,14 +1,17 @@
-import {CoreException} from '../CoreException'
+import {NotOverrideException} from '@flexio-oss/js-commons-bundle/assert'
 
 /**
  * @interface
  */
 export class Component {
+  remove() {
+    throw NotOverrideException.FROM_INTERFACE('Hotballoon::Component')
+  }
 
   /**
-   *
+   * @return {boolean}
    */
-  remove() {
-    throw new CoreException(`mountView should be override`)
+  isRemoving() {
+    throw NotOverrideException.FROM_INTERFACE('Hotballoon::Component')
   }
 }

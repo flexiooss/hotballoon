@@ -1,5 +1,4 @@
 import {assertType, isNull} from '@flexio-oss/js-commons-bundle/assert'
-import {UID} from '@flexio-oss/js-commons-bundle/js-helpers'
 import {EventAction} from './EventAction'
 import {ActionDispatcherConfig} from './ActionDispatcherConfig'
 import {DispatcherEventListenerConfigBuilder} from '../Dispatcher/DispatcherEventListenerConfigBuilder'
@@ -24,7 +23,7 @@ export class ActionDispatcher extends WithID {
    * @param {ActionDispatcherConfig<TYPE, TYPE_BUILDER>} actionConfig
    */
   constructor(actionConfig) {
-    super(UID(actionConfig.type.name + '_'))
+    super(actionConfig.id())
 
     assertType(actionConfig instanceof ActionDispatcherConfig,
       'hotballoon:ActionDispatcher:constructor "actionConfig" argument assert be an instance of ActionDispatcherConfig'

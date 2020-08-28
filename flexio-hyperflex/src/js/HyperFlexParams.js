@@ -1,5 +1,5 @@
 import {deepMerge} from '@flexio-oss/js-commons-bundle/js-type-helpers'
-import {isNull, isFunction} from '@flexio-oss/js-commons-bundle/assert'
+import {isNull, isFunction, TypeCheck} from '@flexio-oss/js-commons-bundle/assert'
 import {globalFlexioImport} from '@flexio-oss/js-commons-bundle/global-import-registry'
 
 
@@ -44,6 +44,11 @@ export class HyperFlexParams {
      * @private
      */
     this._classList = new globalFlexioImport.io.flexio.flex_types.arrays.StringArray()
+    /**
+     * @params {?String}
+     * @private
+     */
+    this._id = null
   }
 
   /**
@@ -76,6 +81,14 @@ export class HyperFlexParams {
    */
   text() {
     return this._text
+  }
+
+  /**
+   *
+   * @return {String}
+   */
+  id() {
+    return this._id
   }
 
   /**
@@ -202,6 +215,15 @@ export class HyperFlexParams {
   }
 
   /**
+   * @param {String} id
+   * @return {this}
+   */
+  setId(id) {
+    this._id = TypeCheck.assertIsString(id)
+    return this
+  }
+
+  /**
    *
    * @param {Object.<String, String>} styles
    * @returns {this}
@@ -241,12 +263,15 @@ export class HyperFlexParams {
    * @return {this}
    */
   bindStyle(property, statement, value, valueFalse = null) {
-    valueFalse = isFunction(valueFalse) ? valueFalse() : valueFalse
+    const st = (isFunction(statement) ? statement() : statement)
 
-    if ((isFunction(statement) ? statement() : statement) === true) {
+    if (st === true) {
       this._styles[property] = (isFunction(value) ? value() : value)
-    } else if (!isNull(valueFalse)) {
-      this._styles[property] = valueFalse
+    } else {
+      valueFalse = isFunction(valueFalse) ? valueFalse() : valueFalse
+      if (!isNull(valueFalse)) {
+        this._styles[property] = isFunction(valueFalse) ? valueFalse() : valueFalse
+      }
     }
     return this
   }

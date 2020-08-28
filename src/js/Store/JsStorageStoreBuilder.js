@@ -1,7 +1,7 @@
 import {UID} from '@flexio-oss/js-commons-bundle/js-helpers'
 import {Store} from './Store'
 import {StoreConfig} from './StoreConfig'
-import {InMemoryStorage} from './Storage/InMemoryStorage'
+import {JsStorageImplStorage} from './Storage/JsStorageImplStorage'
 import {StoreState} from './StoreState'
 import {StoreTypeConfig} from './StoreTypeConfig'
 import {isNull} from '@flexio-oss/js-commons-bundle/assert'
@@ -9,7 +9,7 @@ import {isNull} from '@flexio-oss/js-commons-bundle/assert'
 /**
  * @template TYPE, TYPE_BUILDER
  */
-export class InMemoryStoreBuilder {
+export class JsStorageStoreBuilder {
   constructor() {
     /**
      * @type {?TYPE.}
@@ -33,6 +33,16 @@ export class InMemoryStoreBuilder {
      */
     this.__defaultChecker = v => v
     /**
+     * @type {?Storage}
+     * @private
+     */
+    this.__storage = null
+    /**
+     * @type {?string}
+     * @private
+     */
+    this.__key = null
+    /**
      * @type {?string}
      * @private
      */
@@ -49,6 +59,7 @@ export class InMemoryStoreBuilder {
   }
 
   /**
+   *
    * @param {TYPE.} type
    * @return {InMemoryStoreBuilder}
    */
@@ -58,6 +69,7 @@ export class InMemoryStoreBuilder {
   }
 
   /**
+   *
    * @param {TYPE} initialData
    * @return {InMemoryStoreBuilder}
    */
@@ -85,6 +97,24 @@ export class InMemoryStoreBuilder {
   }
 
   /**
+   * @param {Storage} value
+   * @return {LocalStorageStoreBuilder}
+   */
+  storage(value) {
+    this.__storage = value
+    return this
+  }
+
+  /**
+   * @param {string} value
+   * @return {LocalStorageStoreBuilder}
+   */
+  key(value) {
+    this.__key = value
+    return this
+  }
+
+  /**
    * @return {string}
    * @private
    */
@@ -93,11 +123,27 @@ export class InMemoryStoreBuilder {
   }
 
   /**
+   *
    * @return {Store<TYPE, TYPE_BUILDER>}
    */
   build() {
-
+    /**
+     * @type {string}
+     */
     const id = this.__uniqName()
+    /**
+     * @type {LocalStorageStorage}
+     */
+    const storage = new JsStorageImplStorage(
+      this.__type,
+      id,
+      this.__storage,
+      this.__key
+    )
+
+    if (isNull(storage.get())) {
+      storage.set(id, this.__initialData)
+    }
 
     return new Store(
       new StoreConfig(
@@ -108,14 +154,7 @@ export class InMemoryStoreBuilder {
           this.__defaultChecker,
           this.__validator
         ),
-        new InMemoryStorage(
-          this.__type,
-          new StoreState(
-            id,
-            this.__type,
-            this.__initialData
-          )
-        )
+        storage
       )
     )
   }
