@@ -15,7 +15,7 @@ export class ActionDispatcherBuilder {
      */
     this.__dispatcher = null
     /**
-     * @type {?TYPE.}
+     * @type {?Class<TYPE>}
      * @private
      */
     this.__type = null
@@ -55,7 +55,7 @@ export class ActionDispatcherBuilder {
   }
 
   /**
-   * @param {TYPE.} type
+   * @param {?Class<TYPE>} type
    * @return {ActionDispatcherBuilder}
    */
   type(type) {

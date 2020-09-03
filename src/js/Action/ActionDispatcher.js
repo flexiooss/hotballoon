@@ -19,7 +19,6 @@ const _actionConfig = Symbol('_actionParams')
  */
 export class ActionDispatcher extends WithID {
   /**
-   *
    * @param {ActionDispatcherConfig<TYPE, TYPE_BUILDER>} actionConfig
    */
   constructor(actionConfig) {
@@ -47,53 +46,63 @@ export class ActionDispatcher extends WithID {
   }
 
   /**
-   *
-   * @return {TYPE_BUILDER}
+   * @return {?TYPE_BUILDER}
    */
   payloadBuilder() {
+    if (isNull(this[_actionConfig].type())) {
+      return null
+    }
     return this[_actionConfig].type().builder()
   }
 
   /**
    * @param {Object} object
-   * @return {TYPE_BUILDER}
+   * @return {?TYPE_BUILDER}
    */
   payloadFromObject(object) {
+    if (isNull(this[_actionConfig].type())) {
+      return null
+    }
     return this[_actionConfig].type().fromObject(object)
   }
 
   /**
-   *
    * @param {TYPE} instance
-   * @return {TYPE_BUILDER}
+   * @return {?TYPE_BUILDER}
    */
   payloadFrom(instance) {
+    if (isNull(this[_actionConfig].type())) {
+      return null
+    }
     return this[_actionConfig].type().from(instance)
   }
 
   /**
-   *
    * @param {string} json
    * @return {TYPE_BUILDER}
    */
   payloadFromJSON(json) {
+    if (isNull(this[_actionConfig].type())) {
+      return null
+    }
     return this[_actionConfig].type().fromJSON(json)
   }
 
   /**
-   *
-   * @return {TYPE.}
+   * @return {?Class<TYPE>}
    */
   __type__() {
     return this[_actionConfig].type()
   }
 
   /**
-   *
    * @param {Class} constructor
    * @return {boolean}
    */
   isTypeOf(constructor) {
+    if (isNull(this[_actionConfig].type())) {
+      return isNull(constructor)
+    }
     return constructor === this.__type__()
   }
 
@@ -101,21 +110,21 @@ export class ActionDispatcher extends WithID {
    * @param {TYPE} payload
    */
   dispatch(payload) {
-    const checker = this[_actionConfig].defaultChecker()
-    /**
-     *
-     * @type {TYPE}
-     */
-    const data = checker(payload)
+    if (!isNull(this[_actionConfig].type())) {
+      const checker = this[_actionConfig].defaultChecker()
+      /**
+       * @type {TYPE}
+       */
+      const data = checker(payload)
 
-    assertType(
-      data instanceof this.__type__(),
-      'hotballoon:ActionDispatcher:dispatch "data" argument should be an instance of %s',
-      this.__type__().name
-    )
-
-    if (!isNull(this[_actionConfig].validator()) && !this[_actionConfig].validator().isValid(payload)) {
-      throw new ValidationError('hotballoon:ActionDispatcher:dispatch "data" argument failed to validation')
+      assertType(
+        data instanceof this.__type__(),
+        'hotballoon:ActionDispatcher:dispatch "data" argument should be an instance of %s',
+        this.__type__().name
+      )
+      if (!isNull(this[_actionConfig].validator()) && !this[_actionConfig].validator().isValid(payload)) {
+        throw new ValidationError('hotballoon:ActionDispatcher:dispatch "data" argument failed to validation')
+      }
     }
 
     this[_actionConfig].dispatcher().dispatchAction(
@@ -127,8 +136,7 @@ export class ActionDispatcher extends WithID {
   }
 
   /**
-   *
-   * @param {function(payload: TYPE, type: (string|Symbol))} callback
+   * @param {function(payload: ?TYPE, type: (string|Symbol))} callback
    * @param {ComponentContext} componentContext
    * @returns {ListenedAction}
    */
@@ -137,7 +145,10 @@ export class ActionDispatcher extends WithID {
       TypeCheck.isComponentContext(componentContext),
       '`componentContext` should be ComponentContext'
     )
-
+    TypeCheck.assertIsComponentContext(componentContext)
+    /**
+     * @type {string}
+     */
     const token = componentContext
       .addActionToken(
         this[_actionConfig].dispatcher()
@@ -154,7 +165,6 @@ export class ActionDispatcher extends WithID {
   }
 
   /**
-   *
    * @param {...string} token
    */
   waitFor(...token) {
