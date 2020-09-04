@@ -1,4 +1,4 @@
-import {assertType, isNull} from '@flexio-oss/js-commons-bundle/assert'
+import {assertType, isNull, TypeCheck as TypeTypeCheck} from '@flexio-oss/js-commons-bundle/assert'
 import {EventAction} from './EventAction'
 import {ActionDispatcherConfig} from './ActionDispatcherConfig'
 import {DispatcherEventListenerConfigBuilder} from '../Dispatcher/DispatcherEventListenerConfigBuilder'
@@ -52,6 +52,7 @@ export class ActionDispatcher extends WithID {
     if (isNull(this[_actionConfig].type())) {
       return null
     }
+    TypeTypeCheck.assertIsFunction(this[_actionConfig].type().builder)
     return this[_actionConfig].type().builder()
   }
 
@@ -63,6 +64,7 @@ export class ActionDispatcher extends WithID {
     if (isNull(this[_actionConfig].type())) {
       return null
     }
+    TypeTypeCheck.assertIsFunction(this[_actionConfig].type().fromObject)
     return this[_actionConfig].type().fromObject(object)
   }
 
@@ -74,6 +76,7 @@ export class ActionDispatcher extends WithID {
     if (isNull(this[_actionConfig].type())) {
       return null
     }
+    TypeTypeCheck.assertIsFunction(this[_actionConfig].type().from)
     return this[_actionConfig].type().from(instance)
   }
 
@@ -85,6 +88,7 @@ export class ActionDispatcher extends WithID {
     if (isNull(this[_actionConfig].type())) {
       return null
     }
+    TypeTypeCheck.assertIsFunction(this[_actionConfig].type().fromJSON)
     return this[_actionConfig].type().fromJSON(json)
   }
 
@@ -107,9 +111,9 @@ export class ActionDispatcher extends WithID {
   }
 
   /**
-   * @param {TYPE} payload
+   * @param {?TYPE} [payload=null]
    */
-  dispatch(payload) {
+  dispatch(payload = null) {
     if (!isNull(this[_actionConfig].type())) {
       const checker = this[_actionConfig].defaultChecker()
       /**
@@ -141,10 +145,6 @@ export class ActionDispatcher extends WithID {
    * @returns {ListenedAction}
    */
   listenWithCallback(callback, componentContext) {
-    assertType(
-      TypeCheck.isComponentContext(componentContext),
-      '`componentContext` should be ComponentContext'
-    )
     TypeCheck.assertIsComponentContext(componentContext)
     /**
      * @type {string}
