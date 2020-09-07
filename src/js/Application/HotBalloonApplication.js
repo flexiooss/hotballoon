@@ -12,10 +12,8 @@ import {ViewRenderConfig} from './ViewRenderConfig'
 
 const _Dispatcher = Symbol('_Dispatcher')
 const _ComponentContexts = Symbol('_ComponentContexts')
-const _Services = Symbol('_Services')
 const _SequenceId = Symbol('_SequenceId')
 const _Logger = Symbol('_Logger')
-const _document = Symbol('_document')
 const _viewRenderConfig = Symbol('_viewRenderConfig')
 
 const applicationLogOptions = {
@@ -50,12 +48,6 @@ export class HotBalloonApplication extends WithID {
     )
 
     const _componentContexts = new ComponentContextMap()
-    /**
-     *
-     * @type {Map<string, HotballoonService>}
-     * @private
-     */
-    const _services = new Map()
     const _sequenceId = new Sequence('hb_')
 
     Object.defineProperty(this, CLASS_TAG_NAME, {
@@ -84,16 +76,6 @@ export class HotBalloonApplication extends WithID {
         set: (v) => {
           assert(false,
             '`_ComponentContexts` already set'
-          )
-        }
-      },
-      [_Services]: {
-        configurable: false,
-        enumerable: false,
-        get: () => _services,
-        set: (v) => {
-          assert(false,
-            '`services` already set'
           )
         }
       },
@@ -179,49 +161,6 @@ export class HotBalloonApplication extends WithID {
    */
   componentContext(componentID) {
     return this[_ComponentContexts].get(componentID)
-  }
-
-  /**
-   * @param {HotballoonService} service
-   * @returns {HotballoonService} service
-   */
-  addService(service) {
-    assertType(
-      TypeCheck.isService(service),
-      '`service` should be a Service'
-    )
-    assert(!this[_Services].has(service.name()),
-      'hotballoon:HotBalloonApplication:addService: `serviceName` : `%s` is already set',
-      service.name()
-    )
-    PrimitiveTypeCheck.assertIsString(service.name())
-
-    this[_Services].set(service.name(), service)
-    return service
-  }
-
-  /**
-   * @param {String} serviceName
-   * @return {HotBalloonApplication}
-   */
-  removeService(serviceName) {
-    let service = this.service(serviceName)
-    if (!isNull(service)) {
-      service.remove()
-      this[_Services].delete(serviceName)
-    }
-    return this
-  }
-
-  /**
-   * @param {String} serviceName
-   * @return {?HotballoonService}
-   */
-  service(serviceName) {
-    if (this[_Services].has(serviceName)) {
-      return this[_Services].get(serviceName)
-    }
-    return null
   }
 
   /**

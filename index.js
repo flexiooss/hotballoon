@@ -31,5 +31,3 @@ export {ExecutorWorker} from './src/js/Job/ExecutorWorker'
 export {ExecutorInline} from './src/js/Job/ExecutorInline'
 
 export {OrderedEventListenerConfigBuilder} from '@flexio-oss/js-commons-bundle/event-handler'
-
-export {HotballoonService} from './src/js/Service/HotballoonService'
