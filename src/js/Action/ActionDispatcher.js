@@ -19,6 +19,10 @@ const _actionConfig = Symbol('_actionParams')
  */
 export class ActionDispatcher extends WithID {
   /**
+   * @type {boolean}
+   */
+  #removed= false
+  /**
    * @param {ActionDispatcherConfig<TYPE, TYPE_BUILDER>} actionConfig
    */
   constructor(actionConfig) {
@@ -114,6 +118,9 @@ export class ActionDispatcher extends WithID {
    * @param {?TYPE} [payload=null]
    */
   dispatch(payload = null) {
+    if(this.#removed){
+      return
+    }
     if (!isNull(this[_actionConfig].type())) {
       const checker = this[_actionConfig].defaultChecker()
       /**
@@ -169,5 +176,10 @@ export class ActionDispatcher extends WithID {
    */
   waitFor(...token) {
     this[_actionConfig].dispatcher().waitFor(this.ID(), token)
+  }
+
+  remove(){
+    this.#removed = true
+    this[_actionConfig].dispatcher().removeEventListener(this.ID())
   }
 }

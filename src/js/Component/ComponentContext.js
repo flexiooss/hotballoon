@@ -164,11 +164,7 @@ export class ComponentContext extends WithID {
    * @return {string}
    */
   addActionToken(token, action) {
-    assertType(
-      isString(token),
-      `${this.constructor.name}: 'token' should be string`
-    )
-    this[__actionsToken].set(token, action.ID())
+    this[__actionsToken].set(TypeCheck.assertIsString(token), action.ID())
     return token
   }
 
@@ -177,11 +173,7 @@ export class ComponentContext extends WithID {
    * @return {ComponentContext}
    */
   removeActionToken(token) {
-    assertType(
-      isString(token),
-      `${this.constructor.name}: 'token' should be string`
-    )
-    if (this[__actionsToken].has(token)) {
+    if (this[__actionsToken].has(TypeCheck.assertIsString(token))) {
       this.dispatcher().removeActionListener(this[__actionsToken].get(token), token)
       this[__actionsToken].delete(token)
     }
@@ -193,6 +185,9 @@ export class ComponentContext extends WithID {
    * @returns {Store} store
    */
   addStore(store) {
+    if (this[__stores].has(store.ID()) && this[__stores].get(store.ID()) !== store) {
+      throw new Error('Store already set : ' + store.ID())
+    }
     this[__stores].set(store.ID(), store)
     store.setLogger(this.logger())
     return store
@@ -211,6 +206,9 @@ export class ComponentContext extends WithID {
    * @returns {ViewContainer} viewContainer
    */
   addViewContainer(viewContainer) {
+    if (this[__viewContainers].has(viewContainer.ID()) && this[__viewContainers].get(viewContainer.ID()) !== viewContainer) {
+      throw new Error('ViewContainer already set : ' + viewContainer.ID())
+    }
     this[__viewContainers].set(viewContainer.ID(), viewContainer)
     return viewContainer
   }
@@ -268,13 +266,6 @@ export class ComponentContext extends WithID {
   }
 
   /**
-   * @return {?HotballoonService}
-   */
-  service(key) {
-    return this.APP().service(key)
-  }
-
-  /**
    * @return {LoggerInterface}
    */
   logger() {
@@ -286,9 +277,11 @@ export class ComponentContext extends WithID {
     for (let [token, value] of this[__actionsToken].entries()) {
       this.removeActionToken(token)
     }
+    this[__actionsToken].clear()
 
     this[__stores].forEach(v => v.remove())
     this[__stores].clear()
+
     this[__viewContainers].forEach(v => v.remove())
 
     this.APP().removeComponentContext(this.ID())
