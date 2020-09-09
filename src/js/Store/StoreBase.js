@@ -1,5 +1,5 @@
 import {WithID} from '../abstract/WithID'
-import {assert, assertType, isFunction, isNull, isNumber} from '@flexio-oss/js-commons-bundle/assert'
+import {assert, assertType, isFunction, isNull, isNumber, TypeCheck} from '@flexio-oss/js-commons-bundle/assert'
 import {StorageInterface} from './Storage/StorageInterface'
 
 import {OrderedEventHandler} from '../Event/OrderedEventHandler'
@@ -115,7 +115,6 @@ export class StoreBase extends WithID {
   }
 
   /**
-   *
    * @return {TYPE.}
    */
   __type__() {
@@ -123,7 +122,6 @@ export class StoreBase extends WithID {
   }
 
   /**
-   *
    * @return {TYPE_BUILDER}
    */
   dataBuilder() {
@@ -139,7 +137,6 @@ export class StoreBase extends WithID {
   }
 
   /**
-   *
    * @param {TYPE} instance
    * @return {TYPE_BUILDER}
    */
@@ -148,7 +145,6 @@ export class StoreBase extends WithID {
   }
 
   /**
-   *
    * @param {string} json
    * @return {TYPE_BUILDER}
    */
@@ -157,7 +153,6 @@ export class StoreBase extends WithID {
   }
 
   /**
-   *
    * @param {Class} constructor
    * @return {boolean}
    */
@@ -166,7 +161,6 @@ export class StoreBase extends WithID {
   }
 
   /**
-   *
    * @return {(Symbol|string)}
    */
   storeId() {
@@ -182,7 +176,6 @@ export class StoreBase extends WithID {
   }
 
   /**
-   *
    * @param {LoggerInterface} logger
    */
   setLogger(logger) {
@@ -199,10 +192,17 @@ export class StoreBase extends WithID {
   }
 
   /**
-   *
    * @param {TYPE} dataStore
    */
   [_set](dataStore) {
+    this[_storage] = this[_storage].set(this.ID(), this.validateDataStore(dataStore))
+  }
+
+  /**
+   * @param {TYPE} dataStore
+   * @return {TYPE}
+   */
+  validateDataStore(dataStore) {
     const checker = this[_storeParams].defaultChecker()
     const data = checker(dataStore)
 
@@ -215,8 +215,7 @@ export class StoreBase extends WithID {
     if (!isNull(this[_storeParams].validator()) && !this[_storeParams].validator().isValid(data)) {
       throw new ValidationError('StoreBase:set: `dataStore` failed validation')
     }
-
-    this[_storage] = this[_storage].set(this.ID(), data)
+    return data
   }
 
   /**
@@ -242,7 +241,6 @@ export class StoreBase extends WithID {
   }
 
   /**
-   *
    * @return {LoggerInterface}
    */
   logger() {
@@ -250,22 +248,17 @@ export class StoreBase extends WithID {
   }
 
   /**
-   *
    * @param {function(state: StoreState<TYPE>)} callback
    * @param {number} [priority=100]
    * @return {ListenedStore}
    */
   listenChanged(callback, priority = 100) {
-    assertType(
-      isFunction(callback),
-      'hotballoon:' + this.constructor.name + ':listenChanged: `callback` argument should be callable'
-    )
+    TypeCheck.assertIsFunction(callback)
+    TypeCheck.assertIsNumber(priority)
 
-    assertType(
-      isNumber(priority),
-      'hotballoon:' + this.constructor.name + ':listenChanged: `priority` argument should be a number'
-    )
-
+    /**
+     * @type {string}
+     */
     const token = this[_EventHandler].on(
       OrderedEventListenerConfigBuilder
         .listen(this.changedEventName())
@@ -285,7 +278,6 @@ export class StoreBase extends WithID {
   }
 
   /**
-   *
    * @param {(string|Symbol)} token
    */
   stopListenChanged(token) {

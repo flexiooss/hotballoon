@@ -1,5 +1,5 @@
 import {StoreBaseConfig} from './StoreBaseConfig'
-import {assertType, isFunction} from '@flexio-oss/js-commons-bundle/assert'
+import {TypeCheck as TypeTypeCheck} from '@flexio-oss/js-commons-bundle/assert'
 import {TypeCheck} from '../Types/TypeCheck'
 
 /**
@@ -17,16 +17,19 @@ export class ProxyStoreConfig extends StoreBaseConfig {
   constructor(id, initialData, store, storeTypeConfig, mapper, storage) {
     super(id, initialData, storeTypeConfig, storage)
 
-    assertType(TypeCheck.isStoreBase(store), '`store` argument should be an instance of StoreInterface')
-
-    assertType(isFunction(mapper), '`mapper` argument should be a Function')
-
-    this._mapper = mapper
-    this._store = store
+    /**
+     * @type {function(state: STORE_TYPE): TYPE}
+     * @private
+     */
+    this._mapper = TypeTypeCheck.assertIsFunction(mapper)
+    /**
+     * @type {StoreInterface<STORE_TYPE>}
+     * @private
+     */
+    this._store = TypeCheck.assertStoreBase(store)
   }
 
   /**
-   *
    * @return {StoreInterface<STORE_TYPE>}
    */
   store() {
@@ -34,7 +37,6 @@ export class ProxyStoreConfig extends StoreBaseConfig {
   }
 
   /**
-   *
    * @return {function(state: STORE_TYPE ):TYPE}
    */
   mapper() {
@@ -42,7 +44,6 @@ export class ProxyStoreConfig extends StoreBaseConfig {
   }
 
   /**
-   *
    * @return {StoreTypeConfig<TYPE, TYPE_BUILDER>}
    */
   storeTypeConfig() {
@@ -50,7 +51,6 @@ export class ProxyStoreConfig extends StoreBaseConfig {
   }
 
   /**
-   *
    * @return {StorageInterface<TYPE>}
    */
   storage() {
