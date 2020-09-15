@@ -80,7 +80,7 @@ export class AsyncDomAccessor extends DomAccessor {
    * @return {*}
    */
   read(task) {
-    console.log('read')
+//    console.log('read')
     this.#reads.push(TypeCheck.assertIsFunction(task))
     this.#scheduleFlush()
     return this
@@ -91,7 +91,7 @@ export class AsyncDomAccessor extends DomAccessor {
    * @return {*}
    */
   write(task) {
-    console.log('write')
+//    console.log('write')
     this.#writes.push(TypeCheck.assertIsFunction(task))
     this.#scheduleFlush()
     return this
@@ -100,7 +100,7 @@ export class AsyncDomAccessor extends DomAccessor {
   #scheduleFlush() {
     if (!this.#scheduled) {
       this.#scheduled = true
-      this.#requestAnimationFrame(() => {
+      this.#requestAnimationFrame.call(this.#window,() => {
         this.#flush()
       })
     }
@@ -109,9 +109,9 @@ export class AsyncDomAccessor extends DomAccessor {
   #flush() {
 
     try {
-      console.log('flushing reads', this.#reads.length)
+//      console.log('flushing reads', this.#reads.length)
       this.#runTasks(this.#reads)
-      console.log('flushing writes', this.#writes.length)
+//      console.log('flushing writes', this.#writes.length)
       this.#runTasks(this.#writes)
     } catch (e) {
       console.log(e)
