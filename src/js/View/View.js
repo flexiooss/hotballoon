@@ -40,15 +40,6 @@ const viewLogOptions = {
   titleSize: 2
 }
 
-const requestAFrame = window.requestAnimationFrame
-  || window.webkitRequestAnimationFrame
-  || window.mozRequestAnimationFrame
-  || window.msRequestAnimationFrame
-  || function (cb) {
-    return setTimeout(cb, 16)
-  }
-
-
 /**
  * @extends {ViewContainerBase}
  * @implements {HasTagClassNameInterface}
@@ -372,7 +363,7 @@ export class View extends ViewContainerBase {
       if (this.isSynchronous() || this.isSynchronousUpdate()) {
         this[_update]()
       } else {
-        requestAFrame(() => {
+        this.viewRenderConfig().domAccessor().write(() => {
           this[_update]()
         })
       }
@@ -496,7 +487,7 @@ export class View extends ViewContainerBase {
       if (this.isSynchronous() || this.isSynchronousRender()) {
         this[_mount]()
       } else {
-        requestAFrame(() => {
+        this.viewRenderConfig().domAccessor().write(() => {
           this[_mount]()
         })
       }
@@ -680,15 +671,6 @@ export class View extends ViewContainerBase {
     return this.container().logger()
   }
 
-  /**
-   * @param {String} key
-   * @return {?HotballoonService}
-   * @instance
-   */
-  service(key) {
-    return this._container.service(key)
-  }
-
   remove() {
     this._removed = true
     this.logger().log(
@@ -705,9 +687,11 @@ export class View extends ViewContainerBase {
     if (this.isSynchronous() || this.isSynchronousUpdate()) {
       this.__removeNode()
     } else {
-      requestAFrame(() => {
-        this.__removeNode()
-      })
+      this.viewRenderConfig().domAccessor().write(
+        () => {
+          this.__removeNode()
+        }
+      )
     }
 
     super.remove()

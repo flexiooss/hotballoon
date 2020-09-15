@@ -32,3 +32,5 @@ export {ExecutorWorker} from './src/js/Job/ExecutorWorker'
 export {ExecutorInline} from './src/js/Job/ExecutorInline'
 
 export {OrderedEventListenerConfigBuilder} from '@flexio-oss/js-commons-bundle/event-handler'
+
+export {AsyncDomAccessor} from './src/js/View/DomAccessor'
