@@ -38,11 +38,23 @@ class TypeCheck {
   }
 
   /**
-   * @param {Object} inst
+   * @param {Dispatcher} inst
    * @return {boolean}
    */
   static isDispatcher(inst) {
     return testClassTagName(inst, CLASS_TAG_NAME_DISPATCHER)
+  }
+
+  /**
+   * @param {Dispatcher} inst
+   * @return {Dispatcher}
+   * @throws {TypeError}
+   */
+  static assertIsDispatcher(inst) {
+    assertType(TypeCheck.isDispatcher(inst),
+      '`inst` should be a `Dispatcher`'
+    )
+    return inst
   }
 
   /**
