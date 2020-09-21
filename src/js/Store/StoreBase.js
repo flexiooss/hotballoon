@@ -199,10 +199,13 @@ export class StoreBase extends WithID {
   }
 
   /**
-   * @param {TYPE} dataStore
-   * @return {TYPE}
+   * @param {?TYPE} dataStore
+   * @return {?TYPE}
    */
   validateDataStore(dataStore) {
+    if(isNull(dataStore)){
+      return null
+    }
     const checker = this[_storeParams].defaultChecker()
     const data = checker(dataStore)
 
