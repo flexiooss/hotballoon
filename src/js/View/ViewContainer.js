@@ -1,5 +1,11 @@
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_VIEWCONTAINER} from '../Types/HasTagClassNameInterface'
-import {assertType, isFunction, isNode, isString, TypeCheck as TypeTypeCheck} from '@flexio-oss/js-commons-bundle/assert'
+import {
+  assertType,
+  isFunction,
+  isNode,
+  isString,
+  TypeCheck as TypeTypeCheck
+} from '@flexio-oss/js-commons-bundle/assert'
 import {StoreInterface} from '../Store/StoreInterface'
 import {ViewContainerBase} from './ViewContainerBase'
 import {ViewContainerPublicEventHandler} from './ViewContainerPublicEventHandler'
@@ -30,7 +36,7 @@ export class ViewContainerParameters {
            * @property {String}
            * @name ViewContainerParameters#id
            */
-          value:TypeTypeCheck.assertIsString( id)
+          value: TypeTypeCheck.assertIsString(id)
         },
         parentNode: {
           /**
@@ -116,7 +122,7 @@ export class ViewContainer extends ViewContainerBase {
      */
     const listenedStore = store.listenChanged(
       (payload, type) => {
-        if(!this.isRemoved()){
+        if (!this.isRemoved()) {
           clb(payload.data())
         }
       }
@@ -160,6 +166,12 @@ export class ViewContainer extends ViewContainerBase {
   render() {
     this[_renderViews]()
     this._rendered = true
+  }
+
+  updateViewsNode() {
+    this.MapOfView().forEach((view, key, map) => {
+      view.updateNode()
+    })
   }
 
   /**
