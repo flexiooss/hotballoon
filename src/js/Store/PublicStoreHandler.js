@@ -78,7 +78,7 @@ export class PublicStoreHandler {
    * @return {TYPE.}
    */
   __type__() {
-    return this[_store].type()
+    return this[_store].__type__()
   }
 
   /**
