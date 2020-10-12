@@ -182,8 +182,6 @@ class ListenerReconciliation {
    * @param {String} event - params of events
    */
   _removeAllListeners(event) {
-    console.log('_removeAllListeners:' + event)
-
     this.$current.eventListeners().get(event)
       .forEach((listener, token, set) => {
         this._removeEventListener(listener.events, token)
