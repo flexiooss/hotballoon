@@ -160,7 +160,7 @@ export class HyperFlexParams {
    * @return {this}
    */
   addChildNodes(childNodes) {
-    this._childNodes = this._childNodes.concat(childNodes)
+    this._childNodes = this._childNodes.push(...childNodes)
     return this
   }
 
@@ -174,11 +174,11 @@ export class HyperFlexParams {
   bindChildNodes(statement, value, valueFalse = null) {
 
     if ((isFunction(statement) ? statement() : statement) === true) {
-      this._childNodes = (isFunction(value) ? value() : value)
+      this.addChildNodes(isFunction(value) ? value() : value)
     } else {
       valueFalse = isFunction(valueFalse) ? valueFalse() : valueFalse
       if (!isNull(valueFalse)) {
-        this._childNodes = valueFalse
+        this.addChildNodes(valueFalse)
       }
     }
     return this
