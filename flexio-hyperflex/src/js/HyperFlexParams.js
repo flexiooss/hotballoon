@@ -160,7 +160,7 @@ export class HyperFlexParams {
    * @return {this}
    */
   addChildNodes(childNodes) {
-    this._childNodes = this._childNodes.push(...childNodes)
+    this._childNodes.push(...childNodes)
     return this
   }
 
