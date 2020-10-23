@@ -2,7 +2,7 @@ import {isNode, assert, isNull} from '@flexio-oss/js-commons-bundle/assert'
 import {removeChildNodes} from '@flexio-oss/js-commons-bundle/js-type-helpers'
 import {select} from './ListenerAttributeHandler'
 import {nodeReconcile} from './NodeReconciliation'
-import {listenerEquals, listenerReconcile} from './ListenerReconciliation'
+import {listenerEquals, listenerReconcile, listenerReplace} from './ListenerReconciliation'
 import {RECONCILIATION_RULES as R} from './rules'
 
 
@@ -141,7 +141,17 @@ export class Reconciliation {
    * @return {boolean}
    */
   reconcile() {
-    if (this._hasByPassRule() || (this.__isEqualNode() && (!this._hasReconcileListenersRule() || (this._hasReconcileListenersRule() && !this.__isEqualListeners())))) {
+    if (
+      this._hasByPassRule()
+      || (
+        this.__isEqualNode()
+        && (
+          (!this._hasReconcileListenersRule() && !this._hasForceListenersRule())
+          || (this._hasReconcileListenersRule() && !this.__isEqualListeners()
+          )
+        )
+      )
+    ) {
       return this._abort()
     }
 
@@ -157,8 +167,9 @@ export class Reconciliation {
         this.__reconcileChildNodes()
       }
     }
-
-    if (!this._hasOnlyChildrenRule() && this._hasReconcileListenersRule() && !this._isCurrentReplaced && !this.__isEqualListeners()) {
+    if (this._hasForceListenersRule()) {
+      listenerReplace(this.current, this.$current, this.candidate, this.$candidate)
+    } else if (!this._hasOnlyChildrenRule() && this._hasReconcileListenersRule() && !this._isCurrentReplaced && !this.__isEqualListeners()) {
 
       listenerReconcile(this.current, this.$current, this.candidate, this.$candidate)
     }
@@ -353,6 +364,14 @@ export class Reconciliation {
    */
   _hasReconcileListenersRule() {
     return this.$candidate.hasReconciliationRule(R.RECONCILE_LISTENERS)
+  }
+
+  /**
+   * @return {boolean}
+   * @protected
+   */
+  _hasForceListenersRule() {
+    return this.$candidate.hasReconciliationRule(R.REPLACE_LISTENERS)
   }
 
   /**

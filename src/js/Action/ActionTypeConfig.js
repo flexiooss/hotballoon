@@ -1,4 +1,4 @@
-import {assertType, isClass, isFunction, isNull} from '@flexio-oss/js-commons-bundle/assert'
+import {assertType, isClass, isNull,TypeCheck as TypeTypeCheck} from '@flexio-oss/js-commons-bundle/assert'
 import {TypeCheck} from '@flexio-oss/js-commons-bundle/js-validator-helper'
 
 
@@ -7,7 +7,7 @@ import {TypeCheck} from '@flexio-oss/js-commons-bundle/js-validator-helper'
  */
 export class ActionTypeConfig {
   /**
-   * @param {TYPE.} type
+   * @param {?Class<TYPE>} type
    * @param {function(data:TYPE):TYPE} [defaultChecker=data=>data]
    * @param {?ValueObjectValidator} [validator=null]
    */
@@ -16,40 +16,35 @@ export class ActionTypeConfig {
     defaultChecker = data => data,
     validator = null
   ) {
-    assertType(isClass(type), 'hotballoon:ActionTypeConfig:constructor "type" argument should be a Class')
+
+    assertType(isNull(type) || isClass(type), 'hotballoon:ActionTypeConfig:constructor "type" argument should be a Class')
     assertType(isNull(validator) || TypeCheck.isValueObjectValidator(validator), 'hotballoon:ActionTypeConfig:constructor "validator" argument should be ValueObjectValidator or null')
-    assertType(isFunction(defaultChecker), 'hotballoon:ActionTypeConfig:constructor "defaultChecker" argument should be function')
 
     /**
-     *
-     * @type {TYPE}
+     * @type {?Class<TYPE>}
      * @private
      */
     this._type = type
     /**
-     *
      * @type {?ValueObjectValidator}
      * @private
      */
     this._validator = validator
     /**
-     *
      * @type {function(data:TYPE):TYPE}
      * @private
      */
-    this._defaultChecker = defaultChecker
+    this._defaultChecker = TypeTypeCheck.assertIsFunction(defaultChecker)
   }
 
   /**
-   *
-   * @return {TYPE.}
+   * @return {?Class<TYPE>}
    */
   type() {
     return this._type
   }
 
   /**
-   *
    * @return {?ValueObjectValidator}
    */
   validator() {
@@ -57,7 +52,6 @@ export class ActionTypeConfig {
   }
 
   /**
-   *
    * @return {function(data:TYPE):TYPE}
    */
   defaultChecker() {

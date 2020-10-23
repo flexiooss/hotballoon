@@ -18,6 +18,7 @@ export {UIEventBuilder} from './src/js/HotballoonNodeElement/UIEventBuilder'
 
 export {PublicStoreHandler} from './src/js/Store/PublicStoreHandler'
 export {ProxyStoreBuilder} from './src/js/Store/ProxyStoreBuilder'
+export {OnDemandProxyStoreBuilder} from './src/js/Store/OnDemandProxyStoreBuilder'
 export {InMemoryStoreBuilder} from './src/js/Store/InMemoryStoreBuilder'
 export {JsStorageStoreBuilder} from './src/js/Store/JsStorageStoreBuilder'
 
@@ -32,4 +33,4 @@ export {ExecutorInline} from './src/js/Job/ExecutorInline'
 
 export {OrderedEventListenerConfigBuilder} from '@flexio-oss/js-commons-bundle/event-handler'
 
-export {HotballoonService} from './src/js/Service/HotballoonService'
+export {AsyncDomAccessor} from './src/js/View/DomAccessor'

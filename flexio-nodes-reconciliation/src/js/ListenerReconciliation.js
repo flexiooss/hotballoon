@@ -37,6 +37,17 @@ class ListenerReconciliation {
 
   /**
    * @static
+   * @param {Node} current
+   * @param {ListenerAttributeHandler} $current
+   * @param {Node} candidate
+   * @param {ListenerAttributeHandler} $candidate
+   */
+  static listenerReplace(current, $current, candidate, $candidate) {
+    new ListenerReconciliation(current, $current, candidate, $candidate)._removeAllCurrentListeners().reconcile()
+  }
+
+  /**
+   * @static
    * @param {Map<string, Map<string, EventListenerConfig>>} currentEventsListeners
    * @param {Map<string, Map<string, EventListenerConfig>>} candidateEventsListeners
    * @return {boolean}
@@ -94,6 +105,13 @@ class ListenerReconciliation {
         this._removeAllListeners(event)
       }
     })
+  }
+
+  _removeAllCurrentListeners() {
+    this.$current.eventListeners().forEach((listener, event, map) => {
+      this._removeAllListeners(event)
+    })
+    return this
   }
 
   /**
@@ -164,8 +182,6 @@ class ListenerReconciliation {
    * @param {String} event - params of events
    */
   _removeAllListeners(event) {
-    console.log('_removeAllListeners:'+event)
-
     this.$current.eventListeners().get(event)
       .forEach((listener, token, set) => {
         this._removeEventListener(listener.events, token)
@@ -203,5 +219,6 @@ class ListenerReconciliation {
 }
 
 
+export const listenerReplace = ListenerReconciliation.listenerReplace
 export const listenerReconcile = ListenerReconciliation.listenerReconciliation
 export const listenerEquals = ListenerReconciliation.listenerEquals

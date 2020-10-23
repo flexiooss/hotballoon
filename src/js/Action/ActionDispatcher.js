@@ -1,4 +1,4 @@
-import {assertType, isNull} from '@flexio-oss/js-commons-bundle/assert'
+import {assertType, isNull, TypeCheck as TypeTypeCheck} from '@flexio-oss/js-commons-bundle/assert'
 import {EventAction} from './EventAction'
 import {ActionDispatcherConfig} from './ActionDispatcherConfig'
 import {DispatcherEventListenerConfigBuilder} from '../Dispatcher/DispatcherEventListenerConfigBuilder'
@@ -19,7 +19,10 @@ const _actionConfig = Symbol('_actionParams')
  */
 export class ActionDispatcher extends WithID {
   /**
-   *
+   * @type {boolean}
+   */
+  #removed= false
+  /**
    * @param {ActionDispatcherConfig<TYPE, TYPE_BUILDER>} actionConfig
    */
   constructor(actionConfig) {
@@ -47,75 +50,92 @@ export class ActionDispatcher extends WithID {
   }
 
   /**
-   *
-   * @return {TYPE_BUILDER}
+   * @return {?TYPE_BUILDER}
    */
   payloadBuilder() {
+    if (isNull(this[_actionConfig].type())) {
+      return null
+    }
+    TypeTypeCheck.assertIsFunction(this[_actionConfig].type().builder)
     return this[_actionConfig].type().builder()
   }
 
   /**
    * @param {Object} object
-   * @return {TYPE_BUILDER}
+   * @return {?TYPE_BUILDER}
    */
   payloadFromObject(object) {
+    if (isNull(this[_actionConfig].type())) {
+      return null
+    }
+    TypeTypeCheck.assertIsFunction(this[_actionConfig].type().fromObject)
     return this[_actionConfig].type().fromObject(object)
   }
 
   /**
-   *
    * @param {TYPE} instance
-   * @return {TYPE_BUILDER}
+   * @return {?TYPE_BUILDER}
    */
   payloadFrom(instance) {
+    if (isNull(this[_actionConfig].type())) {
+      return null
+    }
+    TypeTypeCheck.assertIsFunction(this[_actionConfig].type().from)
     return this[_actionConfig].type().from(instance)
   }
 
   /**
-   *
    * @param {string} json
    * @return {TYPE_BUILDER}
    */
   payloadFromJSON(json) {
+    if (isNull(this[_actionConfig].type())) {
+      return null
+    }
+    TypeTypeCheck.assertIsFunction(this[_actionConfig].type().fromJSON)
     return this[_actionConfig].type().fromJSON(json)
   }
 
   /**
-   *
-   * @return {TYPE.}
+   * @return {?Class<TYPE>}
    */
   __type__() {
     return this[_actionConfig].type()
   }
 
   /**
-   *
    * @param {Class} constructor
    * @return {boolean}
    */
   isTypeOf(constructor) {
+    if (isNull(this[_actionConfig].type())) {
+      return isNull(constructor)
+    }
     return constructor === this.__type__()
   }
 
   /**
-   * @param {TYPE} payload
+   * @param {?TYPE} [payload=null]
    */
-  dispatch(payload) {
-    const checker = this[_actionConfig].defaultChecker()
-    /**
-     *
-     * @type {TYPE}
-     */
-    const data = checker(payload)
+  dispatch(payload = null) {
+    if(this.#removed){
+      return
+    }
+    if (!isNull(this[_actionConfig].type())) {
+      const checker = this[_actionConfig].defaultChecker()
+      /**
+       * @type {TYPE}
+       */
+      const data = checker(payload)
 
-    assertType(
-      data instanceof this.__type__(),
-      'hotballoon:ActionDispatcher:dispatch "data" argument should be an instance of %s',
-      this.__type__().name
-    )
-
-    if (!isNull(this[_actionConfig].validator()) && !this[_actionConfig].validator().isValid(payload)) {
-      throw new ValidationError('hotballoon:ActionDispatcher:dispatch "data" argument failed to validation')
+      assertType(
+        data instanceof this.__type__(),
+        'hotballoon:ActionDispatcher:dispatch "data" argument should be an instance of %s',
+        this.__type__().name
+      )
+      if (!isNull(this[_actionConfig].validator()) && !this[_actionConfig].validator().isValid(payload)) {
+        throw new ValidationError('hotballoon:ActionDispatcher:dispatch "data" argument failed to validation')
+      }
     }
 
     this[_actionConfig].dispatcher().dispatchAction(
@@ -127,17 +147,15 @@ export class ActionDispatcher extends WithID {
   }
 
   /**
-   *
-   * @param {function(payload: TYPE, type: (string|Symbol))} callback
+   * @param {function(payload: ?TYPE, type: (string|Symbol))} callback
    * @param {ComponentContext} componentContext
    * @returns {ListenedAction}
    */
   listenWithCallback(callback, componentContext) {
-    assertType(
-      TypeCheck.isComponentContext(componentContext),
-      '`componentContext` should be ComponentContext'
-    )
-
+    TypeCheck.assertIsComponentContext(componentContext)
+    /**
+     * @type {string}
+     */
     const token = componentContext
       .addActionToken(
         this[_actionConfig].dispatcher()
@@ -154,10 +172,14 @@ export class ActionDispatcher extends WithID {
   }
 
   /**
-   *
    * @param {...string} token
    */
   waitFor(...token) {
     this[_actionConfig].dispatcher().waitFor(this.ID(), token)
+  }
+
+  remove(){
+    this.#removed = true
+    this[_actionConfig].dispatcher().removeEventListener(this.ID())
   }
 }

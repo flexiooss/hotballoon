@@ -1,4 +1,3 @@
-import {assertType} from '@flexio-oss/js-commons-bundle/assert'
 import {FlexMap} from '@flexio-oss/js-commons-bundle/flex-types'
 import {TypeCheck} from '../Types/TypeCheck'
 
@@ -7,6 +6,6 @@ import {TypeCheck} from '../Types/TypeCheck'
  */
 export class StoreMap extends FlexMap {
   _validate(v) {
-    assertType(TypeCheck.isStore(v), 'StoreMap: input should be a Store')
+    TypeCheck.assertStoreBase(v)
   }
 }

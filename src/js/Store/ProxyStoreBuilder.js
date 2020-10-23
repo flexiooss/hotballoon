@@ -4,6 +4,7 @@ import {StoreState} from './StoreState'
 import {StoreTypeConfig} from './StoreTypeConfig'
 import {ProxyStore} from './ProxyStore'
 import {ProxyStoreConfig} from './ProxyStoreConfig'
+import {isNull} from '@flexio-oss/js-commons-bundle/assert'
 
 /**
  *
@@ -12,38 +13,47 @@ import {ProxyStoreConfig} from './ProxyStoreConfig'
 export class ProxyStoreBuilder {
   constructor() {
     /**
-     *
      * @type {?StoreInterface<STORE_TYPE>}
-     * @private
+     * @protected
      */
-    this.__store = null
+    this._store = null
 
     /**
-     *
      * @type {?TYPE.}
-     * @private
+     * @protected
      */
-    this.__type = null
+    this._type = null
 
     /**
-     *
      * @type  {?ValueObjectValidator}
-     * @private
+     * @protected
      */
-    this.__validator = null
+    this._validator = null
     /**
-     *
      * @type {StoreTypeConfig~defaultCheckerClb<TYPE>}
-     * @private
+     * @protected
      */
-    this.__defaultChecker = v => v
+    this._defaultChecker = v => v
 
     /**
-     *
      * @type {?function(state: STORE_TYPE ):TYPE} mapper
-     * @private
+     * @protected
      */
-    this.__mapper = null
+    this._mapper = null
+    /**
+     * @type {?string}
+     * @protected
+     */
+    this._name = null
+  }
+
+  /**
+   * @param {string} name
+   * @return {ProxyStoreBuilder}
+   */
+  name(name) {
+    this._name = name.replace(new RegExp('\\s+', 'g'), '')
+    return this
   }
 
   /**
@@ -52,76 +62,79 @@ export class ProxyStoreBuilder {
    * @return {ProxyStoreBuilder}
    */
   store(store) {
-    this.__store = store
+    this._store = store
     return this
   }
 
   /**
-   *
    * @param {function(state: STORE_TYPE ):TYPE} mapper
    * @return {ProxyStoreBuilder}
    */
   mapper(mapper) {
-    this.__mapper = mapper
+    this._mapper = mapper
     return this
   }
 
   /**
-   *
    * @param {TYPE.} type
    * @return {ProxyStoreBuilder}
    */
   type(type) {
-    this.__type = type
+    this._type = type
     return this
   }
 
   /**
-   *
    * @param {StoreTypeConfig~defaultCheckerClb<TYPE>} defaultChecker
    * @return {ProxyStoreBuilder}
    */
   defaultChecker(defaultChecker) {
-    this.__defaultChecker = defaultChecker
+    this._defaultChecker = defaultChecker
     return this
   }
 
   /**
-   *
    * @param {?ValueObjectValidator} validator
    * @return {ProxyStoreBuilder}
    */
   validator(validator) {
-    this.__validator = validator
+    this._validator = validator
     return this
   }
 
   /**
-   *
+   * @return {string}
+   * @protected
+   */
+  _uniqName() {
+    return UID((isNull(this._name) ? this._type.name : this._name) + '_')
+  }
+
+  /**
    * @return {ProxyStore<STORE_TYPE, STORE_TYPE_BUILDER, TYPE, TYPE_BUILDER>}
    */
   build() {
 
-    const id = UID(this.__type.name + '_')
-    const data = this.__store.state().data()
-    const initialData = this.__mapper(data)
+    const id = this._uniqName()
+    const data = this._store.state().data()
+    const initialData = this._mapper(data)
 
     return new ProxyStore(
       new ProxyStoreConfig(
         id,
         initialData,
-        this.__store,
+        this._store,
         new StoreTypeConfig(
-          this.__type,
-          this.__defaultChecker,
-          this.__validator
+          this._type,
+          this._defaultChecker,
+          this._validator
         ),
-        this.__mapper,
+        this._mapper,
         new InMemoryStorage(
-          this.__type,
+          this._type,
           new StoreState(
             id,
-            this.__type,
+            this._type,
             initialData
           )
         )

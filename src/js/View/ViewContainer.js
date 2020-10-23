@@ -1,5 +1,11 @@
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_VIEWCONTAINER} from '../Types/HasTagClassNameInterface'
-import {assertType, isFunction, isNode, isString} from '@flexio-oss/js-commons-bundle/assert'
+import {
+  assertType,
+  isFunction,
+  isNode,
+  isString,
+  TypeCheck as TypeTypeCheck
+} from '@flexio-oss/js-commons-bundle/assert'
 import {StoreInterface} from '../Store/StoreInterface'
 import {ViewContainerBase} from './ViewContainerBase'
 import {ViewContainerPublicEventHandler} from './ViewContainerPublicEventHandler'
@@ -7,22 +13,12 @@ import {TypeCheck} from '../Types/TypeCheck'
 
 export class ViewContainerParameters {
   /**
-   *
    * @param {ComponentContext} componentContext
    * @param {string} id
    * @param {Element} parentNode
    * @return ViewContainerParameters
    */
   constructor(componentContext, id, parentNode) {
-    assertType(TypeCheck.isComponentContext(componentContext),
-      'hotballoon:ViewContainerParameters: `componentContext` argument should be an instance of `ComponentContext`')
-
-    assertType(!!isString(id),
-      'hotballoon:ViewContainerParameters: `id` argument assert be a String'
-    )
-    assertType(!!isNode(parentNode),
-      'hotballoon:fieldView:ViewContainerParameters: `parentNode` argument should be a Node'
-    )
 
     Object.defineProperties(this, {
         /**
@@ -30,7 +26,7 @@ export class ViewContainerParameters {
          * @name ViewContainerParameters#componentContext
          */
         componentContext: {
-          value: componentContext
+          value: TypeCheck.assertIsComponentContext(componentContext)
         },
         id: {
           configurable: false,
@@ -40,14 +36,14 @@ export class ViewContainerParameters {
            * @property {String}
            * @name ViewContainerParameters#id
            */
-          value: id
+          value: TypeTypeCheck.assertIsString(id)
         },
         parentNode: {
           /**
            * @property {Element}
            * @name ViewContainerParameters#parentNode
            */
-          value: parentNode
+          value: TypeTypeCheck.assertIsNode(parentNode)
         }
       }
     )
@@ -64,15 +60,12 @@ const viewContainerLogOptions = {
 }
 
 /**
- *
- * @class
  * @description viewContainer is a Views container who can subscribe to Stores to dispatch state to Views
  * @extends ViewContainerBase
  * @implements HasTagClassNameInterface
  */
 export class ViewContainer extends ViewContainerBase {
   /**
-   *
    * @param {ViewContainerParameters} viewContainerParameters
    */
   constructor(viewContainerParameters) {
@@ -108,14 +101,12 @@ export class ViewContainer extends ViewContainerBase {
   }
 
   /**
-   *
    * @callback ViewContainer~storeChanged
    * @param {Object} state
    * @return {boolean}
    */
 
   /**
-   *
    * @description subscribe subView an events of this fieldView
    * @param {StoreInterface} store
    * @param {ViewContainer~storeChanged} clb
@@ -127,12 +118,11 @@ export class ViewContainer extends ViewContainerBase {
     assertType(TypeCheck.isStoreBase(store), 'hotballoon:' + this.constructor.name + ':subscribeToStore: `keyStore : %s` not reference an instance of StoreInterface', store.constructor.name)
 
     /**
-     *
      * @type {ListenedStore}
      */
     const listenedStore = store.listenChanged(
       (payload, type) => {
-        if(!this.isRemoved()){
+        if (!this.isRemoved()) {
           clb(payload.data())
         }
       }
@@ -147,7 +137,6 @@ export class ViewContainer extends ViewContainerBase {
   }
 
   /**
-   *
    * @callback ViewContainer~storeChanged
    * @param {StoreState} state
    * @return {boolean}
@@ -179,6 +168,12 @@ export class ViewContainer extends ViewContainerBase {
     this._rendered = true
   }
 
+  updateViewsNode() {
+    this.MapOfView().forEach((view, key, map) => {
+      view.updateNode()
+    })
+  }
+
   /**
    * @return {Element} parentNode
    */
@@ -190,7 +185,6 @@ export class ViewContainer extends ViewContainerBase {
   }
 
   /**
-   *
    * @param {Element} element
    * @return {Element}
    */
@@ -216,16 +210,6 @@ export class ViewContainer extends ViewContainerBase {
   }
 
   /**
-   * @param {String} key
-   * @return {?HotballoonService}
-   * @instance
-   */
-  service(key) {
-    return this[_ComponentContext].APP().service(key)
-  }
-
-  /**
-   *
    * @return {string}
    */
   AppID() {
@@ -233,7 +217,6 @@ export class ViewContainer extends ViewContainerBase {
   }
 
   /**
-   *
    * @return {string}
    */
   componentID() {
@@ -241,7 +224,6 @@ export class ViewContainer extends ViewContainerBase {
   }
 
   /**
-   *
    * @return {ViewRenderConfig}
    */
   viewRenderConfig() {
@@ -249,7 +231,6 @@ export class ViewContainer extends ViewContainerBase {
   }
 
   /**
-   *
    * @return {LoggerInterface}
    */
   logger() {
@@ -257,7 +238,6 @@ export class ViewContainer extends ViewContainerBase {
   }
 
   /**
-   *
    * @return {ViewContainerPublicEventHandler}
    */
   on() {
@@ -275,6 +255,5 @@ export class ViewContainer extends ViewContainerBase {
 
     super.remove()
     this[_ComponentContext].removeViewContainerEntry(this.ID())
-
   }
 }

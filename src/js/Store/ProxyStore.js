@@ -1,11 +1,12 @@
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_PROXYSTORE} from '../Types/HasTagClassNameInterface'
-import {_set, StoreBase} from './StoreBase'
+import {_EventHandler, _get, _set, _storage, StoreBase} from './StoreBase'
 import {StoreBaseConfig} from './StoreBaseConfig'
 import {assertType} from '@flexio-oss/js-commons-bundle/assert'
 import {ProxyStoreConfig} from './ProxyStoreConfig'
+import {StoreState} from './StoreState'
 
-const _store = Symbol('_store')
-const _mapper = Symbol('_mapper')
+export const _store = Symbol('_store')
+export const _mapper = Symbol('_mapper')
 
 /**
  * @implements {StoreInterface<TYPE>}
@@ -15,7 +16,6 @@ const _mapper = Symbol('_mapper')
  */
 export class ProxyStore extends StoreBase {
   /**
-   *
    * @param {ProxyStoreConfig<STORE_TYPE, TYPE, TYPE_BUILDER>} proxyStoreConfig
    */
   constructor(proxyStoreConfig) {
@@ -81,7 +81,6 @@ export class ProxyStore extends StoreBase {
   }
 
   /**
-   *
    * @param {StoreState<STORE_TYPE>} payload
    * @param {string} eventType
    * @private

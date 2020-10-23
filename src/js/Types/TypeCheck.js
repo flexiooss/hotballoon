@@ -10,7 +10,6 @@ import {
   CLASS_TAG_NAME_STORE,
   CLASS_TAG_NAME_VIEW,
   CLASS_TAG_NAME_VIEWCONTAINER,
-  CLASS_TAG_NAME_SERVICE,
   testClassTagName
 } from './HasTagClassNameInterface'
 import {assertType} from '@flexio-oss/js-commons-bundle/assert'
@@ -19,7 +18,6 @@ import {ElementDescription} from '../HotballoonNodeElement/ElementDescription'
 
 class TypeCheck {
   /**
-   *
    * @param {Object} inst
    * @return {boolean}
    */
@@ -40,8 +38,7 @@ class TypeCheck {
   }
 
   /**
-   *
-   * @param {Object} inst
+   * @param {Dispatcher} inst
    * @return {boolean}
    */
   static isDispatcher(inst) {
@@ -49,7 +46,18 @@ class TypeCheck {
   }
 
   /**
-   *
+   * @param {Dispatcher} inst
+   * @return {Dispatcher}
+   * @throws {TypeError}
+   */
+  static assertIsDispatcher(inst) {
+    assertType(TypeCheck.isDispatcher(inst),
+      '`inst` should be a `Dispatcher`'
+    )
+    return inst
+  }
+
+  /**
    * @param {Object} inst
    * @return {boolean}
    */
@@ -70,7 +78,6 @@ class TypeCheck {
   }
 
   /**
-   *
    * @param {Object} inst
    * @return {boolean}
    */
@@ -91,7 +98,6 @@ class TypeCheck {
   }
 
   /**
-   *
    * @param {Store} inst
    * @return {boolean}
    */
@@ -110,7 +116,6 @@ class TypeCheck {
   }
 
   /**
-   *
    * @param {Object} inst
    * @return {boolean}
    */
@@ -119,7 +124,6 @@ class TypeCheck {
   }
 
   /**
-   *
    * @param {Object} inst
    * @return {boolean}
    */
@@ -128,7 +132,6 @@ class TypeCheck {
   }
 
   /**
-   *
    * @param {Object} inst
    * @return {boolean}
    */
@@ -149,7 +152,6 @@ class TypeCheck {
   }
 
   /**
-   *
    * @param {Object} inst
    * @return {boolean}
    */
@@ -158,7 +160,6 @@ class TypeCheck {
   }
 
   /**
-   *
    * @param {Object} inst
    * @return {boolean}
    */
@@ -178,7 +179,6 @@ class TypeCheck {
   }
 
   /**
-   *
    * @param {Object} inst
    * @return {boolean}
    */
@@ -187,7 +187,6 @@ class TypeCheck {
   }
 
   /**
-   *
    * @param {Object} inst
    * @return {boolean}
    */
@@ -196,16 +195,6 @@ class TypeCheck {
   }
 
   /**
-   *
-   * @param {HotballoonService} inst
-   * @return {boolean}
-   */
-  static isService(inst) {
-    return testClassTagName(inst, CLASS_TAG_NAME_SERVICE)
-  }
-
-  /**
-   *
    * @param {Object} inst
    * @return {boolean}
    */
@@ -214,7 +203,6 @@ class TypeCheck {
   }
 
   /**
-   *
    * @param {*} instance
    * @return {boolean}
    */

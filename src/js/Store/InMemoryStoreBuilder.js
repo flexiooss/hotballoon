@@ -41,7 +41,7 @@ export class InMemoryStoreBuilder {
 
   /**
    * @param {string} name
-   * @return {ActionDispatcherBuilder}
+   * @return {InMemoryStoreBuilder}
    */
   name(name) {
     this.__name = name.replace(new RegExp('\\s+', 'g'), '')

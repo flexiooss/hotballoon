@@ -1,8 +1,13 @@
 import {HotBalloonApplication} from './HotBalloonApplication'
 import {ViewRenderConfig} from './ViewRenderConfig'
+import {SyncDomAccessor} from '../View/DomAccessor'
 
 
 export class ApplicationBuilder {
+  /**
+   * @type {DomAccessor}
+   */
+  #domAccessor = new SyncDomAccessor()
 
   constructor() {
     /**
@@ -80,10 +85,19 @@ export class ApplicationBuilder {
   }
 
   /**
+   * @param {DomAccessor} value
+   * @return {ApplicationBuilder}
+   */
+  domAccessor(value){
+    this.#domAccessor = value
+    return this
+  }
+
+  /**
    *
    * @return {HotBalloonApplication}
    */
   build() {
-    return new HotBalloonApplication(this.__id, this.__dispatcher, this.__logger, new ViewRenderConfig(this.__document, this.__viewDebug))
+    return new HotBalloonApplication(this.__id, this.__dispatcher, this.__logger, new ViewRenderConfig(this.__document, this.__viewDebug, this.#domAccessor))
   }
 }

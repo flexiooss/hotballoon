@@ -5,6 +5,7 @@ import {FakeLogger} from '@flexio-oss/js-commons-bundle/js-logger'
 import {ActionDispatcherBuilder} from '../../js/Action/ActionDispatcherBuilder'
 import {FakeObject, FakeObjectBuilder} from './FakeObject'
 import {ViewRenderConfig} from '../../js/Application/ViewRenderConfig'
+import {SyncDomAccessor} from '../../js/View/DomAccessor'
 
 
 const assert = require('assert')
@@ -15,7 +16,7 @@ export class ActionDispatcherTest extends TestCase {
    * @return {HotBalloonApplication}
    */
   app(){
-    return new HotBalloonApplication('id', new Dispatcher(new FakeLogger()), new FakeLogger().debug(), new ViewRenderConfig(null, false))
+    return new HotBalloonApplication('id', new Dispatcher(new FakeLogger()), new FakeLogger().debug(), new ViewRenderConfig(null, false,new SyncDomAccessor()))
   }
 
   setUp() {
