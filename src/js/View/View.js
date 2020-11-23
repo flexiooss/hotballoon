@@ -700,13 +700,22 @@ export class View extends ViewContainerBase {
 
   /**
    * @return {View}
+   */
+  unMount() {
+    if (!isNull(this.node())) {
+      this.parentNode.removeChild(this.node())
+    }
+    this._mounted = false
+    return this
+  }
+
+  /**
+   * @return {View}
    * @private
    */
   __removeNode() {
-    if (!isNull(this._node)) {
-      this._node.parentNode.removeChild(this._node)
-      this._node = null
-    }
+    this.unMount()
+    this._node = null
     return this
   }
 }

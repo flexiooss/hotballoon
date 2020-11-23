@@ -210,6 +210,23 @@ export class ViewContainer extends ViewContainerBase {
   }
 
   /**
+   * @return {ViewContainer}
+   */
+  unMount(){
+    this.MapOfView().forEach(
+      /**
+       * @param {View} v
+       */
+      v => {
+        v.unMount()
+      })
+
+    this._mounted = false
+
+    return this
+  }
+
+  /**
    * @return {string}
    */
   AppID() {
