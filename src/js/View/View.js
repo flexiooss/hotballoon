@@ -28,13 +28,6 @@ import {
 
 export const ATTRIBUTE_NODEREF = '_hb_noderef'
 
-const _mount = Symbol('_mount')
-const _update = Symbol('_update')
-const _render = Symbol('_render')
-const _replaceNode = Symbol('_replaceNode')
-const _addNodeRef = Symbol('_addNodeRef')
-const _setNodeViewRef = Symbol('_setNodeViewRef')
-
 const viewLogOptions = {
   color: 'blue',
   titleSize: 2
@@ -49,7 +42,7 @@ export class View extends ViewContainerBase {
    * @param {ViewContainerBase} container
    */
   constructor(container) {
-    super(UID('View_' + container.constructor.name + '_'))
+    super(UID('View::' + container.constructor.name + '_'))
 
     assertType(TypeCheck.isViewContainerBase(container), '`container` should be ViewContainerBase')
     /**
@@ -317,18 +310,14 @@ export class View extends ViewContainerBase {
     return this
   }
 
-  /**
-   * @private
-   * @description update the node reference of this View
-   */
-  [_update]() {
+  #update() {
     if (!this.isRemoved() && this._updateRequests === 1) {
 
       this._nodeRefs.clear()
       const candidate = this.template()
 
       if (isNull(candidate) || isNull(this.node())) {
-        this[_replaceNode]()
+        this.#replaceNode()
       } else {
 
         $(candidate).setViewRef(this.ID())
@@ -361,10 +350,10 @@ export class View extends ViewContainerBase {
 
       this._updateRequests++
       if (this.isSynchronous() || this.isSynchronousUpdate()) {
-        this[_update]()
+        this.#update()
       } else {
         this.viewRenderConfig().domAccessor().write(() => {
-          this[_update]()
+          this.#update()
         })
       }
 
@@ -432,9 +421,9 @@ export class View extends ViewContainerBase {
   /**
    * @private
    */
-  [_render]() {
-    this[_replaceNode]()
-    this[_setNodeViewRef]()
+  #render() {
+    this.#replaceNode()
+    this.#setNodeViewRef()
   }
 
   /**
@@ -450,12 +439,13 @@ export class View extends ViewContainerBase {
 
     if (this._shouldRender) {
       this.dispatch(VIEW_RENDER, {})
-      this[_render]()
+      this.#render()
       this._rendered = true
       this.dispatch(VIEW_RENDERED, {})
     }
 
     this._shouldRender = true
+
     return this.node()
   }
 
@@ -470,7 +460,7 @@ export class View extends ViewContainerBase {
   /**
    * @private
    */
-  [_mount]() {
+  #mount() {
     if (!isNull(this.node)) {
       this.parentNode.appendChild(this.node())
     }
@@ -485,10 +475,10 @@ export class View extends ViewContainerBase {
       this.dispatch(VIEW_MOUNT, {})
 
       if (this.isSynchronous() || this.isSynchronousRender()) {
-        this[_mount]()
+        this.#mount()
       } else {
         this.viewRenderConfig().domAccessor().write(() => {
-          this[_mount]()
+          this.#mount()
         })
       }
 
@@ -531,7 +521,7 @@ export class View extends ViewContainerBase {
    * @return {this}
    */
   addNodeView(key, view) {
-    this[_setNodeViewRef]()
+    this.#setNodeViewRef()
     return this
   }
 
@@ -541,7 +531,14 @@ export class View extends ViewContainerBase {
    */
   nodeRef(key) {
     if (!this._nodeRefs.has(key)) {
-      this._nodeRefs.set(key, this.viewRenderConfig().document().getElementById(this.elementIdFromRef(key)))
+      /**
+       * @type {?HTMLElement}
+       */
+      let element = this.viewRenderConfig().document().getElementById(this.elementIdFromRef(key))
+      if (isNull(element)) {
+        element = this.parentNode.querySelector('#' + this.elementIdFromRef(key))
+      }
+      this._nodeRefs.set(key, element)
     }
     return this._nodeRefs.get(key)
   }
@@ -564,7 +561,7 @@ export class View extends ViewContainerBase {
     if (!this._rendered && !this._nodeRefs.has(key)) {
       this._nodeRefs.set(key, node)
     }
-    return this[_addNodeRef](key, node)
+    return this.#addNodeRef(key, node)
   }
 
   /**
@@ -573,7 +570,7 @@ export class View extends ViewContainerBase {
    * @param {Element} node
    * @return {Element} node
    */
-  [_addNodeRef](key, node) {
+  #addNodeRef(key, node) {
     $(node).setNodeRef(key)
     if (this.viewRenderConfig().debug()) {
       node.setAttribute(ATTRIBUTE_NODEREF, key)
@@ -584,7 +581,7 @@ export class View extends ViewContainerBase {
   /**
    * @private
    */
-  [_setNodeViewRef]() {
+  #setNodeViewRef() {
     if (!isNull(this.node())) {
       $(this.node()).setViewRef(this.ID())
     }
@@ -607,7 +604,7 @@ export class View extends ViewContainerBase {
   /**
    * @return {?Element} node
    */
-  [_replaceNode]() {
+  #replaceNode() {
     this._node = this.template()
     return this._node
   }
@@ -685,11 +682,11 @@ export class View extends ViewContainerBase {
     this._nodeRefs.clear()
 
     if (this.isSynchronous() || this.isSynchronousUpdate()) {
-      this.__removeNode()
+      this.#removeNode()
     } else {
       this.viewRenderConfig().domAccessor().write(
         () => {
-          this.__removeNode()
+          this.#removeNode()
         }
       )
     }
@@ -711,9 +708,8 @@ export class View extends ViewContainerBase {
 
   /**
    * @return {View}
-   * @private
    */
-  __removeNode() {
+  #removeNode() {
     this.unMount()
     this._node = null
     return this
