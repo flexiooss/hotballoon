@@ -42,7 +42,7 @@ export class View extends ViewContainerBase {
    * @param {ViewContainerBase} container
    */
   constructor(container) {
-    super(UID('View::' + container.constructor.name + '_'))
+    super(UID('View__' + container.constructor.name + '_'))
 
     assertType(TypeCheck.isViewContainerBase(container), '`container` should be ViewContainerBase')
     /**
