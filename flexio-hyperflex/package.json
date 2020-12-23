@@ -31,8 +31,8 @@
     }
   },
   "peerDependencies": {
-    "@flexio-oss/hotballoon": "0.6.0",
-    "@flexio-oss/js-commons-bundle": "1.2.0",
+    "@flexio-oss/hotballoon": "0.13.0-dev",
+    "@flexio-oss/js-commons-bundle": "1.10.0-dev",
     "code-altimeter-js": "1.0.0"
   }
 }
