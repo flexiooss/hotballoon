@@ -1,6 +1,4 @@
 level: dev
-schemes:
-- package
-topics:
-- 70
-version: 0.15.0
+schemes: [package]
+topics: [70]
+version: 0.16.0
