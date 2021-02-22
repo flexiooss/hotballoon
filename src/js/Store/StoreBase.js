@@ -33,7 +33,7 @@ export class StoreBase extends WithID {
   /**
    * @type {?function(state:StoreState<TYPE>)}
    */
-  #onceOnUpdate = null
+  #onceOnUpdated = null
   /**
    * @type {?TYPE}
    */
@@ -108,7 +108,6 @@ export class StoreBase extends WithID {
   }
 
   /**
-   *
    * @return {string}
    */
   changedEventName() {
@@ -248,11 +247,11 @@ export class StoreBase extends WithID {
     )
 
     try {
-      if (!isNull(this.#onceOnUpdate)) {
-        this.#onceOnUpdate.call(null, this.state())
+      if (!isNull(this.#onceOnUpdated)) {
+        this.#onceOnUpdated.call(null, this.state())
       }
     } finally {
-      this.#onceOnUpdate = null
+      this.#onceOnUpdated = null
     }
 
     this[_dispatch](this.changedEventName())
@@ -262,8 +261,8 @@ export class StoreBase extends WithID {
    * @param {?function(state:StoreState<TYPE>)} clb
    * @return {this}
    */
-  onceOnUpdate(clb) {
-    this.#onceOnUpdate = TypeCheck.assertIsFunctionOrNull(clb)
+  onceOnUpdated(clb) {
+    this.#onceOnUpdated = TypeCheck.assertIsFunctionOrNull(clb)
     return this
   }
 
