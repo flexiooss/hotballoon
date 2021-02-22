@@ -1,5 +1,5 @@
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_PROXYSTORE} from '../Types/HasTagClassNameInterface'
-import {_EventHandler, _get, _set, _storage, StoreBase} from './StoreBase'
+import {_set, StoreBase} from './StoreBase'
 import {StoreBaseConfig} from './StoreBaseConfig'
 import {assertType} from '@flexio-oss/js-commons-bundle/assert'
 import {ProxyStoreConfig} from './ProxyStoreConfig'

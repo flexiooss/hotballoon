@@ -15,7 +15,6 @@ export const _storage = Symbol('_storage')
 export const _EventHandler = Symbol('_EventHandler')
 export const _set = Symbol('_set')
 export const _get = Symbol('_get')
-export const _updated = Symbol('_updated')
 export const _dispatch = Symbol('_dispatch')
 export const _storeParams = Symbol('_storeParams')
 
@@ -32,6 +31,15 @@ const fakeLogger = new FakeLogger()
  */
 export class StoreBase extends WithID {
   /**
+   * @type {?function(state:StoreState<TYPE>)}
+   */
+  #onceOnUpdate = null
+  /**
+   * @type {?TYPE}
+   */
+  #initialData = null
+
+  /**
    * @constructor
    * @param {StoreBaseConfig<TYPE, TYPE_BUILDER>} storeBaseConfig
    */
@@ -39,7 +47,7 @@ export class StoreBase extends WithID {
     super(storeBaseConfig.id())
     let storage = storeBaseConfig.storage()
     let logger = fakeLogger
-    this.__initialData = storeBaseConfig.initialData()
+    this.#initialData = storeBaseConfig.initialData()
 
     assertType(storeBaseConfig instanceof StoreBaseConfig,
       'hotballoon:' + this.constructor.name + ':constructor: `storeBaseConfig` argument should be an instance of `StoreBaseConfig`')
@@ -57,7 +65,7 @@ export class StoreBase extends WithID {
           assert(v instanceof StorageInterface,
             'hotballoon:' + this.constructor.name + ':constructor: `storage` argument should be an instance of `StorageInterface`')
           storage = v
-          this[_updated]()
+          this.#stateUpdated()
         }
       },
       /**
@@ -203,7 +211,7 @@ export class StoreBase extends WithID {
    * @return {?TYPE}
    */
   validateDataStore(dataStore) {
-    if(isNull(dataStore)){
+    if (isNull(dataStore)) {
       return null
     }
     const checker = this[_storeParams].defaultChecker()
@@ -229,10 +237,8 @@ export class StoreBase extends WithID {
     return this[_storage].get()
   }
 
-  /**
-   * @private
-   */
-  [_updated]() {
+
+  #stateUpdated() {
     this.logger().log(
       this.logger().builder()
         .info()
@@ -240,7 +246,25 @@ export class StoreBase extends WithID {
         .pushLog(this.state()),
       storeBaseLogOptions
     )
+
+    try {
+      if (!isNull(this.#onceOnUpdate)) {
+        this.#onceOnUpdate.call(null, this.state())
+      }
+    } finally {
+      this.#onceOnUpdate = null
+    }
+
     this[_dispatch](this.changedEventName())
+  }
+
+  /**
+   * @param {?function(state:StoreState<TYPE>)} clb
+   * @return {this}
+   */
+  onceOnUpdate(clb) {
+    this.#onceOnUpdate = TypeCheck.assertIsFunctionOrNull(clb)
+    return this
   }
 
   /**
@@ -303,6 +327,6 @@ export class StoreBase extends WithID {
    * Set value to initial data
    */
   reset() {
-    this[_set](this.__initialData)
+    this[_set](this.#initialData)
   }
 }
