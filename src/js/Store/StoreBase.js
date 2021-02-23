@@ -195,7 +195,9 @@ export class StoreBase extends WithID {
    * @param {!StoreState<TYPE>}  payload
    */
   [_dispatch](eventType, payload = this.state()) {
-    this[_EventHandler].dispatch(eventType, payload)
+    if (payload.time() === this.state().time()) {
+      this[_EventHandler].dispatch(eventType, payload)
+    }
   }
 
   /**
@@ -246,15 +248,18 @@ export class StoreBase extends WithID {
       storeBaseLogOptions
     )
 
+    let currentState = this.state()
+
     try {
       if (!isNull(this.#onceOnUpdated)) {
-        this.#onceOnUpdated.call(null, this.state())
+        let clb = this.#onceOnUpdated
+        this.#onceOnUpdated = null
+        clb.call(null, currentState)
       }
     } finally {
-      this.#onceOnUpdated = null
+      this[_dispatch](this.changedEventName(), currentState)
     }
 
-    this[_dispatch](this.changedEventName())
   }
 
   /**
