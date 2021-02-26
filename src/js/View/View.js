@@ -1,10 +1,9 @@
-import {CoreException} from '../CoreException'
 import {Checksum, UID} from '@flexio-oss/js-commons-bundle/js-helpers'
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_VIEW} from '../Types/HasTagClassNameInterface'
 import {
   assertType,
   isNode,
-  isNull,
+  isNull, NotOverrideException,
   TypeCheck as TypeTypeCheck
 } from '@flexio-oss/js-commons-bundle/assert'
 import {symbolToString} from '@flexio-oss/js-commons-bundle/js-type-helpers'
@@ -259,7 +258,7 @@ export class View extends ViewContainerBase {
    * @return {?Element}
    */
   template() {
-    throw new CoreException('fieldView should be override', 'METHOD_NOT_OVERRIDE')
+    NotOverrideException.FROM_ABSTRACT('Hotballoon/View::template()')
   }
 
   /**
