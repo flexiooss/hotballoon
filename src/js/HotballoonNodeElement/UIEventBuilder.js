@@ -567,6 +567,17 @@ class ElementEventBuilder {
       .callback(callback)
       .build()
   }
+  /**
+   *
+   * @param {function(event:InputEvent)} callback
+   * @return {ElementEventListenerConfig}
+   */
+  static input(callback) {
+    return ElementEventListenerConfigBuilder
+      .listen('input')
+      .callback(callback)
+      .build()
+  }
 }
 
 class FocusEventBuilder {
