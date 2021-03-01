@@ -1,5 +1,6 @@
 import {StoreState} from './StoreState'
 import {ProxyStore, _store, _mapper} from './ProxyStore'
+import {_dispatch, _EventHandler} from './StoreBase'
 
 /**
  * @implements {StoreInterface<TYPE>}
@@ -18,5 +19,13 @@ export class OnDemandProxyStore extends ProxyStore {
       this.__type__(),
       this.validateDataStore(this[_mapper](this[_store].state().data()))
     )
+  }
+
+  [_dispatch](eventType, payload = this.state()) {
+    this[_EventHandler].dispatch(eventType, payload)
+  }
+
+  onceOnUpdated(clb) {
+    throw new Error('not implemented yet')
   }
 }
