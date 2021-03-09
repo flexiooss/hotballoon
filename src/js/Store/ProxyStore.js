@@ -16,6 +16,11 @@ export const _mapper = Symbol('_mapper')
  */
 export class ProxyStore extends StoreBase {
   /**
+   * @type {boolean}
+   */
+  #shouldUpdate = true
+
+  /**
    * @param {ProxyStoreConfig<STORE_TYPE, TYPE, TYPE_BUILDER>} proxyStoreConfig
    */
   constructor(proxyStoreConfig) {
@@ -86,6 +91,26 @@ export class ProxyStore extends StoreBase {
    * @private
    */
   __mapAndUpdate(payload, eventType) {
-    this[_set](this[_mapper](payload.data()))
+    const state = this[_mapper](payload.data(), this)
+    if(this.#shouldUpdate){
+      this[_set](state)
+    }
+    this.shouldUpdate()
+  }
+
+  /**
+   * @return {ProxyStore}
+   */
+  shouldUpdate(){
+    this.#shouldUpdate = true
+    return this
+  }
+
+  /**
+   * @return {ProxyStore}
+   */
+  shouldNotUpdate(){
+    this.#shouldUpdate = false
+    return this
   }
 }
