@@ -2,8 +2,6 @@ import {CLASS_TAG_NAME, CLASS_TAG_NAME_PUBLIC_STORE_HANDLER} from '../Types/HasT
 import {assertType} from '@flexio-oss/js-commons-bundle/assert'
 import {TypeCheck} from '../Types/TypeCheck'
 
-const _store = Symbol('_store')
-
 /**
  *
  * @implements {StoreInterface<TYPE, TYPE_BUILDER>}
@@ -12,8 +10,13 @@ const _store = Symbol('_store')
  * @template TYPE, TYPE_BUILDER
  */
 export class PublicStoreHandler {
+
   /**
-   *
+   * @type {StoreInterface<TYPE, TYPE_BUILDER>}
+   */
+  #store
+
+  /**
    * @param {StoreInterface<TYPE, TYPE_BUILDER>} store
    */
   constructor(store) {
@@ -32,22 +35,21 @@ export class PublicStoreHandler {
     /**
      * @params {StoreInterface<TYPE, TYPE_BUILDER>}
      */
-    this[_store] = store
+    this.#store = store
   }
 
   /**
-   *
    * @return {string}
    */
   changedEventName() {
-    return this[_store].changedEventName()
+    return this.#store.changedEventName()
   }
 
   /**
    * @returns {StoreState<TYPE>} state frozen
    */
   state() {
-    return this[_store].state()
+    return this.#store.state()
   }
 
   /**
@@ -58,11 +60,10 @@ export class PublicStoreHandler {
   }
 
   /**
-   *
    * @return {(string|symbol)}
    */
   storeId() {
-    return this[_store].storeId()
+    return this.#store.storeId()
   }
 
   /**
@@ -70,42 +71,54 @@ export class PublicStoreHandler {
    * @return {String} token
    */
   subscribe(orderedEventListenerConfig) {
-    return this[_store].subscribe(orderedEventListenerConfig)
+    return this.#store.subscribe(orderedEventListenerConfig)
   }
 
   /**
-   *
    * @return {TYPE.}
    */
   __type__() {
-    return this[_store].__type__()
+    return this.#store.__type__()
   }
 
   /**
-   *
    * @param {Class} constructor
    * @return {boolean}
    */
   isTypeOf(constructor) {
-    return this[_store].isTypeOf(constructor)
+    return this.#store.isTypeOf(constructor)
   }
 
   /**
-   *
    * @param {function(state: StoreState<TYPE>)} callback
    * @param {number} [priority=100]
    * @return {ListenedStore}
    */
   listenChanged(callback, priority = 100) {
-    return this[_store].listenChanged(callback, priority)
+    return this.#store.listenChanged(callback, priority)
+  }
+
+
+  /**
+   * @param {function(state: StoreState<TYPE>)} callback
+   * @param {ComponentContext} componentContext
+   * @param {number} [priority=100]
+   * @return {ListenedStore}
+   */
+  listenChangedWithComponentContext(callback, componentContext, priority = 100) {
+    /**
+     * @type {ListenedStore}
+     */
+    const listenedStore = this.listenChanged(callback, priority)
+    componentContext.addListenedStore(listenedStore)
+    return listenedStore
   }
 
   /**
-   *
    * @param {(string|Symbol)} token
    */
   stopListenChanged(token) {
-    return this[_store].stopListenChanged(token)
+    return this.#store.stopListenChanged(token)
   }
 
 }

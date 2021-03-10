@@ -1,6 +1,5 @@
 import {StoreState} from './StoreState'
 import {ProxyStore, _store, _mapper} from './ProxyStore'
-import {_dispatch, _EventHandler} from './StoreBase'
 
 /**
  * @implements {StoreInterface<TYPE>}
@@ -17,12 +16,17 @@ export class OnDemandProxyStore extends ProxyStore {
     return new StoreState(
       this.ID(),
       this.__type__(),
-      this.validateDataStore(this[_mapper](this[_store].state().data()))
+      this.validateDataStore(this._mapper().call(null, this._store().state().data()))
     )
   }
 
-  [_dispatch](eventType, payload = this.state()) {
-    this[_EventHandler].dispatch(eventType, payload)
+  /**
+   * @protected
+   * @param {String} eventType
+   * @param {!StoreState<TYPE>}  payload
+   */
+  _dispatch(eventType, payload = this.state()) {
+    this._eventHandler().dispatch(eventType, payload)
   }
 
   onceOnUpdated(clb) {
