@@ -98,22 +98,6 @@ export class PublicStoreHandler {
     return this.#store.listenChanged(callback, priority)
   }
 
-
-  /**
-   * @param {function(state: StoreState<TYPE>)} callback
-   * @param {ComponentContext} componentContext
-   * @param {number} [priority=100]
-   * @return {ListenedStore}
-   */
-  listenChangedWithComponentContext(callback, componentContext, priority = 100) {
-    /**
-     * @type {ListenedStore}
-     */
-    const listenedStore = this.listenChanged(callback, priority)
-    componentContext.addListenedStore(listenedStore)
-    return listenedStore
-  }
-
   /**
    * @param {(string|Symbol)} token
    */
