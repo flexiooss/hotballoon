@@ -7,7 +7,9 @@ export {Dispatcher} from './src/js/Dispatcher/Dispatcher'
 export {Component} from './src/js/Component/Component'
 
 export {ActionDispatcherBuilder} from './src/js/Action/ActionDispatcherBuilder'
+export {ActionsHandler} from './src/js/Action/ActionsHandler'
 
+export {ViewContainersHandler} from './src/js/View/ViewContainersHandler'
 export {View} from './src/js/View/View'
 export {ViewContainer, ViewContainerParameters} from './src/js/View/ViewContainer'
 export {ViewContainerPublicEventHandler} from './src/js/View/ViewContainerPublicEventHandler'
@@ -16,6 +18,7 @@ export {ViewPublicEventHandler} from './src/js/View/ViewPublicEventHandler'
 export {ElementEventListenerConfigBuilder} from './src/js/HotballoonNodeElement/ElementEventListenerConfigBuilder'
 export {UIEventBuilder} from './src/js/HotballoonNodeElement/UIEventBuilder'
 
+export {StoresHandler} from './src/js/Store/StoresHandler'
 export {PublicStoreHandler} from './src/js/Store/PublicStoreHandler'
 export {ProxyStoreBuilder} from './src/js/Store/ProxyStoreBuilder'
 export {OnDemandProxyStoreBuilder} from './src/js/Store/OnDemandProxyStoreBuilder'

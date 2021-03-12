@@ -5,8 +5,7 @@ import {ViewContainer, ViewContainerParameters} from '../../js/View/ViewContaine
 import {FakeLogger} from '@flexio-oss/js-commons-bundle/js-logger'
 import {InMemoryStoreBuilder} from '../../js/Store/InMemoryStoreBuilder'
 import {FakeValueObject, FakeValueObjectBuilder} from '../FakeValueObject'
-import {ViewRenderConfig} from '../../js/Application/ViewRenderConfig'
-import {SyncDomAccessor} from '../../js/View/DomAccessor'
+import {ApplicationBuilder} from '../../js/Application/ApplicationBuilder'
 
 const assert = require('assert')
 
@@ -15,12 +14,14 @@ export class TestComponentContext extends TestCase {
    * @return {HotBalloonApplication}
    */
   app(){
-    return new HotBalloonApplication('id', new Dispatcher(new FakeLogger()), new FakeLogger().debug(), new ViewRenderConfig(null, false,new SyncDomAccessor()))
+    return new ApplicationBuilder()
+      .logger(new FakeLogger().debug())
+      .build()
   }
 
   setUp() {
-    this.dispatcher = new Dispatcher(new FakeLogger())
     this.APP = this.app()
+    this.dispatcher = this.APP.dispatcher()
     this.componentContext = this.APP.addComponentContext()
   }
 
@@ -36,25 +37,6 @@ export class TestComponentContext extends TestCase {
     const id1 = this.componentContext.nextID()
     const id2 = this.componentContext.nextID()
     assert.notEqual(id1, id2)
-  }
-
-  testAddStore() {
-    const store = this.getStore()
-    this.componentContext.addStore(store)
-    assert.deepStrictEqual(this.componentContext.store(store.ID()), store)
-  }
-
-  testAddViewContainer() {
-    const viewContainer = this.getViewContainer()
-    this.componentContext.addViewContainer(viewContainer)
-    assert.deepStrictEqual(this.componentContext.viewContainer(viewContainer.ID()), viewContainer)
-  }
-
-  testRemoveViewContainer() {
-    const viewContainer = this.getViewContainer()
-    this.componentContext.addViewContainer(viewContainer)
-    this.componentContext.removeViewContainerEntry(viewContainer.ID())
-    assert.deepStrictEqual(this.componentContext.viewContainer(viewContainer.ID()), null)
   }
 
   getStore() {

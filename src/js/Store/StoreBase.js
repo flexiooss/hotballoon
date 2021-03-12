@@ -261,21 +261,6 @@ export class StoreBase extends WithID {
 
   /**
    * @param {function(state: StoreState<TYPE>)} callback
-   * @param {ComponentContext} componentContext
-   * @param {number} [priority=100]
-   * @return {ListenedStore}
-   */
-  listenChangedOnComponentContext(callback, componentContext, priority = 100) {
-    /**
-     * @type {ListenedStore}
-     */
-    const listenedStore = this.listenChanged(callback, priority)
-    componentContext.addListenedStore(listenedStore)
-    return listenedStore
-  }
-
-  /**
-   * @param {function(state: StoreState<TYPE>)} callback
    * @param {number} [priority=100]
    * @return {ListenedStore}
    */

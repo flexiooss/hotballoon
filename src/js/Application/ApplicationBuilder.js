@@ -1,6 +1,10 @@
 import {HotBalloonApplication} from './HotBalloonApplication'
 import {ViewRenderConfig} from './ViewRenderConfig'
 import {SyncDomAccessor} from '../View/DomAccessor'
+import {ComponentsContextHandler} from '../Component/ComponentsContextHandler'
+import {Dispatcher} from '../Dispatcher/Dispatcher'
+import {isNull} from '@flexio-oss/js-commons-bundle/assert'
+import {UID} from '@flexio-oss/js-commons-bundle/js-helpers'
 
 
 export class ApplicationBuilder {
@@ -8,42 +12,35 @@ export class ApplicationBuilder {
    * @type {DomAccessor}
    */
   #domAccessor = new SyncDomAccessor()
+  /**
+   * @type {?string}
+   */
+  #id = UID()
+  /**
+   * @type {?Dispatcher}
+   */
+  #dispatcher = null
+  /**
+   *
+   * @type {?LoggerInterface}
+   */
+  #logger = null
+  /**
+   * @type {?Document}
+   */
+  #document = null
+  /**
+   * @type {boolean}
+   */
+  #viewDebug = false
 
-  constructor() {
-    /**
-     * @type {?string}
-     * @private
-     */
-    this.__id = null
-    /**
-     * @type {?Dispatcher}
-     * @private
-     */
-    this.__dispatcher = null
-    /**
-     *
-     * @type {?LoggerInterface}
-     * @private
-     */
-    this.__logger = null
-    /**
-     * @type {?Document}
-     * @private
-     */
-    this.__document = null
-    /**
-     * @type {boolean}
-     * @private
-     */
-    this.__viewDebug = false
-  }
 
   /**
    * @param {string} value
    * @return {ApplicationBuilder}
    */
   id(value) {
-    this.__id = value
+    this.#id = value
     return this
   }
 
@@ -52,7 +49,7 @@ export class ApplicationBuilder {
    * @return {ApplicationBuilder}
    */
   dispatcher(value) {
-    this.__dispatcher = value
+    this.#dispatcher = value
     return this
   }
 
@@ -62,7 +59,7 @@ export class ApplicationBuilder {
    * @return {ApplicationBuilder}
    */
   logger(value) {
-    this.__logger = value
+    this.#logger = value
     return this
   }
 
@@ -71,7 +68,7 @@ export class ApplicationBuilder {
    * @return {ApplicationBuilder}
    */
   document(value) {
-    this.__document = value
+    this.#document = value
     return this
   }
 
@@ -80,7 +77,7 @@ export class ApplicationBuilder {
    * @return {ApplicationBuilder}
    */
   viewDebug(value) {
-    this.__viewDebug = value
+    this.#viewDebug = value
     return this
   }
 
@@ -88,16 +85,21 @@ export class ApplicationBuilder {
    * @param {DomAccessor} value
    * @return {ApplicationBuilder}
    */
-  domAccessor(value){
+  domAccessor(value) {
     this.#domAccessor = value
     return this
   }
 
   /**
-   *
    * @return {HotBalloonApplication}
    */
   build() {
-    return new HotBalloonApplication(this.__id, this.__dispatcher, this.__logger, new ViewRenderConfig(this.__document, this.__viewDebug, this.#domAccessor))
+    return new HotBalloonApplication(
+      this.#id,
+      isNull(this.#dispatcher) ? new Dispatcher(this.#logger) : this.#dispatcher,
+      this.#logger,
+      new ViewRenderConfig(this.#document, this.#viewDebug, this.#domAccessor),
+      new ComponentsContextHandler(this.#logger)
+    )
   }
 }

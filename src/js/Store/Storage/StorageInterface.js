@@ -1,5 +1,4 @@
-'use strict'
-import {CoreException} from '../../CoreException'
+import {NotOverrideException} from '@flexio-oss/js-commons-bundle/assert'
 
 /**
  * @class
@@ -13,13 +12,13 @@ export class StorageInterface {
    * @returns {StorageInterface<TYPE>}
    */
   set(storeId, data) {
-    throw new CoreException(`set should be override`, 'METHOD_NOT_OVERRIDE')
+    throw NotOverrideException.FROM_INTERFACE('StorageInterface')
   }
 
   /**
    * @returns {?StoreState<TYPE>}
    */
   get() {
-    throw new CoreException(`get should be override`, 'METHOD_NOT_OVERRIDE')
+    throw NotOverrideException.FROM_INTERFACE('StorageInterface')
   }
 }

@@ -4,6 +4,7 @@ import {OrderedEventListenerConfigBuilder} from '@flexio-oss/js-commons-bundle/e
 export const WILL_REMOVE = 'WILL_REMOVE'
 
 export class ViewContainerPublicEventHandler {
+  static WILL_REMOVE = 'WILL_REMOVE'
   /***
    *
    * @param {ViewPublicEventHandler~subscriberClb} subscriber
@@ -36,7 +37,7 @@ export class ViewContainerPublicEventHandler {
     )
     return this._subscriber(
       OrderedEventListenerConfigBuilder
-        .listen(WILL_REMOVE)
+        .listen(ViewContainerPublicEventHandler.WILL_REMOVE)
         .callback(() => {
           clb()
         })

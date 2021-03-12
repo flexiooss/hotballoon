@@ -1,126 +1,116 @@
-import {TypeCheck as TypeTypeCheck} from '@flexio-oss/js-commons-bundle/assert'
-import {ArrayMap} from '@flexio-oss/js-commons-bundle/extended-flex-types'
+import {NotOverrideException, TypeCheck as TypeTypeCheck} from '@flexio-oss/js-commons-bundle/assert'
 import {WithID} from '../abstract/WithID'
 import {OrderedEventHandler} from '../Event/OrderedEventHandler'
 import {ViewContainerBaseMap} from './ViewContainerBaseMap'
-import {StoreBaseMap} from '../Store/StoreBaseMap'
+import {StoresHandler} from '../Store/StoresHandler'
 
-const _EventHandler = Symbol('_EventHandler')
-const _Views = Symbol('_Views')
 
 /**
  * @extends WithID
+ * @abstract
  */
 export class ViewContainerBase extends WithID {
   /**
-   *
-   * @param {String} id
+   * @type {StoresHandler}
    */
-  constructor(id) {
+  #stores
+  /**
+   * @type {LoggerInterface}
+   */
+  #logger
+  /**
+   * @type {Element}
+   */
+  #parentNode
+  /**
+   * @type {OrderedEventHandler}
+   */
+  #eventHandler = new OrderedEventHandler()
+  /**
+   * @type {ViewContainerBaseMap}
+   */
+  #views = new ViewContainerBaseMap()
+  /**
+   * @type {boolean}
+   */
+  #mounted = false
+  /**
+   * @type {boolean}
+   */
+  #rendered = false
+  /**
+   * @type {boolean}
+   */
+  #removed = false
+
+  /**
+   * @param {String} id
+   * @param {LoggerInterface} logger
+   */
+  constructor(id, logger) {
     super(id)
+    this.#stores = new StoresHandler(logger)
+  }
 
-    let _mounted = false
-    let _rendered = false
-    let _removed = false
+  /**
+   * @protected
+   * @param {boolean} v
+   */
+  set _mounted(v) {
+    this.#mounted = TypeTypeCheck.assertIsBoolean(v)
+  }
 
-    /**
-     * @type {ArrayMap<string,[]>}
-     * @private
-     */
-    let _tokenEvent = new ArrayMap()
-    let _storesMap = new StoreBaseMap()
-    let _views = new ViewContainerBaseMap()
-    let parentNode
+  /**
+   * @param {boolean} v
+   * @protected
+   */
+  set _rendered(v) {
+    this.#rendered = TypeTypeCheck.assertIsBoolean(v)
+  }
 
-    Object.defineProperties(this, {
-      _mounted: {
-        configurable: false,
-        enumerable: false,
-        get: () => _mounted,
-        set: (v) => {
-          _mounted = TypeTypeCheck.assertIsBoolean(v)
-        }
-      },
-      /**
-       * @property {boolean}
-       * @name ViewContainerBase#_rendered
-       * @protected
-       */
-      _rendered: {
-        configurable: false,
-        enumerable: false,
-        get: () => _rendered,
-        set: (v) => {
+  /**
+   * @protected
+   * @return {boolean}
+   */
+  get _mounted() {
+    return this.#mounted
+  }
 
-          _rendered = TypeTypeCheck.assertIsBoolean(v)
-        }
-      }, /**
-       * @property {boolean}
-       * @name ViewContainerBase#_removed
-       * @protected
-       */
-      _removed: {
-        configurable: false,
-        enumerable: false,
-        get: () => _removed,
-        set: (v) => {
-          _removed = TypeTypeCheck.assertIsBoolean(v)
-        }
-      },
-      [_EventHandler]: {
-        enumerable: false,
-        configurable: false,
-        /**
-         * @property {OrderedEventHandler}
-         * @name ViewContainerBase#_EventHandler
-         * @protected
-         */
-        value: Object.seal(new OrderedEventHandler())
-      },
-      _tokenEvent: {
-        enumerable: false,
-        configurable: false,
-        /**
-         * @property {ArrayMap}
-         * @name ViewContainerBase#_tokenEvent
-         * @protected
-         */
-        value: _tokenEvent
-      },
-      _storesMap: {
-        enumerable: false,
-        configurable: false,
-        /**
-         * @property {StoreBaseMap}
-         * @name ViewContainerBase#_storesMap
-         * @protected
-         */
-        value: _storesMap
-      },
-      [_Views]: {
-        enumerable: false,
-        configurable: false,
-        /**
-         * @property {ViewContainerBaseMap}
-         * @name ViewContainerBase#_Views
-         * @protected
-         */
-        value: _views
-      },
-      /**
-       * @params {Element}
-       * @name ViewContainerBase#parentNode
-       * @protected
-       */
-      parentNode: {
-        configurable: false,
-        enumerable: true,
-        get: () => parentNode,
-        set: (v) => {
-          parentNode = TypeTypeCheck.assertIsNode(v)
-        }
-      }
-    })
+  /**
+   * @protected
+   * @return {boolean}
+   */
+  get _rendered() {
+    return this.#rendered
+  }
+
+
+  /**
+   * @param {Element} v
+   */
+  set parentNode(v) {
+    this.#parentNode = TypeTypeCheck.assertIsNode(v)
+  }
+
+  /**
+   * @return {Element}
+   */
+  get parentNode() {
+    return this.#parentNode
+  }
+
+  /**
+   * @return {LoggerInterface}
+   */
+  logger() {
+    return this.#logger
+  }
+
+  /**
+   * @return {StoresHandler}
+   */
+  stores() {
+    return this.#stores
   }
 
   /**
@@ -129,7 +119,7 @@ export class ViewContainerBase extends WithID {
    * @return {(String|StringArray)} token
    */
   _on(orderedEventListenerConfig) {
-    return this[_EventHandler].on(orderedEventListenerConfig)
+    return this.#eventHandler.on(orderedEventListenerConfig)
   }
 
   /**
@@ -137,31 +127,15 @@ export class ViewContainerBase extends WithID {
    * @param {Object} payload
    */
   dispatch(eventType, payload) {
-    this[_EventHandler].dispatch(eventType, payload)
+    this.#eventHandler.dispatch(eventType, payload)
   }
 
   remove() {
-    this._removed = true
-    this[_EventHandler].clear()
+    this.#removed = true
+    this.#eventHandler.clear()
+    this.#stores.remove()
 
-    this._tokenEvent.forEach(
-      /**
-       *
-       * @param {ListenedStore[]} listenedStores
-       * @param storeId
-       */
-      (listenedStores, storeId) => {
-        listenedStores.forEach(
-          /**
-           *
-           * @param {ListenedStore} listenedStore
-           */
-          listenedStore => {
-            listenedStore.remove()
-          })
-      })
-
-    this.MapOfView().forEach(
+    this.views().forEach(
       /**
        * @param {View} v
        */
@@ -169,9 +143,7 @@ export class ViewContainerBase extends WithID {
         v.remove()
       })
 
-    this.MapOfView().clear()
-    this._tokenEvent.clear()
-    this._storesMap.clear()
+    this.views().clear()
     this._mounted = false
     this._rendered = false
   }
@@ -181,7 +153,7 @@ export class ViewContainerBase extends WithID {
    * @return {View}
    */
   addView(view) {
-    this[_Views].set(view.ID(), view)
+    this.#views.set(view.ID(), view)
     return view
   }
 
@@ -190,8 +162,8 @@ export class ViewContainerBase extends WithID {
    * @return {this}
    */
   removeView(view) {
-    if (this[_Views].has(view.ID())) {
-      this[_Views].delete(view.ID())
+    if (this.#views.has(view.ID())) {
+      this.#views.delete(view.ID())
     }
     return this
   }
@@ -201,34 +173,58 @@ export class ViewContainerBase extends WithID {
    * @return {View}
    */
   view(viewId) {
-    return this[_Views].get(viewId)
+    return this.#views.get(viewId)
   }
 
   /**
    * @return {ViewContainerBaseMap}
    */
-  MapOfView() {
-    return this[_Views]
+  views() {
+    return this.#views
   }
 
   /**
    * @return {boolean}
    */
   isRendered() {
-    return this._rendered === true
+    return this.#rendered === true
   }
 
   /**
    * @return {boolean}
    */
   isMounted() {
-    return this._mounted === true
+    return this.#mounted === true
   }
 
   /**
    * @return {boolean}
    */
   isRemoved() {
-    return this._removed === true
+    return this.#removed === true
+  }
+
+  /**
+   * @return {string}
+   * @abstract
+   */
+  AppID() {
+    throw NotOverrideException.FROM_ABSTRACT('Hotballoon/ViewContainerBase::AppID')
+  }
+
+  /**
+   * @return {string}
+   * @abstract
+   */
+  componentID() {
+    throw NotOverrideException.FROM_ABSTRACT('Hotballoon/ViewContainerBase::componentID')
+  }
+
+  /**
+   * @return {ViewRenderConfig}
+   * @abstract
+   */
+  viewRenderConfig() {
+    throw NotOverrideException.FROM_ABSTRACT('Hotballoon/ViewContainerBase::viewRenderConfig')
   }
 }

@@ -1,12 +1,11 @@
-import {WILL_REMOVE as VIEWCONTAINER_WILL_REMOVE} from '../View/ViewContainerPublicEventHandler'
-import {assertType, isString, TypeCheck} from '@flexio-oss/js-commons-bundle/assert'
+import {assertInstanceOf, assertType, isString, TypeCheck} from '@flexio-oss/js-commons-bundle/assert'
 import {Sequence} from '@flexio-oss/js-commons-bundle/js-helpers'
-import {StoreMap} from '../Store/StoreMap'
-import {ViewContainerMap} from '../View/ViewContainerMap'
 import {WithID} from '../abstract/WithID'
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_COMPONENT} from '../Types/HasTagClassNameInterface'
 import {TypeCheck as HBTypeCheck} from '../Types/TypeCheck'
-import {ListenedStoreMap} from '../Store/ListenedStoreMap'
+import {ActionsHandler} from '../Action/ActionsHandler'
+import {StoresHandler} from '../Store/StoresHandler'
+import {ViewContainersHandler} from '../View/ViewContainersHandler'
 
 const componentContextLogOptions = {
   color: 'green',
@@ -23,38 +22,41 @@ export class ComponentContext extends WithID {
    */
   #application
   /**
-   * @type {Map<string, string>}
-   */
-  #actionsToken = new Map()
-  /**
-   * @type {Map<string, ListenedStore>}
-   */
-  #storesListened = new ListenedStoreMap()
-  /**
    * @type {Sequence}
    */
   #sequenceForId = new Sequence(this.ID() + '_')
   /**
-   * @type {StoreMap}
-   */
-  #stores = new StoreMap()
-  /**
-   * @type {ViewContainerMap}
-   */
-  #viewContainers = new ViewContainerMap()
-  /**
    * @type {boolean}
    */
   #removed = false
+  /**
+   * @type {ActionsHandler}
+   */
+  #actionsHandler
+  /**
+   * @type {StoresHandler}
+   */
+  #storesHandler
+  /**
+   * @type {ViewContainersHandler}
+   */
+  #viewContainersHandler
 
 
   /**
    * @param {HotBalloonApplication} hotBalloonApplication
+   * @param {ActionsHandler} actionsHandler
+   * @param {StoresHandler} storesHandler
+   * @param {ViewContainersHandler} viewContainersHandler
    */
-  constructor(hotBalloonApplication) {
+  constructor(hotBalloonApplication, actionsHandler, storesHandler, viewContainersHandler) {
     HBTypeCheck.assertIsHotBalloonApplication(hotBalloonApplication)
+
     super(hotBalloonApplication.nextID())
     this.#application = hotBalloonApplication
+    this.#actionsHandler = assertInstanceOf(actionsHandler, ActionsHandler, 'ActionsHandler')
+    this.#storesHandler = assertInstanceOf(storesHandler, StoresHandler, 'StoresHandler')
+    this.#viewContainersHandler = assertInstanceOf(viewContainersHandler, ViewContainersHandler, 'ViewContainersHandler')
 
     Object.defineProperty(this, CLASS_TAG_NAME, {
       configurable: false,
@@ -65,119 +67,24 @@ export class ComponentContext extends WithID {
   }
 
   /**
-   * @param {HotBalloonApplication} hotballoonApplication
-   * @return {ComponentContext}
-   * @constructor
-   * @static
+   * @return {ActionsHandler}
    */
-  static create(hotballoonApplication) {
-    return new this(hotballoonApplication)
+  actions() {
+    return this.#actionsHandler
   }
 
   /**
-   * @param {string} token
-   * @param {ActionDispatcher} action
-   * @return {string}
+   * @return {StoresHandler}
    */
-  addActionToken(token, action) {
-    this.#actionsToken.set(TypeCheck.assertIsString(token), action.ID())
-    return token
+  stores() {
+    return this.#storesHandler
   }
 
   /**
-   * @param {string} token
-   * @return {ComponentContext}
+   * @return {ViewContainersHandler}
    */
-  removeActionToken(token) {
-    if (this.#actionsToken.has(TypeCheck.assertIsString(token))) {
-      this.dispatcher().removeActionListener(this.#actionsToken.get(token), token)
-      this.#actionsToken.delete(token)
-    }
-    return this
-  }
-
-  /**
-   * @param {ListenedStore} listenedStore
-   * @return {ComponentContext}
-   */
-  addListenedStore(listenedStore) {
-    this.#storesListened.set(TypeCheck.assertIsString(listenedStore.token()), listenedStore)
-    return this
-  }
-
-  /**
-   * @param {String} token
-   * @return {ComponentContext}
-   */
-  removeListenedStore(token) {
-    if (this.#storesListened.has(token)) {
-      this.#storesListened.get(token).remove()
-      this.#storesListened.delete(token)
-    }
-    return this
-  }
-
-  /**
-   * @param {Store} store
-   * @returns {Store} store
-   */
-  addStore(store) {
-    if (this.#stores.has(store.ID()) && this.#stores.get(store.ID()) !== store) {
-      throw new Error('Store already set : ' + store.ID())
-    }
-    this.#stores.set(store.ID(), store)
-    store.setLogger(this.logger())
-    return store
-  }
-
-  /**
-   * @param {String}  tokenStore
-   * @returns {StoreInterface} store
-   */
-  store(tokenStore) {
-    return this.#stores.get(tokenStore)
-  }
-
-  /**
-   * @param {ViewContainer} viewContainer
-   * @returns {ViewContainer} viewContainer
-   */
-  addViewContainer(viewContainer) {
-    if (this.#viewContainers.has(viewContainer.ID()) && this.#viewContainers.get(viewContainer.ID()) !== viewContainer) {
-      throw new Error('ViewContainer already set : ' + viewContainer.ID())
-    }
-    this.#viewContainers.set(viewContainer.ID(), viewContainer)
-    return viewContainer
-  }
-
-  /**
-   * @param {String} tokenViewContainer
-   * @returns {void}
-   */
-  removeViewContainerEntry(tokenViewContainer) {
-    if (this.#viewContainers.has(tokenViewContainer)) {
-      this.viewContainer(tokenViewContainer).dispatch(VIEWCONTAINER_WILL_REMOVE, {})
-      this.#viewContainers.delete(tokenViewContainer)
-    }
-  }
-
-  /**
-   * @param {String} tokenViewContainer
-   * @returns {void}
-   */
-  removeViewContainer(tokenViewContainer) {
-    if (this.#viewContainers.has(tokenViewContainer)) {
-      this.viewContainer(tokenViewContainer).dispatch(VIEWCONTAINER_WILL_REMOVE, {})
-      this.viewContainer(tokenViewContainer).remove()
-    }
-  }
-
-  /**
-   * @param {String} key
-   * @returns {?ViewContainer}
-   */
-  viewContainer(key) {
-    return this.#viewContainers.has(key) ? this.#viewContainers.get(key) : null
+  viewContainers() {
+    return this.#viewContainersHandler
   }
 
   /**
@@ -211,19 +118,10 @@ export class ComponentContext extends WithID {
 
   remove() {
     this.#removed = true
-    for (let [token, value] of this.#actionsToken.entries()) {
-      this.removeActionToken(token)
-    }
-    this.#actionsToken.clear()
-
-    this.#storesListened.forEach(v => v.remove())
-    this.#storesListened.clear()
-    this.#stores.forEach(v => v.remove())
-    this.#stores.clear()
-
-    this.#viewContainers.forEach(v => v.remove())
-
-    this.APP().removeComponentContext(this.ID())
+    this.#actionsHandler.remove()
+    this.#storesHandler.remove()
+    this.#viewContainersHandler.remove()
+    this.APP().components().detach(this)
 
     this.logger().log(
       this.logger().builder()

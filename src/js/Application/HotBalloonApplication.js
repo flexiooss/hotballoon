@@ -1,114 +1,70 @@
 import {Dispatcher} from '../Dispatcher/Dispatcher'
-import {assert, assertType, TypeCheck as PrimitiveTypeCheck, isNull} from '@flexio-oss/js-commons-bundle/assert'
+import {
+  assertInstanceOf
+} from '@flexio-oss/js-commons-bundle/assert'
 import {Sequence} from '@flexio-oss/js-commons-bundle/js-helpers'
 import {ComponentContextMap} from '../Component/ComponentContextMap'
 import {ComponentContext} from '../Component/ComponentContext'
 import {WithID} from '../abstract/WithID'
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_HOTBALLOON_APPLICATION} from '../Types/HasTagClassNameInterface'
 import {LoggerInterface} from '@flexio-oss/js-commons-bundle/js-logger'
-import {TypeCheck} from '../Types/TypeCheck'
 import {ViewRenderConfig} from './ViewRenderConfig'
-
-
-const _Dispatcher = Symbol('_Dispatcher')
-const _ComponentContexts = Symbol('_ComponentContexts')
-const _SequenceId = Symbol('_SequenceId')
-const _Logger = Symbol('_Logger')
-const _viewRenderConfig = Symbol('_viewRenderConfig')
+import {ComponentContextBuilder} from './ComponentContextBuilder'
+import {ComponentsContextHandler} from '../Component/ComponentsContextHandler'
 
 const applicationLogOptions = {
   color: 'magenta',
   titleSize: 2
 }
 
-
 /**
  * @extends WithID
  * @implements HasTagClassNameInterface
  */
 export class HotBalloonApplication extends WithID {
+
+  /**
+   * @type {ComponentsContextHandler}
+   */
+  #components
+  /**
+   * @type {Sequence}
+   */
+  #sequenceForId = new Sequence('hb_')
+  /**
+   * @type {Dispatcher}
+   */
+  #dispatcher
+  /**
+   * @type {LoggerInterface}
+   */
+  #logger
+  /**
+   * @type {ViewRenderConfig}
+   */
+  #viewRenderConfig
+
   /**
    * @constructor
    * @param {string} id
    * @param {Dispatcher} dispatcher
    * @param {LoggerInterface} logger
    * @param {ViewRenderConfig} viewRenderConfig
+   * @param {ComponentsContextHandler} componentsContextHandler
    */
-  constructor(id, dispatcher, logger,  viewRenderConfig) {
+  constructor(id, dispatcher, logger, viewRenderConfig, componentsContextHandler) {
     super(id)
 
-    assertType(dispatcher instanceof Dispatcher,
-      '`dispatcher` should be  hotballoon/dispatcher'
-    )
-    assertType(logger instanceof LoggerInterface,
-      '`logger` should be LoggerInterface'
-    )
-    assertType(viewRenderConfig instanceof ViewRenderConfig,
-      '`viewRenderConfig` should be ViewRenderConfig'
-    )
-
-    const _componentContexts = new ComponentContextMap()
-    const _sequenceId = new Sequence('hb_')
+    this.#dispatcher = assertInstanceOf(dispatcher, Dispatcher, 'Dispatcher')
+    this.#logger = assertInstanceOf(logger, LoggerInterface, 'LoggerInterface')
+    this.#viewRenderConfig = assertInstanceOf(viewRenderConfig, ViewRenderConfig, 'ViewRenderConfig')
+    this.#components = assertInstanceOf(componentsContextHandler, ComponentsContextHandler, 'ComponentsContextHandler')
 
     Object.defineProperty(this, CLASS_TAG_NAME, {
       configurable: false,
       writable: false,
       enumerable: true,
       value: CLASS_TAG_NAME_HOTBALLOON_APPLICATION
-    })
-
-    Object.defineProperties(this, {
-      [_Dispatcher]: {
-        configurable: false,
-        enumerable: false,
-        get: () => dispatcher,
-        set: (v) => {
-          assert(false,
-            '`dispatcher` already set'
-          )
-        }
-      },
-      [_ComponentContexts]: {
-        configurable: false,
-        enumerable: false,
-        get: () => _componentContexts
-        ,
-        set: (v) => {
-          assert(false,
-            '`_ComponentContexts` already set'
-          )
-        }
-      },
-      [_SequenceId]: {
-        configurable: false,
-        enumerable: false,
-        get: () => _sequenceId,
-        set: (v) => {
-          assert(false,
-            '`_sequenceId` already set'
-          )
-        }
-      },
-      [_Logger]: {
-        configurable: false,
-        enumerable: false,
-        get: () => logger,
-        set: (v) => {
-          assert(false,
-            '`_Logger` already set'
-          )
-        }
-      },
-      [_viewRenderConfig]: {
-        configurable: false,
-        enumerable: false,
-        get: () => viewRenderConfig,
-        set: (v) => {
-          assert(false,
-            '`_viewRenderConfig` already set'
-          )
-        }
-      }
     })
 
     this.logger().log(
@@ -124,56 +80,56 @@ export class HotBalloonApplication extends WithID {
    * @returns {String} token :next sequence token
    */
   nextID() {
-    return this[_SequenceId].nextID()
+    return this.#sequenceForId.nextID()
   }
 
   /**
    * @returns {Dispatcher}
    */
   dispatcher() {
-    return this[_Dispatcher]
+    return this.#dispatcher
   }
 
   /**
    * @return {ComponentContext} componentContext
    */
   addComponentContext() {
-    const componentContext = new ComponentContext(this)
-    this[_ComponentContexts].set(componentContext.ID(), componentContext)
-    return componentContext
+    return this.#components.attach(new ComponentContextBuilder()
+      .application(this)
+      .build()
+    )
   }
 
   /**
-   * @param {String} componentID
-   * @returns {boolean} removed ?
+   * @return {ComponentsContextHandler}
    */
-  removeComponentContext(componentID) {
-    if (this[_ComponentContexts].has(componentID)) {
-      this[_ComponentContexts].delete(componentID)
-      return true
-    }
-    return false
-  }
-
-  /**
-   * @param {String} componentID
-   * @returns {ComponentContext}
-   */
-  componentContext(componentID) {
-    return this[_ComponentContexts].get(componentID)
+  components() {
+    return this.#components
   }
 
   /**
    * @return {LoggerInterface}
    */
   logger() {
-    return this[_Logger]
+    return this.#logger
   }
 
   /**
    * @return {ViewRenderConfig}
    */
-  viewRenderConfig(){
-    return this[_viewRenderConfig]
+  viewRenderConfig() {
+    return this.#viewRenderConfig
+  }
+
+  remove() {
+    this.logger().log(
+      this.logger().builder()
+        .debug()
+        .pushLog('HotballoonApplication:remove: ' + this.ID())
+        .pushLog(this),
+      applicationLogOptions
+    )
+
+    this.#components.remove()
   }
 }

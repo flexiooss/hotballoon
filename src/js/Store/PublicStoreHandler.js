@@ -20,11 +20,6 @@ export class PublicStoreHandler {
    * @param {StoreInterface<TYPE, TYPE_BUILDER>} store
    */
   constructor(store) {
-
-    assertType(
-      TypeCheck.isStoreBase(store),
-      'PublicStoreHandler:construcotr: `store` should be a StoreBase'
-    )
     Object.defineProperty(this, CLASS_TAG_NAME, {
       configurable: false,
       writable: false,
@@ -35,7 +30,7 @@ export class PublicStoreHandler {
     /**
      * @params {StoreInterface<TYPE, TYPE_BUILDER>}
      */
-    this.#store = store
+    this.#store = TypeCheck.assertStoreBase(store)
   }
 
   /**
