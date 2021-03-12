@@ -50,6 +50,7 @@ export class ViewContainerBase extends WithID {
   constructor(id, logger) {
     super(id)
     this.#stores = new StoresHandler(logger)
+    this.#logger = logger
   }
 
   /**
