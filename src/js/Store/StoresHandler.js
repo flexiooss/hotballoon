@@ -57,8 +57,9 @@ export class StoresHandler {
    */
   listen(store, callback, priority = 100) {
     TypeCheck.assertStoreBase(store)
-    const listenedStore = new ListenedStore(this, store.listenChanged(callback, priority).token())
+    const listenedStore =store.listenChanged(callback, priority)
     this.#listenedStores.set(listenedStore.token(), listenedStore)
+
     return new ListenedStore(this, listenedStore.token())
   }
 
