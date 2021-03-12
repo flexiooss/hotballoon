@@ -6,7 +6,7 @@ import {ActionDispatcherArray} from '../Action/ActionDispatcherArray'
 export class DispatcherEventListenerConfigBuilder extends EventListenerConfigBuilder {
   /**
    *
-   * @param {ActionDispatcherArray} actions
+   * @param {SymbolStringArray} actions
    */
   constructor(actions) {
     assertType(actions instanceof ActionDispatcherArray, 'hotballoon:DispatcherEventListenerFactory:constructor: `actions` argument should be an instance of ActionDispatcherArray ')
@@ -15,11 +15,11 @@ export class DispatcherEventListenerConfigBuilder extends EventListenerConfigBui
 
   /**
    *
-   * @param {...ActionDispatcher} action
+   * @param {...string} actionIds
    * @return {DispatcherEventListenerConfigBuilder}
    * @constructor
    */
-  static listen(...action) {
-    return new this(new ActionDispatcherArray(...action))
+  static listen(...actionIds) {
+    return new this(new SymbolStringArray(...actionIds))
   }
 }

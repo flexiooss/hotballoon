@@ -49,15 +49,15 @@ export class ActionsHandler {
   }
 
   /**
-   * @param {ActionDispatcher} actionDispatcher
+   * @param {ActionSubscriber} actionSubscriber
    * @param {function(payload: ?TYPE, type: (string|Symbol))}  callback
    * @return {ListenedAction}
    */
-  listen(actionDispatcher, callback) {
+  listen(actionSubscriber, callback) {
     /**
      * @type {ListenedAction}
      */
-    const listenedAction = TypeCheck.assertIsActionDispatcher(actionDispatcher).listen(callback)
+    const listenedAction = TypeCheck.assertIsActionSubscriber(actionSubscriber).listen(callback)
     this.#listenedActions.set(listenedAction.token(), listenedAction)
     return new ListenedAction(this, listenedAction.token())
   }

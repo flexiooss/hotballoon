@@ -7,6 +7,18 @@ import {ActionTypeConfig} from './ActionTypeConfig'
  */
 export class ActionDispatcherConfig {
   /**
+   * @type {Symbol|String}
+   */
+  #id
+  /**
+   * @type {ActionTypeConfig<TYPE, TYPE_BUILDER>}
+   */
+  #params
+  /**
+   * @type {Dispatcher}
+   */
+  #dispatcher
+  /**
    * @param {(Symbol|String)} id
    * @param {ActionTypeConfig<TYPE, TYPE_BUILDER>} actionTypeParam
    * @param {Dispatcher} dispatcher
@@ -17,72 +29,50 @@ export class ActionDispatcherConfig {
       'hotballoon:ActionDispatcherConfig:constructor "actionTypeParam" should be ActionTypeConfig'
     )
 
-    assertType(TypeCheck.isDispatcher(dispatcher), 'hotballoon:ActionDispatcherConfig:constructor "dispatcher" argument should be a Dispatcher')
-    /**
-     *
-     * @type {Symbol|String}
-     * @protected
-     */
-    this._id = id
-    /**
-     *
-     * @type {ActionTypeConfig<TYPE, TYPE_BUILDER>}
-     * @protected
-     */
-    this._params = actionTypeParam
-    /**
-     *
-     * @type {Dispatcher}
-     * @protected
-     */
-    this._dispatcher = dispatcher
+    this.#id = id
+    this.#params = actionTypeParam
+    this.#dispatcher = TypeCheck.assertIsDispatcher(dispatcher)
   }
 
   /**
-   *
    * @return {(Symbol|String)}
    */
   id() {
-    return this._id
+    return this.#id
   }
 
   /**
-   *
    * @return {TYPE.}
    */
   type() {
-    return this._params.type()
+    return this.#params.type()
   }
 
   /**
-   *
    * @return {TYPE_BUILDER.}
    */
   payloadBuilder() {
-    return this._params.payloadBuilder()
+    return this.#params.payloadBuilder()
   }
 
   /**
-   *
    * @return {?ValueObjectValidator}
    */
   validator() {
-    return this._params.validator()
+    return this.#params.validator()
   }
 
   /**
-   *
    * @return {ActionTypeConfig~defaultCheckerClb<TYPE>}
    */
   defaultChecker() {
-    return this._params.defaultChecker()
+    return this.#params.defaultChecker()
   }
 
   /**
-   *
    * @return {Dispatcher}
    */
   dispatcher() {
-    return this._dispatcher
+    return this.#dispatcher
   }
 }

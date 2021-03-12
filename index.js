@@ -7,6 +7,7 @@ export {Dispatcher} from './src/js/Dispatcher/Dispatcher'
 export {Component} from './src/js/Component/Component'
 
 export {ActionDispatcherBuilder} from './src/js/Action/ActionDispatcherBuilder'
+export {ActionSubscriber} from './src/js/Action/ActionSubscriber'
 export {ActionsHandler} from './src/js/Action/ActionsHandler'
 
 export {ViewContainersHandler} from './src/js/View/ViewContainersHandler'

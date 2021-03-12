@@ -1,5 +1,5 @@
 import {
-  CLASS_TAG_NAME_ACTION,
+  CLASS_TAG_NAME_ACTION_DISPATCHER,
   CLASS_TAG_NAME_COMPONENT,
   CLASS_TAG_NAME_DISPATCHER,
   CLASS_TAG_NAME_EXECUTOR,
@@ -10,6 +10,7 @@ import {
   CLASS_TAG_NAME_STORE,
   CLASS_TAG_NAME_VIEW,
   CLASS_TAG_NAME_VIEWCONTAINER,
+  CLASS_TAG_NAME_ACTION_SUBSCRIBER,
   testClassTagName
 } from './HasTagClassNameInterface'
 import {assertType} from '@flexio-oss/js-commons-bundle/assert'
@@ -82,7 +83,7 @@ class TypeCheck {
    * @return {boolean}
    */
   static isActionDispatcher(inst) {
-    return testClassTagName(inst, CLASS_TAG_NAME_ACTION)
+    return testClassTagName(inst, CLASS_TAG_NAME_ACTION_DISPATCHER)
   }
 
   /**
@@ -93,6 +94,26 @@ class TypeCheck {
   static assertIsActionDispatcher(inst) {
     assertType(TypeCheck.isActionDispatcher(inst),
       'TypeCheck:assertIsActionDispatcher: `inst` argument should be an ActionDispatcher'
+    )
+    return inst
+  }
+
+  /**
+   * @param {Object} inst
+   * @return {boolean}
+   */
+  static isActionSubscriber(inst) {
+    return testClassTagName(inst, CLASS_TAG_NAME_ACTION_SUBSCRIBER) || TypeCheck.isActionDispatcher(inst)
+  }
+
+  /**
+   * @param {ActionSubscriber} inst
+   * @return {ActionSubscriber}
+   * @throws {TypeError}
+   */
+  static assertIsActionSubscriber(inst) {
+    assertType(TypeCheck.isActionSubscriber(inst),
+      'TypeCheck:assertIsActionDispatcher: `inst` argument should be an ActionSubscriber'
     )
     return inst
   }
