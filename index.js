@@ -1,6 +1,8 @@
 export {HotBalloonApplication} from './src/js/Application/HotBalloonApplication'
+export {HotballoonApplicationConfig} from './src/js/Application/HotballoonApplicationConfig'
 export {ApplicationBuilder} from './src/js/Application/ApplicationBuilder'
 export {ViewRenderConfig} from './src/js/Application/ViewRenderConfig'
+export {ExecutionConfig} from './src/js/Application/ExecutionConfig'
 
 export {Dispatcher} from './src/js/Dispatcher/Dispatcher'
 

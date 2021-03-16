@@ -5,6 +5,8 @@ import {ComponentsContextHandler} from '../Component/ComponentsContextHandler'
 import {Dispatcher} from '../Dispatcher/Dispatcher'
 import {isNull} from '@flexio-oss/js-commons-bundle/assert'
 import {UID} from '@flexio-oss/js-commons-bundle/js-helpers'
+import {HotballoonApplicationConfig} from './HotballoonApplicationConfig'
+import {ExecutionConfig} from './ExecutionConfig'
 
 
 export class ApplicationBuilder {
@@ -29,6 +31,10 @@ export class ApplicationBuilder {
    * @type {?Document}
    */
   #document = null
+  /**
+   * @type {?Navigator}
+   */
+  #navigator = null
   /**
    * @type {boolean}
    */
@@ -73,6 +79,15 @@ export class ApplicationBuilder {
   }
 
   /**
+   * @param {Navigator} value
+   * @return {ApplicationBuilder}
+   */
+  navigator(value) {
+    this.#navigator = value
+    return this
+  }
+
+  /**
    * @param {boolean} value
    * @return {ApplicationBuilder}
    */
@@ -95,11 +110,14 @@ export class ApplicationBuilder {
    */
   build() {
     return new HotBalloonApplication(
-      this.#id,
-      isNull(this.#dispatcher) ? new Dispatcher(this.#logger) : this.#dispatcher,
-      this.#logger,
-      new ViewRenderConfig(this.#document, this.#viewDebug, this.#domAccessor),
-      new ComponentsContextHandler(this.#logger)
+      new HotballoonApplicationConfig(
+        this.#id,
+        isNull(this.#dispatcher) ? new Dispatcher(this.#logger) : this.#dispatcher,
+        this.#logger,
+        new ViewRenderConfig(this.#document, this.#viewDebug, this.#domAccessor),
+        new ComponentsContextHandler(this.#logger),
+        new ExecutionConfig(this.#navigator)
+      )
     )
   }
 }
