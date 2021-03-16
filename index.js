@@ -5,6 +5,7 @@ export {ViewRenderConfig} from './src/js/Application/ViewRenderConfig'
 export {Dispatcher} from './src/js/Dispatcher/Dispatcher'
 
 export {Component} from './src/js/Component/Component'
+export {ComponentsContextHandler} from './src/js/Component/ComponentsContextHandler'
 
 export {ActionDispatcherBuilder} from './src/js/Action/ActionDispatcherBuilder'
 export {ActionSubscriber} from './src/js/Action/ActionSubscriber'
