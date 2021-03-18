@@ -73,10 +73,10 @@ export class AsyncDomAccessor extends DomAccessor {
   #runTasks(tasks, start) {
     let task
     while (task = tasks.shift()) {
-      if (Date.now() - start > 50) {
+      task.call(null)
+      if ((Date.now() - start) > 12) {
         return false
       }
-      task.call(null)
     }
     return true
   }
