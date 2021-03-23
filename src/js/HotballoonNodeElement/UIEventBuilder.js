@@ -285,6 +285,15 @@ class KeyKeyboardEventBuilder {
       event => event.key === 'Enter'
     )
   }
+  /**
+   *
+   * @return {KeyKeyboardEventBuilder}
+   */
+  static Space() {
+    return new KeyKeyboardEventBuilder(
+      event => event.key === ' '
+    )
+  }
 
   /**
    *
