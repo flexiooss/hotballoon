@@ -71,10 +71,13 @@ export class HotBalloonApplication extends WithID {
 
   /**
    * @return {ComponentContext} componentContext
+   * @param {?string} [name=null]
    */
-  addComponentContext() {
-    return this.#config.components().attach(new ComponentContextBuilder()
+  addComponentContext(name=null) {
+    return this.#config.components().attach(
+      new ComponentContextBuilder()
       .application(this)
+      .name(name)
       .build()
     )
   }

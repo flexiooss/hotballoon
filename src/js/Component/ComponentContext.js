@@ -45,14 +45,15 @@ export class ComponentContext extends WithID {
 
   /**
    * @param {HotBalloonApplication} hotBalloonApplication
+   * @param {string} id
    * @param {ActionsHandler} actionsHandler
    * @param {StoresHandler} storesHandler
    * @param {ViewContainersHandler} viewContainersHandler
    */
-  constructor(hotBalloonApplication, actionsHandler, storesHandler, viewContainersHandler) {
+  constructor(hotBalloonApplication, id, actionsHandler, storesHandler, viewContainersHandler) {
     HBTypeCheck.assertIsHotBalloonApplication(hotBalloonApplication)
 
-    super(hotBalloonApplication.nextID())
+    super(id)
     this.#application = hotBalloonApplication
     this.#actionsHandler = assertInstanceOf(actionsHandler, ActionsHandler, 'ActionsHandler')
     this.#storesHandler = assertInstanceOf(storesHandler, StoresHandler, 'StoresHandler')
