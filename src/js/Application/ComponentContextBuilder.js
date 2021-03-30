@@ -39,7 +39,7 @@ export class ComponentContextBuilder {
     return new ComponentContext(
       this.#application,
       !isNull(this.#name)
-        ? `${this.#application.nextID()}--${this.#name}`
+        ? `${this.#application.nextID()}--${this.#name.replace(new RegExp('\\\\s+', 'g'), '')}`
         : this.#application.nextID(),
       new ActionsHandler(this.#application.logger()),
       new StoresHandler(this.#application.logger()),
