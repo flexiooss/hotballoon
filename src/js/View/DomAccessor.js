@@ -67,17 +67,23 @@ export class AsyncDomAccessor extends DomAccessor {
 
   /**
    * @param {Function[]} tasks
+   * @param {number} start
+   * @return {boolean}
    */
-  #runTasks(tasks) {
+  #runTasks(tasks, start) {
     let task
     while (task = tasks.shift()) {
       task.call(null)
+      if ((Date.now() - start) > 12) {
+        return false
+      }
     }
+    return true
   }
 
   /**
    * @param {Function} task
-   * @return {*}
+   * @return {AsyncDomAccessor}
    */
   read(task) {
 //    console.log('read')
@@ -100,21 +106,25 @@ export class AsyncDomAccessor extends DomAccessor {
   #scheduleFlush() {
     if (!this.#scheduled) {
       this.#scheduled = true
-      this.#requestAnimationFrame.call(this.#window,() => {
+      this.#requestAnimationFrame.call(this.#window, () => {
         this.#flush()
       })
     }
   }
 
   #flush() {
-
+    /**
+     * @type {number}
+     */
+    const start = Date.now()
     try {
 //      console.log('flushing reads', this.#reads.length)
-      this.#runTasks(this.#reads)
+      if (this.#runTasks(this.#reads, start)) {
 //      console.log('flushing writes', this.#writes.length)
-      this.#runTasks(this.#writes)
+        this.#runTasks(this.#writes, start)
+      }
     } catch (e) {
-      console.log(e)
+      console.error(e)
     }
 
     this.#scheduled = false

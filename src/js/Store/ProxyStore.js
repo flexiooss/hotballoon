@@ -1,12 +1,10 @@
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_PROXYSTORE} from '../Types/HasTagClassNameInterface'
-import {_EventHandler, _get, _set, _storage, StoreBase} from './StoreBase'
+import {StoreBase} from './StoreBase'
 import {StoreBaseConfig} from './StoreBaseConfig'
-import {assertType} from '@flexio-oss/js-commons-bundle/assert'
+import {assertInstanceOf, assertType} from '@flexio-oss/js-commons-bundle/assert'
 import {ProxyStoreConfig} from './ProxyStoreConfig'
 import {StoreState} from './StoreState'
 
-export const _store = Symbol('_store')
-export const _mapper = Symbol('_mapper')
 
 /**
  * @implements {StoreInterface<TYPE>}
@@ -15,6 +13,15 @@ export const _mapper = Symbol('_mapper')
  * @template STORE_TYPE, TYPE, TYPE_BUILDER
  */
 export class ProxyStore extends StoreBase {
+  /**
+   * @type {boolean}
+   */
+  #shouldUpdate = true
+  /**
+   * @type ProxyStoreConfig<STORE_TYPE, TYPE, TYPE_BUILDER>
+   */
+  #config
+
   /**
    * @param {ProxyStoreConfig<STORE_TYPE, TYPE, TYPE_BUILDER>} proxyStoreConfig
    */
@@ -28,10 +35,7 @@ export class ProxyStore extends StoreBase {
       )
     )
 
-    assertType(
-      proxyStoreConfig instanceof ProxyStoreConfig,
-      '`proxyStoreConfig` argument should be a ProxyStoreConfig'
-    )
+    this.#config = assertInstanceOf(proxyStoreConfig, ProxyStoreConfig, 'ProxyStoreConfig')
 
     Object.defineProperty(this, CLASS_TAG_NAME, {
       configurable: false,
@@ -40,52 +44,64 @@ export class ProxyStore extends StoreBase {
       value: CLASS_TAG_NAME_PROXYSTORE
     })
 
-    Object.defineProperties(this, {
-
-      [_store]: {
-        enumerable: false,
-        configurable: false,
-        /**
-         * @params {StoreInterface<STORE_TYPE>}
-         * @name ProxyStore#_Store
-         * @private
-         */
-        value: proxyStoreConfig.store()
-      },
-
-      [_mapper]: {
-        enumerable: false,
-        configurable: false,
-        /**
-         * @property {ProxyStoreConfig~mapperClb<STORE_TYPE, TYPE>}
-         * @name ProxyStore#_mapper
-         * @private
-         */
-        value: proxyStoreConfig.mapper()
-      }
-
-    })
-    if (this[_store].hasOwnProperty('logger')) {
-      this.setLogger(this[_store].logger())
+    if ('logger' in this._store()) {
+      this.setLogger(this._store().logger())
     }
 
-    this.__subscribeToStore()
+    this.#subscribeToStore()
   }
 
-  __subscribeToStore() {
-    this[_store].listenChanged(
+  #subscribeToStore() {
+    this._store().listenChanged(
       (payload, eventType) => {
-        this.__mapAndUpdate(payload, eventType)
+        this.#mapAndUpdate(payload, eventType)
       }
     )
   }
 
   /**
+   * @return {StoreInterface<STORE_TYPE>}
+   */
+  _store() {
+    return this.#config.store()
+  }
+
+  /**
+   * @return {function(STORE_TYPE, ProxyStore): TYPE}
+   * @protected
+   */
+  _mapper() {
+    return this.#config.mapper()
+  }
+
+  /**
    * @param {StoreState<STORE_TYPE>} payload
    * @param {string} eventType
-   * @private
    */
-  __mapAndUpdate(payload, eventType) {
-    this[_set](this[_mapper](payload.data()))
+  #mapAndUpdate(payload, eventType) {
+    /**
+     * @type {TYPE}
+     */
+    const state = this._mapper().call(null, payload.data(), this)
+    if (this.#shouldUpdate) {
+      this.set(state)
+    }
+    this.shouldUpdate()
+  }
+
+  /**
+   * @return {ProxyStore}
+   */
+  shouldUpdate() {
+    this.#shouldUpdate = true
+    return this
+  }
+
+  /**
+   * @return {ProxyStore}
+   */
+  shouldNotUpdate() {
+    this.#shouldUpdate = false
+    return this
   }
 }

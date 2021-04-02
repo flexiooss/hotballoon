@@ -1,9 +1,8 @@
-import {assertType, isClass} from '@flexio-oss/js-commons-bundle/assert'
+import {assertInstanceOf, TypeCheck} from '@flexio-oss/js-commons-bundle/assert'
 import {deepFreezeSeal} from '@flexio-oss/js-commons-bundle/js-generator-helpers'
 import {StoreState} from '../StoreState'
 import {StorageInterface} from './StorageInterface'
 
-const _state = Symbol.for('_state')
 
 /**
  * @template TYPE
@@ -13,41 +12,23 @@ const _state = Symbol.for('_state')
  */
 export class InMemoryStorage extends StorageInterface {
   /**
+   * @type {StoreState<TYPE>}
+   */
+  #state
+  /**
+   * @type {TYPE.}
+   */
+  #type
+
+  /**
    * @constructor
    * @param {TYPE.} type
    * @param {StoreState<TYPE>} state
    */
   constructor(type, state) {
     super()
-
-    assertType(
-      isClass(type),
-      'hotballoon:Storage:constructor: `type` argument should be a Class'
-    )
-
-    assertType(state instanceof StoreState,
-      'hotballoon:Storage:constructor: `state` argument should be a `StoreState` instance')
-
-    Object.defineProperties(this, {
-      [_state]: {
-        enumerable: false,
-        configurable: false,
-        writable: false,
-        value: state
-      },
-      type: {
-        configurable: false,
-        writable: false,
-        enumerable: true,
-        /**
-         * @params {TYPE.}
-         * @name InMemoryStorage#type
-         */
-        value: type
-      }
-
-    })
-
+    this.#state = assertInstanceOf(state, StoreState, 'StoreState')
+    this.#type = TypeCheck.assertIsClass(type)
     deepFreezeSeal(this)
   }
 
@@ -59,8 +40,8 @@ export class InMemoryStorage extends StorageInterface {
    */
   set(storeID, data) {
     return new InMemoryStorage(
-      this.type,
-      new StoreState(storeID, this.type, data)
+      this.#type,
+      new StoreState(storeID, this.#type, data)
     )
   }
 
@@ -68,20 +49,17 @@ export class InMemoryStorage extends StorageInterface {
    * @returns {?StoreState<TYPE>}
    */
   get() {
-    return this[_state]
+    return this.#state
   }
 
   /**
-   *
    * @return {TYPE.}
-   * @private
    */
   __type__() {
-    return this.type
+    return this.#type
   }
 
   /**
-   *
    * @param {Class} constructor
    * @return {boolean}
    */

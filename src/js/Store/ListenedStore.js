@@ -1,29 +1,32 @@
-const __stopListenChangedLBD = Symbol('__stopListenChangedLBD')
-const __token = Symbol('__token')
-
+import {TypeCheck} from '@flexio-oss/js-commons-bundle/assert'
 
 export class ListenedStore {
   /**
-   *
-   * @param {function()} stopListenChangedLBD
+   * @type  {function()}
+   */
+  #stopListenChangedClb
+  /**
+   * @type {string}
+   */
+  #token
+
+  /**
+   * @param {function()} stopListenChangedClb
    * @param {string} token
    */
-  constructor(stopListenChangedLBD,  token) {
-
-    this[__stopListenChangedLBD] = stopListenChangedLBD
-    this[__token] = token
+  constructor(stopListenChangedClb, token) {
+    this.#stopListenChangedClb = TypeCheck.assertIsFunction(stopListenChangedClb)
+    this.#token = TypeCheck.assertIsString(token)
   }
 
   /**
-   *
    * @return {string}
    */
   token() {
-    return this[__token]
+    return this.#token
   }
 
   remove() {
-    this[__stopListenChangedLBD].call()
+    this.#stopListenChangedClb.call(null)
   }
-
 }

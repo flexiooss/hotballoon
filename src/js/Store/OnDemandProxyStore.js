@@ -16,7 +16,20 @@ export class OnDemandProxyStore extends ProxyStore {
     return new StoreState(
       this.ID(),
       this.__type__(),
-      this.validateDataStore(this[_mapper](this[_store].state().data()))
+      this.validateDataStore(this._mapper().call(null, this._store().state().data()))
     )
+  }
+
+  /**
+   * @protected
+   * @param {String} eventType
+   * @param {!StoreState<TYPE>}  payload
+   */
+  _dispatch(eventType, payload = this.state()) {
+    this._eventHandler().dispatch(eventType, payload)
+  }
+
+  onceOnUpdated(clb) {
+    throw new Error('not implemented yet')
   }
 }

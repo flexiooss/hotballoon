@@ -7,6 +7,6 @@ import {TypeCheck} from '../Types/TypeCheck'
  */
 export class ActionMap extends FlexMap {
   _validate(v) {
-    assertType(TypeCheck.isActionDispatcher(v), 'ActionMap: input should be a ActionDispatcher')
+    TypeCheck.assertIsActionDispatcher(v)
   }
 }

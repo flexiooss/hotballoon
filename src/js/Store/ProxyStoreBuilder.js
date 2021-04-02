@@ -36,7 +36,7 @@ export class ProxyStoreBuilder {
     this._defaultChecker = v => v
 
     /**
-     * @type {?function(state: STORE_TYPE ):TYPE} mapper
+     * @type {function(state: STORE_TYPE, proxyStore:ProxyStore ):TYPE}  mapper
      * @protected
      */
     this._mapper = null
@@ -67,7 +67,7 @@ export class ProxyStoreBuilder {
   }
 
   /**
-   * @param {function(state: STORE_TYPE ):TYPE} mapper
+   * @param {function(state: STORE_TYPE, proxyStore:ProxyStore ):TYPE} mapper
    * @return {ProxyStoreBuilder}
    */
   mapper(mapper) {

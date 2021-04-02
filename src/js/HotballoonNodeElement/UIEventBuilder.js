@@ -285,6 +285,15 @@ class KeyKeyboardEventBuilder {
       event => event.key === 'Enter'
     )
   }
+  /**
+   *
+   * @return {KeyKeyboardEventBuilder}
+   */
+  static Space() {
+    return new KeyKeyboardEventBuilder(
+      event => event.key === ' '
+    )
+  }
 
   /**
    *
@@ -564,6 +573,17 @@ class ElementEventBuilder {
   static load(callback) {
     return ElementEventListenerConfigBuilder
       .listen('load')
+      .callback(callback)
+      .build()
+  }
+  /**
+   *
+   * @param {function(event:InputEvent)} callback
+   * @return {ElementEventListenerConfig}
+   */
+  static input(callback) {
+    return ElementEventListenerConfigBuilder
+      .listen('input')
       .callback(callback)
       .build()
   }

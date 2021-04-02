@@ -1,4 +1,4 @@
-import {assertType, isClass, isNull} from '@flexio-oss/js-commons-bundle/assert'
+import {isNull, TypeCheck} from '@flexio-oss/js-commons-bundle/assert'
 import {deepFreezeSeal} from '@flexio-oss/js-commons-bundle/js-generator-helpers'
 import {StoreState} from '../StoreState'
 import {StorageInterface} from './StorageInterface'
@@ -12,6 +12,23 @@ import {StoreStateBuilder} from '../StoreState'
  */
 export class JsStorageImplStorage extends StorageInterface {
   /**
+   * @type {TYPE.}
+   */
+  #type
+  /**
+   * @type {String}
+   */
+  #key
+  /**
+   * @type {String}
+   */
+  #storeID
+  /**
+   * @type {Storage}
+   */
+  #storage
+
+  /**
    * @constructor
    * @param {TYPE.} type
    * @param {string} storeID
@@ -20,56 +37,10 @@ export class JsStorageImplStorage extends StorageInterface {
    */
   constructor(type, storeID, storage, key) {
     super()
-
-    assertType(
-      isClass(type),
-      'hotballoon:Storage:constructor: `type` argument should be a Class'
-    )
-
-    Object.defineProperties(this, {
-      storeID: {
-        configurable: false,
-        writable: false,
-        enumerable: true,
-        /**
-         * @params {string}
-         * @name InMemoryStorage#storeID
-         */
-        value: type
-      },
-      type: {
-        configurable: false,
-        writable: false,
-        enumerable: true,
-        /**
-         * @params {TYPE.}
-         * @name InMemoryStorage#type
-         */
-        value: type
-      },
-      __key: {
-        configurable: false,
-        writable: false,
-        enumerable: true,
-        /**
-         * @params {string}
-         * @name InMemoryStorage#key
-         */
-        value: key
-      },
-      __storage: {
-        configurable: false,
-        writable: false,
-        enumerable: false,
-        /**
-         * @params {Storage}
-         * @name InMemoryStorage#__storage
-         */
-        value: storage
-      }
-
-    })
-
+    this.#type = TypeCheck.assertIsClass(type)
+    this.#key = TypeCheck.assertIsString(key)
+    this.#storeID = TypeCheck.assertIsString(storeID)
+    this.#storage = storage
     deepFreezeSeal(this)
   }
 
@@ -77,17 +48,16 @@ export class JsStorageImplStorage extends StorageInterface {
    * @return {string}
    */
   key() {
-    return this.__key
+    return this.#key
   }
 
   /**
    * @param {(string|Symbol)} storeID
    * @param {TYPE} data
-   * @return {LocalStorageStorage<TYPE>}
+   * @return {StorageInterface}
    */
   set(storeID, data) {
-
-    this.__storage.setItem(this.key(), JSON.stringify(new StoreState(storeID, this.type, data)))
+    this.#storage.setItem(this.key(), JSON.stringify(new StoreState(storeID, this.#type, data)))
     return this
   }
 
@@ -95,23 +65,23 @@ export class JsStorageImplStorage extends StorageInterface {
    * @returns {?StoreState<TYPE>}
    */
   get() {
-    let data = this.__storage.getItem(this.key())
+    let data = this.#storage.getItem(this.key())
 
     if (!isNull(data)) {
       return StoreStateBuilder
-        .fromJSON(data, this.type)
-        .storeID(this.storeID)
+        .fromJSON(data, this.#type)
+        .storeID(this.#storeID)
         .build()
     }
+
     return null
   }
 
   /**
-   * @return {TYPE.}
-   * @private
+   * @return {Class<TYPE>}
    */
   __type__() {
-    return this.type
+    return this.#type
   }
 
   /**

@@ -82,6 +82,33 @@ export class TestStore extends TestCase {
 
     assert.equal(a, t_2.a(), 'storeListener should not be triggered')
   }
+
+
+  testLastStateDispatched() {
+    let count = 0
+
+    this.store.listenChanged((state) => {
+      count++
+      assert.equal(state.data().a(), 3, 'last value should be dispatched')
+      assert.equal(count, 1, 'should be dispatched once')
+    })
+
+    this.store.onceOnUpdated((state)=>{
+
+      this.store.set(
+        new FakeValueObjectBuilder()
+          .a(3)
+          .b(0)
+          .build()
+      )
+    })
+      .set(new FakeValueObjectBuilder()
+        .a(2)
+        .b(0)
+        .build())
+
+
+  }
 }
 
 

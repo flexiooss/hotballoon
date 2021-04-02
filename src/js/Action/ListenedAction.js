@@ -1,32 +1,36 @@
-const __dispatcher = Symbol('__dispatcher')
-const __actionID = Symbol('__actionDispatcher')
-const __token = Symbol('__token')
-
-
 export class ListenedAction {
   /**
-   *
+   * @type {Dispatcher}
+   */
+  #dispatcher
+  /**
+   * @type {string}
+   */
+  #actionID
+  /**
+   * @type {string}
+   */
+  #token
+
+  /**
    * @param {Dispatcher} dispatcher
    * @param {string} actionID
    * @param {string} token
    */
   constructor(dispatcher, actionID, token) {
-
-    this[__dispatcher] = dispatcher
-    this[__actionID] = actionID
-    this[__token] = token
+    this.#dispatcher = dispatcher
+    this.#actionID = actionID
+    this.#token = token
   }
 
   /**
-   *
    * @return {string}
    */
   token() {
-    return this[__token]
+    return this.#token
   }
 
   remove() {
-    this[__dispatcher].removeActionListener(this[__actionID], this[__token])
+    this.#dispatcher.removeActionListener(this.#actionID, this.#token)
   }
-
 }

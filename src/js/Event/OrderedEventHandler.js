@@ -2,7 +2,6 @@ import {OrderedEventHandler as OrderedEventHandlerBase} from '@flexio-oss/js-com
 
 export class OrderedEventHandler extends OrderedEventHandlerBase {
   /**
-   *
    * @param {OrderedEventListenerConfig} orderedEventListenerConfig
    * @return {(String|StringArray)} token
    * @throws AssertionError

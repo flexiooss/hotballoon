@@ -1,58 +1,12 @@
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_VIEWCONTAINER} from '../Types/HasTagClassNameInterface'
 import {
-  assertType,
-  isFunction,
-  isNode,
-  isString,
+  assertInstanceOf,
   TypeCheck as TypeTypeCheck
 } from '@flexio-oss/js-commons-bundle/assert'
 import {StoreInterface} from '../Store/StoreInterface'
 import {ViewContainerBase} from './ViewContainerBase'
 import {ViewContainerPublicEventHandler} from './ViewContainerPublicEventHandler'
 import {TypeCheck} from '../Types/TypeCheck'
-
-export class ViewContainerParameters {
-  /**
-   * @param {ComponentContext} componentContext
-   * @param {string} id
-   * @param {Element} parentNode
-   * @return ViewContainerParameters
-   */
-  constructor(componentContext, id, parentNode) {
-
-    Object.defineProperties(this, {
-        /**
-         * @property {ComponentContext} componentContext
-         * @name ViewContainerParameters#componentContext
-         */
-        componentContext: {
-          value: TypeCheck.assertIsComponentContext(componentContext)
-        },
-        id: {
-          configurable: false,
-          enumerable: false,
-          writable: false,
-          /**
-           * @property {String}
-           * @name ViewContainerParameters#id
-           */
-          value: TypeTypeCheck.assertIsString(id)
-        },
-        parentNode: {
-          /**
-           * @property {Element}
-           * @name ViewContainerParameters#parentNode
-           */
-          value: TypeTypeCheck.assertIsNode(parentNode)
-        }
-      }
-    )
-  }
-}
-
-const _renderViews = Symbol('_renderViews')
-const _mountViews = Symbol('_mountViews')
-const _ComponentContext = Symbol('_ComponentContext')
 
 const viewContainerLogOptions = {
   color: 'blueDark',
@@ -66,15 +20,18 @@ const viewContainerLogOptions = {
  */
 export class ViewContainer extends ViewContainerBase {
   /**
-   * @param {ViewContainerParameters} viewContainerParameters
+   * @type {ViewContainerParameters}
    */
-  constructor(viewContainerParameters) {
-    assertType(viewContainerParameters instanceof ViewContainerParameters,
-      'hotballoon:viewContainer:constructor: `viewContainerParameters` argument assert be an instance of ViewContainerParameters'
-    )
+  #config
 
-    super(viewContainerParameters.id)
-    this.parentNode = viewContainerParameters.parentNode
+  /**
+   * @param {ViewContainerParameters} config
+   */
+  constructor(config) {
+    assertInstanceOf(config, ViewContainerParameters, 'ViewContainerParameters')
+    super(config.id(), config.componentContext().logger())
+    this.#config = config
+    this.parentNode = config.parentNode()
 
     Object.defineProperty(this, CLASS_TAG_NAME, {
       configurable: false,
@@ -83,21 +40,7 @@ export class ViewContainer extends ViewContainerBase {
       value: CLASS_TAG_NAME_VIEWCONTAINER
     })
 
-    Object.defineProperties(this, {
-      [_ComponentContext]: {
-        configurable: false,
-        enumerable: false,
-        writable: false,
-        /**
-         * @params {ComponentContext}
-         * @name ViewContainer#_ComponentContext
-         * @protected
-         */
-        value: viewContainerParameters.componentContext
-      }
-    })
-
-    viewContainerParameters.componentContext.addViewContainer(this)
+    config.componentContext().viewContainers().attach(this)
   }
 
   /**
@@ -113,27 +56,11 @@ export class ViewContainer extends ViewContainerBase {
    * @return {ListenedStore}
    */
   subscribeToStore(store, clb = (state) => true) {
-    assertType(isFunction(clb), 'hotballoon:' + this.constructor.name + ':subscribeToStore: `clb` argument should be callable')
-
-    assertType(TypeCheck.isStoreBase(store), 'hotballoon:' + this.constructor.name + ':subscribeToStore: `keyStore : %s` not reference an instance of StoreInterface', store.constructor.name)
-
-    /**
-     * @type {ListenedStore}
-     */
-    const listenedStore = store.listenChanged(
-      (payload, type) => {
-        if (!this.isRemoved()) {
-          clb(payload.data())
-        }
+    return this.stores().listen(store, (payload, type) => {
+      if (!this.isRemoved()) {
+        clb.call(null, payload.data())
       }
-    )
-
-    this._tokenEvent.push(
-      store.storeId(),
-      listenedStore
-    )
-
-    return listenedStore
+    })
   }
 
   /**
@@ -142,20 +69,14 @@ export class ViewContainer extends ViewContainerBase {
    * @return {boolean}
    */
 
-  /**
-   * @private
-   */
-  [_mountViews]() {
-    this.MapOfView().forEach((view, key, map) => {
+  #mountViews() {
+    this.views().forEach((view, key, map) => {
       view.mountInto(this.parentNode)
     })
   }
 
-  /**
-   * @private
-   */
-  [_renderViews]() {
-    this.MapOfView().forEach((view, key, map) => {
+  #renderViews() {
+    this.views().forEach((view, key, map) => {
       view.render()
     })
   }
@@ -164,12 +85,12 @@ export class ViewContainer extends ViewContainerBase {
    * @description Render all views
    */
   render() {
-    this[_renderViews]()
+    this.#renderViews()
     this._rendered = true
   }
 
   updateViewsNode() {
-    this.MapOfView().forEach((view, key, map) => {
+    this.views().forEach((view, key, map) => {
       view.updateNode()
     })
   }
@@ -178,7 +99,7 @@ export class ViewContainer extends ViewContainerBase {
    * @return {Element} parentNode
    */
   mount() {
-    this[_mountViews]()
+    this.#mountViews()
     this._mounted = true
 
     return this.parentNode
@@ -212,8 +133,8 @@ export class ViewContainer extends ViewContainerBase {
   /**
    * @return {ViewContainer}
    */
-  unMount(){
-    this.MapOfView().forEach(
+  unMount() {
+    this.views().forEach(
       /**
        * @param {View} v
        */
@@ -230,28 +151,21 @@ export class ViewContainer extends ViewContainerBase {
    * @return {string}
    */
   AppID() {
-    return this[_ComponentContext].APP().ID()
+    return this.#config.componentContext().APP().ID()
   }
 
   /**
    * @return {string}
    */
   componentID() {
-    return this[_ComponentContext].ID()
+    return this.#config.componentContext().ID()
   }
 
   /**
    * @return {ViewRenderConfig}
    */
   viewRenderConfig() {
-    return this[_ComponentContext].APP().viewRenderConfig()
-  }
-
-  /**
-   * @return {LoggerInterface}
-   */
-  logger() {
-    return this[_ComponentContext].logger()
+    return this.#config.componentContext().APP().viewRenderConfig()
   }
 
   /**
@@ -270,7 +184,57 @@ export class ViewContainer extends ViewContainerBase {
       viewContainerLogOptions
     )
 
+    this.dispatch(ViewContainerPublicEventHandler.WILL_REMOVE, null)
+
     super.remove()
-    this[_ComponentContext].removeViewContainerEntry(this.ID())
+    this.#config.componentContext().viewContainers().detach(this)
+  }
+}
+
+export class ViewContainerParameters {
+  /**
+   * @type {ComponentContext}
+   */
+  #componentContext
+  /**
+   * @type {string}
+   */
+  #id
+  /**
+   * @type {Element}
+   */
+  #parentNode
+
+  /**
+   * @param {ComponentContext} componentContext
+   * @param {string} id
+   * @param {Element} parentNode
+   * @return ViewContainerParameters
+   */
+  constructor(componentContext, id, parentNode) {
+    this.#componentContext = TypeCheck.assertIsComponentContext(componentContext)
+    this.#id = TypeTypeCheck.assertIsString(id)
+    this.#parentNode = TypeTypeCheck.assertIsNode(parentNode)
+  }
+
+  /**
+   * @return {ComponentContext}
+   */
+  componentContext() {
+    return this.#componentContext
+  }
+
+  /**
+   * @return {string}
+   */
+  id() {
+    return this.#id
+  }
+
+  /**
+   * @return {Element}
+   */
+  parentNode() {
+    return this.#parentNode
   }
 }

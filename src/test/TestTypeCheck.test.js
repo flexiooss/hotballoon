@@ -4,7 +4,6 @@ import {InMemoryStoreBuilder} from '../js/Store/InMemoryStoreBuilder'
 import {ProxyStoreBuilder} from '../js/Store/ProxyStoreBuilder'
 import {PublicStoreHandler} from '../js/Store/PublicStoreHandler'
 import {HotBalloonApplication} from '../js/Application/HotBalloonApplication'
-import {ComponentContext} from '../js/Component/ComponentContext'
 import {Dispatcher} from '../js/Dispatcher/Dispatcher'
 import {ExecutorInline} from '../js/Job/ExecutorInline'
 import {ExecutorWorker} from '../js/Job/ExecutorWorker'
@@ -13,8 +12,8 @@ import {ViewContainer, ViewContainerParameters} from '../js/View/ViewContainer'
 import {View} from '../js/View/View'
 import {FakeLogger} from '@flexio-oss/js-commons-bundle/js-logger'
 import {FakeValueObject, FakeValueObjectBuilder} from './FakeValueObject'
-import {ViewRenderConfig} from '../js/Application/ViewRenderConfig'
-import {SyncDomAccessor} from '../js/View/DomAccessor'
+import {ComponentContextBuilder} from '../js/Application/ComponentContextBuilder'
+import {ApplicationBuilder} from '../js/Application/ApplicationBuilder'
 
 const assert = require('assert')
 
@@ -23,8 +22,11 @@ export class TestTypeCheck extends TestCase {
    * @return {HotBalloonApplication}
    */
   app() {
-    return new HotBalloonApplication('id', new Dispatcher(new FakeLogger()), new FakeLogger().debug(), new ViewRenderConfig(null, false,new SyncDomAccessor()))
+    return new ApplicationBuilder()
+      .logger(new FakeLogger().debug())
+      .build()
   }
+
   testIsStoreBase() {
     /**
      *
@@ -107,7 +109,10 @@ export class TestTypeCheck extends TestCase {
   testIsViewContainer() {
     const viewContainer = new ViewContainer(
       new ViewContainerParameters(
-        new ComponentContext(this.app()), 'id', {nodeType: 2}
+        new ComponentContextBuilder()
+          .application(this.app())
+          .build()
+        , 'id', {nodeType: 2}
       )
     )
     assert(TypeCheck.isViewContainer(viewContainer))

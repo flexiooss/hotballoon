@@ -1,6 +1,5 @@
 import {StoreInterface} from './StoreInterface'
 import {Store} from './Store'
-import {_storage} from './StoreBase'
 
 /**
  * @template TYPE, TYPE_BUILDER
@@ -28,7 +27,7 @@ export class OnDemandStore extends Store {
    * @returns {StoreState<TYPE>} state frozen
    */
   state() {
-    return this[_storage].set(
+    return this._storage().set(
       this.ID(),
       this.validateDataStore(this.#mapper.call(null, super.state())
       )

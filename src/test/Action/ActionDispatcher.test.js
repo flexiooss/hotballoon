@@ -1,11 +1,9 @@
 import {TestCase} from 'code-altimeter-js'
 import {HotBalloonApplication} from '../../js/Application/HotBalloonApplication'
-import {Dispatcher} from '../../js/Dispatcher/Dispatcher'
 import {FakeLogger} from '@flexio-oss/js-commons-bundle/js-logger'
 import {ActionDispatcherBuilder} from '../../js/Action/ActionDispatcherBuilder'
 import {FakeObject, FakeObjectBuilder} from './FakeObject'
-import {ViewRenderConfig} from '../../js/Application/ViewRenderConfig'
-import {SyncDomAccessor} from '../../js/View/DomAccessor'
+import {ApplicationBuilder} from '../../js/Application/ApplicationBuilder'
 
 
 const assert = require('assert')
@@ -16,12 +14,14 @@ export class ActionDispatcherTest extends TestCase {
    * @return {HotBalloonApplication}
    */
   app(){
-    return new HotBalloonApplication('id', new Dispatcher(new FakeLogger()), new FakeLogger().debug(), new ViewRenderConfig(null, false,new SyncDomAccessor()))
+    return new ApplicationBuilder()
+      .logger(new FakeLogger().debug())
+      .build()
   }
 
   setUp() {
-    this.dispatcher = new Dispatcher(new FakeLogger())
     this.APP = this.app()
+    this.dispatcher = this.APP.dispatcher()
     this.componentContext = this.APP.addComponentContext()
   }
 
@@ -38,11 +38,10 @@ export class ActionDispatcherTest extends TestCase {
     let p = null
     let t = null
 
-    actionDispatcher.listenWithCallback(
+    actionDispatcher.listen(
       (payload, type) => {
-        throw new Error('listenWithCallback')
-      },
-      this.componentContext
+        throw new Error('listen')
+      }
     )
 
     const payloadDispatched = new FakeObjectBuilder()
@@ -55,7 +54,7 @@ export class ActionDispatcherTest extends TestCase {
 
         actionDispatcher.dispatch(payloadDispatched)
       },
-      /^Error: listenWithCallback$/
+      /^Error: listen$/
     )
 
   }
@@ -73,12 +72,11 @@ export class ActionDispatcherTest extends TestCase {
     let p = null
     let t = null
 
-    actionDispatcher.listenWithCallback(
+    actionDispatcher.listen(
       (payload, type) => {
         p = payload
         t = type
-      },
-      this.componentContext
+      }
     )
 
     const payloadDispatched = new FakeObjectBuilder()
@@ -104,18 +102,16 @@ export class ActionDispatcherTest extends TestCase {
 
     let p = []
 
-    actionDispatcher.listenWithCallback(
+    actionDispatcher.listen(
       (payload, type) => {
         p.push(1)
-      },
-      this.componentContext
+      }
     )
 
-    actionDispatcher.listenWithCallback(
+    actionDispatcher.listen(
       (payload, type) => {
         p.push(2)
-      },
-      this.componentContext
+      }
     )
 
     const payloadDispatched = new FakeObjectBuilder()
@@ -142,20 +138,18 @@ export class ActionDispatcherTest extends TestCase {
     let p = []
     let a = false
 
-    const token1 = actionDispatcher.listenWithCallback(
+    const token1 = actionDispatcher.listen(
       (payload, type) => {
         actionDispatcher.waitFor(token2.token())
         p.push(1)
-      },
-      this.componentContext
+      }
     )
 
-    const token2 = actionDispatcher.listenWithCallback(
+    const token2 = actionDispatcher.listen(
       (payload, type) => {
         a = true
         p.push(2)
-      },
-      this.componentContext
+      }
     )
 
     const payloadDispatched = new FakeObjectBuilder()
@@ -181,10 +175,10 @@ export class ActionDispatcherTest extends TestCase {
 
     let a = 0
 
-    const action = actionDispatcher.listenWithCallback(
+    const action = actionDispatcher.listen(
       (payload) => {
       a++
-    },this.componentContext)
+    })
 
     const payloadDispatched = new FakeObjectBuilder()
       .prop1('toto')

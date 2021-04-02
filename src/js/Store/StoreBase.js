@@ -1,5 +1,13 @@
 import {WithID} from '../abstract/WithID'
-import {assert, assertType, isFunction, isNull, isNumber, TypeCheck} from '@flexio-oss/js-commons-bundle/assert'
+import {
+  assert,
+  assertInstanceOf,
+  assertType,
+  isFunction,
+  isNull,
+  isNumber,
+  TypeCheck
+} from '@flexio-oss/js-commons-bundle/assert'
 import {StorageInterface} from './Storage/StorageInterface'
 
 import {OrderedEventHandler} from '../Event/OrderedEventHandler'
@@ -11,19 +19,10 @@ import {StoreBaseConfig} from './StoreBaseConfig'
 import {ListenedStore} from './ListenedStore'
 
 
-export const _storage = Symbol('_storage')
-export const _EventHandler = Symbol('_EventHandler')
-export const _set = Symbol('_set')
-export const _get = Symbol('_get')
-export const _updated = Symbol('_updated')
-export const _dispatch = Symbol('_dispatch')
-export const _storeParams = Symbol('_storeParams')
-
 const storeBaseLogOptions = {
   color: 'sandDark',
   titleSize: 2
 }
-const fakeLogger = new FakeLogger()
 
 
 /**
@@ -32,75 +31,61 @@ const fakeLogger = new FakeLogger()
  */
 export class StoreBase extends WithID {
   /**
+   * @type {?function(state:StoreState<TYPE>)}
+   */
+  #onceOnUpdated = null
+  /**
+   * @type {?TYPE}
+   */
+  #initialData = null
+  /**
+   * @type {OrderedEventHandler}
+   */
+  #eventHandler = new OrderedEventHandler()
+  /**
+   * @type {StoreBaseConfig<TYPE, TYPE_BUILDER>}
+   */
+  #config
+  /**
+   * @type {LoggerInterface}
+   */
+  #logger = new FakeLogger()
+  /**
+   * @type {StorageInterface<TYPE>}
+   */
+  #storage
+
+  /**
    * @constructor
    * @param {StoreBaseConfig<TYPE, TYPE_BUILDER>} storeBaseConfig
    */
   constructor(storeBaseConfig) {
     super(storeBaseConfig.id())
-    let storage = storeBaseConfig.storage()
-    let logger = fakeLogger
-    this.__initialData = storeBaseConfig.initialData()
 
-    assertType(storeBaseConfig instanceof StoreBaseConfig,
-      'hotballoon:' + this.constructor.name + ':constructor: `storeBaseConfig` argument should be an instance of `StoreBaseConfig`')
-
-    Object.defineProperties(this, {
-      [_storage]: {
-        enumerable: false,
-        configurable: false,
-        /**
-         * @name StoreBase#_storage
-         * @protected
-         */
-        get: () => storage,
-        set: (v) => {
-          assert(v instanceof StorageInterface,
-            'hotballoon:' + this.constructor.name + ':constructor: `storage` argument should be an instance of `StorageInterface`')
-          storage = v
-          this[_updated]()
-        }
-      },
-      /**
-       * @property {OrderedEventHandler}
-       * @name StoreBase#_EventHandler
-       * @protected
-       */
-      [_EventHandler]: {
-        enumerable: false,
-        configurable: false,
-        value: Object.seal(new OrderedEventHandler())
-      },
-      /**
-       * @property {StoreConfig}
-       * @name StoreBase#[_storeParams]
-       * @protected
-       */
-      [_storeParams]: {
-        enumerable: false,
-        configurable: false,
-        writable: false,
-        value: storeBaseConfig
-      },
-      _logger: {
-        configurable: false,
-        enumerable: false,
-        /**
-         * @property {LoggerInterface} StoreBase#_logger
-         * @name StoreBase#_logger
-         * @protected
-         */
-        get: () => logger,
-        set: (v) => {
-          assertType(v instanceof LoggerInterface,
-            'hotballoon:' + this.constructor.name + ':constructor: `logger` argument should be an instance of `LoggerInterface`')
-          logger = v
-        }
-      }
-    })
+    assertInstanceOf(storeBaseConfig, StoreBaseConfig, 'StoreBaseConfig')
+    this.#config = storeBaseConfig
+    this.#initialData = storeBaseConfig.initialData()
+    this.#storage = storeBaseConfig.storage()
   }
 
   /**
-   *
+   * @param {StorageInterface<TYPE>} value
+   */
+  #setStorage(value) {
+    assertInstanceOf(value, StorageInterface, 'StorageInterface')
+    this.#storage = value
+    this.#stateUpdated()
+  }
+
+  /**
+   * @return {OrderedEventHandler}
+   * @protected
+   */
+  _eventHandler() {
+    return this.#eventHandler
+  }
+
+  /**
    * @return {string}
    */
   changedEventName() {
@@ -108,24 +93,33 @@ export class StoreBase extends WithID {
   }
 
   /**
-   * @returns {StoreState<TYPE>} state frozen
+   * @returns {StorageInterface<TYPE>} state
+   * @protected
+   */
+  _storage() {
+    return this.#storage
+  }
+
+  /**
+   * @returns {StoreState<TYPE>} state
+   * @frozen
    */
   state() {
-    return this[_get]()
+    return this.#storage.get()
   }
 
   /**
    * @return {TYPE.}
    */
   __type__() {
-    return this[_storeParams].type()
+    return this.#config.type()
   }
 
   /**
    * @return {TYPE_BUILDER}
    */
   dataBuilder() {
-    return this[_storeParams].type().builder()
+    return this.#config.type().builder()
   }
 
   /**
@@ -133,7 +127,7 @@ export class StoreBase extends WithID {
    * @return {TYPE_BUILDER}
    */
   dataFromObject(object) {
-    return this[_storeParams].type().fromObject(object)
+    return this.#config.type().fromObject(object)
   }
 
   /**
@@ -141,7 +135,7 @@ export class StoreBase extends WithID {
    * @return {TYPE_BUILDER}
    */
   dataFrom(instance) {
-    return this[_storeParams].type().from(instance)
+    return this.#config.type().from(instance)
   }
 
   /**
@@ -149,7 +143,7 @@ export class StoreBase extends WithID {
    * @return {TYPE_BUILDER}
    */
   dataFromJSON(json) {
-    return this[_storeParams].type().fromJSON(json)
+    return this.#config.type().fromJSON(json)
   }
 
   /**
@@ -172,30 +166,33 @@ export class StoreBase extends WithID {
    * @return {String} token
    */
   subscribe(orderedEventListenerConfig) {
-    return this[_EventHandler].on(orderedEventListenerConfig)
+    return this.#eventHandler.on(orderedEventListenerConfig)
   }
 
   /**
    * @param {LoggerInterface} logger
    */
   setLogger(logger) {
-    this._logger = logger
+    assertInstanceOf(logger, LoggerInterface, 'LoggerInterface')
+    this.#logger = logger
   }
 
   /**
-   * @private
+   * @protected
    * @param {String} eventType
    * @param {!StoreState<TYPE>}  payload
    */
-  [_dispatch](eventType, payload = this.state()) {
-    this[_EventHandler].dispatch(eventType, payload)
+  _dispatch(eventType, payload = this.state()) {
+    if (payload.time() === this.state().time()) {
+      this.#eventHandler.dispatch(eventType, payload)
+    }
   }
 
   /**
    * @param {TYPE} dataStore
    */
-  [_set](dataStore) {
-    this[_storage] = this[_storage].set(this.ID(), this.validateDataStore(dataStore))
+  set(dataStore) {
+    this.#setStorage(this.#storage.set(this.ID(), this.validateDataStore(dataStore)))
   }
 
   /**
@@ -203,11 +200,13 @@ export class StoreBase extends WithID {
    * @return {?TYPE}
    */
   validateDataStore(dataStore) {
-    if(isNull(dataStore)){
+    if (isNull(dataStore)) {
       return null
     }
-    const checker = this[_storeParams].defaultChecker()
-    const data = checker(dataStore)
+    /**
+     *
+     */
+    const data = this.#config.defaultChecker().call(null, dataStore)
 
     assertType(data instanceof this.__type__(),
       'StoreBase:set: `dataStore` should be an instanceof `%s`, `%s` given',
@@ -215,24 +214,13 @@ export class StoreBase extends WithID {
       dataStore.constructor.name
     )
 
-    if (!isNull(this[_storeParams].validator()) && !this[_storeParams].validator().isValid(data)) {
+    if (!isNull(this.#config.validator()) && !this.#config.validator().isValid(data)) {
       throw new ValidationError('StoreBase:set: `dataStore` failed validation')
     }
     return data
   }
 
-  /**
-   * @private
-   * @return {!StorageInterface<TYPE>}
-   */
-  [_get]() {
-    return this[_storage].get()
-  }
-
-  /**
-   * @private
-   */
-  [_updated]() {
+  #stateUpdated() {
     this.logger().log(
       this.logger().builder()
         .info()
@@ -240,14 +228,35 @@ export class StoreBase extends WithID {
         .pushLog(this.state()),
       storeBaseLogOptions
     )
-    this[_dispatch](this.changedEventName())
+
+    let currentState = this.state()
+
+    try {
+      if (!isNull(this.#onceOnUpdated)) {
+        let clb = this.#onceOnUpdated
+        this.#onceOnUpdated = null
+        clb.call(null, currentState)
+      }
+    } finally {
+      this._dispatch(this.changedEventName(), currentState)
+    }
+
+  }
+
+  /**
+   * @param {?function(state:StoreState<TYPE>)} clb
+   * @return {this}
+   */
+  onceOnUpdated(clb) {
+    this.#onceOnUpdated = TypeCheck.assertIsFunctionOrNull(clb)
+    return this
   }
 
   /**
    * @return {LoggerInterface}
    */
   logger() {
-    return this._logger
+    return this.#logger
   }
 
   /**
@@ -262,7 +271,7 @@ export class StoreBase extends WithID {
     /**
      * @type {string}
      */
-    const token = this[_EventHandler].on(
+    const token = this.#eventHandler.on(
       OrderedEventListenerConfigBuilder
         .listen(this.changedEventName())
         .callback((payload) => {
@@ -284,11 +293,11 @@ export class StoreBase extends WithID {
    * @param {(string|Symbol)} token
    */
   stopListenChanged(token) {
-    this[_EventHandler].removeEventListener(this.changedEventName(), token)
+    this.#eventHandler.removeEventListener(this.changedEventName(), token)
   }
 
   remove() {
-    this[_EventHandler].clear()
+    this.#eventHandler.clear()
     this.logger().log(
       this.logger().builder()
         .info()
@@ -296,13 +305,13 @@ export class StoreBase extends WithID {
         .pushLog(this.state()),
       storeBaseLogOptions
     )
-    this[_storage] = this[_storage].set(this.ID(), null)
+    this.#storage = this.#storage.set(this.ID(), null)
   }
 
   /**
    * Set value to initial data
    */
   reset() {
-    this[_set](this.__initialData)
+    this.set(this.#initialData)
   }
 }
