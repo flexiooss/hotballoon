@@ -14,7 +14,7 @@
     "code-altimeter-js": "https://github.com/flexiooss/code-altimeter-js.git"
   },
   "dependencies": {
-    "@flexio-oss/js-commons-bundle": "1.13.0"
+    "@flexio-oss/js-commons-bundle": "1.14.0-dev"
   },
   "hotballoon-shed": {
     "modules": [
