@@ -330,11 +330,11 @@ export class HyperFlexParams {
   }
 
   /**
-   * @param {...string} HTMLTxt²
+   * @param {...string} HTMLTxt
    * @return {this}
    */
   prependHTML(...HTMLTxt) {
-    this.#afterBeginHTML.push(...HTMLTxt)
+    this.#afterBeginHTML.push(...HTMLTxt.reverse())
     this.#childNodeSequenceList.push(globalFlexioImport.io.flexio.flexio_hyperflex.types.ChildNodesSequence.builder()
       .type(globalFlexioImport.io.flexio.flexio_hyperflex.types.childnodessequence.ChildNodesSequenceType.PREPEND_HTML)
       .count(HTMLTxt.length)
