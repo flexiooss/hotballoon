@@ -3,40 +3,28 @@ import {HyperFlex} from '../__import__flexio-hyperflex'
 import {$} from './HotBalloonAttributeHandler'
 import {RECONCILIATION_RULES} from '../__import__flexio-nodes-reconciliation'
 
-const _changeIdAndSetNodeRef = Symbol('_changeIdAndSetNodeRef')
-const _setNodeRef = Symbol('_setNodeRef')
-const _setReconciliationRule = Symbol('_setReconciliationRule')
-const _setViews = Symbol('_setViews')
-const _setReconciliationProperties = Symbol('_setReconciliationProperties')
-const _setEventListeners = Symbol('_setEventListeners')
-
 /**
- * @class
  * @extends HyperFlex
  */
 class CreateHotBalloonElement extends HyperFlex {
   /**
-   *
+   * @type {View}
+   */
+  #scope
+  /**
+   * @type {?HotBalloonAttributeHandler}
+   */
+  #$element = null
+
+  /**
    * @param {View} scope
    * @param {string} querySelector
    * @param {HotballoonElementParams} hotballoonElementParams
    * @param {Document} document
-   * @return {CreateHotBalloonElement}
    */
   constructor(scope, querySelector, hotballoonElementParams = new HotballoonElementParams(), document) {
     super(querySelector, hotballoonElementParams, document)
-    /**
-     *
-     * @params {View}
-     * @private
-     */
-    this._scope = scope
-    /**
-     *
-     * @params {HotBalloonAttributeHandler | null}
-     * @private
-     */
-    this._$element = null
+    this.#scope = scope
   }
 
   /**
@@ -55,8 +43,9 @@ class CreateHotBalloonElement extends HyperFlex {
       hotballoonElementParams,
       document
     )
-      .createHtmlElement()[_changeIdAndSetNodeRef]()
-      ._element
+      .createHtmlElement()
+      .#changeIdAndSetNodeRef()
+      .element()
   }
 
   /**
@@ -64,21 +53,23 @@ class CreateHotBalloonElement extends HyperFlex {
    * @return {CreateHotBalloonElement}
    */
   _setParams() {
-    this._$element = $(this._element)
+    this.#$element = $(this._element)
     super._setParams()
-    return this[_setViews](this._params.views())[_setReconciliationRule](this._params.reconciliationRules())[_setReconciliationProperties](Object.keys(this._params.properties()))[_setEventListeners](this._params.eventListeners())
+    return this
+      .#setViews(this._params.views())
+      .#setReconciliationRule(this._params.reconciliationRules())
+      .#setReconciliationProperties(Object.keys(this._params.properties()))
+      .#setEventListeners(this._params.eventListeners())
   }
 
   /**
-   *
-   * @private
    * @return {CreateHotBalloonElement}
    */
-  [_changeIdAndSetNodeRef]() {
+  #changeIdAndSetNodeRef() {
     const shortId = this._element.id
     if (shortId) {
-      this._element.id = this._scope.elementIdFromRef(shortId)
-      this[_setNodeRef](shortId, this._element)
+      this._element.id = this.#scope.elementIdFromRef(shortId)
+      this.#setNodeRef(shortId, this._element)
     }
     return this
   }
@@ -88,10 +79,9 @@ class CreateHotBalloonElement extends HyperFlex {
    * @param {String} key
    * @param {Element} node
    * @return {CreateHotBalloonElement}
-   * @private
    */
-  [_setNodeRef](key, node) {
-    this._scope.addNodeRef(key, node)
+  #setNodeRef(key, node) {
+    this.#scope.addNodeRef(key, node)
     return this
   }
 
@@ -99,26 +89,23 @@ class CreateHotBalloonElement extends HyperFlex {
    *
    * @param {array.<View>} views
    * @return {CreateHotBalloonElement}
-   * @private
    */
-  [_setViews](views) {
-    this.__ensureChildrenRules(views)
+  #setViews(views) {
+    this.#ensureChildrenRules(views)
     const countOfViews = views.length
     for (let i = 0; i < countOfViews; i++) {
-      this.__ensureSubViewRenderedMounted(views[i])
+      this.#ensureSubViewRenderedMounted(views[i])
     }
     return this
   }
 
   /**
-   *
    * @param {array.<View>} views
    * @return {CreateHotBalloonElement}
-   * @private
    */
-  __ensureChildrenRules(views) {
+  #ensureChildrenRules(views) {
     if (views.length) {
-      if (this._params._reconciliationRules.indexOf(RECONCILIATION_RULES.FORCE) < 0) {
+      if (this._params.reconciliationRules().indexOf(RECONCILIATION_RULES.FORCE) < 0) {
         this._params.addReconciliationRules(RECONCILIATION_RULES.BYPASS_CHILDREN)
       }
     }
@@ -126,11 +113,9 @@ class CreateHotBalloonElement extends HyperFlex {
   }
 
   /**
-   *
    * @param {View} view
-   * @private
    */
-  __ensureSubViewRenderedMounted(view) {
+  #ensureSubViewRenderedMounted(view) {
     if (!view.isRendered() && !view.isMounted()) {
       view.render()
       view.mountInto(this._element)
@@ -138,34 +123,31 @@ class CreateHotBalloonElement extends HyperFlex {
   }
 
   /**
-   * @private
    * @param {Array.<string>} rules
    * @return {CreateHotBalloonElement}
    */
-  [_setReconciliationRule](...rules) {
-    this._$element.addReconcileRules(...rules)
+  #setReconciliationRule(...rules) {
+    this.#$element.addReconcileRules(...rules)
     return this
   }
 
   /**
-   * @private
    * @param {Array.<ElementEventListenerConfig>} listeners
    * @return {CreateHotBalloonElement}
    */
-  [_setEventListeners](listeners) {
+  #setEventListeners(listeners) {
     listeners.forEach((nodeEventListenerParam) => {
-      this._$element.on(nodeEventListenerParam)
+      this.#$element.on(nodeEventListenerParam)
     })
     return this
   }
 
   /**
-   * @private
    * @param {Array.<string>} propertiesToReconciliate
    * @return {CreateHotBalloonElement}
    */
-  [_setReconciliationProperties](propertiesToReconciliate) {
-    this._$element.addReconcileProperties(propertiesToReconciliate)
+  #setReconciliationProperties(propertiesToReconciliate) {
+    this.#$element.addReconcileProperties(propertiesToReconciliate)
     return this
   }
 }

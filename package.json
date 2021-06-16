@@ -9,6 +9,9 @@
     "url": "https://github.com/flexiooss/hotballoon/issues"
   },
   "author": "Thomas Chatelain (https://github.com/TomAchT)",
+  "scripts": {
+    "html": "hbshed dev --entry src/test/dev/html.js --server-config local"
+  },
   "repository": "https://github.com/flexiooss/hotballoon.git",
   "devDependencies": {
     "code-altimeter-js": "https://github.com/flexiooss/code-altimeter-js.git"

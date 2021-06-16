@@ -1,4 +1,5 @@
 import {HotballoonElementParams} from './HotballoonElementParams'
+import {globalFlexioImport} from '@flexio-oss/js-commons-bundle/global-import-registry'
 
 
 export class ElementDescription {
@@ -186,6 +187,24 @@ export class ElementDescription {
    */
   className(...className) {
     this._params.addClassName(...className)
+    return this
+  }
+
+  /**
+   * @param {...string} HTMLTxt
+   * @return {ElementDescription}
+   */
+  prependHTML(...HTMLTxt) {
+    this._params.prependHTML(...HTMLTxt)
+    return this
+  }
+
+  /**
+   * @param {...string} HTMLTxt
+   * @return {ElementDescription}
+   */
+  appendHTML(...HTMLTxt) {
+    this._params.appendHTML(...HTMLTxt)
     return this
   }
 }
