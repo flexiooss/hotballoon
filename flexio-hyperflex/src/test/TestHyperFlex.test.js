@@ -1,4 +1,5 @@
 /* global runTest */
+import '../../generated/io/package'
 import {TestCase} from 'code-altimeter-js'
 import {HyperFlex} from '../js/HyperFlex'
 import {HyperFlexParams} from '../js/HyperFlexParams'

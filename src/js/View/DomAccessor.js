@@ -1,4 +1,4 @@
-import {TypeCheck, NotOverrideException} from '@flexio-oss/js-commons-bundle/assert'
+import {TypeCheck, NotOverrideException, isUndefined, assertType} from '@flexio-oss/js-commons-bundle/assert'
 
 /**
  * @interface
@@ -55,6 +55,7 @@ export class AsyncDomAccessor extends DomAccessor {
 
   constructor(window) {
     super()
+    assertType(!isUndefined(window), '`window` should not be empty')
     this.#window = window
     this.#requestAnimationFrame = this.#window.requestAnimationFrame
       || this.#window.webkitRequestAnimationFrame

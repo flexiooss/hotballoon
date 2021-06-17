@@ -60,7 +60,6 @@ export class HotballoonElementParams extends HyperFlexParams {
   }
 
   /**
-   *
    * @return {Array.<string>}
    */
   reconciliationRules() {
@@ -68,7 +67,6 @@ export class HotballoonElementParams extends HyperFlexParams {
   }
 
   /**
-   *
    * @return {Array.<View>}
    */
   views() {
@@ -76,7 +74,6 @@ export class HotballoonElementParams extends HyperFlexParams {
   }
 
   /**
-   *
    * @return {Array.<ElementEventListenerParam>}
    */
   eventListeners() {
@@ -84,7 +81,6 @@ export class HotballoonElementParams extends HyperFlexParams {
   }
 
   /**
-   *
    * @param {Array.<View>} views
    * @return {HotballoonElementParams}
    */
@@ -94,7 +90,6 @@ export class HotballoonElementParams extends HyperFlexParams {
   }
 
   /**
-   *
    * @param {...string} reconciliationRules
    * @return {this}
    */
@@ -107,7 +102,6 @@ export class HotballoonElementParams extends HyperFlexParams {
   }
 
   /**
-   *
    * @param {ElementEventListenerConfig} nodeEventListenerParam
    * @return {this}
    */

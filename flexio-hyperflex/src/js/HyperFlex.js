@@ -1,51 +1,47 @@
-import {assert, assertType, isNull, isObject, isString} from '@flexio-oss/js-commons-bundle/assert'
+import {
+  assert,
+  assertInstanceOf,
+  assertType,
+  isNull,
+  isObject,
+  isString,
+  TypeCheck
+} from '@flexio-oss/js-commons-bundle/assert'
 import {HyperFlexParams} from './HyperFlexParams'
+import {globalFlexioImport} from '@flexio-oss/js-commons-bundle/global-import-registry'
 
-const _querySelector_ = Symbol.for('_querySelector_')
-const _document = Symbol.for('_document')
+export class HyperFlex {
 
-class HyperFlex {
   /**
-   *
+   * @type {string}
+   */
+  #querySelector
+  /**
+   * @type {Document}
+   */
+  #document
+  /**
+   * @type {?Element}
+   * @protected
+   */
+  _element = null
+  /**
+   * @type {HyperFlexParams}
+   * @protected
+   */
+  _params
+
+  /**
    * @param {string} querySelector
    * @param {HyperFlexParams} hyperFlexParams
    * @param {Document} document
    * @return {HyperFlex}
    */
   constructor(querySelector, hyperFlexParams, document) {
-    assertType(isString(querySelector),
-      'flexio-hyperflex:constructor: `querySelector` argument assertType be a String `%s` given',
-      typeof querySelector
-    )
-    assertType(hyperFlexParams instanceof HyperFlexParams,
-      'flexio-hyperflex:constructor: `hyperFlexParams` property should be an instanceof `HyperFlexParams`, `%s` given',
-      typeof hyperFlexParams
-    )
-    /**
-     *
-     * @params {string}
-     * @private
-     */
-    this[_querySelector_] = querySelector
-    /**
-     *
-     * @type {Document}
-     * @private
-     */
-    this[_document] = document
-
-    /**
-     *
-     * @params {HyperFlexParams}
-     * @protected
-     */
-    this._params = hyperFlexParams
-    /**
-     *
-     * @params {Element}
-     * @protected
-     */
-    this._element = null
+    this.#querySelector = TypeCheck.assertIsString(querySelector)
+    this.#document = document
+    this._params = assertInstanceOf(hyperFlexParams, HyperFlexParams, 'HyperFlexParams')
+    console.log(this._params)
 
   }
 
@@ -62,7 +58,7 @@ class HyperFlex {
 
   /**
    * Create Html Element and set `_element` property
-   * @return {HyperFlex}
+   * @return {this}
    */
   createHtmlElement() {
     const {
@@ -71,15 +67,15 @@ class HyperFlex {
       classList
     } = this._parseQuerySelector(this.querySelector())
 
-    this._element = this[_document].createElement(tag)
+    this._element = this.#document.createElement(tag)
 
     return this._setId(id)
       ._setClassList(classList)
       ._setParams()
+      ._setChildNodes()
   }
 
   /**
-   *
    * @return {Element}
    */
   element() {
@@ -87,18 +83,15 @@ class HyperFlex {
   }
 
   /**
-   *
    * @return {string}
    */
   querySelector() {
-    return this[_querySelector_]
+    return this.#querySelector
   }
 
   /**
-   *
    * @param {string} querySelector : tag#myId.class1.class2...
    * @returns {Object} { tag: String, id: String, classList: Array<String> }
-   *
    */
   _parseQuerySelector(querySelector) {
     const matches = new RegExp('^([\\w-]*)([#\\w\\d-_]*)?([.\\w\\d-_]*)?$', 'gi').exec(querySelector)
@@ -120,7 +113,6 @@ class HyperFlex {
   }
 
   /**
-   *
    * @protected
    * @param {string} id
    * @return {HyperFlex}
@@ -129,6 +121,8 @@ class HyperFlex {
     if (id) {
       this._element.id = id
     }
+    console.log(this._params)
+
     if (!isNull(this._params.id())) {
       this._element.id = this._params.id()
     }
@@ -145,7 +139,6 @@ class HyperFlex {
       ._setClassList(this._params.classList())
       ._setStyles(this._params.styles())
       ._setText(this._params.text())
-      ._setChildNodes(this._params.childNodes())
   }
 
   /**
@@ -153,14 +146,9 @@ class HyperFlex {
    * @param {Object} styles
    * @return {HyperFlex}
    */
-
   _setStyles(styles) {
-    assertType(isObject(styles),
-      'flexio-hyperflex:setStyles: `styles` argument assertType be an Object `%s` given',
-      typeof styles
-    )
 
-    for (const key in styles) {
+    for (/**@type{string}*/const key in TypeCheck.assertIsObject(styles)) {
       if (styles.hasOwnProperty(key)) {
         this._element.style[key] = styles[key]
       }
@@ -174,12 +162,7 @@ class HyperFlex {
    * @return {HyperFlex}
    */
   _setAttributes(attributes) {
-    assertType(isObject(attributes),
-      'flexio-hyperflex:setAttributes: `attributes` argument assertType be an Object `%s` given',
-      typeof attributes
-    )
-
-    for (const key in attributes) {
+    for (/**@type{string}*/const key in TypeCheck.assertIsObject(attributes)) {
       if (attributes.hasOwnProperty(key) && attributes[key] !== null) {
         this._element.setAttribute(key, attributes[key])
       }
@@ -193,12 +176,7 @@ class HyperFlex {
    * @return {HyperFlex}
    */
   _setProperties(properties) {
-    assertType(isObject(properties),
-      'flexio-hyperflex:_setProperties: `properties` argument assertType be an Object `%s` given',
-      typeof properties
-    )
-
-    for (const key in properties) {
+    for (/**@type{string}*/const key in TypeCheck.assertIsObject(properties)) {
       if (properties.hasOwnProperty(key) && properties[key] !== null) {
         this._element[key] = properties[key]
       }
@@ -207,7 +185,6 @@ class HyperFlex {
   }
 
   /**
-   *
    * @protected
    * @param {Array<String>} classList
    * @return {HyperFlex}
@@ -226,25 +203,184 @@ class HyperFlex {
    */
   _setText(text) {
     if (text !== '') {
-      this._element.appendChild(this[_document].createTextNode(text))
+      this._element.appendChild(this.#document.createTextNode(text))
     }
     return this
   }
 
   /**
-   *
    * @protected
-   * @param {Array<Node>} childNodes
    * @return {HyperFlex}
    */
-  _setChildNodes(childNodes) {
-    const countOfChildren = childNodes.length
-    for (let i = 0; i < countOfChildren; i++) {
-      this._element.appendChild(childNodes[i])
-    }
+  _setChildNodes() {
+    new ChildNodesHandler(
+      new ChildNodesHandlerConfig(
+        this._params.childNodeSequenceList(),
+        this._params.childNodes(),
+        this._params.afterBeginHTML(),
+        this._params.beforeEndHTML(),
+        this.element()
+      )).insert()
+
     return this
   }
 }
 
-export {HyperFlex}
 export const html = HyperFlex.html
+
+class ChildNodesHandlerConfig {
+  /**
+   * @type {HTMLElement}
+   */
+  #element
+  /**
+   * @type {ChildNodesSequenceList}
+   */
+  #childNodeSequenceList
+  /**
+   * @type {Array<Node>}
+   */
+  #childNodes
+  /**
+   * @type {StringArray}
+   */
+  #afterBeginHTML
+  /**
+   * @type {StringArray}
+   */
+  #beforeEndHTML
+
+  /**
+   * @return {ChildNodesSequenceList}
+   */
+  childNodeSequenceList() {
+    return this.#childNodeSequenceList
+  }
+
+  /**
+   * @return {HTMLElement}
+   */
+  element() {
+    return this.#element
+  }
+
+  /**
+   * @return {Array<Node>}
+   */
+  childNodes() {
+    return this.#childNodes
+  }
+
+  /**
+   * @return {StringArray}
+   */
+  afterBeginHTML() {
+    return this.#afterBeginHTML
+  }
+
+  /**
+   * @return {StringArray}
+   */
+  beforeEndHTML() {
+    return this.#beforeEndHTML
+  }
+
+  /**
+   * @param {ChildNodesSequenceList} childNodeSequenceList
+   * @param {Array<Node>} childNodes
+   * @param {StringArray} afterBeginHTML
+   * @param {StringArray} beforeEndHTML
+   * @param {HTMLElement} element
+   */
+  constructor(childNodeSequenceList, childNodes, afterBeginHTML, beforeEndHTML, element) {
+    this.#childNodeSequenceList = childNodeSequenceList
+    this.#childNodes = childNodes
+    this.#afterBeginHTML = afterBeginHTML
+    this.#beforeEndHTML = beforeEndHTML
+    this.#element = element
+  }
+}
+
+class ChildNodesHandler {
+  /**
+   * @type {ChildNodesHandlerConfig}
+   */
+  #config
+  /**
+   * @type {Number}
+   */
+  #childNodesCursor = 0
+  /**
+   * @type {Number}
+   */
+  #afterBeginHTMLCursor = 0
+  /**
+   * @type {Number}
+   */
+  #beforeEndHTMLCursor = 0
+
+  /**
+   * @param {ChildNodesHandlerConfig} config
+   */
+  constructor(config) {
+    this.#config = assertInstanceOf(config, ChildNodesHandlerConfig, 'ChildNodesHandlerConfig')
+  }
+
+  /**
+   * @return {ChildNodesHandler}
+   */
+  insert() {
+    for (/**@type{ChildNodesSequence}*/const childNodesSequence of this.#config.childNodeSequenceList()) {
+      switch (childNodesSequence.type()) {
+        case globalFlexioImport.io.flexio.flexio_hyperflex.types.childnodessequence.ChildNodesSequenceType.APPEND_NODE:
+          this.#appendNode(childNodesSequence.count())
+          break
+        case globalFlexioImport.io.flexio.flexio_hyperflex.types.childnodessequence.ChildNodesSequenceType.PREPEND_HTML:
+          this.#prependHTML(childNodesSequence.count())
+          break
+        case globalFlexioImport.io.flexio.flexio_hyperflex.types.childnodessequence.ChildNodesSequenceType.APPEND_HTML:
+          this.#appendHTML(childNodesSequence.count())
+          break
+        default:
+          throw new Error('insert node type not recognized : ' + childNodesSequence.type())
+      }
+    }
+    return this
+  }
+
+  /**
+   * @param {number} count
+   * @return {ChildNodesHandler}
+   */
+  #appendNode(count) {
+    for (let i = 0; i < count; i++) {
+      this.#config.element().appendChild(this.#config.childNodes()[this.#childNodesCursor])
+      this.#childNodesCursor++
+    }
+    return this
+  }
+
+  /**
+   * @param {number} count
+   * @return {ChildNodesHandler}
+   */
+  #prependHTML(count) {
+    for (let i = 0; i < count; i++) {
+      this.#config.element().insertAdjacentHTML('afterbegin', this.#config.afterBeginHTML().get(this.#afterBeginHTMLCursor))
+      this.#afterBeginHTMLCursor++
+    }
+    return this
+  }
+
+  /**
+   * @param {number} count
+   * @return {ChildNodesHandler}
+   */
+  #appendHTML(count) {
+    for (let i = 0; i < count; i++) {
+      this.#config.element().insertAdjacentHTML('beforeend', this.#config.beforeEndHTML().get(this.#beforeEndHTMLCursor))
+      this.#beforeEndHTMLCursor++
+    }
+    return this
+  }
+}
