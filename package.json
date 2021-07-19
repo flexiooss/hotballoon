@@ -17,7 +17,7 @@
     "@flexio-oss/code-altimeter-js": "1.2.0"
   },
   "dependencies": {
-    "@flexio-oss/js-commons-bundle": "1.22.0-dev"
+    "@flexio-oss/js-commons-bundle": "1.22.0"
   },
   "hotballoon-shed": {
     "modules": [
