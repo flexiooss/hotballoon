@@ -1,4 +1,4 @@
-import {TestCase} from 'code-altimeter-js'
+import {TestCase} from '@flexio-oss/code-altimeter-js'
 import {HotBalloonApplication} from '../../js/Application/HotBalloonApplication'
 import {Dispatcher} from '../../js/Dispatcher/Dispatcher'
 import {ViewContainer, ViewContainerParameters} from '../../js/View/ViewContainer'

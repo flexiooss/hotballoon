@@ -3,8 +3,6 @@ import {
   assertInstanceOf,
   assertType,
   isNull,
-  isObject,
-  isString,
   TypeCheck
 } from '@flexio-oss/js-commons-bundle/assert'
 import {HyperFlexParams} from './HyperFlexParams'
@@ -41,8 +39,6 @@ export class HyperFlex {
     this.#querySelector = TypeCheck.assertIsString(querySelector)
     this.#document = document
     this._params = assertInstanceOf(hyperFlexParams, HyperFlexParams, 'HyperFlexParams')
-    console.log(this._params)
-
   }
 
   /**
@@ -121,7 +117,6 @@ export class HyperFlex {
     if (id) {
       this._element.id = id
     }
-    console.log(this._params)
 
     if (!isNull(this._params.id())) {
       this._element.id = this._params.id()
@@ -147,7 +142,6 @@ export class HyperFlex {
    * @return {HyperFlex}
    */
   _setStyles(styles) {
-
     for (/**@type{string}*/const key in TypeCheck.assertIsObject(styles)) {
       if (styles.hasOwnProperty(key)) {
         this._element.style[key] = styles[key]

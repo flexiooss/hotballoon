@@ -1,4 +1,4 @@
-import {TestCase} from 'code-altimeter-js'
+import {TestCase} from '@flexio-oss/code-altimeter-js'
 import {HotBalloonApplication} from '../../js/Application/HotBalloonApplication'
 import {FakeLogger} from '@flexio-oss/js-commons-bundle/js-logger'
 import {ApplicationBuilder} from '../../js/Application/ApplicationBuilder'

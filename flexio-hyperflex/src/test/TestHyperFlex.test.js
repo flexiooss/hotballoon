@@ -1,6 +1,6 @@
 /* global runTest */
 import '../../generated/io/package'
-import {TestCase} from 'code-altimeter-js'
+import {TestCase} from '@flexio-oss/code-altimeter-js'
 import {HyperFlex} from '../js/HyperFlex'
 import {HyperFlexParams} from '../js/HyperFlexParams'
 import {AttributeHandler} from '../js/AttributeHandler'

@@ -1,4 +1,4 @@
-import {TestCase} from 'code-altimeter-js'
+import {TestCase} from '@flexio-oss/code-altimeter-js'
 import {TypeCheck} from '../js/Types/TypeCheck'
 import {InMemoryStoreBuilder} from '../js/Store/InMemoryStoreBuilder'
 import {ProxyStoreBuilder} from '../js/Store/ProxyStoreBuilder'
