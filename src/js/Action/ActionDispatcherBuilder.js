@@ -86,7 +86,7 @@ export class ActionDispatcherBuilder {
    * @private
    */
   __uniqName() {
-    return UID((isNull(this.__name) ? this.__type.name : this.__name) + '_')
+    return UID((isNull(this.__name) ? (isNull(this.__type) ? '' : this.__type.name) : this.__name) + '_')
   }
 
   /**
