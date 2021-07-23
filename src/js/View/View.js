@@ -103,6 +103,17 @@ export class View extends ViewContainerBase {
   }
 
   /**
+   * @return {?String}
+   */
+  templateToString() {
+    /**
+     * @type {?Element}
+     */
+    const template = this.template()
+    return !isNull(template) ? template.outerHTML : null
+  }
+
+  /**
    * @param {ElementDescription} element
    * @return {Element}
    */
