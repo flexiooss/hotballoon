@@ -6,11 +6,14 @@ import {TypeCheck as HBTypeCheck} from '../Types/TypeCheck'
 import {ActionsHandler} from '../Action/ActionsHandler'
 import {StoresHandler} from '../Store/StoresHandler'
 import {ViewContainersHandler} from '../View/ViewContainersHandler'
+import {OrderedEventHandler} from '../Event/OrderedEventHandler'
+import {OrderedEventListenerConfigBuilder} from '@flexio-oss/js-commons-bundle/event-handler'
 
 const componentContextLogOptions = {
   color: 'green',
   titleSize: 2
 }
+const REMOVE = 'REMOVE'
 
 /**
  * @extends WithID
@@ -41,6 +44,10 @@ export class ComponentContext extends WithID {
    * @type {ViewContainersHandler}
    */
   #viewContainersHandler
+  /**
+   * @type {OrderedEventHandler}
+   */
+  #eventHandler = new OrderedEventHandler()
 
 
   /**
@@ -117,12 +124,31 @@ export class ComponentContext extends WithID {
     return this.APP().logger()
   }
 
+  /**
+   * @param {function} clb
+   * @return {EventHandler}
+   */
+  onRemove(clb){
+    return new EventHandler(this.#eventHandler.on( OrderedEventListenerConfigBuilder.listen(REMOVE).build()), this)
+  }
+
+  /**
+   * @param {string} token
+   * @return {ComponentContext}
+   */
+  unregisterEvent(token){
+    this.#eventHandler.removeEventListener(token)
+    return this
+  }
+
   remove() {
     this.#removed = true
     this.#actionsHandler.remove()
     this.#storesHandler.remove()
     this.#viewContainersHandler.remove()
     this.APP().components().detach(this)
+
+    this.#eventHandler.dispatch(REMOVE, null)
 
     this.logger().log(
       this.logger().builder()
@@ -138,5 +164,30 @@ export class ComponentContext extends WithID {
    */
   isRemoving() {
     return this.#removed
+  }
+}
+
+
+class EventHandler{
+  /**
+   * {string}
+   */
+  #token
+  /**
+   * {ComponentContext}
+   */
+  #componentContext
+
+  /**
+    * @param {string} token
+   * @param {ComponentContext} componentContext
+   */
+  constructor(token, componentContext) {
+    this.#token = TypeCheck.assertIsString(token)
+    this.#componentContext = assertInstanceOf(componentContext,ComponentContext,'ComponentContext')
+  }
+
+  remove(){
+    this.#componentContext.unregisterEvent(this.#token)
   }
 }
