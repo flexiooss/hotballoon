@@ -23,6 +23,7 @@ import {
   VIEW_REMOVE,
   ViewPublicEventHandler
 } from './ViewPublicEventHandler'
+import {RemovedException} from "../Exception/RemovedException";
 
 
 export const ATTRIBUTE_NODEREF = '_hb_noderef'
@@ -104,8 +105,12 @@ export class View extends ViewContainerBase {
 
   /**
    * @return {?String}
+   * @throws {RemovedException}
    */
   templateToString() {
+    if(this.isRemoved()){
+      throw RemovedException.VIEW_CONTAINER(this._ID)
+    }
     /**
      * @type {?Element}
      */
@@ -127,9 +132,12 @@ export class View extends ViewContainerBase {
    * @param {StoreInterface<STORE_TYPE,STORE_TYPE_BUILDER>} store
    * @param {function(data:StoreState<STORE_TYPE>):boolean} clb
    * @return {ListenedStore}
+   * @throws {RemovedException}
    */
   subscribeToStore(store, clb = (state) => true) {
-
+    if(this.isRemoved()){
+      throw RemovedException.VIEW_CONTAINER(this._ID)
+    }
     return this.stores().listen(store, (payload, type) => {
       if (!this.isRemoved()) {
         if (clb.call(null, payload) === true) {
@@ -174,8 +182,12 @@ export class View extends ViewContainerBase {
 
   /**
    * @return {View}
+   * @throws {RemovedException}
    */
   updateNode() {
+    if(this.isRemoved()){
+      throw RemovedException.VIEW_CONTAINER(this._ID)
+    }
     if (this.isRendered() && this.#shouldUpdate) {
 
       this.dispatch(VIEW_UPDATE, {})
@@ -257,8 +269,12 @@ export class View extends ViewContainerBase {
 
   /**
    * @return {Element}
+   * @throws {RemovedException}
    */
   render() {
+    if(this.isRemoved()){
+      throw RemovedException.VIEW_CONTAINER(this._ID)
+    }
     this.logger().log(
       this.logger().builder()
         .info()
@@ -295,7 +311,13 @@ export class View extends ViewContainerBase {
     this.dispatch(VIEW_MOUNTED, {})
   }
 
+  /**
+   * @throws {RemovedException}
+   */
   mount() {
+    if(this.isRemoved()){
+      throw RemovedException.VIEW_CONTAINER(this._ID)
+    }
     if (this.#shouldMount) {
       this.dispatch(VIEW_MOUNT, {})
 
@@ -351,8 +373,12 @@ export class View extends ViewContainerBase {
   /**
    * @param {String} key
    * @return {Element}
+   * @throws {RemovedException}
    */
   nodeRef(key) {
+    if(this.isRemoved()){
+      throw RemovedException.VIEW_CONTAINER(this._ID)
+    }
     if (!this.#nodeRefs.has(key)) {
       /**
        * @type {?HTMLElement}

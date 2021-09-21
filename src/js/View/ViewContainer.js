@@ -7,6 +7,7 @@ import {StoreInterface} from '../Store/StoreInterface'
 import {ViewContainerBase} from './ViewContainerBase'
 import {ViewContainerPublicEventHandler} from './ViewContainerPublicEventHandler'
 import {TypeCheck} from '../Types/TypeCheck'
+import {RemovedException} from "../Exception/RemovedException";
 
 const viewContainerLogOptions = {
   color: 'blueDark',
@@ -56,6 +57,9 @@ export class ViewContainer extends ViewContainerBase {
    * @return {ListenedStore}
    */
   subscribeToStore(store, clb = (state) => true) {
+    if(this.isRemoved()){
+      throw RemovedException.VIEW_CONTAINER(this._ID)
+    }
     return this.stores().listen(store, (payload, type) => {
       if (!this.isRemoved()) {
         clb.call(null, payload.data())
@@ -85,11 +89,17 @@ export class ViewContainer extends ViewContainerBase {
    * @description Render all views
    */
   render() {
+    if(this.isRemoved()){
+      throw RemovedException.VIEW_CONTAINER(this._ID)
+    }
     this.#renderViews()
     this._rendered = true
   }
 
   updateViewsNode() {
+    if(this.isRemoved()){
+      throw RemovedException.VIEW_CONTAINER(this._ID)
+    }
     this.views().forEach((view, key, map) => {
       view.updateNode()
     })
@@ -99,6 +109,9 @@ export class ViewContainer extends ViewContainerBase {
    * @return {Element} parentNode
    */
   mount() {
+    if(this.isRemoved()){
+      throw RemovedException.VIEW_CONTAINER(this._ID)
+    }
     this.#mountViews()
     this._mounted = true
 

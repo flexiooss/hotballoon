@@ -3,6 +3,7 @@ import {WithID} from '../abstract/WithID'
 import {OrderedEventHandler} from '../Event/OrderedEventHandler'
 import {ViewContainerBaseMap} from './ViewContainerBaseMap'
 import {StoresHandler} from '../Store/StoresHandler'
+import {RemovedException} from "../Exception/RemovedException";
 
 
 /**
@@ -25,7 +26,7 @@ export class ViewContainerBase extends WithID {
   /**
    * @type {OrderedEventHandler}
    */
-  #eventHandler = new OrderedEventHandler()
+  #eventHandler = new OrderedEventHandler(100, ()=>this.isRemoved())
   /**
    * @type {ViewContainerBaseMap}
    */
@@ -84,8 +85,6 @@ export class ViewContainerBase extends WithID {
   get _rendered() {
     return this.#rendered
   }
-
-
   /**
    * @param {Element} v
    */
@@ -118,16 +117,24 @@ export class ViewContainerBase extends WithID {
    * @protected
    * @param {OrderedEventListenerConfig} orderedEventListenerConfig
    * @return {(String|StringArray)} token
+   * @throws {RemovedException}
    */
   _on(orderedEventListenerConfig) {
+    if(this.isRemoved()){
+      throw RemovedException.VIEW_CONTAINER(this._ID)
+    }
     return this.#eventHandler.on(orderedEventListenerConfig)
   }
 
   /**
    * @param {(String|Symbol)} eventType
    * @param {Object} payload
+   * @throws {RemovedException}
    */
   dispatch(eventType, payload) {
+    if(this.isRemoved()){
+      throw RemovedException.VIEW_CONTAINER(this._ID)
+    }
     this.#eventHandler.dispatch(eventType, payload)
   }
 
@@ -152,8 +159,12 @@ export class ViewContainerBase extends WithID {
   /**
    * @param {View} view
    * @return {View}
+   * @throws {RemovedException}
    */
   addView(view) {
+    if(this.isRemoved()){
+      throw RemovedException.VIEW_CONTAINER(this._ID)
+    }
     this.#views.set(view.ID(), view)
     return view
   }
