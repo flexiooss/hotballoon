@@ -21,7 +21,7 @@
       ]
     },
     "build": {
-      "builder": "webpack4"
+      "builder": "webpack5"
     },
     "test": {
       "tester": "code-altimeter-js",
