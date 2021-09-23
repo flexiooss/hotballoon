@@ -26,7 +26,7 @@ export class ViewContainerBase extends WithID {
   /**
    * @type {OrderedEventHandler}
    */
-  #eventHandler = new OrderedEventHandler(100, ()=>this.isRemoved())
+  #eventHandler = new OrderedEventHandler(100, ()=>!this.isRemoved())
   /**
    * @type {ViewContainerBaseMap}
    */

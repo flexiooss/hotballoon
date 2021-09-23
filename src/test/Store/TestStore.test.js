@@ -51,6 +51,7 @@ export class TestStore extends TestCase {
 
 
     const storeHandler = this.store.listenChanged((state) => {
+      console.log('CHANGED')
       a = state.data().a()
     })
 

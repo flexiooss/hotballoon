@@ -46,7 +46,7 @@ export class StoreBase extends WithID {
   /**
    * @type {OrderedEventHandler}
    */
-  #eventHandler = new OrderedEventHandler(100, () => this.#removed)
+  #eventHandler = new OrderedEventHandler(100, () => !this.#removed)
   /**
    * @type {StoreBaseConfig<TYPE, TYPE_BUILDER>}
    */
