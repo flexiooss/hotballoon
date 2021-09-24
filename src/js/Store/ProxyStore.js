@@ -21,6 +21,10 @@ export class ProxyStore extends StoreBase {
    * @type ProxyStoreConfig<STORE_TYPE, TYPE, TYPE_BUILDER>
    */
   #config
+  /**
+   * @type {?ListenedStore}
+   */
+  #listenedStore = null
 
   /**
    * @param {ProxyStoreConfig<STORE_TYPE, TYPE, TYPE_BUILDER>} proxyStoreConfig
@@ -52,7 +56,7 @@ export class ProxyStore extends StoreBase {
   }
 
   #subscribeToStore() {
-    this._store().listenChanged(
+    this.#listenedStore = this._store().listenChanged(
       (payload, eventType) => {
         this.#mapAndUpdate(payload, eventType)
       }
@@ -103,5 +107,10 @@ export class ProxyStore extends StoreBase {
   shouldNotUpdate() {
     this.#shouldUpdate = false
     return this
+  }
+
+  remove() {
+    this.#listenedStore.remove()
+    super.remove()
   }
 }

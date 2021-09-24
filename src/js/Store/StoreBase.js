@@ -5,13 +5,13 @@ import {
   assertType,
   isFunction,
   isNull,
-  isNumber,
+  isNumber, NotOverrideException,
   TypeCheck
 } from '@flexio-oss/js-commons-bundle/assert'
 import {StorageInterface} from './Storage/StorageInterface'
 
 import {OrderedEventHandler} from '../Event/OrderedEventHandler'
-import {STORE_CHANGED} from './StoreInterface'
+import {STORE_CHANGED, STORE_REMOVED} from './StoreInterface'
 import {ValidationError} from '../Exception/ValidationError'
 import {OrderedEventListenerConfigBuilder} from '@flexio-oss/js-commons-bundle/event-handler'
 import {FakeLogger, LoggerInterface} from '@flexio-oss/js-commons-bundle/js-logger'
@@ -98,6 +98,13 @@ export class StoreBase extends WithID {
   }
 
   /**
+   * @return {string}
+   */
+  removedEventName() {
+    return STORE_REMOVED + '.' + this.storeId()
+  }
+
+  /**
    * @returns {StorageInterface<TYPE>} state
    * @protected
    */
@@ -175,6 +182,14 @@ export class StoreBase extends WithID {
       throw RemovedException.STORE(this._ID)
     }
     return this.#eventHandler.on(orderedEventListenerConfig)
+  }
+
+  /**
+   * @param {String} event
+   * @param {String} token
+   */
+  unSubscribe(event, token) {
+    return this.#eventHandler.removeEventListener(event, token)
   }
 
   /**
@@ -312,6 +327,7 @@ export class StoreBase extends WithID {
   }
 
   remove() {
+    this._dispatch(this.removedEventName(), null)
     this.#removed = true
     this.#eventHandler.clear()
     this.#storage = this.#storage.set(this.ID(), null)
@@ -322,6 +338,13 @@ export class StoreBase extends WithID {
         .pushLog(this.state()),
       storeBaseLogOptions
     )
+  }
+
+  /**
+   * @return {boolean}
+   */
+  isRemoving() {
+    return this.#removed
   }
 
   /**
