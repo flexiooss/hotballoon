@@ -327,7 +327,7 @@ export class StoreBase extends WithID {
   }
 
   remove() {
-    this._dispatch(this.removedEventName(), null)
+    this.#eventHandler.dispatch(this.removedEventName(), null)
     this.#removed = true
     this.#eventHandler.clear()
     this.#storage = this.#storage.set(this.ID(), null)
