@@ -4,6 +4,7 @@ import {ActionDispatcherConfig} from './ActionDispatcherConfig'
 import {ValidationError} from '../Exception/ValidationError'
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_ACTION_DISPATCHER} from '../Types/HasTagClassNameInterface'
 import {ActionSubscriber} from './ActionSubscriber'
+import {RemovedException} from "../Exception/RemovedException";
 
 
 /**
@@ -70,10 +71,11 @@ export class ActionDispatcher extends ActionSubscriber {
 
   /**
    * @param {?TYPE} [payload=null]
+   * @throws {RemovedException}
    */
   dispatch(payload = null) {
     if (this.isRemoved()) {
-      return
+      throw RemovedException.ACTION(this._ID)
     }
     if (!isNull(this.config().type())) {
       const checker = this.config().defaultChecker()

@@ -4,6 +4,7 @@ import {assertInstanceOf, isNull} from '@flexio-oss/js-commons-bundle/assert'
 import {ActionDispatcherConfig} from './ActionDispatcherConfig'
 import {ListenedAction} from './ListenedAction'
 import {EventListenerConfigBuilder} from '@flexio-oss/js-commons-bundle/event-handler'
+import {RemovedException} from "../Exception/RemovedException";
 
 /**
  * @implements {HasTagClassNameInterface}
@@ -68,6 +69,9 @@ export class ActionSubscriber extends WithID {
    * @returns {ListenedAction}
    */
   listen(callback) {
+    if (this.isRemoved()) {
+      throw RemovedException.ACTION(this._ID)
+    }
     /**
      * @type {string}
      */

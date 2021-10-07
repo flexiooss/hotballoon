@@ -129,7 +129,7 @@ export class ComponentContext extends WithID {
    * @return {EventHandler}
    */
   onRemove(clb){
-    return new EventHandler(this.#eventHandler.on( OrderedEventListenerConfigBuilder.listen(REMOVE).build()), this)
+    return new EventHandler(this.#eventHandler.on( OrderedEventListenerConfigBuilder.listen(REMOVE).callback(clb).build()), this)
   }
 
   /**

@@ -15,6 +15,7 @@ import {
 } from './HasTagClassNameInterface'
 import {assertType} from '@flexio-oss/js-commons-bundle/assert'
 import {ElementDescription} from '../HotballoonNodeElement/ElementDescription'
+import {RemovedException} from "../Exception/RemovedException";
 
 
 class TypeCheck {
@@ -229,6 +230,14 @@ class TypeCheck {
    */
   static isElementDescription(instance) {
     return instance instanceof ElementDescription
+  }
+
+  /**
+   * @param {*} instance
+   * @return {boolean}
+   */
+  static isRemovedException(instance) {
+    return instance instanceof RemovedException
   }
 }
 

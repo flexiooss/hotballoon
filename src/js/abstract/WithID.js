@@ -1,39 +1,23 @@
-import {assert} from '@flexio-oss/js-commons-bundle/assert'
-
-const _ID = Symbol('_ID')
+import {assert, isString} from '@flexio-oss/js-commons-bundle/assert'
 
 export class WithID {
   /**
-   *
+   * @type {string}
+   */
+  #id
+
+  /**
    * @param {String} id
    */
   constructor(id) {
-    assert(!!id,
-      'hotballoon:WithID:constructor: `id` argument assert not be empty')
-    Object.defineProperties(this, {
-        [_ID]: {
-          enumerable: true,
-          configurable:
-            false,
-          writable:
-            false,
-          /**
-           * @property {String}
-           * @params {string}
-           * @name  WithID#_ID
-           * @protected
-           */
-          value: id
-        }
-      }
-    )
+    assert(isString(id) && !!id, 'hotballoon:WithID:constructor: `id` should be a string and not empty')
+    this.#id = id
   }
 
   /**
-   *
    * @return {string}
    */
   ID() {
-    return this[_ID]
+    return this.#id
   }
 }

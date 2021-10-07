@@ -5,18 +5,19 @@ import {
   assertType,
   isFunction,
   isNull,
-  isNumber,
+  isNumber, NotOverrideException,
   TypeCheck
 } from '@flexio-oss/js-commons-bundle/assert'
 import {StorageInterface} from './Storage/StorageInterface'
 
 import {OrderedEventHandler} from '../Event/OrderedEventHandler'
-import {STORE_CHANGED} from './StoreInterface'
+import {STORE_CHANGED, STORE_REMOVED} from './StoreInterface'
 import {ValidationError} from '../Exception/ValidationError'
 import {OrderedEventListenerConfigBuilder} from '@flexio-oss/js-commons-bundle/event-handler'
 import {FakeLogger, LoggerInterface} from '@flexio-oss/js-commons-bundle/js-logger'
 import {StoreBaseConfig} from './StoreBaseConfig'
 import {ListenedStore} from './ListenedStore'
+import {RemovedException} from "../Exception/RemovedException";
 
 
 const storeBaseLogOptions = {
@@ -31,6 +32,10 @@ const storeBaseLogOptions = {
  */
 export class StoreBase extends WithID {
   /**
+   * @type {boolean}
+   */
+  #removed = false
+  /**
    * @type {?function(state:StoreState<TYPE>)}
    */
   #onceOnUpdated = null
@@ -41,7 +46,7 @@ export class StoreBase extends WithID {
   /**
    * @type {OrderedEventHandler}
    */
-  #eventHandler = new OrderedEventHandler()
+  #eventHandler = new OrderedEventHandler(100, () => !this.#removed)
   /**
    * @type {StoreBaseConfig<TYPE, TYPE_BUILDER>}
    */
@@ -90,6 +95,13 @@ export class StoreBase extends WithID {
    */
   changedEventName() {
     return STORE_CHANGED + '.' + this.storeId()
+  }
+
+  /**
+   * @return {string}
+   */
+  removedEventName() {
+    return STORE_REMOVED + '.' + this.storeId()
   }
 
   /**
@@ -166,7 +178,18 @@ export class StoreBase extends WithID {
    * @return {String} token
    */
   subscribe(orderedEventListenerConfig) {
+    if (this.#removed) {
+      throw RemovedException.STORE(this._ID)
+    }
     return this.#eventHandler.on(orderedEventListenerConfig)
+  }
+
+  /**
+   * @param {String} event
+   * @param {String} token
+   */
+  unSubscribe(event, token) {
+    return this.#eventHandler.removeEventListener(event, token)
   }
 
   /**
@@ -190,8 +213,12 @@ export class StoreBase extends WithID {
 
   /**
    * @param {TYPE} dataStore
+   * @throws {RemovedException}
    */
   set(dataStore) {
+    if (this.#removed) {
+      throw RemovedException.STORE(this._ID)
+    }
     this.#setStorage(this.#storage.set(this.ID(), this.validateDataStore(dataStore)))
   }
 
@@ -203,9 +230,6 @@ export class StoreBase extends WithID {
     if (isNull(dataStore)) {
       return null
     }
-    /**
-     *
-     */
     const data = this.#config.defaultChecker().call(null, dataStore)
 
     assertType(data instanceof this.__type__(),
@@ -240,7 +264,6 @@ export class StoreBase extends WithID {
     } finally {
       this._dispatch(this.changedEventName(), currentState)
     }
-
   }
 
   /**
@@ -248,6 +271,9 @@ export class StoreBase extends WithID {
    * @return {this}
    */
   onceOnUpdated(clb) {
+    if (this.#removed) {
+      throw RemovedException.STORE(this._ID)
+    }
     this.#onceOnUpdated = TypeCheck.assertIsFunctionOrNull(clb)
     return this
   }
@@ -263,8 +289,12 @@ export class StoreBase extends WithID {
    * @param {function(state: StoreState<TYPE>)} callback
    * @param {number} [priority=100]
    * @return {ListenedStore}
+   * @throws {RemovedException}
    */
   listenChanged(callback, priority = 100) {
+    if (this.#removed) {
+      throw RemovedException.STORE(this._ID)
+    }
     TypeCheck.assertIsFunction(callback)
     TypeCheck.assertIsNumber(priority)
 
@@ -297,7 +327,10 @@ export class StoreBase extends WithID {
   }
 
   remove() {
+    this.#eventHandler.dispatch(this.removedEventName(), null)
+    this.#removed = true
     this.#eventHandler.clear()
+    this.#storage = this.#storage.set(this.ID(), null)
     this.logger().log(
       this.logger().builder()
         .info()
@@ -305,7 +338,13 @@ export class StoreBase extends WithID {
         .pushLog(this.state()),
       storeBaseLogOptions
     )
-    this.#storage = this.#storage.set(this.ID(), null)
+  }
+
+  /**
+   * @return {boolean}
+   */
+  isRemoving() {
+    return this.#removed
   }
 
   /**
