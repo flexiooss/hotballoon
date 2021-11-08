@@ -108,7 +108,7 @@ export class View extends ViewContainerBase {
    * @throws {RemovedException}
    */
   templateToString() {
-    if(this.isRemoved()){
+    if (this.isRemoved()) {
       throw RemovedException.VIEW_CONTAINER(this._ID)
     }
     /**
@@ -135,7 +135,7 @@ export class View extends ViewContainerBase {
    * @throws {RemovedException}
    */
   subscribeToStore(store, clb = (state) => true) {
-    if(this.isRemoved()){
+    if (this.isRemoved()) {
       throw RemovedException.VIEW_CONTAINER(this._ID)
     }
     return this.stores().listen(store, (payload, type) => {
@@ -185,7 +185,7 @@ export class View extends ViewContainerBase {
    * @throws {RemovedException}
    */
   updateNode() {
-    if(this.isRemoved()){
+    if (this.isRemoved()) {
       throw RemovedException.VIEW_CONTAINER(this._ID)
     }
     if (this.isRendered() && this.#shouldUpdate) {
@@ -272,7 +272,7 @@ export class View extends ViewContainerBase {
    * @throws {RemovedException}
    */
   render() {
-    if(this.isRemoved()){
+    if (this.isRemoved()) {
       throw RemovedException.VIEW_CONTAINER(this._ID)
     }
     this.logger().log(
@@ -303,6 +303,9 @@ export class View extends ViewContainerBase {
   }
 
   #appendChild() {
+    if (this.isRemoved()) {
+      return
+    }
     if (!isNull(this.node)) {
       this.parentNode.appendChild(this.node())
     }
@@ -315,7 +318,7 @@ export class View extends ViewContainerBase {
    * @throws {RemovedException}
    */
   mount() {
-    if(this.isRemoved()){
+    if (this.isRemoved()) {
       throw RemovedException.VIEW_CONTAINER(this._ID)
     }
     if (this.#shouldMount) {
@@ -376,7 +379,7 @@ export class View extends ViewContainerBase {
    * @throws {RemovedException}
    */
   nodeRef(key) {
-    if(this.isRemoved()){
+    if (this.isRemoved()) {
       throw RemovedException.VIEW_CONTAINER(this._ID)
     }
     if (!this.#nodeRefs.has(key)) {
@@ -536,7 +539,7 @@ export class View extends ViewContainerBase {
    * @return {View}
    */
   unMount() {
-    if (!isNull(this.node())) {
+    if (!isNull(this.node()) && !isNull(this.node().parentNode)) {
       this.parentNode.removeChild(this.node())
     }
     this._mounted = false
