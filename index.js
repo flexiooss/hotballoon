@@ -28,6 +28,7 @@ export {ProxyStoreBuilder} from './src/js/Store/ProxyStoreBuilder'
 export {OnDemandProxyStoreBuilder} from './src/js/Store/OnDemandProxyStoreBuilder'
 export {InMemoryStoreBuilder} from './src/js/Store/InMemoryStoreBuilder'
 export {JsStorageStoreBuilder} from './src/js/Store/JsStorageStoreBuilder'
+export {SingleStateException} from './src/js/Store/SingleStateException'
 
 export {e} from './src/js/HotballoonNodeElement/ElementDescription'
 export {RECONCILIATION_RULES} from './flexio-nodes-reconciliation'
