@@ -7,6 +7,15 @@ import {deepFreezeSeal} from '@flexio-oss/js-commons-bundle/js-generator-helpers
  */
 export class EventAction {
   /**
+   * @type {string|Symbol}
+   */
+  #name
+  /**
+   * @type {?TYPE}
+   */
+  #payload = null
+
+  /**
    * @param {(string|Symbol)} name
    * @param {?TYPE} payload
    */
@@ -17,16 +26,8 @@ export class EventAction {
     assert(isNull(payload) || !!payload,
       'hotballoon:EventAction:constructor "payload" property should not be empty'
     )
-    /**
-     * @type {string|Symbol}
-     * @private
-     */
-    this.__name = name
-    /**
-     * @type {?TYPE}
-     * @private
-     */
-    this.__payload = payload
+    this.#name = name
+    this.#payload = payload
   }
 
   /**
@@ -35,20 +36,20 @@ export class EventAction {
    * @return {EventAction}
    */
   static create(name, payload) {
-    return deepFreezeSeal(new this(name, payload))
+    return deepFreezeSeal(new EventAction(name, payload))
   }
 
   /**
    * @return {(string|Symbol)}
    */
   name() {
-    return this.__name
+    return this.#name
   }
 
   /**
    * @return {?TYPE}
    */
   payload() {
-    return this.__payload
+    return this.#payload
   }
 }

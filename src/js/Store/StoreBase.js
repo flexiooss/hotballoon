@@ -1,11 +1,8 @@
 import {WithID} from '../abstract/WithID'
 import {
-  assert,
   assertInstanceOf,
   assertType,
-  isFunction,
   isNull,
-  isNumber, NotOverrideException,
   TypeCheck
 } from '@flexio-oss/js-commons-bundle/assert'
 import {StorageInterface} from './Storage/StorageInterface'
@@ -14,17 +11,10 @@ import {OrderedEventHandler} from '../Event/OrderedEventHandler'
 import {STORE_CHANGED, STORE_REMOVED} from './StoreInterface'
 import {ValidationError} from '../Exception/ValidationError'
 import {OrderedEventListenerConfigBuilder} from '@flexio-oss/js-commons-bundle/event-handler'
-import {FakeLogger, LoggerInterface} from '@flexio-oss/js-commons-bundle/js-logger'
 import {StoreBaseConfig} from './StoreBaseConfig'
 import {ListenedStore} from './ListenedStore'
 import {RemovedException} from "../Exception/RemovedException";
-
-
-const storeBaseLogOptions = {
-  color: 'sandDark',
-  titleSize: 2
-}
-
+import {Logger} from "@flexio-oss/js-commons-bundle/hot-log";
 
 /**
  * @template TYPE, TYPE_BUILDER
@@ -52,9 +42,9 @@ export class StoreBase extends WithID {
    */
   #config
   /**
-   * @type {LoggerInterface}
+   * @type {Logger}
    */
-  #logger = new FakeLogger()
+  #logger = Logger.getLogger(this.constructor.name, 'HotBalloon.StoreBase')
   /**
    * @type {StorageInterface<TYPE>}
    */
@@ -193,14 +183,6 @@ export class StoreBase extends WithID {
   }
 
   /**
-   * @param {LoggerInterface} logger
-   */
-  setLogger(logger) {
-    assertInstanceOf(logger, LoggerInterface, 'LoggerInterface')
-    this.#logger = logger
-  }
-
-  /**
    * @protected
    * @param {String} eventType
    * @param {!StoreState<TYPE>}  payload
@@ -245,13 +227,7 @@ export class StoreBase extends WithID {
   }
 
   #stateUpdated() {
-    this.logger().log(
-      this.logger().builder()
-        .info()
-        .pushLog('STORE STORE_CHANGED : ' + this.ID())
-        .pushLog(this.state()),
-      storeBaseLogOptions
-    )
+    this.#logger.info('Store STORE_CHANGED : ' + this.ID(),this.state() )
 
     let currentState = this.state()
 
@@ -276,13 +252,6 @@ export class StoreBase extends WithID {
     }
     this.#onceOnUpdated = TypeCheck.assertIsFunctionOrNull(clb)
     return this
-  }
-
-  /**
-   * @return {LoggerInterface}
-   */
-  logger() {
-    return this.#logger
   }
 
   /**
@@ -331,13 +300,7 @@ export class StoreBase extends WithID {
     this.#removed = true
     this.#eventHandler.clear()
     this.#storage = this.#storage.set(this.ID(), null)
-    this.logger().log(
-      this.logger().builder()
-        .info()
-        .pushLog('STORE REMOVED : ' + this.ID())
-        .pushLog(this.state()),
-      storeBaseLogOptions
-    )
+    this.#logger.info('Store REMOVED : ' + this.ID() )
   }
 
   /**

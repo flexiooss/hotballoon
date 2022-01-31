@@ -3,17 +3,6 @@ import {AlreadyRegisteredException} from '../Exception/AlreadyRegisteredExceptio
 
 export class ViewContainersHandler {
   #viewContainers = new ViewContainerMap()
-  /**
-   * @type {LoggerInterface}
-   */
-  #logger
-
-  /**
-   * @param {LoggerInterface} logger
-   */
-  constructor(logger) {
-    this.#logger = logger
-  }
 
   /**
    * @param {ViewContainer} viewContainer

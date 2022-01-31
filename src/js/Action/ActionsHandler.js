@@ -15,17 +15,6 @@ export class ActionsHandler {
    * @type {ActionMap}
    */
   #actions = new ActionMap()
-  /**
-   * @type {LoggerInterface}
-   */
-  #logger
-
-  /**
-   * @param {LoggerInterface} logger
-   */
-  constructor(logger) {
-    this.#logger = logger
-  }
 
   /**
    * @param {ActionDispatcher} actionDispatcher

@@ -1,6 +1,5 @@
 import {ApplicationBuilder} from '../../js/Application/ApplicationBuilder'
 import {Dispatcher} from '../../js/Dispatcher/Dispatcher'
-import {ConsoleLogger} from '@flexio-oss/js-commons-bundle/js-logger'
 import {AsyncDomAccessor} from '../../js/View/DomAccessor'
 import {ViewContainer, ViewContainerParameters} from '../../js/View/ViewContainer'
 import {View} from '../../js/View/View'
@@ -39,21 +38,17 @@ class ViewDemo extends View {
   }
 }
 
-/**
- * @type {ConsoleLogger}
- */
-const logger = new ConsoleLogger()
+
 /**
  * @type {HotBalloonApplication}
  */
 const app = new ApplicationBuilder()
   .id('html')
-  .dispatcher(new Dispatcher(logger))
+  .dispatcher(new Dispatcher())
   .viewDebug(true)
   .document(document)
   .navigator(navigator)
   .domAccessor(new AsyncDomAccessor(window))
-  .logger(logger)
   .build()
 
 /**

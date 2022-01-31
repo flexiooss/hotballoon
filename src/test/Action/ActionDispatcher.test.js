@@ -1,6 +1,5 @@
 import {TestCase} from '@flexio-oss/code-altimeter-js'
 import {HotBalloonApplication} from '../../js/Application/HotBalloonApplication'
-import {FakeLogger} from '@flexio-oss/js-commons-bundle/js-logger'
 import {ActionDispatcherBuilder} from '../../js/Action/ActionDispatcherBuilder'
 import {FakeObject, FakeObjectBuilder} from './FakeObject'
 import {ApplicationBuilder} from '../../js/Application/ApplicationBuilder'
@@ -15,7 +14,6 @@ export class ActionDispatcherTest extends TestCase {
    */
   app(){
     return new ApplicationBuilder()
-      .logger(new FakeLogger().debug())
       .build()
   }
 

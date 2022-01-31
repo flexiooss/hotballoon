@@ -10,7 +10,6 @@ import {ExecutorWorker} from '../js/Job/ExecutorWorker'
 import {ActionDispatcherBuilder} from '../js/Action/ActionDispatcherBuilder'
 import {ViewContainer, ViewContainerParameters} from '../js/View/ViewContainer'
 import {View} from '../js/View/View'
-import {FakeLogger} from '@flexio-oss/js-commons-bundle/js-logger'
 import {FakeValueObject, FakeValueObjectBuilder} from './FakeValueObject'
 import {ComponentContextBuilder} from '../js/Application/ComponentContextBuilder'
 import {ApplicationBuilder} from '../js/Application/ApplicationBuilder'
@@ -23,7 +22,6 @@ export class TestTypeCheck extends TestCase {
    */
   app() {
     return new ApplicationBuilder()
-      .logger(new FakeLogger().debug())
       .build()
   }
 
@@ -82,7 +80,7 @@ export class TestTypeCheck extends TestCase {
   }
 
   testIsDispatcher() {
-    const dispatcher = new Dispatcher(new FakeLogger())
+    const dispatcher = new Dispatcher()
     assert(TypeCheck.isDispatcher(dispatcher))
   }
 
@@ -100,7 +98,7 @@ export class TestTypeCheck extends TestCase {
      */
     const action = new ActionDispatcherBuilder()
       .type(FakeValueObject)
-      .dispatcher(new Dispatcher(new FakeLogger()))
+      .dispatcher(new Dispatcher())
       .build()
 
     assert(TypeCheck.isActionDispatcher(action))

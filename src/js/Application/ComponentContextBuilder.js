@@ -41,9 +41,9 @@ export class ComponentContextBuilder {
       !isNull(this.#name)
         ? `${this.#application.nextID()}--${this.#name.replace(new RegExp('\\\\s+', 'g'), '')}`
         : this.#application.nextID(),
-      new ActionsHandler(this.#application.logger()),
-      new StoresHandler(this.#application.logger()),
-      new ViewContainersHandler(this.#application.logger())
+      new ActionsHandler(),
+      new StoresHandler(),
+      new ViewContainersHandler()
     )
   }
 }

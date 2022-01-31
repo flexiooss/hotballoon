@@ -4,6 +4,7 @@ import {OrderedEventHandler} from '../Event/OrderedEventHandler'
 import {ViewContainerBaseMap} from './ViewContainerBaseMap'
 import {StoresHandler} from '../Store/StoresHandler'
 import {RemovedException} from "../Exception/RemovedException";
+import {Logger} from "@flexio-oss/js-commons-bundle/hot-log";
 
 
 /**
@@ -16,9 +17,9 @@ export class ViewContainerBase extends WithID {
    */
   #stores
   /**
-   * @type {LoggerInterface}
+   * @type {Logger}
    */
-  #logger
+  #logger = Logger.getLogger(this.constructor.name, 'HotBalloon.ViewContainerBase')
   /**
    * @type {Element}
    */
@@ -46,12 +47,10 @@ export class ViewContainerBase extends WithID {
 
   /**
    * @param {String} id
-   * @param {LoggerInterface} logger
    */
-  constructor(id, logger) {
+  constructor(id) {
     super(id)
-    this.#stores = new StoresHandler(logger)
-    this.#logger = logger
+    this.#stores = new StoresHandler()
   }
 
   /**
@@ -99,12 +98,6 @@ export class ViewContainerBase extends WithID {
     return this.#parentNode
   }
 
-  /**
-   * @return {LoggerInterface}
-   */
-  logger() {
-    return this.#logger
-  }
 
   /**
    * @return {StoresHandler}

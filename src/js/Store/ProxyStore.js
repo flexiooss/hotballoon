@@ -1,7 +1,7 @@
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_PROXYSTORE} from '../Types/HasTagClassNameInterface'
 import {StoreBase} from './StoreBase'
 import {StoreBaseConfig} from './StoreBaseConfig'
-import {assertInstanceOf, assertType} from '@flexio-oss/js-commons-bundle/assert'
+import {assertInstanceOf} from '@flexio-oss/js-commons-bundle/assert'
 import {ProxyStoreConfig} from './ProxyStoreConfig'
 import {StoreState} from './StoreState'
 
@@ -47,10 +47,6 @@ export class ProxyStore extends StoreBase {
       enumerable: true,
       value: CLASS_TAG_NAME_PROXYSTORE
     })
-
-    if ('logger' in this._store()) {
-      this.setLogger(this._store().logger())
-    }
 
     this.#subscribeToStore()
   }

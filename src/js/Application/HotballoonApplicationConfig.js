@@ -1,6 +1,5 @@
 import {assertInstanceOf, TypeCheck} from '@flexio-oss/js-commons-bundle/assert'
 import {Dispatcher} from '../Dispatcher/Dispatcher'
-import {LoggerInterface} from '@flexio-oss/js-commons-bundle/js-logger'
 import {ViewRenderConfig} from './ViewRenderConfig'
 import {ComponentsContextHandler} from '../Component/ComponentsContextHandler'
 import {ExecutionConfig} from './ExecutionConfig'
@@ -20,10 +19,6 @@ export class HotballoonApplicationConfig {
    */
   #dispatcher
   /**
-   * @type {LoggerInterface}
-   */
-  #logger
-  /**
    * @type {ViewRenderConfig}
    */
   #viewRenderConfig
@@ -35,15 +30,13 @@ export class HotballoonApplicationConfig {
   /**
    * @param {string} id
    * @param {Dispatcher} dispatcher
-   * @param {LoggerInterface} logger
    * @param {ViewRenderConfig} viewRenderConfig
    * @param {ComponentsContextHandler} componentsContextHandler
    * @param {ExecutionConfig} executionConfig
    */
-  constructor(id, dispatcher, logger, viewRenderConfig, componentsContextHandler, executionConfig) {
+  constructor(id, dispatcher,  viewRenderConfig, componentsContextHandler, executionConfig) {
     this.#id = TypeCheck.assertIsString(id)
     this.#dispatcher = assertInstanceOf(dispatcher, Dispatcher, 'Dispatcher')
-    this.#logger = assertInstanceOf(logger, LoggerInterface, 'LoggerInterface')
     this.#viewRenderConfig = assertInstanceOf(viewRenderConfig, ViewRenderConfig, 'ViewRenderConfig')
     this.#components = assertInstanceOf(componentsContextHandler, ComponentsContextHandler, 'ComponentsContextHandler')
     this.#executionConfig = assertInstanceOf(executionConfig, ExecutionConfig, 'ExecutionConfig')
@@ -61,13 +54,6 @@ export class HotballoonApplicationConfig {
    */
   dispatcher() {
     return this.#dispatcher
-  }
-
-  /**
-   * @return {LoggerInterface}
-   */
-  logger() {
-    return this.#logger
   }
 
   /**
