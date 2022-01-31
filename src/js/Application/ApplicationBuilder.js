@@ -55,16 +55,6 @@ export class ApplicationBuilder {
   }
 
   /**
-   *
-   * @param {LoggerInterface} value
-   * @return {ApplicationBuilder}
-   */
-  logger(value) {
-    console.error('logger injection is deprecated')
-    return this
-  }
-
-  /**
    * @param {Document} value
    * @return {ApplicationBuilder}
    */
