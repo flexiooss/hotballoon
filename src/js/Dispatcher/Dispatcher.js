@@ -76,7 +76,7 @@ export class Dispatcher extends EventHandlerBase {
   dispatchAction(eventAction) {
     assertInstanceOf(eventAction, EventAction, 'EventAction')
 
-    this.#logger.debug('ActionDispatcher dispatched : ' + eventAction.name(), eventAction.payload())
+    this.#logger.debug('ActionDispatcher dispatched : ' + eventAction.name(), eventAction)
     super.dispatch(eventAction.name(), eventAction.payload())
   }
 }
