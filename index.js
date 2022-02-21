@@ -22,6 +22,7 @@ export {ViewPublicEventHandler} from './src/js/View/ViewPublicEventHandler'
 export {ElementEventListenerConfigBuilder} from './src/js/HotballoonNodeElement/ElementEventListenerConfigBuilder'
 export {UIEventBuilder} from './src/js/HotballoonNodeElement/UIEventBuilder'
 
+export {Store} from './src/js/Store/Store'
 export {StoresHandler} from './src/js/Store/StoresHandler'
 export {PublicStoreHandler} from './src/js/Store/PublicStoreHandler'
 export {ProxyStoreBuilder} from './src/js/Store/ProxyStoreBuilder'
