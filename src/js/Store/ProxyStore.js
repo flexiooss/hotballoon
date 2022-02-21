@@ -69,6 +69,7 @@ export class ProxyStore extends StoreBase {
   /**
    * @param {StoreInterface<STORE_TYPE>} store
    * @return {ProxyStore}
+   * @throws {TypeError}
    */
   changeParentStore(store) {
     if (store.__type__() !== this.#parentStore.__type__()) {
