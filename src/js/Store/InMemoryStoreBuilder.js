@@ -4,7 +4,7 @@ import {StoreConfig} from './StoreConfig'
 import {InMemoryStorage} from './Storage/InMemoryStorage'
 import {StoreState} from './StoreState'
 import {StoreTypeConfig} from './StoreTypeConfig'
-import {isNull} from '@flexio-oss/js-commons-bundle/assert'
+import {isNull, TypeCheck} from '@flexio-oss/js-commons-bundle/assert'
 import {SingleStateStore} from "./SingleStateStore";
 
 /**
@@ -32,9 +32,18 @@ export class InMemoryStoreBuilder {
    */
   #name = null
   /**
-   * @type {boolean}
+   * @type {function(StoreConfig):StoreInterface}
    */
-  #singleState = false
+  #builder = config => new Store(config)
+
+  /**
+   * @param {function(StoreConfig):StoreInterface} value
+   * @return {InMemoryStoreBuilder}
+   */
+  builder(value) {
+    this.#builder = TypeCheck.assertIsArrowFunction(value)
+    return this
+  }
 
   /**
    * @param {string} name
@@ -49,7 +58,7 @@ export class InMemoryStoreBuilder {
    * @return {InMemoryStoreBuilder}
    */
   singleState() {
-    this.#singleState = true
+    this.#builder = config => new SingleStateStore(config)
     return this
   }
 
@@ -124,8 +133,6 @@ export class InMemoryStoreBuilder {
       )
     )
 
-    return (this.#singleState)
-      ? new SingleStateStore(config)
-      : new Store(config)
+    return this.#builder.call(null, config)
   }
 }

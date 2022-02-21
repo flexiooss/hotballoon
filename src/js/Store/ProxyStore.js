@@ -4,6 +4,8 @@ import {StoreBaseConfig} from './StoreBaseConfig'
 import {assertInstanceOf} from '@flexio-oss/js-commons-bundle/assert'
 import {ProxyStoreConfig} from './ProxyStoreConfig'
 import {StoreState} from './StoreState'
+import {TypeCheck} from "../Types/TypeCheck";
+import {STORE_CHANGED} from "./StoreInterface";
 
 
 /**
@@ -25,6 +27,10 @@ export class ProxyStore extends StoreBase {
    * @type {?ListenedStore}
    */
   #listenedStore = null
+  /**
+   * @type {StoreInterface<STORE_TYPE>}
+   */
+  #parentStore
 
   /**
    * @param {ProxyStoreConfig<STORE_TYPE, TYPE, TYPE_BUILDER>} proxyStoreConfig
@@ -48,6 +54,7 @@ export class ProxyStore extends StoreBase {
       value: CLASS_TAG_NAME_PROXYSTORE
     })
 
+    this.#parentStore = this.#config.store()
     this.#subscribeToStore()
   }
 
@@ -60,10 +67,22 @@ export class ProxyStore extends StoreBase {
   }
 
   /**
+   * @param {StoreInterface<STORE_TYPE>} store
+   * @return {ProxyStore}
+   */
+  changeParentStore(store) {
+    this.#listenedStore.remove()
+    this.#parentStore = TypeCheck.assertStoreBase(store)
+    this.#mapAndUpdate(this.#parentStore.state(), STORE_CHANGED)
+    this.#subscribeToStore()
+    return this
+  }
+
+  /**
    * @return {StoreInterface<STORE_TYPE>}
    */
   _store() {
-    return this.#config.store()
+    return this.#parentStore
   }
 
   /**
