@@ -14,7 +14,7 @@
   },
   "repository": "https://github.com/flexiooss/hotballoon.git",
   "devDependencies": {
-    "@flexio-oss/code-altimeter-js": "1.4.0"
+    "@flexio-oss/code-altimeter-js": "1.5.0"
   },
   "dependencies": {
     "@flexio-oss/js-commons-bundle": "1.33.0-dev"
@@ -33,8 +33,9 @@
     }
   },
   "peerDependencies": {
-    "@flexio-oss/code-altimeter-js": "1.4.0",
+    "@flexio-oss/code-altimeter-js": "1.5.0",
     "@flexio-oss/hotballoon": "0.35.0-dev",
-    "@flexio-oss/js-commons-bundle": "1.33.0-dev"
+    "@flexio-oss/js-commons-bundle": "1.33.0-dev",
+    "luxon": "2.3.0"
   }
 }

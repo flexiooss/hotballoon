@@ -7,6 +7,8 @@ import {FakeValueObject, FakeValueObjectBuilder} from '../FakeValueObject'
 const assert = require('assert')
 
 export class TestProxyStore extends TestCase {
+  // debug = true
+
   setUp() {
     this.store = new InMemoryStoreBuilder()
       .type(FakeValueObject)
@@ -86,7 +88,8 @@ export class TestProxyStore extends TestCase {
       'Mapper should be invoked after store update')
   }
 
-  testChangeParentStore(){
+  testChangeParentStore() {
+    let invoked = 0
     const store2 = new InMemoryStoreBuilder()
       .type(FakeValueObject)
       .initialData(
@@ -106,6 +109,8 @@ export class TestProxyStore extends TestCase {
          * @param {FakeValueObject} data
          */
         (data) => {
+          invoked++
+
           return new FakeValueObjectBuilder()
             .a(data.a() + 1)
             .b(data.b() + 10)
@@ -113,7 +118,11 @@ export class TestProxyStore extends TestCase {
         })
       .build()
 
+    this.log(this.proxyStore.state().data(), 'state before parent change')
+    assert.strictEqual(invoked, 1, 'Mapper should be invoked at init')
     this.proxyStore.changeParentStore(store2)
+    this.log(this.proxyStore.state().data(), 'state after parent change')
+    assert.strictEqual(invoked, 2, 'Mapper should be invoked at init and at change')
 
     assert.deepEqual(
       this.proxyStore.state().data(),

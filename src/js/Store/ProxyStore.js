@@ -71,6 +71,9 @@ export class ProxyStore extends StoreBase {
    * @return {ProxyStore}
    */
   changeParentStore(store) {
+    if (store.__type__() !== this.#parentStore.__type__()) {
+      throw new TypeError('New parent store should have same type as previous : ' + this.#parentStore.__type__().toString())
+    }
     this.#listenedStore.remove()
     this.#parentStore = TypeCheck.assertStoreBase(store)
     this.#mapAndUpdate(this.#parentStore.state(), STORE_CHANGED)
