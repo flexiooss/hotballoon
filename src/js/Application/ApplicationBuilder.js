@@ -23,11 +23,6 @@ export class ApplicationBuilder {
    */
   #dispatcher = null
   /**
-   *
-   * @type {?LoggerInterface}
-   */
-  #logger = null
-  /**
    * @type {?Document}
    */
   #document = null
@@ -56,16 +51,6 @@ export class ApplicationBuilder {
    */
   dispatcher(value) {
     this.#dispatcher = value
-    return this
-  }
-
-  /**
-   *
-   * @param {LoggerInterface} value
-   * @return {ApplicationBuilder}
-   */
-  logger(value) {
-    this.#logger = value
     return this
   }
 
@@ -112,10 +97,9 @@ export class ApplicationBuilder {
     return new HotBalloonApplication(
       new HotballoonApplicationConfig(
         this.#id,
-        isNull(this.#dispatcher) ? new Dispatcher(this.#logger) : this.#dispatcher,
-        this.#logger,
+        isNull(this.#dispatcher) ? new Dispatcher() : this.#dispatcher,
         new ViewRenderConfig(this.#document, this.#viewDebug, this.#domAccessor),
-        new ComponentsContextHandler(this.#logger),
+        new ComponentsContextHandler(),
         new ExecutionConfig(this.#navigator)
       )
     )

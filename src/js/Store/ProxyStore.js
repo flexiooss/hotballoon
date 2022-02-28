@@ -1,9 +1,11 @@
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_PROXYSTORE} from '../Types/HasTagClassNameInterface'
 import {StoreBase} from './StoreBase'
 import {StoreBaseConfig} from './StoreBaseConfig'
-import {assertInstanceOf, assertType} from '@flexio-oss/js-commons-bundle/assert'
+import {assertInstanceOf} from '@flexio-oss/js-commons-bundle/assert'
 import {ProxyStoreConfig} from './ProxyStoreConfig'
 import {StoreState} from './StoreState'
+import {TypeCheck} from "../Types/TypeCheck";
+import {STORE_CHANGED} from "./StoreInterface";
 
 
 /**
@@ -25,6 +27,10 @@ export class ProxyStore extends StoreBase {
    * @type {?ListenedStore}
    */
   #listenedStore = null
+  /**
+   * @type {StoreInterface<STORE_TYPE>}
+   */
+  #parentStore
 
   /**
    * @param {ProxyStoreConfig<STORE_TYPE, TYPE, TYPE_BUILDER>} proxyStoreConfig
@@ -48,10 +54,7 @@ export class ProxyStore extends StoreBase {
       value: CLASS_TAG_NAME_PROXYSTORE
     })
 
-    if ('logger' in this._store()) {
-      this.setLogger(this._store().logger())
-    }
-
+    this.#parentStore = this.#config.store()
     this.#subscribeToStore()
   }
 
@@ -64,10 +67,26 @@ export class ProxyStore extends StoreBase {
   }
 
   /**
+   * @param {StoreInterface<STORE_TYPE>} store
+   * @return {ProxyStore}
+   * @throws {TypeError}
+   */
+  changeParentStore(store) {
+    if (store.__type__() !== this.#parentStore.__type__()) {
+      throw new TypeError('New parent store should have same type as previous : ' + this.#parentStore.__type__().toString())
+    }
+    this.#listenedStore.remove()
+    this.#parentStore = TypeCheck.assertStoreBase(store)
+    this.#mapAndUpdate(this.#parentStore.state(), STORE_CHANGED)
+    this.#subscribeToStore()
+    return this
+  }
+
+  /**
    * @return {StoreInterface<STORE_TYPE>}
    */
   _store() {
-    return this.#config.store()
+    return this.#parentStore
   }
 
   /**

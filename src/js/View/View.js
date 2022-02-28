@@ -2,9 +2,7 @@ import {Checksum, UID} from '@flexio-oss/js-commons-bundle/js-helpers'
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_VIEW} from '../Types/HasTagClassNameInterface'
 import {
   assertType,
-  isNode,
   isNull, NotOverrideException,
-  TypeCheck as TypeTypeCheck
 } from '@flexio-oss/js-commons-bundle/assert'
 import {symbolToString} from '@flexio-oss/js-commons-bundle/js-type-helpers'
 import {$} from '../HotballoonNodeElement/HotBalloonAttributeHandler'
@@ -24,14 +22,10 @@ import {
   ViewPublicEventHandler
 } from './ViewPublicEventHandler'
 import {RemovedException} from "../Exception/RemovedException";
+import {Logger} from "@flexio-oss/js-commons-bundle/hot-log";
 
 
 export const ATTRIBUTE_NODEREF = '_hb_noderef'
-
-const viewLogOptions = {
-  color: 'blue',
-  titleSize: 2
-}
 
 /**
  * @extends {ViewContainerBase}
@@ -74,13 +68,17 @@ export class View extends ViewContainerBase {
    * @type {number}
    */
   #updateRequests = 0
+  /**
+   * @type {Logger}
+   */
+  #logger = Logger.getLogger(this.constructor.name, 'HotBalloon.View')
 
   /**
    * @param {ViewContainerBase} container
    */
   constructor(container) {
     assertType(TypeCheck.isViewContainerBase(container), '`container` should be ViewContainerBase')
-    super(UID('View__' + container.constructor.name + '_'), container.logger())
+    super(UID('View__' + container.constructor.name + '_'))
 
     this.#container = container
     this.parentNode = container.parentNode
@@ -169,13 +167,7 @@ export class View extends ViewContainerBase {
       }
 
       this.dispatch(VIEW_UPDATED, {})
-      this.logger().log(
-        this.logger().builder()
-          .debug()
-          .pushLog('UpdateNode : ' + this.ID())
-          .pushLog(this.node()),
-        viewLogOptions
-      )
+      this.#logger.debug('UpdateNode : ' + this.ID())
     }
     this.#updateRequests--
   }
@@ -275,12 +267,7 @@ export class View extends ViewContainerBase {
     if (this.isRemoved()) {
       throw RemovedException.VIEW_CONTAINER(this._ID)
     }
-    this.logger().log(
-      this.logger().builder()
-        .info()
-        .pushLog('Render : ' + this.ID()),
-      viewLogOptions
-    )
+    this.#logger.info('Render : ' + this.ID(), this)
 
     if (this.#shouldRender) {
       this.dispatch(VIEW_RENDER, {})
@@ -510,13 +497,7 @@ export class View extends ViewContainerBase {
   }
 
   remove() {
-    this.logger().log(
-      this.logger().builder()
-        .info()
-        .pushLog('Remove : ' + this.ID())
-        .pushLog(this),
-      viewLogOptions
-    )
+    this.#logger.info('Remove : ' + this.ID())
     this.dispatch(VIEW_REMOVE, {})
 
     this.#nodeRefs.clear()

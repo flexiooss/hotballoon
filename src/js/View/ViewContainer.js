@@ -8,11 +8,7 @@ import {ViewContainerBase} from './ViewContainerBase'
 import {ViewContainerPublicEventHandler} from './ViewContainerPublicEventHandler'
 import {TypeCheck} from '../Types/TypeCheck'
 import {RemovedException} from "../Exception/RemovedException";
-
-const viewContainerLogOptions = {
-  color: 'blueDark',
-  titleSize: 2
-}
+import {Logger} from "@flexio-oss/js-commons-bundle/hot-log";
 
 /**
  * @description viewContainer is a Views container who can subscribe to Stores to dispatch state to Views
@@ -24,13 +20,17 @@ export class ViewContainer extends ViewContainerBase {
    * @type {ViewContainerParameters}
    */
   #config
+  /**
+   * @type {Logger}
+   */
+  #logger = Logger.getLogger(this.constructor.name, 'HotBalloon.ViewContainerBase')
 
   /**
    * @param {ViewContainerParameters} config
    */
   constructor(config) {
     assertInstanceOf(config, ViewContainerParameters, 'ViewContainerParameters')
-    super(config.id(), config.componentContext().logger())
+    super(config.id())
     this.#config = config
     this.parentNode = config.parentNode()
 
@@ -131,13 +131,7 @@ export class ViewContainer extends ViewContainerBase {
    * @return {Element} parentNode
    */
   renderAndMount() {
-    this.logger().log(
-      this.logger().builder()
-        .info()
-        .pushLog('Render And Mount : ' + this.ID())
-        .pushLog(this),
-      viewContainerLogOptions
-    )
+    this.#logger.info('Render And Mount : ' + this.ID())
 
     this.render()
     return this.mount()
@@ -189,13 +183,7 @@ export class ViewContainer extends ViewContainerBase {
   }
 
   remove() {
-    this.logger().log(
-      this.logger().builder()
-        .info()
-        .pushLog('Remove : ' + this.ID())
-        .pushLog(this),
-      viewContainerLogOptions
-    )
+    this.#logger.info('Remove : ' + this.ID())
 
     this.dispatch(ViewContainerPublicEventHandler.WILL_REMOVE, null)
 

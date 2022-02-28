@@ -4,39 +4,45 @@ import {StoreConfig} from './StoreConfig'
 import {InMemoryStorage} from './Storage/InMemoryStorage'
 import {StoreState} from './StoreState'
 import {StoreTypeConfig} from './StoreTypeConfig'
-import {isNull} from '@flexio-oss/js-commons-bundle/assert'
+import {isNull, TypeCheck} from '@flexio-oss/js-commons-bundle/assert'
+import {SingleStateStore} from "./SingleStateStore";
 
 /**
  * @template TYPE, TYPE_BUILDER
  */
 export class InMemoryStoreBuilder {
-  constructor() {
-    /**
-     * @type {?TYPE.}
-     * @private
-     */
-    this.__type = null
+  /**
+   * @type {?TYPE.}
+   */
+  #type = null
+  /**
+   * @type {?TYPE}
+   */
+  #initialData = null
+  /**
+   * @type  {?ValueObjectValidator}
+   */
+  #validator = null
+  /**
+   * @type {StoreTypeConfig~defaultCheckerClb<TYPE>}
+   */
+  #defaultChecker = v => v
+  /**
+   * @type {?string}
+   */
+  #name = null
+  /**
+   * @type {function(StoreConfig):StoreInterface}
+   */
+  #builder = config => new Store(config)
 
-    /**
-     * @type {?TYPE}
-     * @private
-     */
-    this.__initialData = null
-    /**
-     * @type  {?ValueObjectValidator}
-     * @private
-     */
-    this.__validator = null
-    /**
-     * @type {StoreTypeConfig~defaultCheckerClb<TYPE>}
-     * @private
-     */
-    this.__defaultChecker = v => v
-    /**
-     * @type {?string}
-     * @private
-     */
-    this.__name = null
+  /**
+   * @param {function(StoreConfig):StoreInterface} value
+   * @return {InMemoryStoreBuilder}
+   */
+  builder(value) {
+    this.#builder = TypeCheck.assertIsArrowFunction(value)
+    return this
   }
 
   /**
@@ -44,7 +50,15 @@ export class InMemoryStoreBuilder {
    * @return {InMemoryStoreBuilder}
    */
   name(name) {
-    this.__name = name.replace(new RegExp('\\s+', 'g'), '')
+    this.#name = name.replace(new RegExp('\\s+', 'g'), '')
+    return this
+  }
+
+  /**
+   * @return {InMemoryStoreBuilder}
+   */
+  singleState() {
+    this.#builder = config => new SingleStateStore(config)
     return this
   }
 
@@ -53,7 +67,7 @@ export class InMemoryStoreBuilder {
    * @return {InMemoryStoreBuilder}
    */
   type(type) {
-    this.__type = type
+    this.#type = type
     return this
   }
 
@@ -62,7 +76,7 @@ export class InMemoryStoreBuilder {
    * @return {InMemoryStoreBuilder}
    */
   initialData(initialData) {
-    this.__initialData = initialData
+    this.#initialData = initialData
     return this
   }
 
@@ -71,7 +85,7 @@ export class InMemoryStoreBuilder {
    * @return {InMemoryStoreBuilder}
    */
   defaultChecker(defaultChecker) {
-    this.__defaultChecker = defaultChecker
+    this.#defaultChecker = defaultChecker
     return this
   }
 
@@ -80,7 +94,7 @@ export class InMemoryStoreBuilder {
    * @return {InMemoryStoreBuilder}
    */
   validator(validator) {
-    this.__validator = validator
+    this.#validator = validator
     return this
   }
 
@@ -88,8 +102,8 @@ export class InMemoryStoreBuilder {
    * @return {string}
    * @private
    */
-  __uniqName() {
-    return UID((isNull(this.__name) ? this.__type.name : this.__name) + '_')
+  #uniqName() {
+    return UID((isNull(this.#name) ? this.#type.name : this.#name) + '_')
   }
 
   /**
@@ -97,26 +111,28 @@ export class InMemoryStoreBuilder {
    */
   build() {
 
-    const id = this.__uniqName()
-
-    return new Store(
-      new StoreConfig(
-        id,
-        this.__initialData,
-        new StoreTypeConfig(
-          this.__type,
-          this.__defaultChecker,
-          this.__validator
-        ),
-        new InMemoryStorage(
-          this.__type,
-          new StoreState(
-            id,
-            this.__type,
-            this.__initialData
-          )
+    const id = this.#uniqName()
+    /**
+     * @type {StoreConfig}
+     */
+    const config = new StoreConfig(
+      id,
+      this.#initialData,
+      new StoreTypeConfig(
+        this.#type,
+        this.#defaultChecker,
+        this.#validator
+      ),
+      new InMemoryStorage(
+        this.#type,
+        new StoreState(
+          id,
+          this.#type,
+          this.#initialData
         )
       )
     )
+
+    return this.#builder.call(null, config)
   }
 }

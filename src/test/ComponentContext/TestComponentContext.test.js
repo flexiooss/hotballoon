@@ -1,8 +1,6 @@
 import {TestCase} from '@flexio-oss/code-altimeter-js'
 import {HotBalloonApplication} from '../../js/Application/HotBalloonApplication'
-import {Dispatcher} from '../../js/Dispatcher/Dispatcher'
 import {ViewContainer, ViewContainerParameters} from '../../js/View/ViewContainer'
-import {FakeLogger} from '@flexio-oss/js-commons-bundle/js-logger'
 import {InMemoryStoreBuilder} from '../../js/Store/InMemoryStoreBuilder'
 import {FakeValueObject, FakeValueObjectBuilder} from '../FakeValueObject'
 import {ApplicationBuilder} from '../../js/Application/ApplicationBuilder'
@@ -15,7 +13,6 @@ export class TestComponentContext extends TestCase {
    */
   app(){
     return new ApplicationBuilder()
-      .logger(new FakeLogger().debug())
       .build()
   }
 

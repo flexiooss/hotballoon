@@ -15,17 +15,6 @@ export class StoresHandler {
    * @type {ListenedStoreMap}
    */
   #listenedStores = new ListenedStoreMap()
-  /**
-   * @type {LoggerInterface}
-   */
-  #logger
-
-  /**
-   * @param {LoggerInterface} logger
-   */
-  constructor(logger) {
-    this.#logger = logger
-  }
 
   /**
    * @param {StoreBase} store
@@ -36,7 +25,6 @@ export class StoresHandler {
       throw AlreadyRegisteredException.STORE(store.ID())
     }
     this.#stores.set(store.ID(), store)
-    store.setLogger(this.#logger)
     return store
   }
 

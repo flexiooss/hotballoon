@@ -4,7 +4,6 @@ import {assertType, isFunction} from '@flexio-oss/js-commons-bundle/assert'
 export class UIEventBuilder {
 
   /**
-   *
    * @return {PointerEventBuilder.}
    */
   static pointerEvent() {
@@ -12,7 +11,6 @@ export class UIEventBuilder {
   }
 
   /**
-   *
    * @return {MouseEventBuilder.}
    */
   static mouseEvent() {
@@ -20,7 +18,6 @@ export class UIEventBuilder {
   }
 
   /**
-   *
    * @return {KeyboardEventBuilder.}
    */
   static keyboardEvent() {
@@ -28,7 +25,6 @@ export class UIEventBuilder {
   }
 
   /**
-   *
    * @return {KeyKeyboardEventBuilder.}
    */
   static keyKeyboardEvent() {
@@ -36,7 +32,6 @@ export class UIEventBuilder {
   }
 
   /**
-   *
    * @return {FocusEventBuilder.}
    */
   static focusEvent() {
@@ -44,7 +39,6 @@ export class UIEventBuilder {
   }
 
   /**
-   *
    * @return {DragEventBuilder.}
    */
   static dragEvent() {
@@ -52,7 +46,6 @@ export class UIEventBuilder {
   }
 
   /**
-   *
    * @return {TouchEventBuilder.}
    */
   static touchEvent() {
@@ -60,11 +53,31 @@ export class UIEventBuilder {
   }
 
   /**
-   *
    * @return {ElementEventBuilder.}
    */
   static elementEvent() {
     return ElementEventBuilder
+  }
+
+  /**
+   * @return {ClipboardEventBuilder.}
+   */
+  static clipboardEvent() {
+    return ClipboardEventBuilder
+  }
+
+  /**
+   * @return {CompositionEventBuilder.}
+   */
+  static compositionEvent() {
+    return CompositionEventBuilder
+  }
+
+  /**
+   * @return {BaseEventBuilder.}
+   */
+  static baseEvent() {
+    return CompositionEventBuilder
   }
 
 }
@@ -73,7 +86,7 @@ class PointerEventBuilder {
 
   /**
    *
-   * @param {function(event:PointerEvent)} callback
+   * @param {function(PointerEvent)} callback
    * @return {ElementEventListenerConfig}
    */
   static over(callback) {
@@ -85,7 +98,7 @@ class PointerEventBuilder {
 
   /**
    *
-   * @param {function(event:PointerEvent)} callback
+   * @param {function(PointerEvent)} callback
    * @return {ElementEventListenerConfig}
    */
   static enter(callback) {
@@ -97,7 +110,7 @@ class PointerEventBuilder {
 
   /**
    *
-   * @param {function(event:PointerEvent)} callback
+   * @param {function(PointerEvent)} callback
    * @return {ElementEventListenerConfig}
    */
   static move(callback) {
@@ -109,7 +122,7 @@ class PointerEventBuilder {
 
   /**
    *
-   * @param {function(event:PointerEvent)} callback
+   * @param {function(PointerEvent)} callback
    * @return {ElementEventListenerConfig}
    */
   static down(callback) {
@@ -121,7 +134,7 @@ class PointerEventBuilder {
 
   /**
    *
-   * @param {function(event:PointerEvent)} callback
+   * @param {function(PointerEvent)} callback
    * @return {ElementEventListenerConfig}
    */
   static up(callback) {
@@ -133,7 +146,7 @@ class PointerEventBuilder {
 
   /**
    *
-   * @param {function(event:PointerEvent)} callback
+   * @param {function(PointerEvent)} callback
    * @return {ElementEventListenerConfig}
    */
   static cancel(callback) {
@@ -145,7 +158,7 @@ class PointerEventBuilder {
 
   /**
    *
-   * @param {function(event:PointerEvent)} callback
+   * @param {function(PointerEvent)} callback
    * @return {ElementEventListenerConfig}
    */
   static out(callback) {
@@ -157,7 +170,7 @@ class PointerEventBuilder {
 
   /**
    *
-   * @param {function(event:PointerEvent)} callback
+   * @param {function(PointerEvent)} callback
    * @return {ElementEventListenerConfig}
    */
   static leave(callback) {
@@ -173,7 +186,7 @@ class MouseEventBuilder {
 
   /**
    *
-   * @param {function(event:MouseEvent)} callback
+   * @param {function(MouseEvent)} callback
    * @return {ElementEventListenerConfig}
    */
   static click(callback) {
@@ -185,7 +198,7 @@ class MouseEventBuilder {
 
   /**
    *
-   * @param {function(event:MouseEvent)} callback
+   * @param {function(MouseEvent)} callback
    * @return {ElementEventListenerConfig}
    */
   static dblclick(callback) {
@@ -197,7 +210,7 @@ class MouseEventBuilder {
 
   /**
    *
-   * @param {function(event:MouseEvent)} callback
+   * @param {function(MouseEvent)} callback
    * @return {ElementEventListenerConfig}
    */
   static mouseup(callback) {
@@ -209,7 +222,7 @@ class MouseEventBuilder {
 
   /**
    *
-   * @param {function(event:MouseEvent)} callback
+   * @param {function(MouseEvent)} callback
    * @return {ElementEventListenerConfig}
    */
   static mousedown(callback) {
@@ -223,7 +236,7 @@ class MouseEventBuilder {
 class KeyboardEventBuilder {
   /**
    *
-   * @param {function(event:KeyboardEvent)} callback
+   * @param {function(KeyboardEvent)} callback
    * @return {ElementEventListenerConfig}
    */
   static keydown(callback) {
@@ -235,7 +248,7 @@ class KeyboardEventBuilder {
 
   /**
    *
-   * @param {function(event:KeyboardEvent)} callback
+   * @param {function(KeyboardEvent)} callback
    * @return {ElementEventListenerConfig}
    */
   static keypress(callback) {
@@ -247,7 +260,7 @@ class KeyboardEventBuilder {
 
   /**
    *
-   * @param {function(event:KeyboardEvent)} callback
+   * @param {function(KeyboardEvent)} callback
    * @return {ElementEventListenerConfig}
    */
   static keyup(callback) {
@@ -261,7 +274,7 @@ class KeyboardEventBuilder {
 class KeyKeyboardEventBuilder {
   /**
    *
-   * @param {function(event:KeyboardEvent): boolean }condition
+   * @param {function(KeyboardEvent): boolean }condition
    */
   constructor(condition) {
     assertType(
@@ -285,6 +298,7 @@ class KeyKeyboardEventBuilder {
       event => event.key === 'Enter'
     )
   }
+
   /**
    *
    * @return {KeyKeyboardEventBuilder}
@@ -307,7 +321,7 @@ class KeyKeyboardEventBuilder {
 
   /**
    *
-   * @param {function(event:KeyboardEvent)} callback
+   * @param {function(KeyboardEvent)} callback
    * @return {ElementEventListenerConfig}
    */
   static keydown(callback) {
@@ -319,7 +333,7 @@ class KeyKeyboardEventBuilder {
 
   /**
    *
-   * @param {function(event:KeyboardEvent)} callback
+   * @param {function(KeyboardEvent)} callback
    * @return {ElementEventListenerConfig}
    */
   static keypress(callback) {
@@ -331,7 +345,7 @@ class KeyKeyboardEventBuilder {
 
   /**
    *
-   * @param {function(event:KeyboardEvent)} callback
+   * @param {function(KeyboardEvent)} callback
    * @return {ElementEventListenerConfig}
    */
   static keyup(callback) {
@@ -343,8 +357,8 @@ class KeyKeyboardEventBuilder {
 
   /**
    *
-   * @param {function(event:KeyboardEvent)} callback
-   * @return {function(event:KeyboardEvent)}
+   * @param {function(KeyboardEvent)} callback
+   * @return {function(KeyboardEvent)}
    * @private
    */
   __buildCallback(callback) {
@@ -357,7 +371,7 @@ class KeyKeyboardEventBuilder {
 
   /**
    *
-   * @param {function(event:KeyboardEvent)} callback
+   * @param {function(KeyboardEvent)} callback
    * @return {ElementEventListenerConfig}
    */
   keydown(callback) {
@@ -369,7 +383,7 @@ class KeyKeyboardEventBuilder {
 
   /**
    *
-   * @param {function(event:KeyboardEvent)} callback
+   * @param {function(KeyboardEvent)} callback
    * @return {ElementEventListenerConfig}
    */
   keypress(callback) {
@@ -381,7 +395,7 @@ class KeyKeyboardEventBuilder {
 
   /**
    *
-   * @param {function(event:KeyboardEvent)} callback
+   * @param {function(KeyboardEvent)} callback
    * @return {ElementEventListenerConfig}
    */
   keyup(callback) {
@@ -395,7 +409,7 @@ class KeyKeyboardEventBuilder {
 class DragEventBuilder {
   /**
    *
-   * @param {function(event:DragEvent)} callback
+   * @param {function(DragEvent)} callback
    * @return {ElementEventListenerConfig}
    */
   static drag(callback) {
@@ -407,7 +421,7 @@ class DragEventBuilder {
 
   /**
    *
-   * @param {function(event:DragEvent)} callback
+   * @param {function(DragEvent)} callback
    * @return {ElementEventListenerConfig}
    */
   static dragend(callback) {
@@ -419,7 +433,7 @@ class DragEventBuilder {
 
   /**
    *
-   * @param {function(event:DragEvent)} callback
+   * @param {function(DragEvent)} callback
    * @return {ElementEventListenerConfig}
    */
   static dragenter(callback) {
@@ -431,7 +445,7 @@ class DragEventBuilder {
 
   /**
    *
-   * @param {function(event:DragEvent)} callback
+   * @param {function(DragEvent)} callback
    * @return {ElementEventListenerConfig}
    */
   static dragexit(callback) {
@@ -443,7 +457,7 @@ class DragEventBuilder {
 
   /**
    *
-   * @param {function(event:DragEvent)} callback
+   * @param {function(DragEvent)} callback
    * @return {ElementEventListenerConfig}
    */
   static dragleave(callback) {
@@ -455,7 +469,7 @@ class DragEventBuilder {
 
   /**
    *
-   * @param {function(event:DragEvent)} callback
+   * @param {function(DragEvent)} callback
    * @return {ElementEventListenerConfig}
    */
   static dragover(callback) {
@@ -467,7 +481,7 @@ class DragEventBuilder {
 
   /**
    *
-   * @param {function(event:DragEvent)} callback
+   * @param {function(DragEvent)} callback
    * @return {ElementEventListenerConfig}
    */
   static dragstart(callback) {
@@ -479,7 +493,7 @@ class DragEventBuilder {
 
   /**
    *
-   * @param {function(event:DragEvent)} callback
+   * @param {function(DragEvent)} callback
    * @return {ElementEventListenerConfig}
    */
   static drop(callback) {
@@ -493,7 +507,7 @@ class DragEventBuilder {
 class TouchEventBuilder {
   /**
    *
-   * @param {function(event:TouchEvent)} callback
+   * @param {function(TouchEvent)} callback
    * @return {ElementEventListenerConfig}
    */
   static touchstart(callback) {
@@ -505,7 +519,7 @@ class TouchEventBuilder {
 
   /**
    *
-   * @param {function(event:TouchEvent)} callback
+   * @param {function(TouchEvent)} callback
    * @return {ElementEventListenerConfig}
    */
   static touchend(callback) {
@@ -517,7 +531,7 @@ class TouchEventBuilder {
 
   /**
    *
-   * @param {function(event:TouchEvent)} callback
+   * @param {function(TouchEvent)} callback
    * @return {ElementEventListenerConfig}
    */
   static touchmove(callback) {
@@ -529,7 +543,7 @@ class TouchEventBuilder {
 
   /**
    *
-   * @param {function(event:TouchEvent)} callback
+   * @param {function(TouchEvent)} callback
    * @return {ElementEventListenerConfig}
    */
   static touchcancel(callback) {
@@ -543,7 +557,7 @@ class TouchEventBuilder {
 class ElementEventBuilder {
   /**
    *
-   * @param {function(event:Event)} callback
+   * @param {function(Event)} callback
    * @return {ElementEventListenerConfig}
    */
   static change(callback) {
@@ -555,7 +569,7 @@ class ElementEventBuilder {
 
   /**
    *
-   * @param {function(event:Event)} callback
+   * @param {function(Event)} callback
    * @return {ElementEventListenerConfig}
    */
   static scroll(callback) {
@@ -567,7 +581,7 @@ class ElementEventBuilder {
 
   /**
    *
-   * @param {function(event:Event)} callback
+   * @param {function(Event)} callback
    * @return {ElementEventListenerConfig}
    */
   static load(callback) {
@@ -576,9 +590,10 @@ class ElementEventBuilder {
       .callback(callback)
       .build()
   }
+
   /**
    *
-   * @param {function(event:InputEvent)} callback
+   * @param {function(InputEvent)} callback
    * @return {ElementEventListenerConfig}
    */
   static input(callback) {
@@ -592,7 +607,7 @@ class ElementEventBuilder {
 class FocusEventBuilder {
   /**
    *
-   * @param {function(event:FocusEvent)} callback
+   * @param {function(FocusEvent)} callback
    * @return {ElementEventListenerConfig}
    */
   static focus(callback) {
@@ -604,7 +619,7 @@ class FocusEventBuilder {
 
   /**
    *
-   * @param {function(event:FocusEvent)} callback
+   * @param {function(FocusEvent)} callback
    * @return {ElementEventListenerConfig}
    */
   static focusin(callback) {
@@ -616,7 +631,7 @@ class FocusEventBuilder {
 
   /**
    *
-   * @param {function(event:FocusEvent)} callback
+   * @param {function(FocusEvent)} callback
    * @return {ElementEventListenerConfig}
    */
   static focusout(callback) {
@@ -628,12 +643,150 @@ class FocusEventBuilder {
 
   /**
    *
-   * @param {function(event:FocusEvent)} callback
+   * @param {function(FocusEvent)} callback
    * @return {ElementEventListenerConfig}
    */
   static blur(callback) {
     return ElementEventListenerConfigBuilder
       .listen('blur')
+      .callback(callback)
+      .build()
+  }
+}
+
+class ClipboardEventBuilder {
+  /**
+   * @param {function(ClipboardEvent)} callback
+   * @return {ElementEventListenerConfig}
+   */
+  static copy(callback) {
+    return ElementEventListenerConfigBuilder
+      .listen('copy')
+      .callback(callback)
+      .build()
+  }
+
+  /**
+   * @param {function(ClipboardEvent)} callback
+   * @return {ElementEventListenerConfig}
+   */
+  static cut(callback) {
+    return ElementEventListenerConfigBuilder
+      .listen('cut')
+      .callback(callback)
+      .build()
+  }
+
+  /**
+   * @param {function(ClipboardEvent)} callback
+   * @return {ElementEventListenerConfig}
+   */
+  static paste(callback) {
+    return ElementEventListenerConfigBuilder
+      .listen('paste')
+      .callback(callback)
+      .build()
+  }
+}
+
+class CompositionEventBuilder {
+  /**
+   * @param {function(CompositionEvent)} callback
+   * @return {ElementEventListenerConfig}
+   */
+  static compositionend(callback) {
+    return ElementEventListenerConfigBuilder
+      .listen('compositionend')
+      .callback(callback)
+      .build()
+  }
+
+  /**
+   * @param {function(CompositionEvent)} callback
+   * @return {ElementEventListenerConfig}
+   */
+  static compositionstart(callback) {
+    return ElementEventListenerConfigBuilder
+      .listen('compositionstart')
+      .callback(callback)
+      .build()
+  }
+
+  /**
+   * @param {function(CompositionEvent)} callback
+   * @return {ElementEventListenerConfig}
+   */
+  static compositionupdate(callback) {
+    return ElementEventListenerConfigBuilder
+      .listen('compositionupdate')
+      .callback(callback)
+      .build()
+  }
+}
+
+class BaseEventBuilder {
+  /**
+   * @param {function(Event)} callback
+   * @return {ElementEventListenerConfig}
+   */
+  static cancel(callback) {
+    return ElementEventListenerConfigBuilder
+      .listen('cancel')
+      .callback(callback)
+      .build()
+  }
+
+  /**
+   * @param {function(Event)} callback
+   * @return {ElementEventListenerConfig}
+   */
+  static error(callback) {
+    return ElementEventListenerConfigBuilder
+      .listen('error')
+      .callback(callback)
+      .build()
+  }
+
+  /**
+   * @param {function(Event)} callback
+   * @return {ElementEventListenerConfig}
+   */
+  static scroll(callback) {
+    return ElementEventListenerConfigBuilder
+      .listen('scroll')
+      .callback(callback)
+      .build()
+  }
+
+  /**
+   * @param {function(Event)} callback
+   * @return {ElementEventListenerConfig}
+   */
+  static select(callback) {
+    return ElementEventListenerConfigBuilder
+      .listen('select')
+      .callback(callback)
+      .build()
+  }
+
+  /**
+   * @param {function(Event)} callback
+   * @return {ElementEventListenerConfig}
+   */
+  static wheel(callback) {
+    return ElementEventListenerConfigBuilder
+      .listen('wheel')
+      .callback(callback)
+      .build()
+  }
+
+  /**
+   * @param {function(Event)} callback
+   * @return {ElementEventListenerConfig}
+   */
+  static securitypolicyviolation(callback) {
+    return ElementEventListenerConfigBuilder
+      .listen('securitypolicyviolation')
       .callback(callback)
       .build()
   }

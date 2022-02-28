@@ -3,20 +3,14 @@ import {
   assertInstanceOf
 } from '@flexio-oss/js-commons-bundle/assert'
 import {Sequence} from '@flexio-oss/js-commons-bundle/js-helpers'
-import {ComponentContextMap} from '../Component/ComponentContextMap'
 import {ComponentContext} from '../Component/ComponentContext'
 import {WithID} from '../abstract/WithID'
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_HOTBALLOON_APPLICATION} from '../Types/HasTagClassNameInterface'
-import {LoggerInterface} from '@flexio-oss/js-commons-bundle/js-logger'
 import {ViewRenderConfig} from './ViewRenderConfig'
 import {ComponentContextBuilder} from './ComponentContextBuilder'
 import {ComponentsContextHandler} from '../Component/ComponentsContextHandler'
 import {HotballoonApplicationConfig} from './HotballoonApplicationConfig'
-
-const applicationLogOptions = {
-  color: 'magenta',
-  titleSize: 2
-}
+import {Logger} from "@flexio-oss/js-commons-bundle/hot-log";
 
 /**
  * @extends WithID
@@ -32,6 +26,10 @@ export class HotBalloonApplication extends WithID {
    * @type {Sequence}
    */
   #sequenceForId = new Sequence('hb_')
+  /**
+   * @type {Logger}
+   */
+  #logger = Logger.getLogger(this.constructor.name, 'HotBalloon.HotBalloonApplication')
 
   /**
    * @param {HotballoonApplicationConfig} config
@@ -47,12 +45,7 @@ export class HotBalloonApplication extends WithID {
       value: CLASS_TAG_NAME_HOTBALLOON_APPLICATION
     })
 
-    this.logger().log(
-      this.logger().builder().debug()
-        .pushLog('HotballoonApplication:init: ' + config.id())
-        .pushLog(this),
-      applicationLogOptions
-    )
+    this.#logger.info('HotBalloonApplication:init: ' + config.id(), this)
   }
 
   /**
@@ -73,12 +66,12 @@ export class HotBalloonApplication extends WithID {
    * @return {ComponentContext} componentContext
    * @param {?string} [name=null]
    */
-  addComponentContext(name=null) {
+  addComponentContext(name = null) {
     return this.#config.components().attach(
       new ComponentContextBuilder()
-      .application(this)
-      .name(name)
-      .build()
+        .application(this)
+        .name(name)
+        .build()
     )
   }
 
@@ -87,13 +80,6 @@ export class HotBalloonApplication extends WithID {
    */
   components() {
     return this.#config.components()
-  }
-
-  /**
-   * @return {LoggerInterface}
-   */
-  logger() {
-    return this.#config.logger()
   }
 
   /**
@@ -111,14 +97,7 @@ export class HotBalloonApplication extends WithID {
   }
 
   remove() {
-    this.logger().log(
-      this.logger().builder()
-        .debug()
-        .pushLog('HotballoonApplication:remove: ' + this.ID())
-        .pushLog(this),
-      applicationLogOptions
-    )
-
+    this.#logger.info('HotballoonApplication:remove: ' + this.ID())
     this.#config.components().remove()
   }
 }

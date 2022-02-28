@@ -8,11 +8,8 @@ import {StoresHandler} from '../Store/StoresHandler'
 import {ViewContainersHandler} from '../View/ViewContainersHandler'
 import {OrderedEventHandler} from '../Event/OrderedEventHandler'
 import {OrderedEventListenerConfigBuilder} from '@flexio-oss/js-commons-bundle/event-handler'
+import {Logger} from "@flexio-oss/js-commons-bundle/hot-log";
 
-const componentContextLogOptions = {
-  color: 'green',
-  titleSize: 2
-}
 const REMOVE = 'REMOVE'
 
 /**
@@ -48,7 +45,10 @@ export class ComponentContext extends WithID {
    * @type {OrderedEventHandler}
    */
   #eventHandler = new OrderedEventHandler()
-
+  /**
+   * @type {Logger}
+   */
+  #logger = Logger.getLogger(this.constructor.name, 'HotBalloon.ComponentContext')
 
   /**
    * @param {HotBalloonApplication} hotBalloonApplication
@@ -118,13 +118,6 @@ export class ComponentContext extends WithID {
   }
 
   /**
-   * @return {LoggerInterface}
-   */
-  logger() {
-    return this.APP().logger()
-  }
-
-  /**
    * @param {function} clb
    * @return {EventHandler}
    */
@@ -150,13 +143,7 @@ export class ComponentContext extends WithID {
 
     this.#eventHandler.dispatch(REMOVE, null)
 
-    this.logger().log(
-      this.logger().builder()
-        .info()
-        .pushLog('Remove : ' + this.ID())
-        .pushLog(this),
-      componentContextLogOptions
-    )
+    this.#logger.info('Remove : ' + this.ID())
   }
 
   /**
