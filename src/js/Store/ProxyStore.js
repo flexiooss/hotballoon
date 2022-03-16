@@ -105,7 +105,7 @@ export class ProxyStore extends StoreBase {
     /**
      * @type {TYPE}
      */
-    const state = this._mapper().call(null, payload.data(), this)
+    const state = this._mapper().call(null, payload.data(), this.state().data())
     if (this.#shouldUpdate) {
       this.set(state)
     }

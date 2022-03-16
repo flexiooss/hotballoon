@@ -11,7 +11,7 @@ export class ProxyStoreConfig extends StoreBaseConfig {
    * @param {TYPE} initialData
    * @param {StoreInterface<STORE_TYPE>} store
    * @param {StoreTypeConfig<TYPE, TYPE_BUILDER>} storeTypeConfig
-   * @param {function(state: STORE_TYPE, proxyStore:ProxyStore ):TYPE}  mapper
+   * @param {function(state: STORE_TYPE, proxyStore:?TYPE ):TYPE}  mapper
    * @param {StorageInterface<TYPE>} storage
    */
   constructor(id, initialData, store, storeTypeConfig, mapper, storage) {
