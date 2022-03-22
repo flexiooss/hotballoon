@@ -227,7 +227,7 @@ export class StoreBase extends WithID {
   }
 
   #stateUpdated() {
-    this.#logger.info('Store STORE_CHANGED : ' + this.ID(),this.state() )
+    this.#logger.info('Store STORE_CHANGED : ' + this.ID(), this.state())
 
     let currentState = this.state()
 
@@ -274,7 +274,9 @@ export class StoreBase extends WithID {
       OrderedEventListenerConfigBuilder
         .listen(this.changedEventName())
         .callback((payload) => {
-          callback(payload)
+          if (!this.#removed) {
+            callback(payload)
+          }
         })
         .priority(priority)
         .build()
@@ -328,6 +330,7 @@ export class StoreBase extends WithID {
   stopListenChanged(token) {
     this.#eventHandler.removeEventListener(this.changedEventName(), token)
   }
+
   /**
    * @param {(string|Symbol)} token
    */
@@ -340,7 +343,7 @@ export class StoreBase extends WithID {
     this.#removed = true
     this.#eventHandler.clear()
     this.#storage = this.#storage.set(this.ID(), null)
-    this.#logger.info('Store REMOVED : ' + this.ID() )
+    this.#logger.info('Store REMOVED : ' + this.ID())
   }
 
   /**
