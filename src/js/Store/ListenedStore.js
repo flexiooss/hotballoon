@@ -4,7 +4,7 @@ export class ListenedStore {
   /**
    * @type  {function()}
    */
-  #stopListenChangedClb
+  #stopListenClb
   /**
    * @type {string}
    */
@@ -15,7 +15,7 @@ export class ListenedStore {
    * @param {string} token
    */
   constructor(stopListenChangedClb, token) {
-    this.#stopListenChangedClb = TypeCheck.assertIsFunction(stopListenChangedClb)
+    this.#stopListenClb = TypeCheck.assertIsFunction(stopListenChangedClb)
     this.#token = TypeCheck.assertIsString(token)
   }
 
@@ -27,6 +27,6 @@ export class ListenedStore {
   }
 
   remove() {
-    this.#stopListenChangedClb.call(null)
+    this.#stopListenClb.call(null)
   }
 }

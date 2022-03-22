@@ -289,10 +289,50 @@ export class StoreBase extends WithID {
   }
 
   /**
+   * @param {function()} callback
+   * @param {number} [priority=100]
+   * @return {ListenedStore}
+   * @throws {RemovedException}
+   */
+  listenRemoved(callback, priority = 100) {
+    if (this.#removed) {
+      throw RemovedException.STORE(this._ID)
+    }
+    TypeCheck.assertIsFunction(callback)
+    TypeCheck.assertIsNumber(priority)
+
+    /**
+     * @type {string}
+     */
+    const token = this.#eventHandler.on(
+      OrderedEventListenerConfigBuilder
+        .listen(this.removedEventName())
+        .callback(() => {
+          callback()
+        })
+        .priority(priority)
+        .build()
+    )
+
+    return new ListenedStore(
+      () => {
+        this.stopListenRemoved(token)
+      },
+      token
+    )
+  }
+
+  /**
    * @param {(string|Symbol)} token
    */
   stopListenChanged(token) {
     this.#eventHandler.removeEventListener(this.changedEventName(), token)
+  }
+  /**
+   * @param {(string|Symbol)} token
+   */
+  stopListenRemoved(token) {
+    this.#eventHandler.removeEventListener(this.removedEventName(), token)
   }
 
   remove() {

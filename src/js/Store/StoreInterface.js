@@ -66,6 +66,22 @@ export class StoreInterface {
   }
 
   /**
+   * @param {function()} callback
+   * @param {number} priority
+   * @return {ListenedStore}
+   */
+  listenRemoved(callback, priority) {
+    NotOverrideException.FROM_INTERFACE('StoreInterface')
+  }
+
+  /**
+   * @param {(string|Symbol)} token
+   */
+  stopListenChanged(token) {
+    NotOverrideException.FROM_INTERFACE('StoreInterface')
+  }
+
+  /**
    * @returns {StoreState<TYPE>} state frozen
    */
   state() {
