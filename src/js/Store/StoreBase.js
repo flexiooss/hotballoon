@@ -243,6 +243,13 @@ export class StoreBase extends WithID {
   }
 
   /**
+   * @return {boolean}
+   */
+  isDispatching(){
+    return this.#eventHandler.isDispatching()
+  }
+
+  /**
    * @param {?function(state:StoreState<TYPE>)} clb
    * @return {this}
    */
