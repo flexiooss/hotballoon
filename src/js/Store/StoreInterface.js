@@ -77,7 +77,7 @@ export class StoreInterface {
   /**
    * @param {(string|Symbol)} token
    */
-  stopListenChanged(token) {
+  stopListenRemoved(token) {
     NotOverrideException.FROM_INTERFACE('StoreInterface')
   }
 

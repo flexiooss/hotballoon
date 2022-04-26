@@ -1,5 +1,4 @@
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_PUBLIC_STORE_HANDLER} from '../Types/HasTagClassNameInterface'
-import {assertType} from '@flexio-oss/js-commons-bundle/assert'
 import {TypeCheck} from '../Types/TypeCheck'
 
 /**
@@ -98,6 +97,44 @@ export class PublicStoreHandler {
    */
   stopListenChanged(token) {
     return this.#store.stopListenChanged(token)
+  }
+
+  /**
+   * @return {boolean}
+   */
+  isRemoving() {
+    return this.#store.isRemoving()
+  }
+
+  /**
+   * @return {string}
+   */
+  removedEventName() {
+    return this.#store.removedEventName()
+  }
+
+  /**
+   * @param {function()} callback
+   * @param {number} priority
+   * @return {ListenedStore}
+   */
+  listenRemoved(callback, priority) {
+    return this.#store.listenRemoved(callback, priority)
+  }
+
+  /**
+   * @param {(string|Symbol)} token
+   */
+  stopListenRemoved(token) {
+    this.#store.stopListenRemoved(token)
+  }
+
+  /**
+   * @param {String} event
+   * @param {String} token
+   */
+  unSubscribe(event, token) {
+    this.#store.unSubscribe(event, token)
   }
 
 }
