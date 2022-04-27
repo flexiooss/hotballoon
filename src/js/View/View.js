@@ -541,140 +541,147 @@ export class View extends ViewContainerBase {
    * @param {function(ElementDescription):ElementDescription} elementBuilder
    * @return {Element}
    */
-  __div__(elementBuilder) {
+  __DIV__(elementBuilder) {
     return this.html(elementBuilder.call(null, e('div')))
   }
   /**
    * @param {function(ElementDescription):ElementDescription} elementBuilder
    * @return {Element}
    */
-  __span__(elementBuilder) {
+  __SPAN__(elementBuilder) {
     return this.html(elementBuilder.call(null, e('div')))
   }
   /**
    * @param {function(ElementDescription):ElementDescription} elementBuilder
    * @return {Element}
    */
-  __p__(elementBuilder) {
+  __P__(elementBuilder) {
     return this.html(elementBuilder.call(null, e('p')))
   }
   /**
    * @param {function(ElementDescription):ElementDescription} elementBuilder
    * @return {Element}
    */
-  __header__(elementBuilder) {
+  __HEADER__(elementBuilder) {
     return this.html(elementBuilder.call(null, e('header')))
   }
   /**
    * @param {function(ElementDescription):ElementDescription} elementBuilder
    * @return {Element}
    */
-  __footer__(elementBuilder) {
+  __FOOTER__(elementBuilder) {
     return this.html(elementBuilder.call(null, e('footer')))
   }
   /**
    * @param {function(ElementDescription):ElementDescription} elementBuilder
    * @return {Element}
    */
-  __aside__(elementBuilder) {
+  __ASIDE__(elementBuilder) {
     return this.html(elementBuilder.call(null, e('aside')))
   }
   /**
    * @param {function(ElementDescription):ElementDescription} elementBuilder
    * @return {Element}
    */
-  __nav__(elementBuilder) {
+  __NAV__(elementBuilder) {
     return this.html(elementBuilder.call(null, e('nav')))
   }
   /**
    * @param {function(ElementDescription):ElementDescription} elementBuilder
    * @return {Element}
    */
-  __main__(elementBuilder) {
+  __MAIN__(elementBuilder) {
     return this.html(elementBuilder.call(null, e('main')))
   }
   /**
    * @param {function(ElementDescription):ElementDescription} elementBuilder
    * @return {Element}
    */
-  __section__(elementBuilder) {
+  __SECTION__(elementBuilder) {
     return this.html(elementBuilder.call(null, e('section')))
   }
   /**
    * @param {function(ElementDescription):ElementDescription} elementBuilder
    * @return {Element}
    */
-  __article__(elementBuilder) {
+  __ARTICLE__(elementBuilder) {
     return this.html(elementBuilder.call(null, e('article')))
   }
   /**
    * @param {function(ElementDescription):ElementDescription} elementBuilder
    * @return {Element}
    */
-  __ul__(elementBuilder) {
+  __UL__(elementBuilder) {
     return this.html(elementBuilder.call(null, e('ul')))
   }
   /**
    * @param {function(ElementDescription):ElementDescription} elementBuilder
    * @return {Element}
    */
-  __ol__(elementBuilder) {
+  __OL__(elementBuilder) {
     return this.html(elementBuilder.call(null, e('ol')))
   }
   /**
    * @param {function(ElementDescription):ElementDescription} elementBuilder
    * @return {Element}
    */
-  __li__(elementBuilder) {
+  __LI__(elementBuilder) {
     return this.html(elementBuilder.call(null, e('li')))
   }
   /**
    * @param {function(ElementDescription):ElementDescription} elementBuilder
    * @return {Element}
    */
-  __a__(elementBuilder) {
+  __A__(elementBuilder) {
     return this.html(elementBuilder.call(null, e('a')))
   }
   /**
    * @param {function(ElementDescription):ElementDescription} elementBuilder
    * @return {Element}
    */
-  __img__(elementBuilder) {
+  __IMG__(elementBuilder) {
     return this.html(elementBuilder.call(null, e('img')))
   }
   /**
    * @param {function(ElementDescription):ElementDescription} elementBuilder
    * @return {Element}
    */
-  __svg__(elementBuilder) {
+  __SVG__(elementBuilder) {
     return this.html(elementBuilder.call(null, e('svg')))
   }
   /**
    * @param {function(ElementDescription):ElementDescription} elementBuilder
    * @return {Element}
    */
-  __code__(elementBuilder) {
+  __CODE__(elementBuilder) {
     return this.html(elementBuilder.call(null, e('code')))
+  }
+  /**
+   * @param {function(ElementDescription):ElementDescription} elementBuilder
+   * @return {Element}
+   */
+  __PRE__(elementBuilder) {
+    return this.html(elementBuilder.call(null, e('pre')))
   }
    /**
    * @param {function(ElementDescription):ElementDescription} elementBuilder
    * @return {Element}
    */
-  __input__(elementBuilder) {
+  __INPUT__(elementBuilder) {
     return this.html(elementBuilder.call(null, e('input')))
   }
    /**
    * @param {function(ElementDescription):ElementDescription} elementBuilder
    * @return {Element}
    */
-  __button__(elementBuilder) {
+  __BUTTON__(elementBuilder) {
     return this.html(elementBuilder.call(null, e('button')))
   }
    /**
    * @param {function(ElementDescription):ElementDescription} elementBuilder
    * @return {Element}
    */
-  __iframe__(elementBuilder) {
+  __IFRAME__(elementBuilder) {
     return this.html(elementBuilder.call(null, e('iframe')))
   }
 }
