@@ -23,6 +23,7 @@ import {
 } from './ViewPublicEventHandler'
 import {RemovedException} from "../Exception/RemovedException";
 import {Logger} from "@flexio-oss/js-commons-bundle/hot-log";
+import {div, e} from "../HotballoonNodeElement/ElementDescription";
 
 
 export const ATTRIBUTE_NODEREF = '_hb_noderef'
@@ -534,5 +535,146 @@ export class View extends ViewContainerBase {
     this.unMount()
     this.#node = null
     return this
+  }
+
+  /**
+   * @param {function(ElementDescription):ElementDescription} elementBuilder
+   * @return {Element}
+   */
+  _div_(elementBuilder) {
+    return this.html(elementBuilder.call(null, e('div')))
+  }
+  /**
+   * @param {function(ElementDescription):ElementDescription} elementBuilder
+   * @return {Element}
+   */
+  _span_(elementBuilder) {
+    return this.html(elementBuilder.call(null, e('div')))
+  }
+  /**
+   * @param {function(ElementDescription):ElementDescription} elementBuilder
+   * @return {Element}
+   */
+  _p_(elementBuilder) {
+    return this.html(elementBuilder.call(null, e('p')))
+  }
+  /**
+   * @param {function(ElementDescription):ElementDescription} elementBuilder
+   * @return {Element}
+   */
+  _header_(elementBuilder) {
+    return this.html(elementBuilder.call(null, e('header')))
+  }
+  /**
+   * @param {function(ElementDescription):ElementDescription} elementBuilder
+   * @return {Element}
+   */
+  _footer_(elementBuilder) {
+    return this.html(elementBuilder.call(null, e('footer')))
+  }
+  /**
+   * @param {function(ElementDescription):ElementDescription} elementBuilder
+   * @return {Element}
+   */
+  _aside_(elementBuilder) {
+    return this.html(elementBuilder.call(null, e('aside')))
+  }
+  /**
+   * @param {function(ElementDescription):ElementDescription} elementBuilder
+   * @return {Element}
+   */
+  _nav_(elementBuilder) {
+    return this.html(elementBuilder.call(null, e('nav')))
+  }
+  /**
+   * @param {function(ElementDescription):ElementDescription} elementBuilder
+   * @return {Element}
+   */
+  _main_(elementBuilder) {
+    return this.html(elementBuilder.call(null, e('main')))
+  }
+  /**
+   * @param {function(ElementDescription):ElementDescription} elementBuilder
+   * @return {Element}
+   */
+  _section_(elementBuilder) {
+    return this.html(elementBuilder.call(null, e('section')))
+  }
+  /**
+   * @param {function(ElementDescription):ElementDescription} elementBuilder
+   * @return {Element}
+   */
+  _article_(elementBuilder) {
+    return this.html(elementBuilder.call(null, e('article')))
+  }
+  /**
+   * @param {function(ElementDescription):ElementDescription} elementBuilder
+   * @return {Element}
+   */
+  _ul_(elementBuilder) {
+    return this.html(elementBuilder.call(null, e('ul')))
+  }
+  /**
+   * @param {function(ElementDescription):ElementDescription} elementBuilder
+   * @return {Element}
+   */
+  _ol_(elementBuilder) {
+    return this.html(elementBuilder.call(null, e('ol')))
+  }
+  /**
+   * @param {function(ElementDescription):ElementDescription} elementBuilder
+   * @return {Element}
+   */
+  _li_(elementBuilder) {
+    return this.html(elementBuilder.call(null, e('li')))
+  }
+  /**
+   * @param {function(ElementDescription):ElementDescription} elementBuilder
+   * @return {Element}
+   */
+  _a_(elementBuilder) {
+    return this.html(elementBuilder.call(null, e('a')))
+  }
+  /**
+   * @param {function(ElementDescription):ElementDescription} elementBuilder
+   * @return {Element}
+   */
+  _img_(elementBuilder) {
+    return this.html(elementBuilder.call(null, e('img')))
+  }
+  /**
+   * @param {function(ElementDescription):ElementDescription} elementBuilder
+   * @return {Element}
+   */
+  _svg_(elementBuilder) {
+    return this.html(elementBuilder.call(null, e('svg')))
+  }
+  /**
+   * @param {function(ElementDescription):ElementDescription} elementBuilder
+   * @return {Element}
+   */
+  _code_(elementBuilder) {
+    return this.html(elementBuilder.call(null, e('code')))
+  }
+   /**
+   * @param {function(ElementDescription):ElementDescription} elementBuilder
+   * @return {Element}
+   */
+  _input_(elementBuilder) {
+    return this.html(elementBuilder.call(null, e('input')))
+  }
+   /**
+   * @param {function(ElementDescription):ElementDescription} elementBuilder
+   * @return {Element}
+   */
+  _button_(elementBuilder) {
+    return this.html(elementBuilder.call(null, e('button')))
+  }
+   /**
+   * @param {function(ElementDescription):ElementDescription} elementBuilder
+   * @return {Element}
+   */
+  _iframe_(elementBuilder) {
+    return this.html(elementBuilder.call(null, e('iframe')))
   }
 }

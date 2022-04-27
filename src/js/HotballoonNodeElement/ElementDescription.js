@@ -209,9 +209,7 @@ export class ElementDescription {
   }
 }
 
-
 /**
- *
  * @param {string} querySelector
  * @return {ElementDescription}
  */
