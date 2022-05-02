@@ -53,8 +53,8 @@ export class ProxyStore extends StoreBase {
       enumerable: true,
       value: CLASS_TAG_NAME_PROXYSTORE
     })
-
-    this.changeParentStore(this.#config.store())
+    this.#parentStore = TypeCheck.assertStoreBase(this.#config.store())
+    this.#subscribeToStore()
   }
 
   #subscribeToStore() {
