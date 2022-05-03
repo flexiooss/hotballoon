@@ -103,7 +103,7 @@ export class InMemoryStoreBuilder {
    * @private
    */
   #uniqName() {
-    return UID((isNull(this.#name) ? this.#type.name : this.#name) + '_')
+    return UID((isNull(this.#name) ? (isNull(this.#type) ? 'NULL' : this.#type.name) : this.#name) + '_')
   }
 
   /**
