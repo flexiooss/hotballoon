@@ -194,10 +194,10 @@ export class StoreBase extends WithID {
   }
 
   /**
-   * @param {TYPE} dataStore
+   * @param {?TYPE} dataStore
    * @throws {RemovedException}
    */
-  set(dataStore) {
+  set(dataStore = null) {
     if (this.#removed) {
       throw RemovedException.STORE(this._ID)
     }
@@ -245,7 +245,7 @@ export class StoreBase extends WithID {
   /**
    * @return {boolean}
    */
-  isDispatching(){
+  isDispatching() {
     return this.#eventHandler.isDispatching()
   }
 
