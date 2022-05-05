@@ -19,6 +19,12 @@ export class TestStore extends TestCase {
       .build()
   }
 
+  testStoreNull() {
+    this.store = new InMemoryStoreBuilder()
+      .build()
+    this.store.set()
+  }
+
   testReset() {
     this.store.set(new FakeValueObjectBuilder().a(0).b(0).build())
     assert.deepEqual(

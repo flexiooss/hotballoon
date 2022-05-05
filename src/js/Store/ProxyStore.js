@@ -1,7 +1,7 @@
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_PROXYSTORE} from '../Types/HasTagClassNameInterface'
 import {StoreBase} from './StoreBase'
 import {StoreBaseConfig} from './StoreBaseConfig'
-import {assertInstanceOf} from '@flexio-oss/js-commons-bundle/assert'
+import {assertInstanceOf, isNull} from '@flexio-oss/js-commons-bundle/assert'
 import {ProxyStoreConfig} from './ProxyStoreConfig'
 import {StoreState} from './StoreState'
 import {TypeCheck} from "../Types/TypeCheck";
@@ -53,8 +53,7 @@ export class ProxyStore extends StoreBase {
       enumerable: true,
       value: CLASS_TAG_NAME_PROXYSTORE
     })
-
-    this.#parentStore = this.#config.store()
+    this.#parentStore = TypeCheck.assertStoreBase(this.#config.store())
     this.#subscribeToStore()
   }
 
@@ -75,7 +74,9 @@ export class ProxyStore extends StoreBase {
     if (store.__type__() !== this.#parentStore.__type__()) {
       throw new TypeError('New parent store should have same type as previous : ' + this.#parentStore.__type__().toString())
     }
-    this.#listenedStore.remove()
+    if (!isNull(this.#listenedStore)) {
+      this.#listenedStore.remove()
+    }
     this.#parentStore = TypeCheck.assertStoreBase(store)
     this.#mapAndUpdate(this.#parentStore.state(), STORE_CHANGED)
     this.#subscribeToStore()

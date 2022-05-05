@@ -23,6 +23,7 @@ import {
 } from './ViewPublicEventHandler'
 import {RemovedException} from "../Exception/RemovedException";
 import {Logger} from "@flexio-oss/js-commons-bundle/hot-log";
+import {div, e} from "../HotballoonNodeElement/ElementDescription";
 
 
 export const ATTRIBUTE_NODEREF = '_hb_noderef'
@@ -534,5 +535,153 @@ export class View extends ViewContainerBase {
     this.unMount()
     this.#node = null
     return this
+  }
+
+  /**
+   * @param {function(ElementDescription):ElementDescription} elementBuilder
+   * @return {Element}
+   */
+  __DIV__(elementBuilder) {
+    return this.html(elementBuilder.call(null, e('div')))
+  }
+  /**
+   * @param {function(ElementDescription):ElementDescription} elementBuilder
+   * @return {Element}
+   */
+  __SPAN__(elementBuilder) {
+    return this.html(elementBuilder.call(null, e('div')))
+  }
+  /**
+   * @param {function(ElementDescription):ElementDescription} elementBuilder
+   * @return {Element}
+   */
+  __P__(elementBuilder) {
+    return this.html(elementBuilder.call(null, e('p')))
+  }
+  /**
+   * @param {function(ElementDescription):ElementDescription} elementBuilder
+   * @return {Element}
+   */
+  __HEADER__(elementBuilder) {
+    return this.html(elementBuilder.call(null, e('header')))
+  }
+  /**
+   * @param {function(ElementDescription):ElementDescription} elementBuilder
+   * @return {Element}
+   */
+  __FOOTER__(elementBuilder) {
+    return this.html(elementBuilder.call(null, e('footer')))
+  }
+  /**
+   * @param {function(ElementDescription):ElementDescription} elementBuilder
+   * @return {Element}
+   */
+  __ASIDE__(elementBuilder) {
+    return this.html(elementBuilder.call(null, e('aside')))
+  }
+  /**
+   * @param {function(ElementDescription):ElementDescription} elementBuilder
+   * @return {Element}
+   */
+  __NAV__(elementBuilder) {
+    return this.html(elementBuilder.call(null, e('nav')))
+  }
+  /**
+   * @param {function(ElementDescription):ElementDescription} elementBuilder
+   * @return {Element}
+   */
+  __MAIN__(elementBuilder) {
+    return this.html(elementBuilder.call(null, e('main')))
+  }
+  /**
+   * @param {function(ElementDescription):ElementDescription} elementBuilder
+   * @return {Element}
+   */
+  __SECTION__(elementBuilder) {
+    return this.html(elementBuilder.call(null, e('section')))
+  }
+  /**
+   * @param {function(ElementDescription):ElementDescription} elementBuilder
+   * @return {Element}
+   */
+  __ARTICLE__(elementBuilder) {
+    return this.html(elementBuilder.call(null, e('article')))
+  }
+  /**
+   * @param {function(ElementDescription):ElementDescription} elementBuilder
+   * @return {Element}
+   */
+  __UL__(elementBuilder) {
+    return this.html(elementBuilder.call(null, e('ul')))
+  }
+  /**
+   * @param {function(ElementDescription):ElementDescription} elementBuilder
+   * @return {Element}
+   */
+  __OL__(elementBuilder) {
+    return this.html(elementBuilder.call(null, e('ol')))
+  }
+  /**
+   * @param {function(ElementDescription):ElementDescription} elementBuilder
+   * @return {Element}
+   */
+  __LI__(elementBuilder) {
+    return this.html(elementBuilder.call(null, e('li')))
+  }
+  /**
+   * @param {function(ElementDescription):ElementDescription} elementBuilder
+   * @return {Element}
+   */
+  __A__(elementBuilder) {
+    return this.html(elementBuilder.call(null, e('a')))
+  }
+  /**
+   * @param {function(ElementDescription):ElementDescription} elementBuilder
+   * @return {Element}
+   */
+  __IMG__(elementBuilder) {
+    return this.html(elementBuilder.call(null, e('img')))
+  }
+  /**
+   * @param {function(ElementDescription):ElementDescription} elementBuilder
+   * @return {Element}
+   */
+  __SVG__(elementBuilder) {
+    return this.html(elementBuilder.call(null, e('svg')))
+  }
+  /**
+   * @param {function(ElementDescription):ElementDescription} elementBuilder
+   * @return {Element}
+   */
+  __CODE__(elementBuilder) {
+    return this.html(elementBuilder.call(null, e('code')))
+  }
+  /**
+   * @param {function(ElementDescription):ElementDescription} elementBuilder
+   * @return {Element}
+   */
+  __PRE__(elementBuilder) {
+    return this.html(elementBuilder.call(null, e('pre')))
+  }
+   /**
+   * @param {function(ElementDescription):ElementDescription} elementBuilder
+   * @return {Element}
+   */
+  __INPUT__(elementBuilder) {
+    return this.html(elementBuilder.call(null, e('input')))
+  }
+   /**
+   * @param {function(ElementDescription):ElementDescription} elementBuilder
+   * @return {Element}
+   */
+  __BUTTON__(elementBuilder) {
+    return this.html(elementBuilder.call(null, e('button')))
+  }
+   /**
+   * @param {function(ElementDescription):ElementDescription} elementBuilder
+   * @return {Element}
+   */
+  __IFRAME__(elementBuilder) {
+    return this.html(elementBuilder.call(null, e('iframe')))
   }
 }

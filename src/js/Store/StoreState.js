@@ -7,78 +7,76 @@ import {assertType, isNull} from '@flexio-oss/js-commons-bundle/assert'
  */
 export class StoreState {
   /**
-   *
+   * @type {string|Symbol}
+   */
+  #storeID
+  /**
+   * @type {TYPE}
+   */
+  #data
+  /**
+   * @type {Date}
+   */
+  #time
+  /**
+   * @type {?TYPE.}
+   */
+  #type
+
+  /**
    * @param {(string|Symbol)} storeID
-   * @param {TYPE.} type
+   * @param {?TYPE.} type
    * @param {TYPE} dataStore
    * @param {?Date} [time=null]
    * @return {unknown[]}
    */
   constructor(storeID, type, dataStore, time = null) {
+    this.#storeID = storeID
+    this.#data = dataStore
+
     time = time || new Date()
-    /**
-     * @type {string|Symbol}
-     * @private
-     */
-    this.__storeID = storeID
-    /**
-     * @type {TYPE}
-     * @private
-     */
-    this.__data = dataStore
     assertType(time instanceof Date, '`time` should be a `Date`')
-    /**
-     * @type {Date}
-     * @private
-     */
-    this.__time = time
-    /**
-     * @type {TYPE.}
-     * @private
-     */
-    this.__type = type
+    this.#time = time
+    this.#type = type
     return deepFreezeSeal(this)
   }
 
   /**
-   *
    * @return {(string|Symbol)}
    */
   storeID() {
-    return this.__storeID
+    return this.#storeID
   }
 
   /**
-   *
    * @return {TYPE}
    */
   data() {
-    return this.__data
+    return this.#data
   }
 
   /**
-   *
    * @return {Date}
    */
   time() {
-    return this.__time
+    return this.#time
   }
 
   /**
-   *
-   * @return {TYPE.}
-   * @private
+   * @return {?TYPE.}
    */
   __type__() {
-    return this.__type
+    return this.#type
   }
 
   /**
-   *
    * @param {Class} constructor
    * @return {boolean}
    */
   isTypeOf(constructor) {
+    if (isNull(this.__type__())) {
+      return isNull(constructor)
+    }
     return constructor === this.__type__()
   }
 
@@ -87,8 +85,8 @@ export class StoreState {
    */
   toJSON() {
     return {
-      time: this.__time,
-      data: this.__data
+      time: this.#time,
+      data: this.#data
     }
   }
 
@@ -98,36 +96,30 @@ export class StoreState {
  * @template TYPE
  */
 export class StoreStateBuilder {
-  constructor() {
 
-    /**
-     * @type {?string}
-     * @private
-     */
-    this.__storeID = null
-    /**
-     * @type {?Class<TYPE>}
-     * @private
-     */
-    this.__type = null
-    /**
-     * @type {?TYPE}
-     * @private
-     */
-    this.__data = null
-    /**
-     * @type {?Date}
-     * @private
-     */
-    this.__time = null
-  }
+  /**
+   * @type {?string}
+   */
+  #storeID = null
+  /**
+   * @type {?TYPE.}
+   */
+  #type = null
+  /**
+   * @type {?TYPE}
+   */
+  #data = null
+  /**
+   * @type {?Date}
+   */
+  #time = null
 
   /**
    * @param {string} value
    * @return {StoreStateBuilder}
    */
   storeID(value) {
-    this.__storeID = value
+    this.#storeID = value
     return this
   }
 
@@ -136,7 +128,7 @@ export class StoreStateBuilder {
    * @return {StoreStateBuilder}
    */
   data(value) {
-    this.__data = value
+    this.#data = value
     return this
   }
 
@@ -145,7 +137,7 @@ export class StoreStateBuilder {
    * @return {StoreStateBuilder}
    */
   type(value) {
-    this.__type = value
+    this.#type = value
     return this
   }
 
@@ -154,7 +146,7 @@ export class StoreStateBuilder {
    * @return {StoreStateBuilder}
    */
   time(value) {
-    this.__time = value
+    this.#time = value
     return this
   }
 
@@ -184,10 +176,10 @@ export class StoreStateBuilder {
 
   build() {
     return new StoreState(
-      this.__storeID,
-      this.__type,
-      this.__data,
-      this.__time
+      this.#storeID,
+      this.#type,
+      this.#data,
+      this.#time
     )
   }
 }

@@ -1,4 +1,4 @@
-import {assertInstanceOf, TypeCheck} from '@flexio-oss/js-commons-bundle/assert'
+import {assertInstanceOf, isNull, TypeCheck} from '@flexio-oss/js-commons-bundle/assert'
 import {deepFreezeSeal} from '@flexio-oss/js-commons-bundle/js-generator-helpers'
 import {StoreState} from '../StoreState'
 import {StorageInterface} from './StorageInterface'
@@ -16,19 +16,19 @@ export class InMemoryStorage extends StorageInterface {
    */
   #state
   /**
-   * @type {TYPE.}
+   * @type {?TYPE.}
    */
   #type
 
   /**
    * @constructor
-   * @param {TYPE.} type
+   * @param {?TYPE.} type
    * @param {StoreState<TYPE>} state
    */
   constructor(type, state) {
     super()
     this.#state = assertInstanceOf(state, StoreState, 'StoreState')
-    this.#type = TypeCheck.assertIsClass(type)
+    this.#type = TypeCheck.assertIsClassOrNull(type)
     deepFreezeSeal(this)
   }
 
@@ -53,7 +53,7 @@ export class InMemoryStorage extends StorageInterface {
   }
 
   /**
-   * @return {TYPE.}
+   * @return {?TYPE.}
    */
   __type__() {
     return this.#type
@@ -64,6 +64,9 @@ export class InMemoryStorage extends StorageInterface {
    * @return {boolean}
    */
   isTypeOf(constructor) {
+    if (isNull(this.__type__())) {
+      return isNull(constructor)
+    }
     return constructor === this.__type__()
   }
 }

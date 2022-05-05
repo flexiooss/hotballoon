@@ -12,7 +12,7 @@ import {StoreStateBuilder} from '../StoreState'
  */
 export class JsStorageImplStorage extends StorageInterface {
   /**
-   * @type {TYPE.}
+   * @type {?TYPE.}
    */
   #type
   /**
@@ -30,14 +30,14 @@ export class JsStorageImplStorage extends StorageInterface {
 
   /**
    * @constructor
-   * @param {TYPE.} type
+   * @param {?TYPE.} type
    * @param {string} storeID
    * @param {Storage} storage
    * @param {string} key
    */
   constructor(type, storeID, storage, key) {
     super()
-    this.#type = TypeCheck.assertIsClass(type)
+    this.#type = TypeCheck.assertIsClassOrNull(type)
     this.#key = TypeCheck.assertIsString(key)
     this.#storeID = TypeCheck.assertIsString(storeID)
     this.#storage = storage
@@ -53,7 +53,7 @@ export class JsStorageImplStorage extends StorageInterface {
 
   /**
    * @param {(string|Symbol)} storeID
-   * @param {TYPE} data
+   * @param {?TYPE} data
    * @return {StorageInterface}
    */
   set(storeID, data) {
@@ -89,6 +89,9 @@ export class JsStorageImplStorage extends StorageInterface {
    * @return {boolean}
    */
   isTypeOf(constructor) {
+    if (isNull(this.__type__())) {
+      return isNull(constructor)
+    }
     return constructor === this.__type__()
   }
 }
