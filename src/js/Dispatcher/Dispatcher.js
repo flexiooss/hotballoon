@@ -46,8 +46,8 @@ export class Dispatcher extends EventHandlerBase {
       const execution = this.currentExecution()
 
       if (!isNull(execution)) {
-        if (!execution.isHandled(listenerToken)) {
-          this._invokeCallback(execution, listenerToken, execution.listeners().get(listenerToken).callback)
+        if (!execution.isHandled(listenerToken) && execution.listeners().get(listenerToken).active()) {
+          this._invokeCallback(execution, listenerToken, execution.listeners().get(listenerToken).callback())
         }
       }
     }

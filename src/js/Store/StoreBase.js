@@ -290,9 +290,8 @@ export class StoreBase extends WithID {
     )
 
     return new ListenedStore(
-      () => {
-        this.stopListenChanged(token)
-      },
+      this.#eventHandler,
+      this.changedEventName(),
       token
     )
   }
@@ -324,9 +323,8 @@ export class StoreBase extends WithID {
     )
 
     return new ListenedStore(
-      () => {
-        this.stopListenRemoved(token)
-      },
+      this.#eventHandler,
+      this.removedEventName(),
       token
     )
   }
