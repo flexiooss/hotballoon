@@ -1,8 +1,21 @@
-import {assertType, isFunction, isObject} from '@flexio-oss/js-commons-bundle/assert'
+import {assertType, isEmpty, isFunction, isObject, TypeCheck} from '@flexio-oss/js-commons-bundle/assert'
 import { mergeWithoutPrototype} from '@flexio-oss/js-commons-bundle/js-type-helpers'
 import {deepFreezeSeal} from '@flexio-oss/js-commons-bundle/js-generator-helpers'
 
 export class EventListenerConfig {
+  /**
+   * @type {String}
+   */
+  events
+  /**
+   * @type {Function}
+   */
+  callback
+  /**
+   * @params {capture: boolean, once: boolean, passive: boolean}
+   */
+  options
+
   /**
    *
    * @param {String} event
@@ -14,22 +27,13 @@ export class EventListenerConfig {
     assertType(!!event,
       'EventListenerConfig:constructor: ̀`events` property assert be not empty'
     )
-    assertType(isFunction(callback),
-      'EventListenerConfig:constructor: ̀`callback` property assert be Callable'
-    )
-    assertType(isObject(options),
-      'EventListenerConfig:constructor: ̀`options` property assert be an Object or null'
-    )
     this.events = event
-    this.callback = callback
-    /**
-     * @params {capture: boolean, once: boolean, passive: boolean}
-     */
+    this.callback = TypeCheck.assertIsFunction(callback)
     this.options = mergeWithoutPrototype({
       capture: false,
       once: false,
       passive: false
-    }, options)
+    }, TypeCheck.assertIsObject(options))
   }
 
   /**

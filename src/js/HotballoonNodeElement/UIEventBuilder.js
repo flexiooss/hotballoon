@@ -1,7 +1,15 @@
 import {ElementEventListenerConfigBuilder} from './ElementEventListenerConfigBuilder'
 import {assertType, isFunction} from '@flexio-oss/js-commons-bundle/assert'
+import {CustomEventHandler} from "../../../flexio-nodes-reconciliation";
 
 export class UIEventBuilder {
+
+  /**
+   * @return {CustomEventBuilder.}
+   */
+  static customEvent() {
+    return CustomEventBuilder
+  }
 
   /**
    * @return {PointerEventBuilder.}
@@ -82,10 +90,44 @@ export class UIEventBuilder {
 
 }
 
+class CustomEventBuilder {
+  /**
+   * @param {function(Event)} callback
+   * @return {ElementEventListenerConfig}
+   */
+  static doubleTap(callback) {
+    return ElementEventListenerConfigBuilder
+      .listen(CustomEventHandler.DOUBLE_TAP)
+      .callback(callback)
+      .build()
+  }
+
+  /**
+   * @param {function(Event)} callback
+   * @return {ElementEventListenerConfig}
+   */
+  static tap(callback) {
+    return ElementEventListenerConfigBuilder
+      .listen(CustomEventHandler.TAP)
+      .callback(callback)
+      .build()
+  }
+
+  /**
+   * @param {function(Event)} callback
+   * @return {ElementEventListenerConfig}
+   */
+  static hold(callback) {
+    return ElementEventListenerConfigBuilder
+      .listen(CustomEventHandler.HOLD)
+      .callback(callback)
+      .build()
+  }
+
+}
 class PointerEventBuilder {
 
   /**
-   *
    * @param {function(PointerEvent)} callback
    * @return {ElementEventListenerConfig}
    */

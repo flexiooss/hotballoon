@@ -1,6 +1,7 @@
 import {ReconciliationAttributeHandler} from './ReconciliationAttributeHandler'
 import {KEY_EVENT_WRAPPER} from './constantes'
 import {getNextSequence} from './sequence'
+import {CustomEventHandler} from "./CustomEventHandler";
 
 /**
  * @extends ReconciliationAttributeHandler
@@ -45,7 +46,7 @@ export class ListenerAttributeHandler extends ReconciliationAttributeHandler {
   }
 
   /**
-   * @param {EventListenerConfig} nodeEventListenerConfig of events
+   * @param {EventListenerConfig} nodeEventListenerConfig
    * @return {string}
    */
   on(nodeEventListenerConfig) {
@@ -54,16 +55,17 @@ export class ListenerAttributeHandler extends ReconciliationAttributeHandler {
       nodeEventListenerConfig.callback,
       nodeEventListenerConfig.options
     )
-    return this._addEventListener(nodeEventListenerConfig)
+    return this.#addEventListener(nodeEventListenerConfig)
   }
 
+
   /**
-   *
    * @param {EventListenerConfig} nodeEventListenerConfig
    * @return {string}
    * @private
    */
-  _addEventListener(nodeEventListenerConfig) {
+  #addEventListener(nodeEventListenerConfig) {
+    this.#handleCustomEvent(nodeEventListenerConfig)
     if (!(this.eventListeners().has(nodeEventListenerConfig.events))) {
       this.eventListeners().set(nodeEventListenerConfig.events, this._initEventListenerType())
     }
@@ -76,6 +78,17 @@ export class ListenerAttributeHandler extends ReconciliationAttributeHandler {
   }
 
   /**
+   * @param {EventListenerConfig} nodeEventListenerConfig
+   * @return {ListenerAttributeHandler}
+   */
+  #handleCustomEvent(nodeEventListenerConfig) {
+    if (CustomEventHandler.isCustomEvent(nodeEventListenerConfig.events)) {
+      CustomEventHandler.ensureHandler(this.element).enable(nodeEventListenerConfig.events)
+    }
+    return this
+  }
+
+  /**
    * @function off
    * @description remove from shallow copy params listened
    * @param {String} event of events
@@ -85,7 +98,7 @@ export class ListenerAttributeHandler extends ReconciliationAttributeHandler {
   off(event, token) {
     if (this._hasEventKey(event, token)) {
       const nodeEventListenerConfig = this.eventListeners().get(event).get(token)
-      this._elementRemoveListener(nodeEventListenerConfig)
+      this.#elementRemoveListener(nodeEventListenerConfig)
       this._removeEventListenerByKey(event, token)
     }
   }
@@ -95,7 +108,16 @@ export class ListenerAttributeHandler extends ReconciliationAttributeHandler {
    * @param {EventListenerConfig} nodeEventListenerConfig
    * @private
    */
-  _elementRemoveListener(nodeEventListenerConfig) {
+  #elementRemoveListener(nodeEventListenerConfig) {
+    if (CustomEventHandler.isCustomEvent(nodeEventListenerConfig.events) && CustomEventHandler.hasHandler(this.element)) {
+      /**
+       * @type {CustomEventHandler}
+       */
+      const handler = CustomEventHandler.getHandler(this.element).disable(nodeEventListenerConfig.events)
+      if (handler.isEmpty()) {
+        handler.remove()
+      }
+    }
     this.element.removeEventListener(nodeEventListenerConfig.events, nodeEventListenerConfig.callback, nodeEventListenerConfig.options)
   }
 
@@ -106,7 +128,7 @@ export class ListenerAttributeHandler extends ReconciliationAttributeHandler {
     if (this.eventListeners().size) {
       this.eventListeners().forEach((value, key, map) => {
         value.forEach((v, k, m) => {
-          this._elementRemoveListener(v)
+          this.#elementRemoveListener(v)
         })
       })
     }
