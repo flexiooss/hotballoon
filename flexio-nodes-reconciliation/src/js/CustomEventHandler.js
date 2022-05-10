@@ -1,5 +1,6 @@
 import {isNull, TypeCheck} from "@flexio-oss/js-commons-bundle/assert";
 import {getParentNode} from "@flexio-oss/js-commons-bundle/js-type-helpers";
+import {UID} from "@flexio-oss/js-commons-bundle/js-helpers";
 
 /**
  * @type {symbol}
@@ -16,8 +17,8 @@ const pointerdownExe = function () {
     this._timerHold = setTimeout(
       () => {
         // console.log('hold::' + this._timerHold)
-        // console.log(this)
-        if (!isNull(this._timerHold) && !this._up) {
+        console.log(this)
+        if (!isNull(this._timerHold) && !this._up && !isNull(this._start)) {
           this._dispatchEvent(CustomEventHandler.HOLD)
         }
         this._start = null
@@ -61,7 +62,11 @@ export class CustomEventHandler {
   static TAP = 'HB_TAP'
   static HOLD = 'HB_HOLD'
   static DOUBLE_TAP = 'HB_DOUBLE_TAP'
-
+  /**
+   * @type {string}
+   * @private
+   */
+  _id = UID()
   /**
    * @type {HTMLElement}
    */
@@ -157,7 +162,7 @@ export class CustomEventHandler {
    * @private
    */
   _pointerdown(event) {
-    // console.log('down')
+    console.log('down')
     let handler = null
     if (CustomEventHandler.hasHandler(event.target)) {
       handler = CustomEventHandler.getHandler(event.target)
@@ -171,7 +176,7 @@ export class CustomEventHandler {
       }
     }
     if (!isNull(handler)) {
-      pointerdownExe.call(event.target[__CustomEventHandler__])
+      pointerdownExe.call(handler)
     }
   }
 
@@ -180,7 +185,7 @@ export class CustomEventHandler {
    * @private
    */
   _pointerup(event) {
-    // console.log('up')
+    console.log('up')
     let handler = null
     if (CustomEventHandler.hasHandler(event.target)) {
       handler = CustomEventHandler.getHandler(event.target)
@@ -194,7 +199,7 @@ export class CustomEventHandler {
       }
     }
     if (!isNull(handler)) {
-      pointerupExe.call(event.target[__CustomEventHandler__])
+      pointerupExe.call(handler)
     }
   }
 
