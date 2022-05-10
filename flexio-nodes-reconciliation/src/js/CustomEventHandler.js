@@ -176,7 +176,10 @@ export class CustomEventHandler {
    * @private
    */
   _pointerdown(event) {
-    let handler = CustomEventHandler.findParentHandler(event.target);
+    /**
+     * @type {?CustomEventHandler}
+     */
+    const handler = CustomEventHandler.findParentHandler(event.target);
     if (!isNull(handler)) {
       pointerdownExe.call(handler)
     }
@@ -187,6 +190,9 @@ export class CustomEventHandler {
    * @private
    */
   _pointerup(event) {
+    /**
+     * @type {?CustomEventHandler}
+     */
     const handler = CustomEventHandler.findParentHandler(event.target)
     if (!isNull(handler)) {
       pointerupExe.call(handler)
