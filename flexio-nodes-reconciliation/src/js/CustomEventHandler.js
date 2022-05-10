@@ -8,8 +8,9 @@ import {UID} from "@flexio-oss/js-commons-bundle/js-helpers";
 const __CustomEventHandler__ = Symbol('__CustomEventHandler__')
 /**
  * @type {function}
+ * @param {PointerEvent} event
  */
-const pointerdownExe = function () {
+const pointerdownExe = function (event) {
   this._up = false
   this._clearHoldInterval()
   this._start = new Date()
@@ -17,7 +18,7 @@ const pointerdownExe = function () {
     this._timerHold = setTimeout(
       () => {
         if (isNull(this._timerHold) || this._up || isNull(this._start)) return
-        this._dispatchEvent(CustomEventHandler.HOLD)
+        this._dispatchEvent(CustomEventHandler.HOLD, event)
         this._start = null
       },
       this._holdThreshold
@@ -26,8 +27,9 @@ const pointerdownExe = function () {
 }
 /**
  * @type {function}
+ * @param {PointerEvent} event
  */
-const pointerupExe = function () {
+const pointerupExe = function (event) {
   this._up = true
   /**
    * @type {Date}
@@ -37,15 +39,15 @@ const pointerupExe = function () {
 
   if (this._doubleTap && ((now - this._end) < this._doubleThreshold)) {
     this._clearTapInterval()
-    this._dispatchEvent(CustomEventHandler.DOUBLE_TAP)
+    this._dispatchEvent(CustomEventHandler.DOUBLE_TAP, event)
   } else if (this._tap && !isNull(this._start) && isNull(this._timer)) {
     if (this._doubleTap) {
       this._timer = setTimeout(() => {
-        this._dispatchEvent(CustomEventHandler.TAP)
+        this._dispatchEvent(CustomEventHandler.TAP, event)
         this._clearTapInterval()
       }, this._doubleThreshold)
     } else {
-      this._dispatchEvent(CustomEventHandler.TAP)
+      this._dispatchEvent(CustomEventHandler.TAP, event)
     }
 
     this._end = now
@@ -181,7 +183,7 @@ export class CustomEventHandler {
      */
     const handler = CustomEventHandler.findParentHandler(event.target);
     if (!isNull(handler)) {
-      pointerdownExe.call(handler)
+      pointerdownExe.call(handler, event)
     }
   }
 
@@ -195,7 +197,7 @@ export class CustomEventHandler {
      */
     const handler = CustomEventHandler.findParentHandler(event.target)
     if (!isNull(handler)) {
-      pointerupExe.call(handler)
+      pointerupExe.call(handler, event)
     }
   }
 
@@ -307,10 +309,11 @@ export class CustomEventHandler {
 
   /**
    * @param {string} event
+   * @param {PointerEvent} event
    * @return {CustomEventHandler}
    */
-  _dispatchEvent(event) {
-    this._element.dispatchEvent(new Event(event))
+  _dispatchEvent(eventName, event) {
+    this._element.dispatchEvent(new CustomEvent(eventName, {detail: {source: event.target}}))
     return this
   }
 

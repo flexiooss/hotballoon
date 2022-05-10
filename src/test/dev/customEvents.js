@@ -45,8 +45,13 @@ class ViewDemo extends View {
             })
           )
           .listenEvent(UIEventBuilder.customEvent().tap(event => {
-              console.log('TAP', event)
+              console.log('TAP', event.detail.source)
             })
+          )
+          .childNodes(
+            this.__DIV__(e => e.text('inside 1 ').styles({padding: '2rem', background: 'cyan'})),
+            this.__DIV__(e => e.text('inside 2 ').styles({padding: '2rem', background: 'blue'}),
+            )
           )
         ),
         this.__DIV__(e => e.text('HOLD ' + this.#increment).styles({padding: '2rem'})

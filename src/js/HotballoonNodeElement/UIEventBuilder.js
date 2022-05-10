@@ -92,7 +92,7 @@ export class UIEventBuilder {
 
 class CustomEventBuilder {
   /**
-   * @param {function(Event)} callback
+   * @param {function(CustomEvent)} callback
    * @return {ElementEventListenerConfig}
    */
   static doubleTap(callback) {
@@ -103,7 +103,7 @@ class CustomEventBuilder {
   }
 
   /**
-   * @param {function(Event)} callback
+   * @param {function(CustomEvent)} callback
    * @return {ElementEventListenerConfig}
    */
   static tap(callback) {
@@ -114,7 +114,7 @@ class CustomEventBuilder {
   }
 
   /**
-   * @param {function(Event)} callback
+   * @param {function(CustomEvent)} callback
    * @return {ElementEventListenerConfig}
    */
   static hold(callback) {
