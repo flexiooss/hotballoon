@@ -1,4 +1,5 @@
 import {isNull, TypeCheck} from "@flexio-oss/js-commons-bundle/assert";
+import {getParentNode} from "@flexio-oss/js-commons-bundle/js-type-helpers";
 
 /**
  * @type {symbol}
@@ -157,7 +158,21 @@ export class CustomEventHandler {
    */
   _pointerdown(event) {
     // console.log('down')
-    pointerdownExe.call(event.target[__CustomEventHandler__])
+    let handler = null
+    if (CustomEventHandler.hasHandler(event.target)) {
+      handler = CustomEventHandler.getHandler(event.target)
+    } else {
+      /**
+       * @type {?HTMLElement}
+       */
+      const el = getParentNode(event.target, el => CustomEventHandler.hasHandler(el))
+      if (!isNull(el)) {
+        handler = CustomEventHandler.getHandler(el)
+      }
+    }
+    if (!isNull(handler)) {
+      pointerdownExe.call(event.target[__CustomEventHandler__])
+    }
   }
 
   /**
@@ -166,7 +181,21 @@ export class CustomEventHandler {
    */
   _pointerup(event) {
     // console.log('up')
-    pointerupExe.call(event.target[__CustomEventHandler__])
+    let handler = null
+    if (CustomEventHandler.hasHandler(event.target)) {
+      handler = CustomEventHandler.getHandler(event.target)
+    } else {
+      /**
+       * @type {?HTMLElement}
+       */
+      const el = getParentNode(event.target, el => CustomEventHandler.hasHandler(el))
+      if (!isNull(el)) {
+        handler = CustomEventHandler.getHandler(el)
+      }
+    }
+    if (!isNull(handler)) {
+      pointerupExe.call(event.target[__CustomEventHandler__])
+    }
   }
 
   /**
