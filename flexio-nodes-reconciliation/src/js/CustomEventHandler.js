@@ -1,9 +1,60 @@
+import {isNull, TypeCheck} from "@flexio-oss/js-commons-bundle/assert";
+
 /**
  * @type {symbol}
  */
-import {isNull, TypeCheck} from "@flexio-oss/js-commons-bundle/assert";
-
 const __CustomEventHandler__ = Symbol('__CustomEventHandler__')
+/**
+ * @type {function}
+ */
+const pointerdownExe = function () {
+  this._up = false
+  this._clearHoldInterval()
+  this._start = new Date()
+  if (this._hold) {
+    this._timerHold = setTimeout(
+      () => {
+        // console.log('hold::' + this._timerHold)
+        // console.log(this)
+        if (!isNull(this._timerHold) && !this._up) {
+          this._dispatchEvent(CustomEventHandler.HOLD)
+        }
+        this._start = null
+      },
+      this._holdThreshold
+    )
+  }
+}
+/**
+ * @type {function}
+ */
+const pointerupExe = function () {
+  this._up = true
+  /**
+   * @type {Date}
+   */
+  const now = new Date()
+  this._clearHoldInterval()
+  if (this._doubleTap && ((now - this._end) < this._doubleThreshold)) {
+    this._clearTapInterval()
+    this._dispatchEvent(CustomEventHandler.DOUBLE_TAP)
+  } else if (this._tap && !isNull(this._start) && isNull(this._timer)) {
+    if (this._doubleTap) {
+      this._timer = setTimeout(() => {
+        this._start = null
+        this._dispatchEvent(CustomEventHandler.TAP)
+      }, this._doubleThreshold)
+      this._end = now
+    } else {
+      this._start = null
+      this._dispatchEvent(CustomEventHandler.TAP)
+    }
+  }
+  // if (isNull(this._start)) {
+  //   this._start = now
+  // }
+
+}
 
 export class CustomEventHandler {
   static TAP = 'HB_TAP'
@@ -14,6 +65,10 @@ export class CustomEventHandler {
    * @type {HTMLElement}
    */
   _element
+  /**
+   * @type {boolean}
+   */
+  _up = false
   /**
    * @type {boolean}
    */
@@ -33,7 +88,7 @@ export class CustomEventHandler {
   /**
    * @type {number}
    */
-  _doubleThreshold = 220
+  _doubleThreshold = 300
   /**
    * @type {?Date}
    */
@@ -101,30 +156,8 @@ export class CustomEventHandler {
    * @private
    */
   _pointerdown(event) {
-    const exe = function () {
-      clearInterval(this._timerHold)
-      this._start = new Date()
-      if (this._hold) {
-        this._timerHold = setTimeout(
-          () => {
-            // console.log('hold::' + this._timerHold)
-            if (!isNull(this._timerHold)) {
-              this._dispatchEvent(CustomEventHandler.HOLD)
-            }
-            this._start = null
-          },
-          this._holdThreshold
-        )
-      }
-    }
-    exe.call(event.target[__CustomEventHandler__])
-  }
-
-  _clearIntervals(){
-    clearInterval(this._timer)
-    clearInterval(this._timerHold)
-    this._timer = null
-    this._timerHold = null
+    // console.log('down')
+    pointerdownExe.call(event.target[__CustomEventHandler__])
   }
 
   /**
@@ -132,36 +165,30 @@ export class CustomEventHandler {
    * @private
    */
   _pointerup(event) {
-    const exe = function () {
-      /**
-       * @type {Date}
-       */
-      const now = new Date()
-      // console.log((this._start))
-      // console.log(((now - this._start)))
-      if (this._hold && ((now - this._start) < this._holdThreshold) || isNull(this._start)) {
-        clearInterval(this._timerHold)
-        this._timerHold = null
-      }
-      if (this._doubleTap && ((now - this._end) < this._doubleThreshold)) {
-        this._clearIntervals()
-        this._dispatchEvent(CustomEventHandler.DOUBLE_TAP)
-      } else if (this._tap && !isNull(this._start)) {
-        this._clearIntervals()
-        if (this._doubleTap) {
-          this._timer = setTimeout(() => {
-            this._dispatchEvent(CustomEventHandler.TAP)
-          }, this._doubleThreshold)
-        } else {
-          this._dispatchEvent(CustomEventHandler.TAP)
-        }
-      }
-      if (isNull(this._start)) {
-        this._start = now
-      }
-      this._end = now
-    }
-    exe.call(event.target[__CustomEventHandler__])
+    // console.log('up')
+    pointerupExe.call(event.target[__CustomEventHandler__])
+  }
+
+  /**
+   * @return {CustomEventHandler}
+   * @private
+   */
+  _clearTapInterval() {
+    clearInterval(this._timer)
+    this._timer = null
+    return this
+  }
+
+  /**
+   * @return {CustomEventHandler}
+   * @private
+   */
+  _clearHoldInterval() {
+    clearInterval(this._timerHold)
+    this._timerHold = null
+    // console.log('_clearHoldInterval')
+    // console.log(this)
+    return this
   }
 
   /**

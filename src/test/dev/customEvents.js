@@ -25,7 +25,7 @@ class ViewDemo extends View {
           .styles({'background-color': 'blue'})
           .text(`8:: tutu`)
         ),
-        this.__DIV__(e => e.text('HOLD TAP DOUBLE_TAP').styles({padding: '2rem'})
+        this.__DIV__(e => e.text('HOLD TAP DOUBLE_TAP ' + this.#increment).styles({padding: '2rem'})
           .listenEvent(UIEventBuilder.customEvent().hold(event => {
               console.log('HOLD', event)
             })
@@ -39,7 +39,7 @@ class ViewDemo extends View {
             })
           )
         ),
-        this.__DIV__(e => e.text('HOLD TAP').styles({padding: '2rem'})
+        this.__DIV__(e => e.text('HOLD TAP ' + this.#increment).styles({padding: '2rem'})
           .listenEvent(UIEventBuilder.customEvent().hold(event => {
               console.log('HOLD', event)
             })
@@ -49,7 +49,7 @@ class ViewDemo extends View {
             })
           )
         ),
-        this.__DIV__(e => e.text('HOLD').styles({padding: '2rem'})
+        this.__DIV__(e => e.text('HOLD ' + this.#increment).styles({padding: '2rem'})
           .listenEvent(UIEventBuilder.customEvent().hold(event => {
               console.log('HOLD', event)
             })
