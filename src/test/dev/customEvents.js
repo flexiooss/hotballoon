@@ -97,6 +97,6 @@ const viewDemo = new ViewDemo(viewContainer)
 
 viewContainer.renderAndMount()
 
-setInterval(() => {
-  viewDemo.updateNode()
-}, 1000)
+// setInterval(() => {
+//   viewDemo.updateNode()
+// }, 1000)

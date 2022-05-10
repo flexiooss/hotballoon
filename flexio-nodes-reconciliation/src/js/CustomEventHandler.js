@@ -16,11 +16,8 @@ const pointerdownExe = function () {
   if (this._hold) {
     this._timerHold = setTimeout(
       () => {
-        // console.log('hold::' + this._timerHold)
-        console.log(this)
-        if (!isNull(this._timerHold) && !this._up && !isNull(this._start)) {
-          this._dispatchEvent(CustomEventHandler.HOLD)
-        }
+        if (isNull(this._timerHold) || this._up || isNull(this._start)) return
+        this._dispatchEvent(CustomEventHandler.HOLD)
         this._start = null
       },
       this._holdThreshold
@@ -37,25 +34,22 @@ const pointerupExe = function () {
    */
   const now = new Date()
   this._clearHoldInterval()
+
   if (this._doubleTap && ((now - this._end) < this._doubleThreshold)) {
     this._clearTapInterval()
     this._dispatchEvent(CustomEventHandler.DOUBLE_TAP)
   } else if (this._tap && !isNull(this._start) && isNull(this._timer)) {
     if (this._doubleTap) {
       this._timer = setTimeout(() => {
-        this._start = null
         this._dispatchEvent(CustomEventHandler.TAP)
+        this._clearTapInterval()
       }, this._doubleThreshold)
-      this._end = now
     } else {
-      this._start = null
       this._dispatchEvent(CustomEventHandler.TAP)
     }
-  }
-  // if (isNull(this._start)) {
-  //   this._start = now
-  // }
 
+    this._end = now
+  }
 }
 
 export class CustomEventHandler {
@@ -90,7 +84,7 @@ export class CustomEventHandler {
   /**
    * @type {number}
    */
-  _holdThreshold = 900
+  _holdThreshold = 800
   /**
    * @type {number}
    */
@@ -158,23 +152,31 @@ export class CustomEventHandler {
   }
 
   /**
-   * @param {PointerEvent} event
-   * @private
+   * @param {HTMLElement}  element
+   * @return {?CustomEventHandler}
    */
-  _pointerdown(event) {
-    console.log('down')
+  static findParentHandler(element) {
     let handler = null
-    if (CustomEventHandler.hasHandler(event.target)) {
-      handler = CustomEventHandler.getHandler(event.target)
+    if (CustomEventHandler.hasHandler(element)) {
+      handler = CustomEventHandler.getHandler(element)
     } else {
       /**
        * @type {?HTMLElement}
        */
-      const el = getParentNode(event.target, el => CustomEventHandler.hasHandler(el))
+      const el = getParentNode(element, el => CustomEventHandler.hasHandler(el))
       if (!isNull(el)) {
         handler = CustomEventHandler.getHandler(el)
       }
     }
+    return handler;
+  }
+
+  /**
+   * @param {PointerEvent} event
+   * @private
+   */
+  _pointerdown(event) {
+    let handler = CustomEventHandler.findParentHandler(event.target);
     if (!isNull(handler)) {
       pointerdownExe.call(handler)
     }
@@ -185,19 +187,7 @@ export class CustomEventHandler {
    * @private
    */
   _pointerup(event) {
-    console.log('up')
-    let handler = null
-    if (CustomEventHandler.hasHandler(event.target)) {
-      handler = CustomEventHandler.getHandler(event.target)
-    } else {
-      /**
-       * @type {?HTMLElement}
-       */
-      const el = getParentNode(event.target, el => CustomEventHandler.hasHandler(el))
-      if (!isNull(el)) {
-        handler = CustomEventHandler.getHandler(el)
-      }
-    }
+    const handler = CustomEventHandler.findParentHandler(event.target)
     if (!isNull(handler)) {
       pointerupExe.call(handler)
     }
@@ -220,8 +210,6 @@ export class CustomEventHandler {
   _clearHoldInterval() {
     clearInterval(this._timerHold)
     this._timerHold = null
-    // console.log('_clearHoldInterval')
-    // console.log(this)
     return this
   }
 
