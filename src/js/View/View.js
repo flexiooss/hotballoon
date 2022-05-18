@@ -1,7 +1,7 @@
 import {Checksum, UID} from '@flexio-oss/js-commons-bundle/js-helpers'
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_VIEW} from '../Types/HasTagClassNameInterface'
 import {
-  assertType,
+  assertType, formatType, isNode,
   isNull, NotOverrideException,
 } from '@flexio-oss/js-commons-bundle/assert'
 import {symbolToString} from '@flexio-oss/js-commons-bundle/js-type-helpers'
@@ -113,7 +113,7 @@ export class View extends ViewContainerBase {
     /**
      * @type {?Element}
      */
-    const template = this.template()
+    const template = this.buildTemplate()
     return !isNull(template) ? template.outerHTML : null
   }
 
@@ -154,7 +154,7 @@ export class View extends ViewContainerBase {
       /**
        * @type {?Element}
        */
-      const candidate = this.template()
+      const candidate = this.buildTemplate()
 
       if (isNull(candidate) || isNull(this.node())) {
         this.#replaceNode()
@@ -441,8 +441,24 @@ export class View extends ViewContainerBase {
    * @return {?Element} node
    */
   #replaceNode() {
-    this.#node = this.template()
+    this.#node = this.buildTemplate()
     return this.#node
+  }
+
+  /**
+   * @return {?Element}
+   * @throws {TypeError}
+   */
+  buildTemplate(){
+    /**
+     * @type {?Element}
+     */
+    const template =this.template()
+    assertType(
+      isNull(template) || isNode(template),
+      ()=>`View[${this.constructor.name}]:template() bad return type, should be ?Element given:${formatType(template)}`
+    )
+    return template
   }
 
   /**
