@@ -2,14 +2,14 @@ import {Checksum, UID} from '@flexio-oss/js-commons-bundle/js-helpers'
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_VIEW} from '../Types/HasTagClassNameInterface'
 import {
   assertType, formatType, isNode,
-  isNull, NotOverrideException,
+  isNull, NotOverrideException,  TypeCheck
 } from '@flexio-oss/js-commons-bundle/assert'
 import {symbolToString} from '@flexio-oss/js-commons-bundle/js-type-helpers'
 import {$} from '../HotballoonNodeElement/HotBalloonAttributeHandler'
 import {startReconcile} from '../HotballoonNodeElement/HotballoonElementReconciliation'
 import {html} from '../HotballoonNodeElement/CreateHotBalloonElement'
 import {ViewContainerBase} from './ViewContainerBase'
-import {TypeCheck} from '../Types/TypeCheck'
+import {TypeCheck as HBTypeCheck} from '../Types/TypeCheck'
 import {
   VIEW_MOUNT,
   VIEW_MOUNTED,
@@ -23,7 +23,7 @@ import {
 } from './ViewPublicEventHandler'
 import {RemovedException} from "../Exception/RemovedException";
 import {Logger} from "@flexio-oss/js-commons-bundle/hot-log";
-import {div, e} from "../HotballoonNodeElement/ElementDescription";
+import { e} from "../HotballoonNodeElement/ElementDescription";
 
 
 export const ATTRIBUTE_NODEREF = '_hb_noderef'
@@ -78,7 +78,7 @@ export class View extends ViewContainerBase {
    * @param {ViewContainerBase} container
    */
   constructor(container) {
-    assertType(TypeCheck.isViewContainerBase(container), '`container` should be ViewContainerBase')
+    assertType(HBTypeCheck.isViewContainerBase(container), '`container` should be ViewContainerBase')
     super(UID('View__' + container.constructor.name + '_'))
 
     this.#container = container
@@ -561,7 +561,7 @@ export class View extends ViewContainerBase {
   #buildElement(elementBuilder, elementDesc) {
     return isNull(elementBuilder)
       ? this.html(elementDesc)
-      : this.html(elementBuilder.call(null, this.html(elementDesc)))
+      : this.html(TypeCheck.assertIsArrowFunction(elementBuilder).call(null, this.html(elementDesc)))
   }
 
   /**
