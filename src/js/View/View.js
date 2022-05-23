@@ -561,7 +561,7 @@ export class View extends ViewContainerBase {
   #buildElement(elementBuilder, elementDesc) {
     return isNull(elementBuilder)
       ? this.html(elementDesc)
-      : this.html(TypeCheck.assertIsArrowFunction(elementBuilder).call(null, this.html(elementDesc)))
+      : this.html(TypeCheck.assertIsArrowFunction(elementBuilder).call(null, elementDesc))
   }
 
   /**
