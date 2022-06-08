@@ -1,8 +1,20 @@
-export class RemovedException extends Error {
-  constructor(message = '', ...params) {
-    super(...params)
-    this.message = 'RemovedException::'+message+' already removed '
-    this.name = this.constructor.name
+import {HBException} from "./HBException";
+
+export class RemovedException extends HBException {
+  /**
+   * @param {?string|function():string} [message=null]
+   * @param {?number} [code=null]
+   * @param params
+   */
+  constructor(message = null, code = null, ...params) {
+    super(message + ' already removed', code, ...params)
+  }
+
+  /**
+   * @return {string}
+   */
+  realName() {
+    return 'RemovedException';
   }
 
   /**
@@ -12,6 +24,7 @@ export class RemovedException extends Error {
   static COMPONENT(id) {
     return new RemovedException(`Component: ${id}`)
   }
+
   /**
    * @param {string} id
    * @return {RemovedException}
@@ -19,6 +32,7 @@ export class RemovedException extends Error {
   static STORE(id) {
     return new RemovedException(`Store: ${id}`)
   }
+
   /**
    * @param {string} id
    * @return {RemovedException}
@@ -26,6 +40,7 @@ export class RemovedException extends Error {
   static ACTION(id) {
     return new RemovedException(`Action: ${id}`)
   }
+
   /**
    * @param {string} id
    * @return {RemovedException}
@@ -33,15 +48,12 @@ export class RemovedException extends Error {
   static VIEW_CONTAINER(id) {
     return new RemovedException(`ViewContainer: ${id}`)
   }
+
   /**
    * @param {string} id
    * @return {RemovedException}
    */
   static VIEW(id) {
     return new RemovedException(`ViewContainer: ${id}`)
-  }
-
-  toString() {
-    return `RemovedException --- ${this.message} `
   }
 }

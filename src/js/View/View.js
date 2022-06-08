@@ -2,7 +2,7 @@ import {Checksum, UID} from '@flexio-oss/js-commons-bundle/js-helpers'
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_VIEW} from '../Types/HasTagClassNameInterface'
 import {
   assertType, formatType, isNode,
-  isNull, NotOverrideException,  TypeCheck
+  isNull, NotOverrideException, TypeCheck
 } from '@flexio-oss/js-commons-bundle/assert'
 import {symbolToString} from '@flexio-oss/js-commons-bundle/js-type-helpers'
 import {$} from '../HotballoonNodeElement/HotBalloonAttributeHandler'
@@ -23,8 +23,8 @@ import {
 } from './ViewPublicEventHandler'
 import {RemovedException} from "../Exception/RemovedException";
 import {Logger} from "@flexio-oss/js-commons-bundle/hot-log";
-import { e} from "../HotballoonNodeElement/ElementDescription";
-
+import {e} from "../HotballoonNodeElement/ElementDescription";
+import {DOMError} from '../Exception/DOMError'
 
 export const ATTRIBUTE_NODEREF = '_hb_noderef'
 
@@ -438,7 +438,7 @@ export class View extends ViewContainerBase {
   }
 
   /**
-   * @return {?Element} node
+   * @return {?Element}
    */
   #replaceNode() {
     this.#node = this.buildTemplate()
@@ -447,13 +447,18 @@ export class View extends ViewContainerBase {
 
   /**
    * @return {?Element}
-   * @throws {TypeError}
+   * @throws {TypeError, DOMError}
    */
   buildTemplate() {
     /**
      * @type {?Element}
      */
-    const template = this.template()
+    let template = null
+    try {
+      template = this.template()
+    } catch (e) {
+      throw new DOMError(e.toString)
+    }
     assertType(
       isNull(template) || isNode(template),
       () => `View[${this.constructor.name}]:template() bad return type, should be ?Element given:${formatType(template)}`

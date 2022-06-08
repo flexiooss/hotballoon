@@ -1,10 +1,10 @@
 import {HBException} from "./HBException";
 
-export class ValidationError extends HBException {
+export class DOMError extends HBException {
   /**
    * @return {string}
    */
   realName() {
-    return 'ValidationError';
+    return 'DOMError';
   }
 }
