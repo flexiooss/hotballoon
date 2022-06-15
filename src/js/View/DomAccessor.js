@@ -127,11 +127,11 @@ export class AsyncDomAccessor extends DomAccessor {
     try {
       this.#logger.debug('FLUSHING READS:'+this.#reads.length)
       if (this.#runTasks(this.#reads, start)) {
-      this.#logger.debug('FLUSHING WRITES:'+this.#writes.length)
+        this.#logger.debug('FLUSHING WRITES:'+this.#writes.length)
         this.#runTasks(this.#writes, start)
       }
     } catch (e) {
-     const error = new DOMError(e.toString)
+      const error = new DOMError(e.toString())
       this.#logger.error('UNEXPECTED FLUSHING ERROR', error)
     }
 

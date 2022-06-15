@@ -457,7 +457,7 @@ export class View extends ViewContainerBase {
     try {
       template = this.template()
     } catch (e) {
-      throw new DOMError(e.toString)
+      throw new DOMError(e.toString())
     }
     assertType(
       isNull(template) || isNode(template),
