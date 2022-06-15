@@ -194,6 +194,7 @@ export class CustomEventHandler {
      */
     const handler = CustomEventHandler.findParentHandler(event.target);
     if (!isNull(handler)) {
+      event.stopPropagation()
       pointerdownExe.call(handler, event)
     }
   }
@@ -208,6 +209,7 @@ export class CustomEventHandler {
      */
     const handler = CustomEventHandler.findParentHandler(event.target)
     if (!isNull(handler)) {
+      event.stopPropagation()
       pointerupExe.call(handler, event)
     }
   }
