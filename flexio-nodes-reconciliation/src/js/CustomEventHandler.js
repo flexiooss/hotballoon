@@ -65,46 +65,57 @@ export class CustomEventHandler {
   _id = UID()
   /**
    * @type {HTMLElement}
+   * @private
    */
   _element
   /**
    * @type {boolean}
+   * @private
    */
   _up = false
   /**
    * @type {boolean}
+   * @private
    */
   _tap = false
   /**
    * @type {boolean}
+   * @private
    */
   _hold = false
   /**
    * @type {boolean}
+   * @private
    */
   _doubleTap = false
   /**
    * @type {number}
+   * @private
    */
   _holdThreshold = 800
   /**
    * @type {number}
+   * @private
    */
   _doubleThreshold = 300
   /**
    * @type {?Date}
+   * @private
    */
   _start = null
   /**
    * @type {?Date}
+   * @private
    */
   _end = null
   /**
    * @type {?number}
+   * @private
    */
   _timerHold = null
   /**
    * @type {?number}
+   * @private
    */
   _timer = null
 
