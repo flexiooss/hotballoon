@@ -35,17 +35,17 @@ export class TestTypeCheck extends TestCase {
       .initialData(new FakeValueObject())
       .build()
 
-    assert(TypeCheck.isStoreBase(store))
+    assert.ok(TypeCheck.isStoreBase(store))
 
     /**
      *
      * @type {PublicStoreHandler<FakeValueObject, FakeValueObjectBuilder>}
      */
     const publicStoreHandler = new PublicStoreHandler(store)
-    assert(TypeCheck.isStoreBase(publicStoreHandler))
+    assert.ok(TypeCheck.isPublicStoreHandler(publicStoreHandler))
+    assert.doesNotThrow(() => TypeCheck.assertIsPublicStoreHandler(publicStoreHandler))
 
     /**
-     *
      * @type {ProxyStore<FakeValueObject, FakeValueObject, FakeValueObjectBuilder>}
      */
     const proxyStore = new ProxyStoreBuilder()
@@ -55,7 +55,9 @@ export class TestTypeCheck extends TestCase {
         (data) => FakeValueObjectBuilder.from(data).build())
       .build()
 
-    assert(TypeCheck.isStoreBase(proxyStore))
+    assert.ok(TypeCheck.isStoreBase(proxyStore))
+    assert.ok(TypeCheck.isProxyStore(proxyStore))
+    assert.doesNotThrow(() => TypeCheck.assertIsProxyStore(proxyStore))
 
     /**
      *
@@ -67,28 +69,32 @@ export class TestTypeCheck extends TestCase {
       .mapper(
         (data) => FakeValueObjectBuilder.from(data).build())
       .build()
-    assert(TypeCheck.isStoreBase(proxyStoreFromPublic))
+    assert.ok(TypeCheck.isStoreBase(proxyStoreFromPublic))
+    assert.ok(TypeCheck.isProxyStore(proxyStoreFromPublic))
   }
 
   testIsHotballoonApplication() {
-    assert(TypeCheck.isHotballoonApplication(this.app()))
+    assert.ok(TypeCheck.isHotballoonApplication(this.app()))
+    assert.doesNotThrow(() => TypeCheck.assertIsHotBalloonApplication(this.app()))
   }
 
   testIsComponentContext() {
     const componentContext = this.app().addComponentContext()
-    assert(TypeCheck.isComponentContext(componentContext))
+    assert.ok(TypeCheck.isComponentContext(componentContext))
+    assert.doesNotThrow(() => TypeCheck.assertIsComponentContext(componentContext))
   }
 
   testIsDispatcher() {
     const dispatcher = new Dispatcher()
-    assert(TypeCheck.isDispatcher(dispatcher))
+    assert.ok(TypeCheck.isDispatcher(dispatcher))
+    assert.doesNotThrow(() => TypeCheck.assertIsDispatcher(dispatcher))
   }
 
   testIsExecutor() {
     let executor = new ExecutorInline()
-    assert(TypeCheck.isExecutor(executor))
+    assert.ok(TypeCheck.isExecutor(executor))
     executor = new ExecutorWorker()
-    assert(TypeCheck.isExecutor(executor))
+    assert.ok(TypeCheck.isExecutor(executor))
   }
 
   testIsActionDispatcher() {
@@ -101,7 +107,21 @@ export class TestTypeCheck extends TestCase {
       .dispatcher(new Dispatcher())
       .build()
 
-    assert(TypeCheck.isActionDispatcher(action))
+    assert.ok(TypeCheck.isActionDispatcher(action))
+    assert.doesNotThrow(() => TypeCheck.assertIsActionDispatcher(action))
+  }
+
+  testIsActionDispatcherTypeof() {
+    /**
+     *
+     * @type {ActionDispatcher<FakeValueObject, FakeValueObjectBuilder>}
+     */
+    const action = new ActionDispatcherBuilder()
+      .type(FakeValueObject)
+      .dispatcher(new Dispatcher())
+      .build()
+
+    assert.doesNotThrow(() => TypeCheck.assertIsActionDispatcher(action, FakeValueObject, 'FakeValueObject'))
   }
 
   testIsViewContainer() {
@@ -113,8 +133,8 @@ export class TestTypeCheck extends TestCase {
         , 'id', {nodeType: 2}
       )
     )
-    assert(TypeCheck.isViewContainer(viewContainer))
-    assert(TypeCheck.isViewContainerBase(viewContainer))
+    assert.ok(TypeCheck.isViewContainer(viewContainer))
+    assert.ok(TypeCheck.isViewContainerBase(viewContainer))
   }
 
   tesIsView() {
@@ -125,8 +145,9 @@ export class TestTypeCheck extends TestCase {
         )
       )
     )
-    assert(TypeCheck.isView(view))
-    assert(TypeCheck.isViewContainerBase(view))
+    assert.ok(TypeCheck.isView(view))
+    assert.ok(TypeCheck.isViewContainerBase(view))
+    assert.doesNotThrow(() => TypeCheck.assertIsView(view))
   }
 }
 
