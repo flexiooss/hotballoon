@@ -52,9 +52,10 @@ export class StoreInterface {
   /**
    * @param {function(state: StoreState<TYPE>)} callback
    * @param {number} priority
+   * @param {?function(state: StoreState<TYPE>)} [guard=null]
    * @return {ListenedStore}
    */
-  listenChanged(callback, priority) {
+  listenChanged(callback, priority, guard=null) {
     NotOverrideException.FROM_INTERFACE('StoreInterface')
   }
 
@@ -68,9 +69,10 @@ export class StoreInterface {
   /**
    * @param {function()} callback
    * @param {number} priority
+   * @param {?function(state: StoreState<TYPE>)} [guard=null]
    * @return {ListenedStore}
    */
-  listenRemoved(callback, priority) {
+  listenRemoved(callback, priority, guard=null) {
     NotOverrideException.FROM_INTERFACE('StoreInterface')
   }
 

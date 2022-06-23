@@ -66,9 +66,10 @@ export class ActionSubscriber extends WithID {
 
   /**
    * @param {function(payload: ?TYPE, type: (string|Symbol))} callback
+   * @param {?function(payload: ?TYPE):boolean} [guard=null]
    * @returns {ListenedAction}
    */
-  listen(callback) {
+  listen(callback, guard =null) {
     if (this.isRemoved()) {
       throw RemovedException.ACTION(this._ID)
     }
@@ -81,6 +82,7 @@ export class ActionSubscriber extends WithID {
           EventListenerConfigBuilder
             .listen(this.ID())
             .callback(callback)
+            .guard(guard)
             .build()
         )
 

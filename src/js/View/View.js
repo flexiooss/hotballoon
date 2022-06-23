@@ -130,21 +130,27 @@ export class View extends ViewContainerBase {
    * @description subscribe subView an events of this fieldView
    * @param {StoreInterface<STORE_TYPE,STORE_TYPE_BUILDER>} store
    * @param {function(data:StoreState<STORE_TYPE>):boolean} clb
+   * @param {?function(data:StoreState<STORE_TYPE>)} [guard=null]
    * @return {ListenedStore}
    * @throws {RemovedException}
    */
-  subscribeToStore(store, clb = (state) => true) {
+  subscribeToStore(store, clb = (state) => true, guard = null) {
     if (this.isRemoved()) {
       throw RemovedException.VIEW_CONTAINER(this._ID)
     }
-    return this.stores().listen(store, (payload, type) => {
-      if (!this.isRemoved()) {
-        if (clb.call(null, payload) === true) {
-          this.dispatch(VIEW_STORE_CHANGED, payload)
-          this.updateNode()
+
+    return this.stores().listen(
+      store,
+      (payload, type) => {
+        if (!this.isRemoved()) {
+          if (clb.call(null, payload) === true) {
+            this.dispatch(VIEW_STORE_CHANGED, payload)
+            this.updateNode()
+          }
         }
-      }
-    })
+      }, 100,
+      guard
+    )
   }
 
   #update() {

@@ -54,9 +54,10 @@ export class ViewContainer extends ViewContainerBase {
    * @description subscribe subView an events of this fieldView
    * @param {StoreInterface} store
    * @param {ViewContainer~storeChanged} clb
+   * @param {?function(data:StoreState<STORE_TYPE>)} [guard=null]
    * @return {ListenedStore}
    */
-  subscribeToStore(store, clb = (state) => true) {
+  subscribeToStore(store, clb = (state) => true,guard=null) {
     if(this.isRemoved()){
       throw RemovedException.VIEW_CONTAINER(this._ID)
     }
@@ -64,7 +65,7 @@ export class ViewContainer extends ViewContainerBase {
       if (!this.isRemoved()) {
         clb.call(null, payload.data())
       }
-    })
+    },100,guard)
   }
 
   /**
