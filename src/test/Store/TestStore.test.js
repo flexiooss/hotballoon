@@ -100,7 +100,7 @@ export class TestStore extends TestCase {
       assert.equal(count, 1, 'should be dispatched once')
     })
 
-    this.store.onceOnUpdated((state)=>{
+    this.store.onceOnUpdated((state) => {
 
       this.store.set(
         new FakeValueObjectBuilder()
@@ -113,9 +113,50 @@ export class TestStore extends TestCase {
         .a(2)
         .b(0)
         .build())
-
-
   }
+
+  testListenWithGuard() {
+    let a = 0
+
+    /**
+     * @type {ListenedStore}
+     */
+    const storeHandler = this.store.listenChanged((state) => {
+        console.log('CHANGED')
+        a = state.data().a()
+      },
+      100,
+      payload => payload.data().a() % 2 === 0
+    )
+
+    const t_1 = new FakeValueObjectBuilder()
+      .a(1)
+      .b(0)
+      .build()
+
+    this.store.set(t_1)
+
+    assert.equal(a, 0, 'storeListener should not be triggered')
+
+    const t_2 = new FakeValueObjectBuilder()
+      .a(2)
+      .b(0)
+      .build()
+
+    this.store.set(t_2)
+
+    assert.equal(a, t_2.a(), 'storeListener should be triggered')
+
+    const t_3 = new FakeValueObjectBuilder()
+      .a(3)
+      .b(0)
+      .build()
+
+    this.store.set(t_3)
+
+    assert.equal(a, t_2.a(), 'storeListener should not be triggered')
+  }
+
 }
 
 
