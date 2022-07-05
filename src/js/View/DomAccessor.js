@@ -132,6 +132,7 @@ export class AsyncDomAccessor extends DomAccessor {
       }
     } catch (e) {
       const error = new DOMError(e.toString())
+      error.stack = e.stack
       this.#logger.error('UNEXPECTED FLUSHING ERROR', error)
     }
 

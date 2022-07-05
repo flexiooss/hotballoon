@@ -463,7 +463,7 @@ export class View extends ViewContainerBase {
     try {
       template = this.template()
     } catch (e) {
-      throw new DOMError(e.toString())
+      throw new DOMError(JSON.stringify(e.stack))
     }
     assertType(
       isNull(template) || isNode(template),
