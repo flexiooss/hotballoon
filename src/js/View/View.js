@@ -79,7 +79,7 @@ export class View extends ViewContainerBase {
    */
   constructor(container) {
     assertType(HBTypeCheck.isViewContainerBase(container), '`container` should be ViewContainerBase')
-    super(UID('View__' + container.constructor.name + '_'))
+    super(UID('View__' + (container.constructor.name).replace(/\W*/ig, '') + '_'))
 
     this.#container = container
     this.parentNode = container.parentNode
