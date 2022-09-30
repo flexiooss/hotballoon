@@ -194,6 +194,7 @@ export class CustomEventHandler {
      */
     const handler = CustomEventHandler.findParentHandler(event.target);
     if (!isNull(handler)) {
+      if(event.pointerType === 'mouse' && event.button !== 0) return
       event.stopPropagation()
       pointerdownExe.call(handler, event)
     }
@@ -209,6 +210,7 @@ export class CustomEventHandler {
      */
     const handler = CustomEventHandler.findParentHandler(event.target)
     if (!isNull(handler)) {
+      if(event.pointerType === 'mouse' && event.button !== 0) return
       event.stopPropagation()
       pointerupExe.call(handler, event)
     }
