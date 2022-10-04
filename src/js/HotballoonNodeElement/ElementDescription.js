@@ -1,5 +1,4 @@
 import {HotballoonElementParams} from './HotballoonElementParams'
-import {globalFlexioImport} from '@flexio-oss/js-commons-bundle/global-import-registry'
 
 
 export class ElementDescription {

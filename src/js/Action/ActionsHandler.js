@@ -40,13 +40,14 @@ export class ActionsHandler {
   /**
    * @param {ActionSubscriber} actionSubscriber
    * @param {function(payload: ?TYPE, type: (string|Symbol))}  callback
+   * @param {?function(state: StoreState<TYPE>)} [guard=null]
    * @return {ListenedAction}
    */
-  listen(actionSubscriber, callback) {
+  listen(actionSubscriber, callback, guard=null) {
     /**
      * @type {ListenedAction}
      */
-    const listenedAction = TypeCheck.assertIsActionSubscriber(actionSubscriber).listen(callback)
+    const listenedAction = TypeCheck.assertIsActionSubscriber(actionSubscriber).listen(callback, guard)
     this.#listenedActions.set(listenedAction.token(), listenedAction)
     return new ListenedAction(this, listenedAction.token())
   }

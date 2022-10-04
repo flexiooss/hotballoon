@@ -30,6 +30,20 @@ export class ListenedAction {
     return this.#token
   }
 
+  /**
+   * @return {boolean}
+   */
+  disable() {
+    return this.#dispatcher.disableEventListener(this.#actionID, this.#token)
+  }
+
+  /**
+   * @return {boolean}
+   */
+  enable() {
+    return this.#dispatcher.enableEventListener(this.#actionID, this.#token)
+  }
+
   remove() {
     this.#dispatcher.removeActionListener(this.#actionID, this.#token)
   }

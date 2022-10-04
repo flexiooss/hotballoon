@@ -43,3 +43,10 @@ export {ExecutorInline} from './src/js/Job/ExecutorInline'
 export {OrderedEventListenerConfigBuilder} from '@flexio-oss/js-commons-bundle/event-handler'
 
 export {AsyncDomAccessor} from './src/js/View/DomAccessor'
+
+export {HBException} from './src/js/Exception/HBException'
+export {UnexpectedError} from './src/js/Exception/UnexpectedError'
+export {AlreadyRegisteredException} from './src/js/Exception/AlreadyRegisteredException'
+export {RemovedException} from './src/js/Exception/RemovedException'
+export {ValidationError} from './src/js/Exception/ValidationError'
+export {DOMError} from './src/js/Exception/DOMError'

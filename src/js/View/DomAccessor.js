@@ -1,4 +1,6 @@
 import {TypeCheck, NotOverrideException, isUndefined, assertType} from '@flexio-oss/js-commons-bundle/assert'
+import {DOMError} from "../Exception/DOMError";
+import {Logger} from "@flexio-oss/js-commons-bundle/hot-log";
 
 /**
  * @interface
@@ -52,6 +54,10 @@ export class AsyncDomAccessor extends DomAccessor {
    * @type {boolean}
    */
   #scheduled = false
+  /**
+   * @type {Logger}
+   */
+  #logger = Logger.getLogger(this.constructor.name,'AsyncDomAccessor' )
 
   constructor(window) {
     super()
@@ -87,7 +93,7 @@ export class AsyncDomAccessor extends DomAccessor {
    * @return {AsyncDomAccessor}
    */
   read(task) {
-//    console.log('read')
+    this.#logger.debug('READ')
     this.#reads.push(TypeCheck.assertIsFunction(task))
     this.#scheduleFlush()
     return this
@@ -98,7 +104,7 @@ export class AsyncDomAccessor extends DomAccessor {
    * @return {*}
    */
   write(task) {
-//    console.log('write')
+    this.#logger.debug('WRITE')
     this.#writes.push(TypeCheck.assertIsFunction(task))
     this.#scheduleFlush()
     return this
@@ -119,13 +125,15 @@ export class AsyncDomAccessor extends DomAccessor {
      */
     const start = Date.now()
     try {
-//      console.log('flushing reads', this.#reads.length)
+      this.#logger.debug('FLUSHING READS:'+this.#reads.length)
       if (this.#runTasks(this.#reads, start)) {
-//      console.log('flushing writes', this.#writes.length)
+        this.#logger.debug('FLUSHING WRITES:'+this.#writes.length)
         this.#runTasks(this.#writes, start)
       }
     } catch (e) {
-      console.error(e)
+      const error = new DOMError(e.toString())
+      error.stack = e.stack
+      this.#logger.error('UNEXPECTED FLUSHING ERROR', error)
     }
 
     this.#scheduled = false
@@ -133,7 +141,6 @@ export class AsyncDomAccessor extends DomAccessor {
     if (this.#reads.length || this.#writes.length) {
       this.#scheduleFlush()
     }
-
   }
 
   /**

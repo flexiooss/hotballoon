@@ -264,10 +264,11 @@ export class StoreBase extends WithID {
   /**
    * @param {function(state: StoreState<TYPE>)} callback
    * @param {number} [priority=100]
+   * @param {?function(state: StoreState<TYPE>)} [guard=null]
    * @return {ListenedStore}
    * @throws {RemovedException}
    */
-  listenChanged(callback, priority = 100) {
+  listenChanged(callback, priority = 100, guard=null) {
     if (this.#removed) {
       throw RemovedException.STORE(this._ID)
     }
@@ -286,13 +287,13 @@ export class StoreBase extends WithID {
           }
         })
         .priority(priority)
+        .guard(guard)
         .build()
     )
 
     return new ListenedStore(
-      () => {
-        this.stopListenChanged(token)
-      },
+      this.#eventHandler,
+      this.changedEventName(),
       token
     )
   }
@@ -300,10 +301,11 @@ export class StoreBase extends WithID {
   /**
    * @param {function()} callback
    * @param {number} [priority=100]
+   * @param {?function(state: StoreState<TYPE>)} [guard=null]
    * @return {ListenedStore}
    * @throws {RemovedException}
    */
-  listenRemoved(callback, priority = 100) {
+  listenRemoved(callback, priority = 100,guard=null) {
     if (this.#removed) {
       throw RemovedException.STORE(this._ID)
     }
@@ -320,13 +322,13 @@ export class StoreBase extends WithID {
           callback()
         })
         .priority(priority)
+        .guard(guard)
         .build()
     )
 
     return new ListenedStore(
-      () => {
-        this.stopListenRemoved(token)
-      },
+      this.#eventHandler,
+      this.removedEventName(),
       token
     )
   }

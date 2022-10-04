@@ -3,6 +3,7 @@ import {HotBalloonApplication} from '../../js/Application/HotBalloonApplication'
 import {ActionDispatcherBuilder} from '../../js/Action/ActionDispatcherBuilder'
 import {FakeObject, FakeObjectBuilder} from './FakeObject'
 import {ApplicationBuilder} from '../../js/Application/ApplicationBuilder'
+import {ActionSubscriber} from "../../js/Action/ActionSubscriber";
 
 
 const assert = require('assert')
@@ -196,6 +197,59 @@ export class ActionDispatcherTest extends TestCase {
     actionDispatcher.dispatch(payloadDispatched)
 
     assert.equal(a,2, 'action should be removed')
+  }
+
+  testListenedActionGuard() {
+    /**
+     *
+     * @type {ActionDispatcher<FakeObject, FakeObjectBuilder>}
+     */
+    const actionDispatcher = new ActionDispatcherBuilder()
+      .type(FakeObject)
+      .dispatcher(this.componentContext.dispatcher())
+      .build()
+
+    let a = 0
+
+    /**
+     * @type {ActionSubscriber}
+     */
+    const actionSubscriber = ActionSubscriber.from(actionDispatcher)
+
+    const payloadDispatched = new FakeObjectBuilder()
+      .prop1('toto')
+      .prop2(true)
+      .prop3(3)
+      .build()
+
+    /**
+     * @type {ListenedAction}
+     */
+    const action = actionSubscriber.listen(
+      payload=> {
+      a--
+    },
+      payload=> payload.prop3() === 4
+    )
+
+    /**
+     * @type {ListenedAction}
+     */
+    const action2 = actionSubscriber.listen(
+      payload=> {
+      a++
+    },
+      payload=> payload.prop3() === 3
+    )
+
+    actionDispatcher.dispatch(payloadDispatched)
+
+    assert.equal(a,1, 'action should not be invoked')
+
+    actionDispatcher.dispatch(payloadDispatched.withProp3(4))
+
+    assert.equal(a,0, 'action2 should be invoked')
+
   }
 
 }

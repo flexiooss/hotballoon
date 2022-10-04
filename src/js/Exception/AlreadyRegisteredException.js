@@ -1,8 +1,11 @@
-export class AlreadyRegisteredException extends Error {
-  constructor(message = '', ...params) {
-    super(...params)
-    this.message = message
-    this.name = this.constructor.name
+import {HBException} from "./HBException";
+
+export class AlreadyRegisteredException extends HBException {
+  /**
+   * @return {string}
+   */
+  realName() {
+    return 'AlreadyRegisteredException';
   }
 
   /**
@@ -12,6 +15,7 @@ export class AlreadyRegisteredException extends Error {
   static COMPONENT(id) {
     return new AlreadyRegisteredException(`Component already registered : ${id}`)
   }
+
   /**
    * @param {string} id
    * @return {AlreadyRegisteredException}
@@ -19,6 +23,7 @@ export class AlreadyRegisteredException extends Error {
   static STORE(id) {
     return new AlreadyRegisteredException(`Store already registered : ${id}`)
   }
+
   /**
    * @param {string} id
    * @return {AlreadyRegisteredException}
@@ -26,6 +31,7 @@ export class AlreadyRegisteredException extends Error {
   static ACTION(id) {
     return new AlreadyRegisteredException(`Action already registered : ${id}`)
   }
+
   /**
    * @param {string} id
    * @return {AlreadyRegisteredException}
@@ -34,8 +40,4 @@ export class AlreadyRegisteredException extends Error {
     return new AlreadyRegisteredException(`ViewContainer already registered : ${id}`)
   }
 
-
-  toString() {
-    return ` ${this.name} --- ${this.message} `
-  }
 }

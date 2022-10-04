@@ -86,10 +86,11 @@ export class PublicStoreHandler {
   /**
    * @param {function(state: StoreState<TYPE>)} callback
    * @param {number} [priority=100]
+   * @param {?function(state: StoreState<TYPE>)} [guard=null]
    * @return {ListenedStore}
    */
-  listenChanged(callback, priority = 100) {
-    return this.#store.listenChanged(callback, priority)
+  listenChanged(callback, priority = 100,guard=null) {
+    return this.#store.listenChanged(callback, priority, guard)
   }
 
   /**
@@ -116,10 +117,11 @@ export class PublicStoreHandler {
   /**
    * @param {function()} callback
    * @param {number} priority
+   * @param {?function(state: StoreState<TYPE>)} [guard=null]
    * @return {ListenedStore}
    */
-  listenRemoved(callback, priority) {
-    return this.#store.listenRemoved(callback, priority)
+  listenRemoved(callback, priority,guard=null) {
+    return this.#store.listenRemoved(callback, priority, guard)
   }
 
   /**

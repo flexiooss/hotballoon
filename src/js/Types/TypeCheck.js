@@ -13,7 +13,7 @@ import {
   CLASS_TAG_NAME_ACTION_SUBSCRIBER,
   testClassTagName
 } from './HasTagClassNameInterface'
-import {assertType} from '@flexio-oss/js-commons-bundle/assert'
+import {assertType, isNull} from '@flexio-oss/js-commons-bundle/assert'
 import {ElementDescription} from '../HotballoonNodeElement/ElementDescription'
 import {RemovedException} from "../Exception/RemovedException";
 
@@ -89,13 +89,20 @@ class TypeCheck {
 
   /**
    * @param {ActionDispatcher} inst
+   * @param {Class} typeOf
+   * @param {?string} stringName
    * @return {ActionDispatcher}
    * @throws {TypeError}
    */
-  static assertIsActionDispatcher(inst) {
+  static assertIsActionDispatcher(inst, typeOf = null, stringName = null) {
     assertType(TypeCheck.isActionDispatcher(inst),
       'TypeCheck:assertIsActionDispatcher: `inst` argument should be an ActionDispatcher'
     )
+    if (!isNull(typeOf)) {
+      assertType(inst.isTypeOf(typeOf),
+        `TypeCheck:assertIsActionDispatcher: \`inst\` argument should be a ${!isNull(stringName) ? stringName : typeOf.constructor.name}`
+      )
+    }
     return inst
   }
 
@@ -146,11 +153,30 @@ class TypeCheck {
   }
 
   /**
-   * @param {Object} inst
+   * @param {ProxyStore} inst
+   * @return {ProxyStore}
+   * @throws {TypeError}
+   */
+  static assertIsProxyStore(inst) {
+    assertType(TypeCheck.isProxyStore(inst), '`inst` should be `ProxyStore`')
+    return inst
+  }
+
+  /**
+   * @param {PublicStoreHandler} inst
    * @return {boolean}
    */
   static isPublicStoreHandler(inst) {
     return testClassTagName(inst, CLASS_TAG_NAME_PUBLIC_STORE_HANDLER)
+  }
+
+  /**
+   * @param {PublicStoreHandler} inst
+   * @return {PublicStoreHandler}
+   */
+  static assertIsPublicStoreHandler(inst) {
+    assertType(TypeCheck.isPublicStoreHandler(inst), '`inst` should be `PublicStoreHandler`')
+    return inst
   }
 
   /**
