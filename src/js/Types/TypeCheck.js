@@ -33,9 +33,7 @@ class TypeCheck {
    * @throws {TypeError}
    */
   static assertIsHotBalloonApplication(inst) {
-    assertType(TypeCheck.isHotballoonApplication(inst),
-      '`inst` should be an HotballoonApplication'
-    )
+    assertType(TypeCheck.isHotballoonApplication(inst),      '`inst` should be an HotballoonApplication')
     return inst
   }
 
@@ -53,9 +51,7 @@ class TypeCheck {
    * @throws {TypeError}
    */
   static assertIsDispatcher(inst) {
-    assertType(TypeCheck.isDispatcher(inst),
-      '`inst` should be a `Dispatcher`'
-    )
+    assertType(TypeCheck.isDispatcher(inst), '`inst` should be a `Dispatcher`')
     return inst
   }
 
@@ -208,6 +204,16 @@ class TypeCheck {
   }
 
   /**
+   * @param {ViewContainer} inst
+   * @return {ViewContainer}
+   * @throws {TypeError}
+   */
+  static assertIsViewContainer(inst) {
+    assertType(TypeCheck.isViewContainer(inst), '`inst` should be a `ViewContainer`')
+    return inst
+  }
+
+  /**
    * @param {Object} inst
    * @return {boolean}
    */
@@ -218,11 +224,10 @@ class TypeCheck {
   /**
    * @param {View} inst
    * @return {View}
+   * @throws {TypeError}
    */
   static assertIsView(inst) {
-    assertType(TypeCheck.isView(inst),
-      'TypeCheck:assertIsView: `inst` argument should be a View'
-    )
+    assertType(TypeCheck.isView(inst), 'TypeCheck:assertIsView: `inst` argument should be a View')
     return inst
   }
 
@@ -248,6 +253,26 @@ class TypeCheck {
    */
   static isViewContainerBase(inst) {
     return testClassTagName(inst, CLASS_TAG_NAME_VIEWCONTAINER) || testClassTagName(inst, CLASS_TAG_NAME_VIEW)
+  }
+
+  /**
+   * @param {ViewContainerBase} inst
+   * @return {ViewContainerBase}
+   * @throws {TypeError}
+   */
+  static assertIsViewContainerBase(inst) {
+    assertType(TypeCheck.isViewContainerBase(inst), '`inst` argument should be a ViewContainerBase')
+    return inst
+  }
+
+  /**
+   * @param {ElementDescription} inst
+   * @return {ElementDescription}
+   * @throws {TypeError}
+   */
+  static assertIsElementDescription(inst) {
+    assertType(TypeCheck.isElementDescription(inst), '`inst` argument should be a ElementDescription')
+    return inst
   }
 
   /**
