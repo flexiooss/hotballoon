@@ -340,6 +340,21 @@ export class View extends ViewContainerBase {
     return element
   }
 
+
+  /**
+   * @param {Element} element
+   * @return {this}
+   */
+  setParentNode(element) {
+    if (element === this.parentNode) return this
+    if (this.isMounted()) {
+      this.mountInto(element)
+    } else {
+      this.parentNode = element
+    }
+    return this
+  }
+
   /**
    * @return {View}
    */
