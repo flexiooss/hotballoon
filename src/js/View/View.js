@@ -300,7 +300,7 @@ export class View extends ViewContainerBase {
     if (this.isRemoved()) {
       return
     }
-    if (!isNull(this.node)) {
+    if (!isNull(this.node())) {
       this.parentNode.appendChild(this.node())
     }
     this._mounted = true
