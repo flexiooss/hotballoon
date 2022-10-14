@@ -1,4 +1,5 @@
 import {HyperFlexParams} from '../__import__flexio-hyperflex'
+import {isFunction, isNull} from "@flexio-oss/js-commons-bundle/assert";
 
 /**
  *
@@ -85,7 +86,26 @@ export class HotballoonElementParams extends HyperFlexParams {
    * @return {HotballoonElementParams}
    */
   addViews(views) {
-    this._views = views
+    this._views.push(...views)
+    return this
+  }
+
+  /**
+   * @param {String} key
+   * @param {(boolean|function():boolean)} statement
+   * @param {(View|function():View)} view
+   * @param {(View|function():?View)} [viewFalse=null]
+   * @return {this}
+   */
+  bindView( statement, view, viewFalse = null) {
+    if ((isFunction(statement) ? statement() : statement) === true) {
+      this._views.push((isFunction(view) ? view() : view))
+    } else {
+      viewFalse = isFunction(viewFalse) ? viewFalse() : viewFalse
+      if (!isNull(viewFalse)) {
+        this._views.push(viewFalse)
+      }
+    }
     return this
   }
 
