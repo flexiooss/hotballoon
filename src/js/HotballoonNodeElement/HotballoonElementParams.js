@@ -91,7 +91,6 @@ export class HotballoonElementParams extends HyperFlexParams {
   }
 
   /**
-   * @param {String} key
    * @param {(boolean|function():boolean)} statement
    * @param {(View|function():View)} view
    * @param {(View|function():?View)} [viewFalse=null]

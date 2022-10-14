@@ -40,7 +40,7 @@ export class ElementDescription {
   /**
    *
    * @param {ElementEventListenerConfig} nodeEventListenerParam
-   * @return {ElementDescription}
+   * @return {this}
    */
   listenEvent(nodeEventListenerParam) {
     this._params.addEventListener(nodeEventListenerParam)
@@ -50,7 +50,7 @@ export class ElementDescription {
   /**
    *
    * @param {View} views
-   * @return {ElementDescription}
+   * @return {this}
    */
   views(...views) {
     this._params.addViews(views)
@@ -58,9 +58,20 @@ export class ElementDescription {
   }
 
   /**
+   * @param {(boolean|function():boolean)} statement
+   * @param {(View|function():View)} view
+   * @param {(View|function():?View)} [viewFalse=null]
+   * @return {this}
+   */
+  bindView( statement, view, viewFalse = null) {
+    this._params.bindView(statement, view, viewFalse)
+    return this
+  }
+
+  /**
    *
    * @param {...Element} childNodes
-   * @return {ElementDescription}
+   * @return {this}
    */
   childNodes(...childNodes) {
     this._params.addChildNodes(childNodes)
@@ -95,7 +106,7 @@ export class ElementDescription {
   /**
    *
    * @param {Object.<String, String>} attributes
-   * @return {ElementDescription}
+   * @return {this}
    */
   attributes(attributes) {
     this._params.addAttributes(attributes)
@@ -118,7 +129,7 @@ export class ElementDescription {
   /**
    *
    * @param {Object.<String, String>} properties
-   * @return {ElementDescription}
+   * @return {this}
    */
   properties(properties) {
     this._params.addProperties(properties)
@@ -128,7 +139,7 @@ export class ElementDescription {
   /**
    *
    * @param {String} text
-   * @return {ElementDescription}
+   * @return {this}
    */
   text(text) {
     this._params.addText(text)
@@ -137,7 +148,7 @@ export class ElementDescription {
 
   /**
    * @param {String} id
-   * @return {ElementDescription}
+   * @return {this}
    */
   id(id) {
     this._params.setId(id)
@@ -160,7 +171,7 @@ export class ElementDescription {
   /**
    *
    * @param {Object.<String, String>} styles
-   * @returns {ElementDescription}
+   * @returns {this}
    */
   styles(styles) {
     this._params.addStyles(styles)
@@ -172,7 +183,7 @@ export class ElementDescription {
    * @param { boolean} statement
    * @param {String} classNameTrue
    * @param {String} [classNameFalse=null]
-   * @return {ElementDescription}
+   * @return {this}
    */
   bindClassName(statement, classNameTrue, classNameFalse = null) {
     this._params.bindClassName(statement, classNameTrue, classNameFalse)
@@ -182,7 +193,7 @@ export class ElementDescription {
   /**
    *
    * @param {...string} className
-   * @return {ElementDescription}
+   * @return {this}
    */
   className(...className) {
     this._params.addClassName(...className)
@@ -191,7 +202,7 @@ export class ElementDescription {
 
   /**
    * @param {...string} HTMLTxt
-   * @return {ElementDescription}
+   * @return {this}
    */
   prependHTML(...HTMLTxt) {
     this._params.prependHTML(...HTMLTxt)
@@ -200,7 +211,7 @@ export class ElementDescription {
 
   /**
    * @param {...string} HTMLTxt
-   * @return {ElementDescription}
+   * @return {this}
    */
   appendHTML(...HTMLTxt) {
     this._params.appendHTML(...HTMLTxt)
@@ -210,6 +221,6 @@ export class ElementDescription {
 
 /**
  * @param {string} querySelector
- * @return {ElementDescription}
+ * @return {this}
  */
 export const e = (querySelector) => new ElementDescription(querySelector)
