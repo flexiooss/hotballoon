@@ -144,7 +144,7 @@ export class HyperFlex {
   _setStyles(styles) {
     for (/**@type{string}*/const key in TypeCheck.assertIsObject(styles)) {
       if (styles.hasOwnProperty(key)) {
-        this._element.style[key] = styles[key]
+        this._element.style.setProperty(key, styles[key])
       }
     }
     return this

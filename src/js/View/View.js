@@ -300,7 +300,7 @@ export class View extends ViewContainerBase {
     if (this.isRemoved()) {
       return
     }
-    if (!isNull(this.node)) {
+    if (!isNull(this.node())) {
       this.parentNode.appendChild(this.node())
     }
     this._mounted = true
@@ -338,6 +338,21 @@ export class View extends ViewContainerBase {
     this.parentNode = element
     this.mount()
     return element
+  }
+
+
+  /**
+   * @param {Element} element
+   * @return {this}
+   */
+  setParentNode(element) {
+    if (element === this.parentNode) return this
+    if (this.isMounted()) {
+      this.mountInto(element)
+    } else {
+      this.parentNode = element
+    }
+    return this
   }
 
   /**
