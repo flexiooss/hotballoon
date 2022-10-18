@@ -5,6 +5,7 @@ import {
   isNull,
   TypeCheck
 } from '@flexio-oss/js-commons-bundle/assert'
+import {sanitizeHTMLTree} from '@flexio-oss/js-commons-bundle/js-type-helpers'
 import {HyperFlexParams} from './HyperFlexParams'
 import {globalFlexioImport} from '@flexio-oss/js-commons-bundle/global-import-registry'
 
@@ -324,20 +325,30 @@ class ChildNodesHandler {
    * @return {ChildNodesHandler}
    */
   insert() {
+    /**
+     * @type {boolean}
+     */
+    let shouldBeSanitized = false
+
     for (/**@type{ChildNodesSequence}*/const childNodesSequence of this.#config.childNodeSequenceList()) {
       switch (childNodesSequence.type()) {
         case globalFlexioImport.io.flexio.flexio_hyperflex.types.childnodessequence.ChildNodesSequenceType.APPEND_NODE:
           this.#appendNode(childNodesSequence.count())
           break
         case globalFlexioImport.io.flexio.flexio_hyperflex.types.childnodessequence.ChildNodesSequenceType.PREPEND_HTML:
-          this.#prependHTML(childNodesSequence.count())
+          this.#prependHTML(childNodesSequence.count());
+          shouldBeSanitized = true;
           break
         case globalFlexioImport.io.flexio.flexio_hyperflex.types.childnodessequence.ChildNodesSequenceType.APPEND_HTML:
-          this.#appendHTML(childNodesSequence.count())
+          this.#appendHTML(childNodesSequence.count());
+          shouldBeSanitized = true;
           break
         default:
           throw new Error('insert node type not recognized : ' + childNodesSequence.type())
       }
+    }
+    if (shouldBeSanitized) {
+      sanitizeHTMLTree(this.#config.element())
     }
     return this
   }
