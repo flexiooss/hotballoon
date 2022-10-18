@@ -188,7 +188,7 @@ export class StoreBase extends WithID {
    * @param {!StoreState<TYPE>}  payload
    */
   _dispatch(eventType, payload = this.state()) {
-    if (payload.time() === this.state().time()) {
+    if (payload.time().getTime() === this.state().time().getTime()) {
       this.#eventHandler.dispatch(eventType, payload)
     }
   }
@@ -199,7 +199,7 @@ export class StoreBase extends WithID {
    */
   set(dataStore = null) {
     if (this.#removed) {
-      throw RemovedException.STORE(this._ID)
+      throw RemovedException.STORE(this.ID())
     }
     this.#setStorage(this.#storage.set(this.ID(), this.validateDataStore(dataStore)))
   }

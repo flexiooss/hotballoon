@@ -11,7 +11,8 @@
   "author": "Thomas Chatelain (https://github.com/TomAchT)",
   "scripts": {
     "html": "hbshed dev --entry src/test/dev/html.js --server-config local",
-    "customEvents": "hbshed dev --entry src/test/dev/customEvents.js --server-config local"
+    "customEvents": "hbshed dev --entry src/test/dev/customEvents.js --server-config local",
+    "SessionStorage": "hbshed dev --entry src/test/dev/SessionStorage.js --server-config local"
   },
   "repository": "https://github.com/flexiooss/hotballoon.git",
   "devDependencies": {

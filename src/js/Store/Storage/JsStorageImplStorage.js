@@ -29,7 +29,6 @@ export class JsStorageImplStorage extends StorageInterface {
   #storage
 
   /**
-   * @constructor
    * @param {?TYPE.} type
    * @param {string} storeID
    * @param {Storage} storage
