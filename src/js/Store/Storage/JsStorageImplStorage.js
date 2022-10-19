@@ -3,6 +3,8 @@ import {deepFreezeSeal} from '@flexio-oss/js-commons-bundle/js-generator-helpers
 import {StoreState} from '../StoreState'
 import {StorageInterface} from './StorageInterface'
 import {StoreStateBuilder} from '../StoreState'
+import {HotLog, Logger} from "@flexio-oss/js-commons-bundle/hot-log";
+import {BaseException} from "@flexio-oss/js-commons-bundle/js-type-helpers";
 
 /**
  * @template TYPE
@@ -56,7 +58,7 @@ export class JsStorageImplStorage extends StorageInterface {
    * @return {StorageInterface}
    */
   set(storeID, data) {
-    this.#storage.setItem(this.key(), JSON.stringify(new StoreState(storeID, this.#type, data)))
+    this.#storage.setItem(this.key(), btoa(JSON.stringify(new StoreState(storeID, this.#type, data))))
     return this
   }
 
@@ -64,16 +66,26 @@ export class JsStorageImplStorage extends StorageInterface {
    * @returns {?StoreState<TYPE>}
    */
   get() {
-    let data = this.#storage.getItem(this.key())
+    let ret = null
+    try {
+      let data = this.#storage.getItem(this.key())
+      if (!isNull(data)) {
+        data = atob(data)
+        ret = StoreStateBuilder
+          .fromJSON(data, this.#type)
+          .storeID(this.#storeID)
+          .build()
+      }
+    } catch (e) {
+      if (!e instanceof BaseException) {
+        e = new BaseException(e.toString())
+      }
 
-    if (!isNull(data)) {
-      return StoreStateBuilder
-        .fromJSON(data, this.#type)
-        .storeID(this.#storeID)
-        .build()
+      Logger.getLogger(this.constructor.name, 'JsStorageImplStorage').error('error on retrieve storage data', e)
+    } finally {
+      return ret
     }
 
-    return null
   }
 
   /**

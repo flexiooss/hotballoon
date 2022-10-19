@@ -1,5 +1,4 @@
 import {UID} from '@flexio-oss/js-commons-bundle/js-helpers'
-import {Store} from './Store'
 import {StoreConfig} from './StoreConfig'
 import {JsStorageImplStorage} from './Storage/JsStorageImplStorage'
 import {StoreTypeConfig} from './StoreTypeConfig'
@@ -142,6 +141,7 @@ export class JsStorageStoreBuilder {
      * @type {string}
      */
     const id = this.#uniqName()
+
     /**
      * @type {StorageInterface}
      */
@@ -151,6 +151,7 @@ export class JsStorageStoreBuilder {
       this.#storage,
       this.#key
     )
+
     if (isNull((storage.get()?.data() ?? null))) {
       storage.set(id, this.#initialData)
     }
