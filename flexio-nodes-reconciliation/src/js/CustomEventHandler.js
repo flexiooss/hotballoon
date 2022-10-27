@@ -6,53 +6,7 @@ import {UID} from "@flexio-oss/js-commons-bundle/js-helpers";
  * @type {symbol}
  */
 const __CustomEventHandler__ = Symbol('__CustomEventHandler__')
-/**
- * @type {function}
- * @param {PointerEvent} event
- */
-const pointerdownExe = function (event) {
-  this._up = false
-  this._clearHoldInterval()
-  this._start = new Date()
-  if (this._hold) {
-    this._timerHold = setTimeout(
-      () => {
-        if (isNull(this._timerHold) || this._up || isNull(this._start)) return
-        this._dispatchEvent(CustomEventHandler.HOLD, event)
-        this._start = null
-      },
-      this._holdThreshold
-    )
-  }
-}
-/**
- * @type {function}
- * @param {PointerEvent} event
- */
-const pointerupExe = function (event) {
-  this._up = true
-  /**
-   * @type {Date}
-   */
-  const now = new Date()
-  this._clearHoldInterval()
 
-  if (this._doubleTap && ((now - this._end) < this._doubleThreshold)) {
-    this._clearTapInterval()
-    this._dispatchEvent(CustomEventHandler.DOUBLE_TAP, event)
-  } else if (this._tap && !isNull(this._start) && isNull(this._timer)) {
-    if (this._doubleTap) {
-      this._timer = setTimeout(() => {
-        this._dispatchEvent(CustomEventHandler.TAP, event)
-        this._clearTapInterval()
-      }, this._doubleThreshold)
-    } else {
-      this._dispatchEvent(CustomEventHandler.TAP, event)
-    }
-
-    this._end = now
-  }
-}
 
 export class CustomEventHandler {
   static TAP = 'HB_TAP'
@@ -77,6 +31,11 @@ export class CustomEventHandler {
    * @type {boolean}
    * @private
    */
+  _moving = false
+  /**
+   * @type {boolean}
+   * @private
+   */
   _tap = false
   /**
    * @type {boolean}
@@ -93,6 +52,11 @@ export class CustomEventHandler {
    * @private
    */
   _holdThreshold = 800
+  /**
+   * @type {number}
+   * @private
+   */
+  _moveThreshold = 5
   /**
    * @type {number}
    * @private
@@ -118,6 +82,16 @@ export class CustomEventHandler {
    * @private
    */
   _timer = null
+  /**
+   * @type {?number}
+   * @private
+   */
+  _capturedPointerId = null
+  /**
+   * @type {?{x:number, y:number}}
+   * @private
+   */
+  _startCoords = null
 
   /**
    * @param {HTMLElement} element
@@ -194,9 +168,9 @@ export class CustomEventHandler {
      */
     const handler = CustomEventHandler.findParentHandler(event.target);
     if (!isNull(handler)) {
-      if(event.pointerType === 'mouse' && event.button !== 0) return
+      if (event.pointerType === 'mouse' && event.button !== 0) return
       event.stopPropagation()
-      pointerdownExe.call(handler, event)
+      handler.pointerdownExe(event)
     }
   }
 
@@ -210,9 +184,25 @@ export class CustomEventHandler {
      */
     const handler = CustomEventHandler.findParentHandler(event.target)
     if (!isNull(handler)) {
-      if(event.pointerType === 'mouse' && event.button !== 0) return
+      if (event.pointerType === 'mouse' && event.button !== 0) return
       event.stopPropagation()
-      pointerupExe.call(handler, event)
+      handler.pointerupExe(event)
+    }
+  }
+
+  /**
+   * @param {PointerEvent} event
+   * @private
+   */
+  _pointermove(event) {
+    /**
+     * @type {?CustomEventHandler}
+     */
+    const handler = CustomEventHandler.findParentHandler(event.target)
+    if (!isNull(handler)) {
+      if (event.pointerType === 'mouse' && event.button !== 0) return
+      event.stopPropagation()
+      handler.pointermoveExe(event)
     }
   }
 
@@ -234,6 +224,110 @@ export class CustomEventHandler {
     clearInterval(this._timerHold)
     this._timerHold = null
     return this
+  }
+
+  /**
+   * @type {function}
+   * @param {PointerEvent} event
+   */
+  pointermoveExe(event) {
+    this._element.ownerDocument.defaultView.requestAnimationFrame(() => {
+      this._captureEvent(event.pointerId);
+      if (!this._moving) {
+        if (!isNull(this._startCoords)) {
+          if (Math.abs(this._startCoords.x - event.x) > this._moveThreshold) {
+            this._moving = true
+          }
+          if (Math.abs(this._startCoords.y - event.y) > this._moveThreshold) {
+            this._moving = true
+          }
+        }
+      }
+    })
+  }
+
+  /**
+   * @type {function}
+   * @param {PointerEvent} event
+   */
+  pointerdownExe(event) {
+    this._up = false
+    this
+      ._resetMoving()
+      ._clearHoldInterval()
+    this._startCoords = {
+      x: event.x,
+      y: event.y
+    }
+    this._start = new Date()
+    if (this._hold) {
+
+      this._element.addEventListener('pointermove', this._pointermove)
+      this._timerHold = setTimeout(
+        () => {
+          this._element.removeEventListener('pointermove', this._pointermove)
+          if (isNull(this._timerHold) || this._up || this._moving || isNull(this._start)) return
+          this._dispatchEvent(CustomEventHandler.HOLD, event)
+          this._start = null
+        },
+        this._holdThreshold
+      )
+    }
+  }
+
+  /**
+   * @return {CustomEventHandler}
+   * @private
+   */
+  _resetMoving() {
+    this._moving = false
+    this._startCoords = null
+    return this
+  }
+
+  /**
+   * @param {?number} eventPointerId
+   * @private
+   */
+  _captureEvent(eventPointerId) {
+    if (isNull(this._capturedPointerId)) {
+      this._capturedPointerId = eventPointerId
+      this._element.setPointerCapture(eventPointerId)
+    }
+  }
+
+  /**
+   * @type {function}
+   * @param {PointerEvent} event
+   */
+  pointerupExe(event) {
+    this._up = true
+    /**
+     * @type {Date}
+     */
+    const now = new Date()
+    if (this._hold) {
+      this._element.removeEventListener('pointermove', this._pointermove)
+      this
+        ._clearHoldInterval()
+        ._resetMoving()
+    }
+
+    if (this._doubleTap && ((now - this._end) < this._doubleThreshold)) {
+      this._clearTapInterval()
+      this._dispatchEvent(CustomEventHandler.DOUBLE_TAP, event)
+    } else if (this._tap && !isNull(this._start) && isNull(this._timer)) {
+      if (this._doubleTap) {
+        this._timer = setTimeout(() => {
+          this._dispatchEvent(CustomEventHandler.TAP, event)
+          this._clearTapInterval()
+        }, this._doubleThreshold)
+      } else {
+        this._dispatchEvent(CustomEventHandler.TAP, event)
+      }
+
+      this._end = now
+    }
   }
 
   /**
