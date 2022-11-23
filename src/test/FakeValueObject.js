@@ -11,6 +11,10 @@ export class FakeValueObject {
   b() {
     return this.__b
   }
+
+  static builder(){
+    return new FakeValueObjectBuilder()
+  }
 }
 
 export class FakeValueObjectBuilder {
@@ -31,7 +35,6 @@ export class FakeValueObjectBuilder {
   }
 
   /**
-   *
    * @param a
    * @return {FakeValueObjectBuilder}
    */

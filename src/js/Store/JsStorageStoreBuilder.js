@@ -1,161 +1,174 @@
 import {UID} from '@flexio-oss/js-commons-bundle/js-helpers'
-import {Store} from './Store'
 import {StoreConfig} from './StoreConfig'
 import {JsStorageImplStorage} from './Storage/JsStorageImplStorage'
-import {StoreState} from './StoreState'
 import {StoreTypeConfig} from './StoreTypeConfig'
 import {isNull} from '@flexio-oss/js-commons-bundle/assert'
+import {JSStorageStore} from "./JSStorageStore";
 
 /**
  * @template TYPE, TYPE_BUILDER
  */
 export class JsStorageStoreBuilder {
-  constructor() {
-    /**
-     * @type {?TYPE.}
-     * @private
-     */
-    this.__type = null
+  /**
+   * @type {?TYPE.}
+   */
+  #type = null
 
-    /**
-     * @type {?TYPE}
-     * @private
-     */
-    this.__initialData = null
-    /**
-     * @type  {?ValueObjectValidator}
-     * @private
-     */
-    this.__validator = null
-    /**
-     * @type {StoreTypeConfig~defaultCheckerClb<TYPE>}
-     * @private
-     */
-    this.__defaultChecker = v => v
-    /**
-     * @type {?Storage}
-     * @private
-     */
-    this.__storage = null
-    /**
-     * @type {?string}
-     * @private
-     */
-    this.__key = null
-    /**
-     * @type {?string}
-     * @private
-     */
-    this.__name = null
-  }
+  /**
+   * @type {?TYPE}
+   */
+  #initialData = null
+  /**
+   * @type  {?ValueObjectValidator}
+   */
+  #validator = null
+  /**
+   * @type {StoreTypeConfig~defaultCheckerClb<TYPE>}
+   */
+  #defaultChecker = v => v
+  /**
+   * @type {?Storage}
+   */
+  #storage = null
+  /**
+   * @type {?string}
+   */
+  #key = null
+  /**
+   * @type {?string}
+   */
+  #name = null
+  /**
+   * @type {?Window}
+   */
+  #window = null
 
   /**
    * @param {string} name
-   * @return {ActionDispatcherBuilder}
+   * @return {this}
    */
   name(name) {
-    this.__name = name.replace(new RegExp('\\s+', 'g'), '')
+    this.#name = name.replace(new RegExp('\\s+', 'g'), '')
     return this
   }
 
   /**
-   *
    * @param {TYPE.} type
-   * @return {InMemoryStoreBuilder}
+   * @return {this}
    */
   type(type) {
-    this.__type = type
+    this.#type = type
     return this
   }
 
   /**
-   *
    * @param {TYPE} initialData
-   * @return {InMemoryStoreBuilder}
+   * @return {this}
    */
   initialData(initialData) {
-    this.__initialData = initialData
+    this.#initialData = initialData
     return this
   }
 
   /**
    * @param {StoreTypeConfig~defaultCheckerClb<TYPE>} defaultChecker
-   * @return {InMemoryStoreBuilder}
+   * @return {this}
    */
   defaultChecker(defaultChecker) {
-    this.__defaultChecker = defaultChecker
+    this.#defaultChecker = defaultChecker
     return this
   }
 
   /**
    * @param {?ValueObjectValidator} validator
-   * @return {InMemoryStoreBuilder}
+   * @return {this}
    */
   validator(validator) {
-    this.__validator = validator
+    this.#validator = validator
     return this
   }
 
   /**
+   * @desc Window.sessionStorage | Window.localStorage
    * @param {Storage} value
-   * @return {LocalStorageStoreBuilder}
+   * @return {this}
    */
   storage(value) {
-    this.__storage = value
+    this.#storage = value
+    return this
+  }
+
+  /**
+   * @param {Window} window
+   * @return {this}
+   */
+  localStorage(window) {
+    this.#storage = window.localStorage
+    this.#window = window
+    return this
+  }
+  /**
+   * @param {Window} window
+   * @return {this}
+   */
+  sessionStorage(window) {
+    this.#storage = window.sessionStorage
+    // this.#window = window
     return this
   }
 
   /**
    * @param {string} value
-   * @return {LocalStorageStoreBuilder}
+   * @return {this}
    */
   key(value) {
-    this.__key = value
+    this.#key = value
     return this
   }
 
   /**
    * @return {string}
-   * @private
    */
-  __uniqName() {
-    return UID((isNull(this.__name) ? this.__type.name : this.__name) + '_')
+  #uniqName() {
+    return UID((isNull(this.#name) ? this.#type.name : this.#name) + '_')
   }
 
   /**
-   *
    * @return {Store<TYPE, TYPE_BUILDER>}
    */
   build() {
     /**
      * @type {string}
      */
-    const id = this.__uniqName()
+    const id = this.#uniqName()
+
     /**
-     * @type {LocalStorageStorage}
+     * @type {StorageInterface}
      */
     const storage = new JsStorageImplStorage(
-      this.__type,
+      this.#type,
       id,
-      this.__storage,
-      this.__key
+      this.#storage,
+      this.#key
     )
 
-    if (isNull(storage.get())) {
-      storage.set(id, this.__initialData)
+    if (isNull((storage.get()?.data() ?? null))) {
+      storage.set(id, this.#initialData)
     }
 
-    return new Store(
+    return new JSStorageStore(
       new StoreConfig(
         id,
-        this.__initialData,
+        this.#initialData,
         new StoreTypeConfig(
-          this.__type,
-          this.__defaultChecker,
-          this.__validator
+          this.#type,
+          this.#defaultChecker,
+          this.#validator
         ),
         storage
-      )
+      ),
+      this.#window,
+      this.#key
     )
   }
 }

@@ -3,7 +3,7 @@
   "description": "Small JavaScript library for building interfaces by Flexio",
   "main": "index.js",
   "module": "index.js",
-  "version": "0.44.0",
+  "version": "0.45.0",
   "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/flexiooss/hotballoon/issues"
@@ -11,14 +11,15 @@
   "author": "Thomas Chatelain (https://github.com/TomAchT)",
   "scripts": {
     "html": "hbshed dev --entry src/test/dev/html.js --server-config local",
-    "customEvents": "hbshed dev --entry src/test/dev/customEvents.js --server-config local"
+    "customEvents": "hbshed dev --entry src/test/dev/customEvents.js --server-config local",
+    "SessionStorage": "hbshed dev --entry src/test/dev/SessionStorage.js --server-config local"
   },
   "repository": "https://github.com/flexiooss/hotballoon.git",
   "devDependencies": {
     "@flexio-oss/code-altimeter-js": "1.5.0"
   },
   "dependencies": {
-    "@flexio-oss/js-commons-bundle": "1.45.0"
+    "@flexio-oss/js-commons-bundle": "1.46.0"
   },
   "hotballoon-shed": {
     "modules": [

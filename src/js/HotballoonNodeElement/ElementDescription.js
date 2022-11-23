@@ -221,6 +221,6 @@ export class ElementDescription {
 
 /**
  * @param {string} querySelector
- * @return {this}
+ * @return {ElementDescription}
  */
 export const e = (querySelector) => new ElementDescription(querySelector)
