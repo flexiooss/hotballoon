@@ -7,6 +7,7 @@ const assert = require('assert')
 
 
 export class TestStore extends TestCase {
+  debug=true
   setUp() {
     this.store = new InMemoryStoreBuilder()
       .type(FakeValueObject)
@@ -94,8 +95,14 @@ export class TestStore extends TestCase {
   testLastStateDispatched() {
     let count = 0
 
-    this.store.listenChanged((state) => {
+    /**
+     * @type {ListenedStore}
+     */
+   let listened = this.store.listenChanged((state) => {
+      listened.disable()
       count++
+      this.log(state.data(), 'state')
+      this.log(count, 'count')
       assert.equal(state.data().a(), 3, 'last value should be dispatched')
       assert.equal(count, 1, 'should be dispatched once')
     })
