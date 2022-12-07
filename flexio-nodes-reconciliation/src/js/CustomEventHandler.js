@@ -231,8 +231,15 @@ export class CustomEventHandler {
    * @param {PointerEvent} event
    */
   pointermoveExe(event) {
+        this._captureEvent(event.pointerId);
     this._element.ownerDocument.defaultView.requestAnimationFrame(() => {
-      this._captureEvent(event.pointerId);
+    //   try {
+    //     this._captureEvent(event.pointerId);
+    //   } catch (e) {
+    //     if (!e instanceof DOMException) {
+    //       throw e
+    //     }
+    //   }
       if (!this._moving) {
         if (!isNull(this._startCoords)) {
           if (Math.abs(this._startCoords.x - event.x) > this._moveThreshold) {
