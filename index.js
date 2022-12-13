@@ -1,6 +1,7 @@
 export {HotBalloonApplication} from './src/js/Application/HotBalloonApplication'
 export {HotballoonApplicationConfig} from './src/js/Application/HotballoonApplicationConfig'
 export {ApplicationBuilder} from './src/js/Application/ApplicationBuilder'
+export {IntersectionObserverHandler} from './src/js/Application/intersectionObserver/IntersectionObserverHandler'
 export {ViewRenderConfig} from './src/js/Application/ViewRenderConfig'
 export {ExecutionConfig} from './src/js/Application/ExecutionConfig'
 
