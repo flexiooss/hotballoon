@@ -210,6 +210,14 @@ export class ViewContainerBase extends WithID {
   }
 
   /**
+   * @return {?SchedulerHandler}
+   * @abstract
+   */
+  scheduler() {
+    throw NotOverrideException.FROM_ABSTRACT('Hotballoon/ViewContainerBase::scheduler')
+  }
+
+  /**
    * @return {string}
    * @abstract
    */

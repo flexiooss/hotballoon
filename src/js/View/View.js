@@ -516,6 +516,13 @@ export class View extends ViewContainerBase {
   }
 
   /**
+   * @return {?SchedulerHandler}
+   */
+  scheduler() {
+    return this.#container.scheduler()
+  }
+
+  /**
    * @return {string}
    */
   containerID() {
