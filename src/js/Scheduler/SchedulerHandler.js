@@ -1,5 +1,6 @@
 import {isNull, TypeCheck} from '@flexio-oss/js-commons-bundle/assert'
 import {BaseException} from "@flexio-oss/js-commons-bundle/js-type-helpers";
+import 'scheduler-polyfill'
 
 export class SchedulerHandler {
   /**
@@ -12,17 +13,6 @@ export class SchedulerHandler {
    */
   constructor(global) {
     this.#global = TypeCheck.assertIsObject(global)
-    this.#ensureScheduler()
-  }
-
-  /**
-   * @return {SchedulerHandler}
-   */
-  #ensureScheduler() {
-    if (!'scheduler' in this.#global) {
-      import('scheduler-polyfill')
-    }
-    return this
   }
 
   /**
@@ -129,14 +119,13 @@ class HBTask {
     this.#task = TypeCheck.assertIsFunction(task);
     this.#priority = priority;
     this.#delay = TypeCheck.assertIsNumberOrNull(delay);
-
   }
 
   /**
    * @return {Promise<*>}
    */
   exec() {
-    this.#controller = new TaskController()
+    this.#controller = new this.#global.TaskController()
     let options = {priority: this.#priority, signal: this.#controller.signal}
     if (!isNull(this.#delay)) {
       options.delay = this.#delay
@@ -154,7 +143,6 @@ class HBTask {
 }
 
 class HBTaskAbortException extends BaseException {
-
   realName() {
     return 'HBTaskAbortException'
   }
