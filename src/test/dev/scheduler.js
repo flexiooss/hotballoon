@@ -14,28 +14,28 @@ const app = new ApplicationBuilder()
   .domAccessor(new AsyncDomAccessor(window))
   .build()
 
-app.scheduler().postTask().task(() => '1 => 1').blocking().build().exec().then(r => {
+app.scheduler().postTask(() => '1 => 1').blocking().build().exec().then(r => {
   console.log(r)
 })
-app.scheduler().postTask().task(() => '2 => 4').background().build().exec().then(r => {
+app.scheduler().postTask(() => '2 => 4').background().build().exec().then(r => {
   console.log(r)
 })
-app.scheduler().postTask().task(() => '3 => 2 ').blocking().build().exec().then(r => {
+app.scheduler().postTask(() => '3 => 2 ').blocking().build().exec().then(r => {
   console.log(r)
 })
 
-const never = app.scheduler().postTask().task(() => 'NEVER').background().build()
+const never = app.scheduler().postTask(() => 'NEVER').background().build()
 never.exec()
   .then(r => {
     console.log(r)
   })
-  .catch(e=>{
+  .catch(e => {
     console.error(e)
   })
 
 never.abort()
 
-app.scheduler().postTask().task(() => '5 => 3').build().exec().then(r => {
+app.scheduler().postTask(() => '5 => 3').build().exec().then(r => {
   console.log(r)
 })
 

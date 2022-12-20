@@ -26,10 +26,11 @@ export class SchedulerHandler {
   }
 
   /**
+   * @param  {function} task
    * @return {HBSchedulerTaskBuilder}
    */
-  postTask() {
-    return new HBSchedulerTaskBuilder(this.#global)
+  postTask(task) {
+    return new HBSchedulerTaskBuilder(this.#global, task)
   }
 }
 
@@ -53,9 +54,11 @@ class HBSchedulerTaskBuilder {
 
   /**
    * @param {Window} global
+   * @param {function} task
    */
-  constructor(global) {
+  constructor(global,task) {
     this.#global = global;
+    this.#task = task;
   }
 
   /**
@@ -68,15 +71,6 @@ class HBSchedulerTaskBuilder {
 
   background() {
     this.#priority = PRIORITIES.BACKGROUND
-    return this
-  }
-
-  /**
-   * @param {function()} value
-   * @return {HBSchedulerTaskBuilder}
-   */
-  task(value) {
-    this.#task = TypeCheck.assertIsFunction(value)
     return this
   }
 
