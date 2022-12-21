@@ -118,6 +118,13 @@ export class ComponentContext extends WithID {
   }
 
   /**
+   * @return {?SchedulerHandler}
+   */
+  scheduler() {
+    return this.APP().scheduler()
+  }
+
+  /**
    * @param {function} clb
    * @return {EventHandler}
    */

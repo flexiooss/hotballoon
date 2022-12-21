@@ -7,6 +7,7 @@ import {isNull} from '@flexio-oss/js-commons-bundle/assert'
 import {UID} from '@flexio-oss/js-commons-bundle/js-helpers'
 import {HotballoonApplicationConfig} from './HotballoonApplicationConfig'
 import {ExecutionConfig} from './ExecutionConfig'
+import {IntersectionObserverHandler} from "./intersectionObserver/IntersectionObserverHandler";
 
 
 export class ApplicationBuilder {
@@ -98,7 +99,7 @@ export class ApplicationBuilder {
       new HotballoonApplicationConfig(
         this.#id,
         isNull(this.#dispatcher) ? new Dispatcher() : this.#dispatcher,
-        new ViewRenderConfig(this.#document, this.#viewDebug, this.#domAccessor),
+        new ViewRenderConfig(this.#document, this.#viewDebug, this.#domAccessor, new IntersectionObserverHandler((this.#document?.defaultView ?? null))),
         new ComponentsContextHandler(),
         new ExecutionConfig(this.#navigator)
       )
