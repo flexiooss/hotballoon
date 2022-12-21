@@ -49,6 +49,7 @@ export class HotBalloonApplication extends WithID {
       enumerable: true,
       value: CLASS_TAG_NAME_HOTBALLOON_APPLICATION
     })
+    console.log(this.#config.viewRenderConfig().document())
     if (!isNull(this.#config.viewRenderConfig().document())) {
       this.#scheduler = new SchedulerHandler(this.#config.viewRenderConfig().document().defaultView)
     }

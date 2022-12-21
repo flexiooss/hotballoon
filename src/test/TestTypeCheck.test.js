@@ -1,3 +1,4 @@
+import {FakeDocument} from "./FakeDocument";
 import {TestCase} from '@flexio-oss/code-altimeter-js'
 import {TypeCheck} from '../js/Types/TypeCheck'
 import {InMemoryStoreBuilder} from '../js/Store/InMemoryStoreBuilder'
@@ -22,6 +23,7 @@ export class TestTypeCheck extends TestCase {
    */
   app() {
     return new ApplicationBuilder()
+      .document(new FakeDocument())
       .build()
   }
 
