@@ -11,6 +11,7 @@ import {ComponentContextBuilder} from './ComponentContextBuilder'
 import {ComponentsContextHandler} from '../Component/ComponentsContextHandler'
 import {HotballoonApplicationConfig} from './HotballoonApplicationConfig'
 import {Logger} from "@flexio-oss/js-commons-bundle/hot-log";
+import {LongTaskChopper} from "./LongTaskChopper";
 
 /**
  * @extends WithID
@@ -30,6 +31,10 @@ export class HotBalloonApplication extends WithID {
    * @type {Logger}
    */
   #logger = Logger.getLogger(this.constructor.name, 'HotBalloon.HotBalloonApplication')
+  /**
+   * @type {LongTaskChopper}
+   */
+  #longTaskChopper
 
   /**
    * @param {HotballoonApplicationConfig} config
@@ -44,6 +49,7 @@ export class HotBalloonApplication extends WithID {
       enumerable: true,
       value: CLASS_TAG_NAME_HOTBALLOON_APPLICATION
     })
+    this.#longTaskChopper = new LongTaskChopper(this.#config)
     this.#logger.info('HotBalloonApplication:init: ' + config.id(), this)
   }
 
@@ -66,6 +72,13 @@ export class HotBalloonApplication extends WithID {
    */
   scheduler() {
     return this.#config.schedulerHandler()
+  }
+
+  /**
+   * @return {LongTaskChopper}
+   */
+  longTaskChopper() {
+    return this.#longTaskChopper
   }
 
   /**
