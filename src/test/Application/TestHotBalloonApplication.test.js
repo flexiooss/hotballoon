@@ -1,6 +1,5 @@
 import {TestCase} from '@flexio-oss/code-altimeter-js'
-import {HotBalloonApplication} from '../../js/Application/HotBalloonApplication'
-import {ApplicationBuilder} from '../../js/Application/ApplicationBuilder'
+import {ApplicationBuilder} from '../../../ApplicationBuilder'
 
 
 const assert = require('assert')

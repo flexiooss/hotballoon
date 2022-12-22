@@ -43,7 +43,7 @@ export {ExecutorInline} from './src/js/Job/ExecutorInline'
 
 export {OrderedEventListenerConfigBuilder} from '@flexio-oss/js-commons-bundle/event-handler'
 
-export {AsyncDomAccessor} from './src/js/View/DomAccessor'
+export {AsyncDomAccessor, SyncDomAccessor} from './src/js/View/DomAccessor'
 
 export {HBException} from './src/js/Exception/HBException'
 export {UnexpectedError} from './src/js/Exception/UnexpectedError'

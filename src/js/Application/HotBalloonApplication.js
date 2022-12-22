@@ -11,7 +11,6 @@ import {ComponentContextBuilder} from './ComponentContextBuilder'
 import {ComponentsContextHandler} from '../Component/ComponentsContextHandler'
 import {HotballoonApplicationConfig} from './HotballoonApplicationConfig'
 import {Logger} from "@flexio-oss/js-commons-bundle/hot-log";
-import {SchedulerHandler} from "../Scheduler/SchedulerHandler";
 
 /**
  * @extends WithID
@@ -31,10 +30,6 @@ export class HotBalloonApplication extends WithID {
    * @type {Logger}
    */
   #logger = Logger.getLogger(this.constructor.name, 'HotBalloon.HotBalloonApplication')
-  /**
-   * @type {?SchedulerHandler}
-   */
-  #scheduler = null
 
   /**
    * @param {HotballoonApplicationConfig} config
@@ -49,10 +44,6 @@ export class HotBalloonApplication extends WithID {
       enumerable: true,
       value: CLASS_TAG_NAME_HOTBALLOON_APPLICATION
     })
-    console.log(this.#config.viewRenderConfig().document())
-    if (!isNull(this.#config.viewRenderConfig().document())) {
-      this.#scheduler = new SchedulerHandler(this.#config.viewRenderConfig().document().defaultView)
-    }
     this.#logger.info('HotBalloonApplication:init: ' + config.id(), this)
   }
 
@@ -71,10 +62,10 @@ export class HotBalloonApplication extends WithID {
   }
 
   /**
-   * @return {?SchedulerHandler}
+   * @return {SchedulerHandler}
    */
   scheduler() {
-    return this.#scheduler
+    return this.#config.schedulerHandler()
   }
 
   /**

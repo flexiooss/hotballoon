@@ -59,6 +59,9 @@ export class AsyncDomAccessor extends DomAccessor {
    */
   #logger = Logger.getLogger(this.constructor.name,'AsyncDomAccessor' )
 
+  /**
+   * @param {Window} window
+   */
   constructor(window) {
     super()
     assertType(!isUndefined(window), '`window` should not be empty')

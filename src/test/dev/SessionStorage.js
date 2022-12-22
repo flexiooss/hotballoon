@@ -1,20 +1,15 @@
-import {ApplicationBuilder} from "../../js/Application/ApplicationBuilder";
-import {Dispatcher} from "../../js/Dispatcher/Dispatcher";
-import {AsyncDomAccessor} from "../../js/View/DomAccessor";
 import {JsStorageStoreBuilder} from "../../js/Store/JsStorageStoreBuilder";
 import {Layer} from "./LayerFixture";
 import {UIDMini} from "@flexio-oss/js-commons-bundle/js-helpers";
+import {BrowserApplicationBuilder} from "../../../BrowserApplicationBuilder";
 
 /**
  * @type {HotBalloonApplication}
  */
-const app = new ApplicationBuilder()
+const app = new BrowserApplicationBuilder()
   .id('storage')
-  .dispatcher(new Dispatcher())
   .viewDebug(true)
   .document(document)
-  .navigator(navigator)
-  .domAccessor(new AsyncDomAccessor(window))
   .build()
 
 /**

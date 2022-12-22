@@ -1,9 +1,8 @@
 import {TestCase} from '@flexio-oss/code-altimeter-js'
-import {HotBalloonApplication} from '../../js/Application/HotBalloonApplication'
 import {ViewContainer, ViewContainerParameters} from '../../js/View/ViewContainer'
 import {InMemoryStoreBuilder} from '../../js/Store/InMemoryStoreBuilder'
 import {FakeValueObject, FakeValueObjectBuilder} from '../FakeValueObject'
-import {ApplicationBuilder} from '../../js/Application/ApplicationBuilder'
+import {ApplicationBuilder} from '../../../ApplicationBuilder'
 
 const assert = require('assert')
 
