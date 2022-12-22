@@ -1,17 +1,14 @@
-import {ApplicationBuilder} from "../../js/Application/ApplicationBuilder";
 import {Dispatcher} from "../../js/Dispatcher/Dispatcher";
-import {AsyncDomAccessor} from "../../js/View/DomAccessor";
+import {BrowserApplicationBuilder} from "../../../BrowserApplicationBuilder";
 
 /**
  * @type {HotBalloonApplication}
  */
-const app = new ApplicationBuilder()
+const app = new BrowserApplicationBuilder()
   .id('html')
   .dispatcher(new Dispatcher())
   .viewDebug(true)
   .document(document)
-  .navigator(navigator)
-  .domAccessor(new AsyncDomAccessor(window))
   .build()
 
 document.body.insertAdjacentHTML('beforeend', `<template id="template1">

@@ -35,7 +35,10 @@ export class ApplicationBuilder {
    * @type {boolean}
    */
   #viewDebug = false
-
+  /**
+   * @type {SchedulerHandler}
+   */
+  #scheduler
 
   /**
    * @param {string} value
@@ -92,6 +95,15 @@ export class ApplicationBuilder {
   }
 
   /**
+   * @param {SchedulerHandler} value
+   * @return {ApplicationBuilder}
+   */
+  scheduler(value){
+    this.#scheduler = value
+    return this
+  }
+
+  /**
    * @return {HotBalloonApplication}
    */
   build() {
@@ -101,7 +113,8 @@ export class ApplicationBuilder {
         isNull(this.#dispatcher) ? new Dispatcher() : this.#dispatcher,
         new ViewRenderConfig(this.#document, this.#viewDebug, this.#domAccessor, new IntersectionObserverHandler((this.#document?.defaultView ?? null))),
         new ComponentsContextHandler(),
-        new ExecutionConfig(this.#navigator)
+        new ExecutionConfig(this.#navigator),
+        this.#scheduler
       )
     )
   }

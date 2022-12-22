@@ -178,7 +178,7 @@ export class ViewContainer extends ViewContainerBase {
 
 
   /**
-   * @return {?SchedulerHandler}
+   * @return {SchedulerHandler}
    */
   scheduler() {
     return this.#config.componentContext().scheduler()

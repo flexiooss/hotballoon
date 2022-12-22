@@ -1,4 +1,4 @@
-import {ApplicationBuilder} from '../../js/Application/ApplicationBuilder'
+import {BrowserApplicationBuilder} from '../../../BrowserApplicationBuilder'
 import {Dispatcher} from '../../js/Dispatcher/Dispatcher'
 import {AsyncDomAccessor} from '../../js/View/DomAccessor'
 import {ViewContainer, ViewContainerParameters} from '../../js/View/ViewContainer'
@@ -42,13 +42,10 @@ class ViewDemo extends View {
 /**
  * @type {HotBalloonApplication}
  */
-const app = new ApplicationBuilder()
+const app = new BrowserApplicationBuilder()
   .id('html')
-  .dispatcher(new Dispatcher())
   .viewDebug(true)
   .document(document)
-  .navigator(navigator)
-  .domAccessor(new AsyncDomAccessor(window))
   .build()
 
 /**

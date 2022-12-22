@@ -210,7 +210,7 @@ export class ViewContainerBase extends WithID {
   }
 
   /**
-   * @return {?SchedulerHandler}
+   * @return {SchedulerHandler}
    * @abstract
    */
   scheduler() {

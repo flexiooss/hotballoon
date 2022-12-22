@@ -1,8 +1,7 @@
 import {TestCase} from '@flexio-oss/code-altimeter-js'
-import {HotBalloonApplication} from '../../js/Application/HotBalloonApplication'
 import {ActionDispatcherBuilder} from '../../js/Action/ActionDispatcherBuilder'
 import {FakeObject, FakeObjectBuilder} from './FakeObject'
-import {ApplicationBuilder} from '../../js/Application/ApplicationBuilder'
+import {ApplicationBuilder} from '../../../ApplicationBuilder'
 import {ActionSubscriber} from "../../js/Action/ActionSubscriber";
 
 

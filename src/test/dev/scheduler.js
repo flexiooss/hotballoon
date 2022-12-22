@@ -1,17 +1,14 @@
-import {ApplicationBuilder} from "../../js/Application/ApplicationBuilder";
 import {Dispatcher} from "../../js/Dispatcher/Dispatcher";
-import {AsyncDomAccessor} from "../../js/View/DomAccessor";
+import {BrowserApplicationBuilder} from "../../../BrowserApplicationBuilder";
 
 /**
  * @type {HotBalloonApplication}
  */
-const app = new ApplicationBuilder()
+const app = new BrowserApplicationBuilder()
   .id('scheduler')
   .dispatcher(new Dispatcher())
   .viewDebug(true)
   .document(document)
-  .navigator(navigator)
-  .domAccessor(new AsyncDomAccessor(window))
   .build()
 
 app.scheduler().postTask(() => '1 => 1').blocking().build().exec().then(r => {
