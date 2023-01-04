@@ -31,7 +31,9 @@ class Handler {
     let handler = getObserverHandler()
     if (handler.callBacks.has(item.id)) {
       setTimeout(() => {
-        handler.callBacks.get(item.id).call(null, item)
+        if (handler.callBacks.has(item.id)) {
+          handler.callBacks.get(item.id).call(null, item)
+        }
       })
     }
   }
@@ -47,8 +49,8 @@ class Handler {
     if (isEmpty(element.id)) {
       throw new Error('Handler:IntersectionObserver: element should have an id')
     }
-    this.callBacks.set(element.id, (item)=> {
-      TypeCheck.assertIsFunction(clb).call(null,item)
+    this.callBacks.set(element.id, (item) => {
+      TypeCheck.assertIsFunction(clb).call(null, item)
       this.unObserve(item, true)
     })
     element.addEventListener('__HB_VISIBLE__', this.execVisible)
