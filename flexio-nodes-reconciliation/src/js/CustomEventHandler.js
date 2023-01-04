@@ -210,9 +210,11 @@ export class CustomEventHandler {
    * @return {CustomEventHandler}
    * @private
    */
-  _clearTapInterval() {
-    clearInterval(this._timer)
-    this._timer = null
+  _clearTap() {
+    if (!isNull(this._timerHold)) {
+      clearTimeout(this._timer)
+      this._timer = null
+    }
     return this
   }
 
@@ -220,9 +222,11 @@ export class CustomEventHandler {
    * @return {CustomEventHandler}
    * @private
    */
-  _clearHoldInterval() {
-    clearInterval(this._timerHold)
-    this._timerHold = null
+  _clearHold() {
+    if (!isNull(this._timerHold)) {
+      clearTimeout(this._timerHold)
+      this._timerHold = null
+    }
     return this
   }
 
@@ -231,15 +235,15 @@ export class CustomEventHandler {
    * @param {PointerEvent} event
    */
   pointermoveExe(event) {
-        this._captureEvent(event.pointerId);
+    this._captureEvent(event.pointerId);
     this._element.ownerDocument.defaultView.requestAnimationFrame(() => {
-    //   try {
-    //     this._captureEvent(event.pointerId);
-    //   } catch (e) {
-    //     if (!e instanceof DOMException) {
-    //       throw e
-    //     }
-    //   }
+      //   try {
+      //     this._captureEvent(event.pointerId);
+      //   } catch (e) {
+      //     if (!e instanceof DOMException) {
+      //       throw e
+      //     }
+      //   }
       if (!this._moving) {
         if (!isNull(this._startCoords)) {
           if (Math.abs(this._startCoords.x - event.x) > this._moveThreshold) {
@@ -261,7 +265,7 @@ export class CustomEventHandler {
     this._up = false
     this
       ._resetMoving()
-      ._clearHoldInterval()
+      ._clearHold()
     this._startCoords = {
       x: event.x,
       y: event.y
@@ -316,18 +320,18 @@ export class CustomEventHandler {
     if (this._hold) {
       this._element.removeEventListener('pointermove', this._pointermove)
       this
-        ._clearHoldInterval()
+        ._clearHold()
         ._resetMoving()
     }
 
     if (this._doubleTap && ((now - this._end) < this._doubleThreshold)) {
-      this._clearTapInterval()
+      this._clearTap()
       this._dispatchEvent(CustomEventHandler.DOUBLE_TAP, event)
     } else if (this._tap && !isNull(this._start) && isNull(this._timer)) {
       if (this._doubleTap) {
         this._timer = setTimeout(() => {
           this._dispatchEvent(CustomEventHandler.TAP, event)
-          this._clearTapInterval()
+          this._clearTap()
         }, this._doubleThreshold)
       } else {
         this._dispatchEvent(CustomEventHandler.TAP, event)
