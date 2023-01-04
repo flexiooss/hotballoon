@@ -9,6 +9,14 @@ const __CustomEventHandler__ = Symbol('__CustomEventHandler__')
 
 
 export class CustomEventHandler {
+  /**
+   * @type {?function(callback: FrameRequestCallback):number}
+   */
+  static requestAnimationFrame = null
+  /**
+   * @type {?function(handle: number):void}
+   */
+  static cancelAnimationFrame = null
   static TAP = 'HB_TAP'
   static HOLD = 'HB_HOLD'
   static DOUBLE_TAP = 'HB_DOUBLE_TAP'
@@ -101,6 +109,20 @@ export class CustomEventHandler {
     this._element[__CustomEventHandler__] = this
     this._element.addEventListener('pointerdown', this._pointerdown)
     this._element.addEventListener('pointerup', this._pointerup)
+    this.#ensureAnimation();
+  }
+
+  /**
+   * @return {CustomEventHandler}
+   */
+  #ensureAnimation() {
+    if (isNull(CustomEventHandler.requestAnimationFrame)) {
+      CustomEventHandler.requestAnimationFrame = (fn) => this._element.ownerDocument.defaultView.requestAnimationFrame.call(this._element.ownerDocument.defaultView, fn)
+    }
+    if (isNull(CustomEventHandler.cancelAnimationFrame)) {
+      CustomEventHandler.cancelAnimationFrame = (handle) => this._element.ownerDocument.defaultView.cancelAnimationFrame.call(this._element.ownerDocument.defaultView, handle)
+    }
+    return this
   }
 
   /**
@@ -211,8 +233,9 @@ export class CustomEventHandler {
    * @private
    */
   _clearTap() {
-    if (!isNull(this._timerHold)) {
-      clearTimeout(this._timer)
+    if (!isNull(this._timer)) {
+      CustomEventHandler.clearRequestTimeout(this._timer)
+      // clearTimeout(this._timer)
       this._timer = null
     }
     return this
@@ -224,10 +247,45 @@ export class CustomEventHandler {
    */
   _clearHold() {
     if (!isNull(this._timerHold)) {
-      clearTimeout(this._timerHold)
+      CustomEventHandler.clearRequestTimeout(this._timerHold)
+      // clearTimeout(this._timerHold)
       this._timerHold = null
     }
     return this
+  }
+
+  /**
+   * @param {function} fn
+   * @param delay {number}
+   * @return {{value:number}}
+   */
+  static requestTimeout(fn, delay) {
+
+    const start = new Date().getTime();
+    let handle = {};
+
+    const loop = function () {
+      let current = new Date().getTime();
+      let delta = current - start;
+      if (delta >= delay) {
+        fn.call(null);
+      } else {
+        handle.value = CustomEventHandler.requestAnimationFrame(loop);
+      }
+    };
+    handle.value = CustomEventHandler.requestAnimationFrame(loop);
+
+    return handle;
+  }
+
+  /**
+   * @param {object} handle The callback function
+   * @returns {void}
+   */
+  static clearRequestTimeout(handle) {
+    if (handle) {
+      CustomEventHandler.cancelAnimationFrame(handle.value)
+    }
   }
 
   /**
@@ -236,7 +294,7 @@ export class CustomEventHandler {
    */
   pointermoveExe(event) {
     this._captureEvent(event.pointerId);
-    this._element.ownerDocument.defaultView.requestAnimationFrame(() => {
+    CustomEventHandler.requestAnimationFrame(() => {
       //   try {
       //     this._captureEvent(event.pointerId);
       //   } catch (e) {
@@ -274,7 +332,16 @@ export class CustomEventHandler {
     if (this._hold) {
 
       this._element.addEventListener('pointermove', this._pointermove)
-      this._timerHold = setTimeout(
+      // this._timerHold = setTimeout(
+      //   () => {
+      //     this._element.removeEventListener('pointermove', this._pointermove)
+      //     if (isNull(this._timerHold) || this._up || this._moving || isNull(this._start)) return
+      //     this._dispatchEvent(CustomEventHandler.HOLD, event)
+      //     this._start = null
+      //   },
+      //   this._holdThreshold
+      // )
+      this._timerHold = CustomEventHandler.requestTimeout(
         () => {
           this._element.removeEventListener('pointermove', this._pointermove)
           if (isNull(this._timerHold) || this._up || this._moving || isNull(this._start)) return
@@ -329,7 +396,12 @@ export class CustomEventHandler {
       this._dispatchEvent(CustomEventHandler.DOUBLE_TAP, event)
     } else if (this._tap && !isNull(this._start) && isNull(this._timer)) {
       if (this._doubleTap) {
-        this._timer = setTimeout(() => {
+        // this._timer = setTimeout(() => {
+        //   this._dispatchEvent(CustomEventHandler.TAP, event)
+        //   this._clearTap()
+        // }, this._doubleThreshold)
+
+        this._timer = CustomEventHandler.requestTimeout(() => {
           this._dispatchEvent(CustomEventHandler.TAP, event)
           this._clearTap()
         }, this._doubleThreshold)
