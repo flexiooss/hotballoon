@@ -11,14 +11,14 @@ export class ProxyStoreConfig extends StoreBaseConfig {
    * @param {TYPE} initialData
    * @param {StoreInterface<STORE_TYPE>} store
    * @param {StoreTypeConfig<TYPE, TYPE_BUILDER>} storeTypeConfig
-   * @param {function(state: STORE_TYPE, proxyStore:?TYPE ):TYPE}  mapper
+   * @param {function(state: STORE_TYPE,proxyStore:?TYPE): TYPE | function(state: STORE_TYPE,proxyStore:?TYPE): Promise<TYPE>}  mapper
    * @param {StorageInterface<TYPE>} storage
    */
   constructor(id, initialData, store, storeTypeConfig, mapper, storage) {
     super(id, initialData, storeTypeConfig, storage)
 
     /**
-     * @type {function(state: STORE_TYPE): TYPE}
+     * @type {function(state: STORE_TYPE,proxyStore:?TYPE): TYPE | function(state: STORE_TYPE,proxyStore:?TYPE): Promise<TYPE>}
      * @private
      */
     this._mapper = TypeTypeCheck.assertIsFunction(mapper)
@@ -37,7 +37,7 @@ export class ProxyStoreConfig extends StoreBaseConfig {
   }
 
   /**
-   * @return {function(state: STORE_TYPE, proxyStore:ProxyStore ):TYPE}
+   * @return{function(state: STORE_TYPE,proxyStore:?TYPE): TYPE | function(state: STORE_TYPE,proxyStore:?TYPE): Promise<TYPE>}
    */
   mapper() {
     return this._mapper
