@@ -163,7 +163,13 @@ export class View extends ViewContainerBase {
       const candidate = this.buildTemplate()
 
       if (isNull(candidate) || isNull(this.node())) {
-        this.#replaceNode()
+        const currentNode = this.node()
+        if (!isNull(candidate)) {
+          this.#replaceNode(candidate)
+          this.mount()
+        } else {
+          this.#removeNode()
+        }
       } else {
 
         $(candidate).setViewRef(this.ID())
@@ -461,8 +467,8 @@ export class View extends ViewContainerBase {
   /**
    * @return {?Element}
    */
-  #replaceNode() {
-    this.#node = this.buildTemplate()
+  #replaceNode(candidate = null) {
+    this.#node = candidate ?? this.buildTemplate()
     return this.#node
   }
 
