@@ -45,7 +45,7 @@ export class AsyncProxyStore extends StoreBase {
       )
     )
 
-    this.#config = assertInstanceOf(ProxyStoreConfig, ProxyStoreConfig, 'ProxyStoreConfig')
+    this.#config = assertInstanceOf(proxyStoreConfig, ProxyStoreConfig, 'ProxyStoreConfig')
 
     Object.defineProperty(this, CLASS_TAG_NAME, {
       configurable: false,

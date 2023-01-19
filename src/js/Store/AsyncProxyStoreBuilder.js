@@ -1,9 +1,9 @@
 import {InMemoryStorage} from './Storage/InMemoryStorage'
 import {StoreState} from './StoreState'
 import {StoreTypeConfig} from './StoreTypeConfig'
-import {ProxyStore} from './ProxyStore'
 import {ProxyStoreConfig} from './ProxyStoreConfig'
 import {ProxyStoreBuilder} from "./ProxyStoreBuilder";
+import {AsyncProxyStore} from "./AsyncProxyStore";
 
 /**
  *
@@ -22,7 +22,7 @@ export class AsyncProxyStoreBuilder extends ProxyStoreBuilder {
   }
 
   /**
-   * @return {Promise<ProxyStore<STORE_TYPE, STORE_TYPE_BUILDER, TYPE, TYPE_BUILDER>>}
+   * @return {Promise<AsyncProxyStore<STORE_TYPE, STORE_TYPE_BUILDER, TYPE, TYPE_BUILDER>>}
    */
   async build() {
 
@@ -30,7 +30,7 @@ export class AsyncProxyStoreBuilder extends ProxyStoreBuilder {
     const data = this._store.state().data()
     const initialData = await this._mapper(data, null)
 
-    return new ProxyStore(
+    return new AsyncProxyStore(
       new ProxyStoreConfig(
         id,
         initialData,
