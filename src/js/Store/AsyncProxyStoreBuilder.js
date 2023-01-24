@@ -13,7 +13,7 @@ export class AsyncProxyStoreBuilder extends ProxyStoreBuilder {
 
 
   /**
-   * @param {function(state: STORE_TYPE, proxyStore:?TYPE ):Promise<TYPE>} mapper
+   * @param {function(state: STORE_TYPE, proxyStore:AsyncProxyStore<STORE_TYPE, STORE_TYPE_BUILDER, TYPE, TYPE_BUILDER> ):Promise<TYPE>} mapper
    * @return {ProxyStoreBuilder}
    */
   mapper(mapper) {
@@ -22,18 +22,16 @@ export class AsyncProxyStoreBuilder extends ProxyStoreBuilder {
   }
 
   /**
-   * @return {Promise<AsyncProxyStore<STORE_TYPE, STORE_TYPE_BUILDER, TYPE, TYPE_BUILDER>>}
+   * @return {AsyncProxyStore<STORE_TYPE, STORE_TYPE_BUILDER, TYPE, TYPE_BUILDER>}
    */
-  async build() {
+   build() {
 
     const id = this._uniqName()
-    const data = this._store.state().data()
-    const initialData = await this._mapper(data, null)
 
     return new AsyncProxyStore(
       new ProxyStoreConfig(
         id,
-        initialData,
+        null,
         this._store,
         new StoreTypeConfig(
           this._type,
@@ -46,7 +44,7 @@ export class AsyncProxyStoreBuilder extends ProxyStoreBuilder {
           new StoreState(
             id,
             this._type,
-            initialData
+            null
           )
         )
       )
