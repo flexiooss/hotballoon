@@ -38,8 +38,9 @@ export class AsyncProxyStore extends StoreBase {
 
   /**
    * @param {ProxyStoreConfig<STORE_TYPE, TYPE, TYPE_BUILDER>} proxyStoreConfig
+   * @param {boolean} asyncInitialValue
    */
-  constructor(proxyStoreConfig) {
+  constructor(proxyStoreConfig, asyncInitialValue) {
     super(
       new StoreBaseConfig(
         proxyStoreConfig.id(),
@@ -59,12 +60,13 @@ export class AsyncProxyStore extends StoreBase {
     })
     this.#parentStore = TypeCheck.assertStoreBase(this.#config.store())
 
-
     this.#subscribeToStore()
-    this._mapper().call(null, this.#parentStore.state().data(),this).then(v=>{
-      this.#initialData = v
-      this.set(v)
-    })
+    if (asyncInitialValue) {
+      this._mapper().call(null, this.#parentStore.state().data(), this).then(v => {
+        this.#initialData = v
+        this.set(v)
+      })
+    }
   }
 
   #subscribeToStore() {
