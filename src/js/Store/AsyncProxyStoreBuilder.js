@@ -10,10 +10,21 @@ import {AsyncProxyStore} from "./AsyncProxyStore";
  * @template  STORE_TYPE, STORE_TYPE_BUILDER,  TYPE, TYPE_BUILDER
  */
 export class AsyncProxyStoreBuilder extends ProxyStoreBuilder {
-
+  /**
+   * @type {boolean}
+   */
+  #asyncInitialValue = false
 
   /**
-   * @param {function(state: STORE_TYPE, proxyStore:?TYPE ):Promise<TYPE>} mapper
+   * @return {AsyncProxyStoreBuilder}
+   */
+  asyncInitialValue(){
+    this.#asyncInitialValue = true
+    return this
+  }
+
+  /**
+   * @param {function(state: STORE_TYPE, proxyStore:AsyncProxyStore<STORE_TYPE, STORE_TYPE_BUILDER, TYPE, TYPE_BUILDER> ):Promise<TYPE>} mapper
    * @return {ProxyStoreBuilder}
    */
   mapper(mapper) {
@@ -27,13 +38,15 @@ export class AsyncProxyStoreBuilder extends ProxyStoreBuilder {
   async build() {
 
     const id = this._uniqName()
-    const data = this._store.state().data()
-    const initialData = await this._mapper(data, null)
+
+    const iniV = this.#asyncInitialValue
+      ? null
+      : await this._mapper.call(null, this._store.state().data())
 
     return new AsyncProxyStore(
       new ProxyStoreConfig(
         id,
-        initialData,
+        iniV,
         this._store,
         new StoreTypeConfig(
           this._type,
@@ -46,10 +59,11 @@ export class AsyncProxyStoreBuilder extends ProxyStoreBuilder {
           new StoreState(
             id,
             this._type,
-            initialData
+            iniV
           )
         )
-      )
+      ),
+      this.#asyncInitialValue
     )
   }
 }

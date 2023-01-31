@@ -31,11 +31,16 @@ export class AsyncProxyStore extends StoreBase {
    * @type {StoreInterface<STORE_TYPE>}
    */
   #parentStore
+  /**
+   * @type {?TYPE}
+   */
+  #initialData = null
 
   /**
    * @param {ProxyStoreConfig<STORE_TYPE, TYPE, TYPE_BUILDER>} proxyStoreConfig
+   * @param {boolean} asyncInitialValue
    */
-  constructor(proxyStoreConfig) {
+  constructor(proxyStoreConfig, asyncInitialValue) {
     super(
       new StoreBaseConfig(
         proxyStoreConfig.id(),
@@ -54,7 +59,14 @@ export class AsyncProxyStore extends StoreBase {
       value: CLASS_TAG_NAME_PROXYSTORE
     })
     this.#parentStore = TypeCheck.assertStoreBase(this.#config.store())
+
     this.#subscribeToStore()
+    if (asyncInitialValue) {
+      this._mapper().call(null, this.#parentStore.state().data(), this).then(v => {
+        this.#initialData = v
+        this.set(v)
+      })
+    }
   }
 
   #subscribeToStore() {
@@ -78,8 +90,8 @@ export class AsyncProxyStore extends StoreBase {
       this.#listenedStore.remove()
     }
     this.#parentStore = TypeCheck.assertStoreBase(store)
-    this.#mapAndUpdate(this.#parentStore.state(), STORE_CHANGED)
     this.#subscribeToStore()
+    this.#mapAndUpdate(this.#parentStore.state(), STORE_CHANGED)
     return this
   }
 
@@ -106,7 +118,7 @@ export class AsyncProxyStore extends StoreBase {
     /**
      * @type {TYPE}
      */
-    const state = await this._mapper().call(null, payload.data(), this.state().data())
+    const state = await this._mapper().call(null, payload.data(), this)
     if (this.#shouldUpdate) {
       this.set(state)
     }
@@ -127,6 +139,13 @@ export class AsyncProxyStore extends StoreBase {
   shouldNotUpdate() {
     this.#shouldUpdate = false
     return this
+  }
+
+  /**
+   * Set value to initial data
+   */
+  reset() {
+    this.set(this.#initialData)
   }
 
   remove() {
