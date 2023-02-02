@@ -6,9 +6,9 @@ import {HBTaskAbortException} from "./HBTaskAbortException";
 import {PRIORITIES} from "./PRIORITIES";
 import {SchedulerHandlerInterface} from "./SchedulerHandler";
 
-export class BrowserSchedulerHandler extends SchedulerHandlerInterface(class  {
+export class BrowserSchedulerHandler extends SchedulerHandlerInterface(class {
 
-}){
+}) {
   /**
    * @type {Window}
    */
@@ -31,9 +31,9 @@ export class BrowserSchedulerHandler extends SchedulerHandlerInterface(class  {
   }
 }
 
-class HBSchedulerTaskBuilderImpl extends HBSchedulerTaskBuilderInterface(class  {
+class HBSchedulerTaskBuilderImpl extends HBSchedulerTaskBuilderInterface(class {
 
-}){
+}) {
   /**
    * @type {Window}
    */
@@ -55,7 +55,7 @@ class HBSchedulerTaskBuilderImpl extends HBSchedulerTaskBuilderInterface(class  
    * @param {Window} global
    * @param {function} task
    */
-  constructor(global,task) {
+  constructor(global, task) {
     super()
     this.#global = global;
     this.#task = task;
@@ -68,6 +68,7 @@ class HBSchedulerTaskBuilderImpl extends HBSchedulerTaskBuilderInterface(class  
     this.#priority = PRIORITIES.BLOCKING
     return this
   }
+
   /**
    * @return {HBSchedulerTaskBuilder}
    */
@@ -98,9 +99,10 @@ class HBSchedulerTaskBuilderImpl extends HBSchedulerTaskBuilderInterface(class  
   }
 }
 
-class HBTaskImpl extends HBTaskInterface(class {
-
-}) {
+/**
+ * @implements {HBTask}
+ */
+class HBTaskImpl extends HBTaskInterface() {
   /**
    * @type {Window}
    */
@@ -134,14 +136,14 @@ class HBTaskImpl extends HBTaskInterface(class {
     this.#task = TypeCheck.assertIsFunction(task);
     this.#priority = priority;
     this.#delay = TypeCheck.assertIsNumberOrNull(delay);
+    this.#controller = new this.#global.TaskController( {priority: this.#priority})
   }
 
   /**
    * @return {Promise<*>}
    */
   async exec() {
-    this.#controller = new this.#global.TaskController()
-    let options = {priority: this.#priority, signal: this.#controller.signal}
+    let options = { signal: this.#controller.signal}
     if (!isNull(this.#delay)) {
       options.delay = this.#delay
     }
@@ -154,6 +156,37 @@ class HBTaskImpl extends HBTaskInterface(class {
       this.#controller = null
     }
     this.#task = null
+  }
+
+  /**
+   * @return {HBTaskImpl}
+   */
+  toPriorityBlocking() {
+    if (!isNull(this.#controller)) {
+      console.log('ici')
+      this.#controller.setPriority(PRIORITIES.BLOCKING)
+    }
+    return this
+  }
+
+  /**
+   * @return {HBTaskImpl}
+   */
+  toPriorityNormal() {
+    if (!isNull(this.#controller)) {
+      this.#controller.setPriority(PRIORITIES.VISIBLE)
+    }
+    return this
+  }
+
+  /**
+   * @return {HBTaskImpl}
+   */
+  toPriorityBackground() {
+    if (!isNull(this.#controller)) {
+      this.#controller.setPriority(PRIORITIES.BACKGROUND)
+    }
+    return this
   }
 }
 
