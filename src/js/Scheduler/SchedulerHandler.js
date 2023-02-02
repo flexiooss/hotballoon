@@ -1,7 +1,7 @@
 import {NotOverrideException} from "@flexio-oss/js-commons-bundle/assert";
 import {isImplement} from '@flexio-oss/js-commons-bundle/js-helpers'
 
-export const SchedulerHandlerInterface = (Base) => {
+export const SchedulerHandlerInterface = (Base = class{}) => {
   /**
    * @interface
    */

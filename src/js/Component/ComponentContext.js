@@ -10,6 +10,7 @@ import {OrderedEventHandler} from '../Event/OrderedEventHandler'
 import {OrderedEventListenerConfigBuilder} from '@flexio-oss/js-commons-bundle/event-handler'
 import {Logger} from "@flexio-oss/js-commons-bundle/hot-log";
 import {IntersectionObserverHandler} from "../Application/intersectionObserver/IntersectionObserverHandler";
+import {SchedulerHandlerInterface} from "../Scheduler/SchedulerHandler";
 
 const REMOVE = 'REMOVE'
 
@@ -126,7 +127,7 @@ export class ComponentContext extends WithID {
    * @return {SchedulerHandler}
    */
   scheduler() {
-    return this.APP().scheduler()
+    return new ComponentContextScheduler(this)
   }
 
   /**
@@ -176,6 +177,37 @@ export class ComponentContext extends WithID {
    */
   isRemoving() {
     return this.#removed
+  }
+}
+
+/**
+ * @implements {SchedulerHandler}
+ */
+class ComponentContextScheduler extends SchedulerHandlerInterface() {
+  /**
+   * @type {ComponentContext}
+   */
+  #componentContext
+
+  /**
+   * @param {ComponentContext} componentContext
+   */
+  constructor(componentContext) {
+    super();
+    this.#componentContext = componentContext;
+  }
+
+  /**
+   * @param  {function} task
+   * @return {HBSchedulerTaskBuilder}
+   */
+  postTask(task) {
+    return this.#componentContext.APP().scheduler().postTask(
+      () => {
+        if (this.#componentContext.isRemoving()) return
+        task.call(null)
+      }
+    );
   }
 }
 
