@@ -1,5 +1,5 @@
 import {isEmpty, isNull, TypeCheck} from "@flexio-oss/js-commons-bundle/assert";
-
+import {UIDMini} from "@flexio-oss/js-commons-bundle/js-helpers";
 
 class Handler {
   /**
@@ -7,7 +7,7 @@ class Handler {
    */
   #observer
   /**
-   * @type {Map<string, function(el:HTMLElement):void>}
+   * @type {Map<string, Observable>}
    */
   callBacks = new Map()
 
@@ -32,27 +32,32 @@ class Handler {
     if (handler.callBacks.has(item.id)) {
       setTimeout(() => {
         if (handler.callBacks.has(item.id)) {
-          handler.callBacks.get(item.id).call(null, item)
+          handler.callBacks.get(item.id).callback().call(null, item)
         }
       })
     }
   }
 
   /**
+   * @param {string} group
    * @param {HTMLElement} element
    * @param {function(el:HTMLElement):void} clb
    * @return {Handler}
    */
-  observe(element, clb) {
+  observe(group, element, clb) {
     TypeCheck.assertIsNode(element)
     this.#observer.observe(element)
     if (isEmpty(element.id)) {
       throw new Error('Handler:IntersectionObserver: element should have an id')
     }
-    this.callBacks.set(element.id, (item) => {
-      TypeCheck.assertIsFunction(clb).call(null, item)
-      this.unObserve(item, true)
-    })
+    this.callBacks.set(element.id, new Observable(
+      group,
+      element,
+      (item) => {
+        TypeCheck.assertIsFunction(clb).call(null, item)
+        this.unObserve(item, true)
+      })
+    )
     element.addEventListener('__HB_VISIBLE__', this.execVisible)
     return this
   }
@@ -61,11 +66,24 @@ class Handler {
    * @param {HTMLElement} element
    * @return {Handler}
    */
-  unObserve(element, interne) {
+  unObserve(element) {
     TypeCheck.assertIsNode(element)
-    this.#observer.unobserve(element)
     this.callBacks.delete(element.id)
+    this.#observer.unobserve(element)
     element.removeEventListener('__HB_VISIBLE__', this.execVisible)
+    return this
+  }
+
+  /**
+   * @param {string} group
+   * @return {Handler}
+   */
+  clearGroup(group){
+    this.callBacks.forEach((v,k)=>{
+      if(v.group()===group){
+        this.unObserve(v.element())
+      }
+    })
     return this
   }
 
@@ -105,6 +123,53 @@ const removeObserverHandler = () => {
   }
 }
 
+class Observable {
+  /**
+   * @type {string}
+   */
+  #group
+  /**
+   * @type {HTMLElement}
+   */
+  #element
+  /**
+   * @type function(el:HTMLElement):void
+   */
+  #callback
+
+  /**
+   * @param {string} group
+   * @param {HTMLElement} element
+   * @param { function(el:HTMLElement):void} callback
+   */
+  constructor(group, element, callback) {
+    this.#group = group;
+    this.#element = element;
+    this.#callback = callback;
+  }
+
+  /**
+   * @return {string}
+   */
+  group() {
+    return this.#group;
+  }
+
+  /**
+   * @return {HTMLElement}
+   */
+  element() {
+    return this.#element;
+  }
+
+  /**
+   * @return {function(HTMLElement): void}
+   */
+  callback() {
+    return this.#callback;
+  }
+}
+
 export class IntersectionObserverHandler {
   /**
    * @type {?Handler}
@@ -114,6 +179,11 @@ export class IntersectionObserverHandler {
    * @type {?Window}
    */
   #window
+  /**
+   * @type {string}
+   */
+  #id = UIDMini()
+
 
   /**
    * @param {?Window} window
@@ -121,7 +191,6 @@ export class IntersectionObserverHandler {
   constructor(window) {
     if (!isNull(window)) {
       this.#window = window
-      this.#ensureObserver()
     }
   }
 
@@ -129,7 +198,7 @@ export class IntersectionObserverHandler {
    * @return {IntersectionObserverHandler}
    */
   #ensureObserver() {
-    if (!isNull(this.#window) && 'IntersectionObserver' in this.#window) {
+    if (isNull(this.#observer) && !isNull(this.#window) && 'IntersectionObserver' in this.#window) {
       this.#observer = getObserverHandler()
     }
     return this
@@ -141,10 +210,11 @@ export class IntersectionObserverHandler {
    * @return {IntersectionObserverHandler}
    */
   observe(element, clb) {
+    this.#ensureObserver()
     if (!isNull(this.#observer)) {
-      this.#observer.observe(element, clb)
+     this.#observer.observe(this.#id, element, clb)
     } else {
-      setTimeout(clb, 0)
+      setTimeout(clb, 100)
     }
     return this
   }
@@ -160,20 +230,9 @@ export class IntersectionObserverHandler {
     return this
   }
 
-  /**
-   * @return {IntersectionObserverHandler}
-   */
-  clear() {
-    if (!isNull(this.#observer)) {
-      removeObserverHandler()
-      this.#ensureObserver()
-    }
-    return this
-  }
-
   remove() {
     if (!isNull(this.#observer)) {
-      removeObserverHandler()
+      this.#observer.clearGroup(this.#id)
     }
   }
 
