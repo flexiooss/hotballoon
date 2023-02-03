@@ -50,6 +50,9 @@ class Handler {
     if (isEmpty(element.id)) {
       throw new Error('Handler:IntersectionObserver: element should have an id')
     }
+    if (this.callBacks.has(element.id)) {
+      throw new Error('Handler:IntersectionObserver: element already observed id:' + element.id)
+    }
     this.callBacks.set(element.id, new Observable(
       group,
       element,
@@ -78,9 +81,9 @@ class Handler {
    * @param {string} group
    * @return {Handler}
    */
-  clearGroup(group){
-    this.callBacks.forEach((v,k)=>{
-      if(v.group()===group){
+  clearGroup(group) {
+    this.callBacks.forEach((v, k) => {
+      if (v.group() === group) {
         this.unObserve(v.element())
       }
     })
@@ -212,7 +215,7 @@ export class IntersectionObserverHandler {
   observe(element, clb) {
     this.#ensureObserver()
     if (!isNull(this.#observer)) {
-     this.#observer.observe(this.#id, element, clb)
+      this.#observer.observe(this.#id, element, clb)
     } else {
       setTimeout(clb, 100)
     }
