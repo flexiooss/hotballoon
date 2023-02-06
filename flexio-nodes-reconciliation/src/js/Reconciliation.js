@@ -6,7 +6,7 @@ import {listenerEquals, listenerReconcile, listenerReplace} from './ListenerReco
 import {RECONCILIATION_RULES as R} from './rules'
 
 
-const MAX_SLIBINGS_NODES_UPDATE_BY_ID = 50
+const MAX_SLIBINGS_NODES_UPDATE_BY_ID = 500
 
 
 /**
