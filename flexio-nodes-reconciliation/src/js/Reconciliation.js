@@ -290,6 +290,7 @@ export class Reconciliation {
    * @return {?Element}
    */
   __findNodeByIdInChildNodes(parentNode, id, start) {
+   // return  parentNode.querySelector(`:scope > #${id}`) // TODO @thomas check performance when better support of :scope pseudo-class
     if (parentNode.childNodes.length > MAX_SLIBINGS_NODES_UPDATE_BY_ID) {
       return null
     }
