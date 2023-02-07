@@ -10,6 +10,7 @@ const app = new BrowserApplicationBuilder()
   .viewDebug(true)
   .document(document)
   .build()
+const componentContext = app.addComponentContext('test')
 
 document.body.insertAdjacentHTML('beforeend', `<template id="template1">
   <li></li>
@@ -31,7 +32,7 @@ if ("content" in document.createElement("template")) {
     li[0].textContent = `item ${i}`;
     li[0].id = `${i}`;
     list.appendChild(clone)
-    app.viewRenderConfig().intersectionObserverHandler().observe(document.getElementById(`${i}`), (el) => {
+    componentContext.intersectionObserverHandler().observe(document.getElementById(`${i}`), (el) => {
       console.log(el.id)
       el.textContent += ' OK'
     })
@@ -40,5 +41,5 @@ if ("content" in document.createElement("template")) {
 }
 
 setTimeout(() => {
-  app.viewRenderConfig().intersectionObserverHandler().clear()
+  componentContext.intersectionObserverHandler().remove()
 },3000)

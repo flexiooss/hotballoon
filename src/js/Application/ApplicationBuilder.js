@@ -111,7 +111,7 @@ export class ApplicationBuilder {
       new HotballoonApplicationConfig(
         this.#id,
         isNull(this.#dispatcher) ? new Dispatcher() : this.#dispatcher,
-        new ViewRenderConfig(this.#document, this.#viewDebug, this.#domAccessor, new IntersectionObserverHandler((this.#document?.defaultView ?? null))),
+        new ViewRenderConfig(this.#document, this.#viewDebug, this.#domAccessor),
         new ComponentsContextHandler(),
         new ExecutionConfig(this.#navigator),
         this.#scheduler

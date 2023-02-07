@@ -3,7 +3,9 @@ import {isImplement} from '@flexio-oss/js-commons-bundle/js-helpers'
 import {PRIORITIES} from "./PRIORITIES";
 import {HBTaskAbortException} from "./HBTaskAbortException";
 
-export const HBTaskInterface = (Base) => {
+export const HBTaskInterface = (Base = class  {
+  
+}) => {
   /**
    * @interface
    */
@@ -16,6 +18,27 @@ export const HBTaskInterface = (Base) => {
     }
 
     abort() {
+      throw NotOverrideException.FROM_INTERFACE('HBTask')
+    }
+
+    /**
+     * @return {HBTask}
+     */
+    toPriorityBlocking() {
+      throw NotOverrideException.FROM_INTERFACE('HBTask')
+    }
+
+    /**
+     * @return {HBTask}
+     */
+    toPriorityNormal() {
+      throw NotOverrideException.FROM_INTERFACE('HBTask')
+    }
+
+    /**
+     * @return {HBTask}
+     */
+    toPriorityBackground() {
       throw NotOverrideException.FROM_INTERFACE('HBTask')
     }
   }

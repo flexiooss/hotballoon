@@ -163,7 +163,6 @@ export class View extends ViewContainerBase {
       const candidate = this.buildTemplate()
 
       if (isNull(candidate) || isNull(this.node())) {
-        const currentNode = this.node()
         if (!isNull(candidate)) {
           this.#replaceNode(candidate)
           this.mount()
@@ -278,7 +277,7 @@ export class View extends ViewContainerBase {
    */
   render() {
     if (this.isRemoved()) {
-      throw RemovedException.VIEW_CONTAINER(this._ID)
+      throw RemovedException.VIEW_CONTAINER(this.ID())
     }
     this.#logger.info('Render : ' + this.ID(), this)
 
@@ -341,24 +340,10 @@ export class View extends ViewContainerBase {
    * @return {Element}
    */
   mountInto(element) {
+    if (this.isMounted() && element === this.parentNode) return element
     this.parentNode = element
     this.mount()
     return element
-  }
-
-
-  /**
-   * @param {Element} element
-   * @return {this}
-   */
-  setParentNode(element) {
-    if (element === this.parentNode) return this
-    if (this.isMounted()) {
-      this.mountInto(element)
-    } else {
-      this.parentNode = element
-    }
-    return this
   }
 
   /**

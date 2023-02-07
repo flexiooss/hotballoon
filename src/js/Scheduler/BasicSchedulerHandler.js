@@ -1,13 +1,13 @@
-import {isNull, TypeCheck} from '@flexio-oss/js-commons-bundle/assert'
+import {isNull, NotOverrideException, TypeCheck} from '@flexio-oss/js-commons-bundle/assert'
 import {HBTaskAbortException} from "./HBTaskAbortException";
 import {PRIORITIES} from "./PRIORITIES";
 import {HBTaskInterface} from "./HBTask";
 import {HBSchedulerTaskBuilderInterface} from "./HBSchedulerTaskBuilder";
 import {SchedulerHandlerInterface} from "./SchedulerHandler";
 
-export class BasicSchedulerHandler extends SchedulerHandlerInterface(class  {
+export class BasicSchedulerHandler extends SchedulerHandlerInterface(class {
 
-}){
+}) {
 
   /**
    * @param  {function} task
@@ -49,6 +49,7 @@ class HBSchedulerTaskBuilderImpl extends HBSchedulerTaskBuilderInterface(class {
     this.#priority = PRIORITIES.BLOCKING
     return this
   }
+
   /**
    * @return {HBSchedulerTaskBuilder}
    */
@@ -78,9 +79,10 @@ class HBSchedulerTaskBuilderImpl extends HBSchedulerTaskBuilderInterface(class {
   }
 }
 
-class HBTaskImpl extends HBTaskInterface(class {
-
-}) {
+/**
+ * @implements {HBTask}
+ */
+class HBTaskImpl extends HBTaskInterface() {
   /**
    * @type {function}
    */
@@ -135,6 +137,28 @@ class HBTaskImpl extends HBTaskInterface(class {
     }
     this.#task = null
   }
+
+  /**
+   * @return {HBTask}
+   */
+  toPriorityBlocking() {
+    return this
+  }
+
+  /**
+   * @return {HBTask}
+   */
+  toPriorityNormal() {
+    return this
+  }
+
+  /**
+   * @return {HBTask}
+   */
+  toPriorityBackground() {
+    return this
+  }
+
 }
 
 

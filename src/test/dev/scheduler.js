@@ -14,12 +14,25 @@ const app = new BrowserApplicationBuilder()
 app.scheduler().postTask(() => '1 => 1').blocking().build().exec().then(r => {
   console.log(r)
 })
-app.scheduler().postTask(() => '2 => 4').background().build().exec().then(r => {
+
+app.scheduler().postTask(() => '2 => 6').background().build().exec().then(r => {
   console.log(r)
 })
-app.scheduler().postTask(() => '3 => 2 ').blocking().build().exec().then(r => {
+/**
+ * @type {HBTask}
+ */
+const changed = app.scheduler().postTask(() => '3 => 3 [changed]').background().build()
+
+changed.exec().then(r => {
   console.log(r)
 })
+app.scheduler().postTask(() => '4 => 4').build().exec().then(r => {
+  console.log(r)
+})
+app.scheduler().postTask(() => '5 => 2 ').blocking().build().exec().then(r => {
+  console.log(r)
+})
+changed.toPriorityNormal()
 
 const never = app.scheduler().postTask(() => 'NEVER').background().build()
 never.exec()
@@ -32,7 +45,7 @@ never.exec()
 
 never.abort()
 
-app.scheduler().postTask(() => '5 => 3').build().exec().then(r => {
+app.scheduler().postTask(() => '6 => 5').build().exec().then(r => {
   console.log(r)
 })
 
