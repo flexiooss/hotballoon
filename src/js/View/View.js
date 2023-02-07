@@ -340,12 +340,9 @@ export class View extends ViewContainerBase {
    * @return {Element}
    */
   mountInto(element) {
-    if (element === this.parentNode) return element
+    if (this.isMounted() && element === this.parentNode) return element
     this.parentNode = element
-    if (this.isMounted()) {
-      this.mount()
-    }
-
+    this.mount()
     return element
   }
 
