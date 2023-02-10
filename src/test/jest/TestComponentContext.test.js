@@ -1,8 +1,9 @@
-import {TestCase} from '@flexio-oss/code-altimeter-js'
-import {ViewContainer, ViewContainerParameters} from '../../js/View/ViewContainer'
-import {InMemoryStoreBuilder} from '../../js/Store/InMemoryStoreBuilder'
-import {FakeValueObject, FakeValueObjectBuilder} from '../FakeValueObject'
-import {ApplicationBuilder} from '../../../ApplicationBuilder'
+// import {TestCase} from '@flexio-oss/code-altimeter-js'
+// import {ViewContainer, ViewContainerParameters} from '../../js/View/ViewContainer'
+// import {InMemoryStoreBuilder} from '../../js/Store/InMemoryStoreBuilder'
+// import {FakeValueObject, FakeValueObjectBuilder} from '../FakeValueObject'
+// import {ApplicationBuilder} from '../../../ApplicationBuilder'
+import {jest}
 jest.useFakeTimers()
 function sum(a, b) {
   return a + b;
