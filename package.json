@@ -11,6 +11,7 @@
   },
   "author": "Thomas Chatelain (https://github.com/TomAchT)",
   "scripts": {
+    "test": "mocha",
     "html": "hbshed dev --entry src/test/dev/html.js --server-config local",
     "customEvents": "hbshed dev --entry src/test/dev/customEvents.js --server-config local",
     "SessionStorage": "hbshed dev --entry src/test/dev/SessionStorage.js --server-config local",
@@ -21,6 +22,15 @@
   "devDependencies": {
     "@flexio-oss/code-altimeter-js": "1.5.0",
     "mocha": "^10.2.0"
+  },
+  "mocha": {
+    "extension": [
+      "js"
+    ],
+    "spec": "src/test2/",
+    "node-option": [
+      "unhandled-rejections=strict"
+    ]
   },
   "dependencies": {
     "@flexio-oss/js-commons-bundle": "1.65.0-dev",
@@ -44,6 +54,7 @@
     "@flexio-oss/hotballoon": "0.64.0-dev",
     "@flexio-oss/js-commons-bundle": "1.65.0-dev",
     "luxon": "3.2.1",
+    "mocha": "10.2.0",
     "scheduler-polyfill": "1.0.0"
   }
 }
