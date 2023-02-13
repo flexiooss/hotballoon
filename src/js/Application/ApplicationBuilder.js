@@ -1,13 +1,12 @@
-import {HotBalloonApplication} from './HotBalloonApplication'
-import {ViewRenderConfig} from './ViewRenderConfig'
-import {SyncDomAccessor} from '../View/DomAccessor'
-import {ComponentsContextHandler} from '../Component/ComponentsContextHandler'
-import {Dispatcher} from '../Dispatcher/Dispatcher'
-import {isNull} from '@flexio-oss/js-commons-bundle/assert'
-import {UID} from '@flexio-oss/js-commons-bundle/js-helpers'
-import {HotballoonApplicationConfig} from './HotballoonApplicationConfig'
-import {ExecutionConfig} from './ExecutionConfig'
-import {IntersectionObserverHandler} from "./intersectionObserver/IntersectionObserverHandler";
+import {HotBalloonApplication} from './HotBalloonApplication.js'
+import {ViewRenderConfig} from './ViewRenderConfig.js'
+import {SyncDomAccessor} from '../View/DomAccessor.js'
+import {ComponentsContextHandler} from '../Component/ComponentsContextHandler.js'
+import {Dispatcher} from '../Dispatcher/Dispatcher.js'
+import {isNull} from '@flexio-oss/js-commons-bundle/assert/index.js'
+import {UID} from '@flexio-oss/js-commons-bundle/js-helpers/index.js'
+import {HotballoonApplicationConfig} from './HotballoonApplicationConfig.js'
+import {ExecutionConfig} from './ExecutionConfig.js'
 
 
 export class ApplicationBuilder {

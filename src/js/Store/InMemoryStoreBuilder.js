@@ -1,11 +1,11 @@
-import {UID} from '@flexio-oss/js-commons-bundle/js-helpers'
-import {Store} from './Store'
-import {StoreConfig} from './StoreConfig'
-import {InMemoryStorage} from './Storage/InMemoryStorage'
-import {StoreState} from './StoreState'
-import {StoreTypeConfig} from './StoreTypeConfig'
-import {isNull, TypeCheck} from '@flexio-oss/js-commons-bundle/assert'
-import {SingleStateStore} from "./SingleStateStore";
+import {UID} from '@flexio-oss/js-commons-bundle/js-helpers/index.js'
+import {Store} from './Store.js'
+import {StoreConfig} from './StoreConfig.js'
+import {InMemoryStorage} from './Storage/InMemoryStorage.js'
+import {StoreState} from './StoreState.js'
+import {StoreTypeConfig} from './StoreTypeConfig.js'
+import {isNull, TypeCheck} from '@flexio-oss/js-commons-bundle/assert/index.js'
+import {SingleStateStore} from "./SingleStateStore.js";
 
 /**
  * @template TYPE, TYPE_BUILDER

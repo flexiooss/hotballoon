@@ -1,4 +1,4 @@
-import {isNode, assert} from '@flexio-oss/js-commons-bundle/assert'
+import {isNode, assert} from '@flexio-oss/js-commons-bundle/assert/index.js'
 import {EventListenerConfig} from './EventListenerConfig'
 
 

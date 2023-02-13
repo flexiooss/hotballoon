@@ -1,8 +1,8 @@
 import {TestCase} from '@flexio-oss/code-altimeter-js'
-import {ActionDispatcherBuilder} from '../../js/Action/ActionDispatcherBuilder'
-import {FakeObject, FakeObjectBuilder} from './FakeObject'
-import {ApplicationBuilder} from '../../../ApplicationBuilder'
-import {ActionSubscriber} from "../../js/Action/ActionSubscriber";
+import {ActionDispatcherBuilder} from '../../js/Action/ActionDispatcherBuilder.js'
+import {FakeObject, FakeObjectBuilder} from './FakeObject.js'
+import {ApplicationBuilder} from '../../../ApplicationBuilder.js'
+import {ActionSubscriber} from "../../js/Action/ActionSubscriber.js";
 
 
 const assert = require('assert')

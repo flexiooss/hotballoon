@@ -1,6 +1,6 @@
-import {assertType, isEmpty, isFunction, isObject, TypeCheck} from '@flexio-oss/js-commons-bundle/assert'
-import { mergeWithoutPrototype} from '@flexio-oss/js-commons-bundle/js-type-helpers'
-import {deepFreezeSeal} from '@flexio-oss/js-commons-bundle/js-generator-helpers'
+import {assertType, isEmpty, isFunction, isObject, TypeCheck} from '@flexio-oss/js-commons-bundle/assert/index.js'
+import { mergeWithoutPrototype} from '@flexio-oss/js-commons-bundle/js-type-helpers/index.js'
+import {deepFreezeSeal} from '@flexio-oss/js-commons-bundle/js-generator-helpers/index.js'
 
 export class EventListenerConfig {
   /**

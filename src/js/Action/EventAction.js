@@ -1,5 +1,5 @@
-import {assert, isNull, isPrimitive} from '@flexio-oss/js-commons-bundle/assert'
-import {deepFreezeSeal} from '@flexio-oss/js-commons-bundle/js-generator-helpers'
+import {assert, isNull, isPrimitive} from '@flexio-oss/js-commons-bundle/assert/index.js'
+import {deepFreezeSeal} from '@flexio-oss/js-commons-bundle/js-generator-helpers/index.js'
 
 
 /**

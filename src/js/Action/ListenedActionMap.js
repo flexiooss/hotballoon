@@ -1,6 +1,6 @@
-import {assertInstanceOf} from '@flexio-oss/js-commons-bundle/assert'
-import {FlexMap} from '@flexio-oss/js-commons-bundle/flex-types'
-import {ListenedAction} from './ListenedAction'
+import {assertInstanceOf} from '@flexio-oss/js-commons-bundle/assert/index.js'
+import {FlexMap} from '@flexio-oss/js-commons-bundle/flex-types/index.js'
+import {ListenedAction} from './ListenedAction.js'
 
 /**
  * @extends {FlexMap<?ListenedAction>}

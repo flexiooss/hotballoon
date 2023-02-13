@@ -1,17 +1,13 @@
-import {Dispatcher} from '../Dispatcher/Dispatcher'
 import {
   assertInstanceOf, isNull
-} from '@flexio-oss/js-commons-bundle/assert'
-import {Sequence} from '@flexio-oss/js-commons-bundle/js-helpers'
-import {ComponentContext} from '../Component/ComponentContext'
-import {WithID} from '../abstract/WithID'
-import {CLASS_TAG_NAME, CLASS_TAG_NAME_HOTBALLOON_APPLICATION} from '../Types/HasTagClassNameInterface'
-import {ViewRenderConfig} from './ViewRenderConfig'
-import {ComponentContextBuilder} from './ComponentContextBuilder'
-import {ComponentsContextHandler} from '../Component/ComponentsContextHandler'
-import {HotballoonApplicationConfig} from './HotballoonApplicationConfig'
-import {Logger} from "@flexio-oss/js-commons-bundle/hot-log";
-import {LongTaskChopper} from "./LongTaskChopper";
+} from '@flexio-oss/js-commons-bundle/assert/index.js'
+import {Sequence} from '@flexio-oss/js-commons-bundle/js-helpers/index.js'
+import {WithID} from '../abstract/WithID.js'
+import {CLASS_TAG_NAME, CLASS_TAG_NAME_HOTBALLOON_APPLICATION} from '../Types/HasTagClassNameInterface.js'
+import {ComponentContextBuilder} from './ComponentContextBuilder.js'
+import {HotballoonApplicationConfig} from './HotballoonApplicationConfig.js'
+import {Logger} from "@flexio-oss/js-commons-bundle/hot-log/index.js";
+import {LongTaskChopper} from "./LongTaskChopper.js";
 
 /**
  * @extends WithID

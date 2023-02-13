@@ -1,5 +1,5 @@
-import {Store} from "./Store";
-import {assertInstanceOf, isNull} from "@flexio-oss/js-commons-bundle/assert";
+import {Store} from "./Store.js";
+import {assertInstanceOf, isNull} from '@flexio-oss/js-commons-bundle/assert/index.js';
 
 /**
  * @type {?StoragesHandler}

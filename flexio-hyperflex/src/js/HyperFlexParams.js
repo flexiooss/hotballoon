@@ -1,6 +1,6 @@
-import {deepMerge} from '@flexio-oss/js-commons-bundle/js-type-helpers'
-import {isNull, isFunction, TypeCheck} from '@flexio-oss/js-commons-bundle/assert'
-import {globalFlexioImport} from '@flexio-oss/js-commons-bundle/global-import-registry'
+import {deepMerge} from '@flexio-oss/js-commons-bundle/js-type-helpers/index.js'
+import {isNull, isFunction, TypeCheck} from '@flexio-oss/js-commons-bundle/assert/index.js'
+import {globalFlexioImport} from '@flexio-oss/js-commons-bundle/global-import-registry/index.js'
 
 export class HyperFlexParams {
   /**

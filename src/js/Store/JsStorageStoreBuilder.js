@@ -1,9 +1,9 @@
-import {UID} from '@flexio-oss/js-commons-bundle/js-helpers'
-import {StoreConfig} from './StoreConfig'
-import {JsStorageImplStorage} from './Storage/JsStorageImplStorage'
-import {StoreTypeConfig} from './StoreTypeConfig'
-import {isNull} from '@flexio-oss/js-commons-bundle/assert'
-import {JSStorageStore} from "./JSStorageStore";
+import {UID} from '@flexio-oss/js-commons-bundle/js-helpers/index.js'
+import {StoreConfig} from './StoreConfig.js'
+import {JsStorageImplStorage} from './Storage/JsStorageImplStorage.js'
+import {StoreTypeConfig} from './StoreTypeConfig.js'
+import {isNull} from '@flexio-oss/js-commons-bundle/assert/index.js'
+import {JSStorageStore} from "./JSStorageStore.js";
 
 /**
  * @template TYPE, TYPE_BUILDER

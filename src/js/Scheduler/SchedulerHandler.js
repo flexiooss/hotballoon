@@ -1,5 +1,5 @@
-import {NotOverrideException} from "@flexio-oss/js-commons-bundle/assert";
-import {isImplement} from '@flexio-oss/js-commons-bundle/js-helpers'
+import {NotOverrideException} from '@flexio-oss/js-commons-bundle/assert/index.js';
+import {isImplement} from '@flexio-oss/js-commons-bundle/js-helpers/index.js'
 
 export const SchedulerHandlerInterface = (Base = class{}) => {
   /**

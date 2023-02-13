@@ -1,10 +1,9 @@
-import {InMemoryStorage} from './Storage/InMemoryStorage'
-import {StoreState} from './StoreState'
-import {StoreTypeConfig} from './StoreTypeConfig'
-import {ProxyStore} from './ProxyStore'
-import {ProxyStoreConfig} from './ProxyStoreConfig'
-import {ProxyStoreBuilder} from './ProxyStoreBuilder'
-import {OnDemandProxyStore} from './OnDemandProxyStore'
+import {InMemoryStorage} from './Storage/InMemoryStorage.js'
+import {StoreState} from './StoreState.js'
+import {StoreTypeConfig} from './StoreTypeConfig.js'
+import {ProxyStoreConfig} from './ProxyStoreConfig.js'
+import {ProxyStoreBuilder} from './ProxyStoreBuilder.js'
+import {OnDemandProxyStore} from './OnDemandProxyStore.js'
 
 /**
  *

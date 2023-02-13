@@ -1,5 +1,5 @@
-import {HyperFlexParams} from '../__import__flexio-hyperflex'
-import {isFunction, isNull} from "@flexio-oss/js-commons-bundle/assert";
+import {HyperFlexParams} from '../__import__flexio-hyperflex.js'
+import {isFunction, isNull} from '@flexio-oss/js-commons-bundle/assert/index.js';
 
 /**
  *

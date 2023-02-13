@@ -4,10 +4,10 @@ import {
   assertType,
   isNull,
   TypeCheck
-} from '@flexio-oss/js-commons-bundle/assert'
-import {sanitizeHTMLTree} from '@flexio-oss/js-commons-bundle/js-type-helpers'
-import {HyperFlexParams} from './HyperFlexParams'
-import {globalFlexioImport} from '@flexio-oss/js-commons-bundle/global-import-registry'
+} from '@flexio-oss/js-commons-bundle/assert/index.js'
+import {sanitizeHTMLTree} from '@flexio-oss/js-commons-bundle/js-type-helpers/index.js'
+import {HyperFlexParams} from './HyperFlexParams.js'
+import {globalFlexioImport} from '@flexio-oss/js-commons-bundle/global-import-registry/index.js'
 
 export class HyperFlex {
 

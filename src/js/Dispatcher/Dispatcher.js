@@ -1,8 +1,8 @@
-import {assertInstanceOf, isNull, TypeCheck} from '@flexio-oss/js-commons-bundle/assert'
-import {EventHandlerBase} from '@flexio-oss/js-commons-bundle/event-handler'
-import {CLASS_TAG_NAME, CLASS_TAG_NAME_DISPATCHER} from '../Types/HasTagClassNameInterface'
-import {EventAction} from '../Action/EventAction'
-import {Logger} from "@flexio-oss/js-commons-bundle/hot-log";
+import {assertInstanceOf, isNull, TypeCheck} from '@flexio-oss/js-commons-bundle/assert/index.js'
+import {EventHandlerBase} from '@flexio-oss/js-commons-bundle/event-handler/index.js'
+import {CLASS_TAG_NAME, CLASS_TAG_NAME_DISPATCHER} from '../Types/HasTagClassNameInterface.js'
+import {EventAction} from '../Action/EventAction.js'
+import {Logger} from '@flexio-oss/js-commons-bundle/hot-log/index.js';
 
 
 /**

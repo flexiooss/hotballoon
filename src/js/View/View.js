@@ -1,15 +1,15 @@
-import {Checksum, UID} from '@flexio-oss/js-commons-bundle/js-helpers'
-import {CLASS_TAG_NAME, CLASS_TAG_NAME_VIEW} from '../Types/HasTagClassNameInterface'
+import {Checksum, UID} from '@flexio-oss/js-commons-bundle/js-helpers/index.js'
+import {CLASS_TAG_NAME, CLASS_TAG_NAME_VIEW} from '../Types/HasTagClassNameInterface.js'
 import {
   assertType, formatType, isNode,
   isNull, NotOverrideException, TypeCheck
-} from '@flexio-oss/js-commons-bundle/assert'
-import {symbolToString} from '@flexio-oss/js-commons-bundle/js-type-helpers'
-import {$} from '../HotballoonNodeElement/HotBalloonAttributeHandler'
-import {startReconcile} from '../HotballoonNodeElement/HotballoonElementReconciliation'
-import {html} from '../HotballoonNodeElement/CreateHotBalloonElement'
-import {ViewContainerBase} from './ViewContainerBase'
-import {TypeCheck as HBTypeCheck} from '../Types/TypeCheck'
+} from '@flexio-oss/js-commons-bundle/assert/index.js'
+import {symbolToString} from '@flexio-oss/js-commons-bundle/js-type-helpers/index.js'
+import {$} from '../HotballoonNodeElement/HotBalloonAttributeHandler.js'
+import {startReconcile} from '../HotballoonNodeElement/HotballoonElementReconciliation.js'
+import {html} from '../HotballoonNodeElement/CreateHotBalloonElement.js'
+import {ViewContainerBase} from './ViewContainerBase.js'
+import {TypeCheck as HBTypeCheck} from '../Types/TypeCheck.js'
 import {
   VIEW_MOUNT,
   VIEW_MOUNTED,
@@ -20,11 +20,11 @@ import {
   VIEW_UPDATED,
   VIEW_REMOVE,
   ViewPublicEventHandler
-} from './ViewPublicEventHandler'
-import {RemovedException} from "../Exception/RemovedException";
-import {Logger} from "@flexio-oss/js-commons-bundle/hot-log";
-import {e} from "../HotballoonNodeElement/ElementDescription";
-import {DOMError} from '../Exception/DOMError'
+} from './ViewPublicEventHandler.js'
+import {RemovedException} from "../Exception/RemovedException.js";
+import {Logger} from '@flexio-oss/js-commons-bundle/hot-log/index.js';
+import {e} from "../HotballoonNodeElement/ElementDescription.js";
+import {DOMError} from '../Exception/DOMError.js'
 
 export const ATTRIBUTE_NODEREF = '_hb_noderef'
 

@@ -1,10 +1,10 @@
-import {NotOverrideException, TypeCheck as TypeTypeCheck} from '@flexio-oss/js-commons-bundle/assert'
-import {WithID} from '../abstract/WithID'
-import {OrderedEventHandler} from '../Event/OrderedEventHandler'
-import {ViewContainerBaseMap} from './ViewContainerBaseMap'
-import {StoresHandler} from '../Store/StoresHandler'
-import {RemovedException} from "../Exception/RemovedException";
-import {Logger} from "@flexio-oss/js-commons-bundle/hot-log";
+import {NotOverrideException, TypeCheck as TypeTypeCheck} from '@flexio-oss/js-commons-bundle/assert/index.js'
+import {WithID} from '../abstract/WithID.js'
+import {OrderedEventHandler} from '../Event/OrderedEventHandler.js'
+import {ViewContainerBaseMap} from './ViewContainerBaseMap.js'
+import {StoresHandler} from '../Store/StoresHandler.js'
+import {RemovedException} from "../Exception/RemovedException.js";
+import {Logger} from '@flexio-oss/js-commons-bundle/hot-log/index.js';
 
 
 /**

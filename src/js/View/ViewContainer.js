@@ -1,14 +1,13 @@
-import {CLASS_TAG_NAME, CLASS_TAG_NAME_VIEWCONTAINER} from '../Types/HasTagClassNameInterface'
+import {CLASS_TAG_NAME, CLASS_TAG_NAME_VIEWCONTAINER} from '../Types/HasTagClassNameInterface.js'
 import {
   assertInstanceOf,
   TypeCheck as TypeTypeCheck
-} from '@flexio-oss/js-commons-bundle/assert'
-import {StoreInterface} from '../Store/StoreInterface'
-import {ViewContainerBase} from './ViewContainerBase'
-import {ViewContainerPublicEventHandler} from './ViewContainerPublicEventHandler'
-import {TypeCheck} from '../Types/TypeCheck'
-import {RemovedException} from "../Exception/RemovedException";
-import {Logger} from "@flexio-oss/js-commons-bundle/hot-log";
+} from '@flexio-oss/js-commons-bundle/assert/index.js'
+import {ViewContainerBase} from './ViewContainerBase.js'
+import {ViewContainerPublicEventHandler} from './ViewContainerPublicEventHandler.js'
+import {TypeCheck} from '../Types/TypeCheck.js'
+import {RemovedException} from "../Exception/RemovedException.js";
+import {Logger} from '@flexio-oss/js-commons-bundle/hot-log/index.js';
 
 /**
  * @description viewContainer is a Views container who can subscribe to Stores to dispatch state to Views

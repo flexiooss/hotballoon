@@ -1,4 +1,4 @@
-import {assertType, isNode} from '@flexio-oss/js-commons-bundle/assert'
+import {assertType, isNode} from '@flexio-oss/js-commons-bundle/assert/index.js'
 
 /**
  * key of private flexio properties in Node

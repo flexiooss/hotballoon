@@ -1,5 +1,4 @@
-import {StoreInterface} from './StoreInterface'
-import {Store} from './Store'
+import {Store} from './Store.js'
 
 /**
  * @template TYPE, TYPE_BUILDER

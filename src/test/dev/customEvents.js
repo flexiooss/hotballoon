@@ -1,9 +1,9 @@
-import {BrowserApplicationBuilder} from '../../../BrowserApplicationBuilder'
-import {Dispatcher} from '../../js/Dispatcher/Dispatcher'
-import {ViewContainer, ViewContainerParameters} from '../../js/View/ViewContainer'
-import {View} from '../../js/View/View'
-import {e} from '../../js/HotballoonNodeElement/ElementDescription'
-import {UIEventBuilder} from "../../js/HotballoonNodeElement/UIEventBuilder";
+import {BrowserApplicationBuilder} from '../../../BrowserApplicationBuilder.js'
+import {Dispatcher} from '../../js/Dispatcher/Dispatcher.js'
+import {ViewContainer, ViewContainerParameters} from '../../js/View/ViewContainer.js'
+import {View} from '../../js/View/View.js'
+import {e} from '../../js/HotballoonNodeElement/ElementDescription.js'
+import {UIEventBuilder} from "../../js/HotballoonNodeElement/UIEventBuilder.js";
 
 class ViewDemo extends View {
   /**

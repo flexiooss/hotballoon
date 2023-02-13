@@ -1,4 +1,4 @@
-import {HotballoonElementParams} from './HotballoonElementParams'
+import {HotballoonElementParams} from './HotballoonElementParams.js'
 
 
 export class ElementDescription {

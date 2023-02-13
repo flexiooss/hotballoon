@@ -1,10 +1,10 @@
-import {isNull, TypeCheck} from '@flexio-oss/js-commons-bundle/assert'
-import {deepFreezeSeal} from '@flexio-oss/js-commons-bundle/js-generator-helpers'
-import {StoreState} from '../StoreState'
-import {StorageInterface} from './StorageInterface'
-import {StoreStateBuilder} from '../StoreState'
-import {HotLog, Logger} from "@flexio-oss/js-commons-bundle/hot-log";
-import {BaseException} from "@flexio-oss/js-commons-bundle/js-type-helpers";
+import {isNull, TypeCheck} from '@flexio-oss/js-commons-bundle/assert/index.js'
+import {deepFreezeSeal} from '@flexio-oss/js-commons-bundle/js-generator-helpers/index.js'
+import {StoreState} from '../StoreState.js'
+import {StorageInterface} from './StorageInterface.js'
+import {StoreStateBuilder} from '../StoreState.js'
+import {HotLog, Logger} from '@flexio-oss/js-commons-bundle/hot-log/index.js';
+import {BaseException} from '@flexio-oss/js-commons-bundle/js-type-helpers/index.js';
 
 /**
  * @template TYPE

@@ -1,6 +1,6 @@
-import {TypeCheck, NotOverrideException, isUndefined, assertType} from '@flexio-oss/js-commons-bundle/assert'
-import {DOMError} from "../Exception/DOMError";
-import {Logger} from "@flexio-oss/js-commons-bundle/hot-log";
+import {TypeCheck, NotOverrideException, isUndefined, assertType} from '@flexio-oss/js-commons-bundle/assert/index.js'
+import {DOMError} from "../Exception/DOMError.js";
+import {Logger} from '@flexio-oss/js-commons-bundle/hot-log/index.js';
 
 /**
  * @interface

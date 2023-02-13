@@ -1,5 +1,5 @@
-import {AttributeHandler} from '../__import__flexio-nodes-reconciliation'
-import {KEY} from './constantes'
+import {AttributeHandler} from '../__import__flexio-nodes-reconciliation.js'
+import {KEY} from './constantes.js'
 
 /**
  * @extends AttributeHandler

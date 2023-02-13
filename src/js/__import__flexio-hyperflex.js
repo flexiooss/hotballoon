@@ -1,1 +1,1 @@
-export * from '../../flexio-hyperflex'
+export * from '../../flexio-hyperflex/index.js'

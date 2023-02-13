@@ -1,4 +1,4 @@
-import {HBException} from "./HBException";
+import {HBException} from "./HBException.js";
 
 export class RemovedException extends HBException {
   /**

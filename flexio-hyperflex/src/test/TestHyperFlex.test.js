@@ -4,7 +4,7 @@ import {TestCase} from '@flexio-oss/code-altimeter-js'
 import {HyperFlex} from '../js/HyperFlex'
 import {HyperFlexParams} from '../js/HyperFlexParams'
 import {AttributeHandler} from '../js/AttributeHandler'
-import '@flexio-oss/js-commons-bundle/flex-types'
+import '@flexio-oss/js-commons-bundle/flex-types/index.js'
 const assert = require('assert')
 
 export class TestHyperFlex extends TestCase {

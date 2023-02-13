@@ -1,4 +1,4 @@
-import {assert, isString} from '@flexio-oss/js-commons-bundle/assert'
+import {assert, isString} from '@flexio-oss/js-commons-bundle/assert/index.js'
 
 export class WithID {
   /**

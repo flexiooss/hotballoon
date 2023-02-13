@@ -1,5 +1,5 @@
-import {Reconciliation, RECONCILIATION_RULES as R} from '../__import__flexio-nodes-reconciliation'
-import {select} from './HotBalloonAttributeHandler'
+import {Reconciliation, RECONCILIATION_RULES as R} from '../__import__flexio-nodes-reconciliation.js'
+import {select} from './HotBalloonAttributeHandler.js'
 
 class HotballoonElementReconciliation extends Reconciliation {
   /**

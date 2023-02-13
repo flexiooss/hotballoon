@@ -1,8 +1,8 @@
-import {ComponentContext} from '../Component/ComponentContext'
-import {ActionsHandler} from '../Action/ActionsHandler'
-import {StoresHandler} from '../Store/StoresHandler'
-import {ViewContainersHandler} from '../View/ViewContainersHandler'
-import {isNull} from '@flexio-oss/js-commons-bundle/assert'
+import {ComponentContext} from '../Component/ComponentContext.js'
+import {ActionsHandler} from '../Action/ActionsHandler.js'
+import {StoresHandler} from '../Store/StoresHandler.js'
+import {ViewContainersHandler} from '../View/ViewContainersHandler.js'
+import {isNull} from '@flexio-oss/js-commons-bundle/assert/index.js'
 
 export class ComponentContextBuilder {
   /**

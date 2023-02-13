@@ -1,5 +1,5 @@
-import {deepFreezeSeal} from '@flexio-oss/js-commons-bundle/js-generator-helpers'
-import {assertType, isNull} from '@flexio-oss/js-commons-bundle/assert'
+import {deepFreezeSeal} from '@flexio-oss/js-commons-bundle/js-generator-helpers/index.js'
+import {assertType, isNull} from '@flexio-oss/js-commons-bundle/assert/index.js'
 
 /**
  * @implements {GenericType<TYPE>}

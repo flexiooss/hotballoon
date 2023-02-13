@@ -1,8 +1,8 @@
-import {ActionDispatcher} from './ActionDispatcher'
-import {ActionDispatcherConfig} from './ActionDispatcherConfig'
-import {ActionTypeConfig} from './ActionTypeConfig'
-import {UID} from '@flexio-oss/js-commons-bundle/js-helpers'
-import {isNull} from '@flexio-oss/js-commons-bundle/assert'
+import {ActionDispatcher} from './ActionDispatcher.js'
+import {ActionDispatcherConfig} from './ActionDispatcherConfig.js'
+import {ActionTypeConfig} from './ActionTypeConfig.js'
+import {UID} from '@flexio-oss/js-commons-bundle/js-helpers/index.js'
+import {isNull} from '@flexio-oss/js-commons-bundle/assert/index.js'
 
 /**
  * @template TYPE, TYPE_BUILDER

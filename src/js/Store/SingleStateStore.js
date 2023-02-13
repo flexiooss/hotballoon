@@ -1,6 +1,5 @@
-import {StoreInterface} from './StoreInterface'
-import {Store} from './Store'
-import {SingleStateException} from "./SingleStateException";
+import {Store} from './Store.js'
+import {SingleStateException} from "./SingleStateException.js";
 
 
 /**

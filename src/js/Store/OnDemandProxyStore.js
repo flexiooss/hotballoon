@@ -1,5 +1,5 @@
-import {StoreState} from './StoreState'
-import {ProxyStore, _store, _mapper} from './ProxyStore'
+import {StoreState} from './StoreState.js'
+import {ProxyStore} from './ProxyStore.js'
 
 /**
  * @implements {StoreInterface<TYPE>}

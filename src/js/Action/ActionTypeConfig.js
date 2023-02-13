@@ -1,5 +1,5 @@
-import {assertType, isClass, isNull,TypeCheck as TypeTypeCheck} from '@flexio-oss/js-commons-bundle/assert'
-import {TypeCheck} from '@flexio-oss/js-commons-bundle/js-validator-helper'
+import {assertType, isClass, isNull,TypeCheck as TypeTypeCheck} from '@flexio-oss/js-commons-bundle/assert/index.js'
+import {TypeCheck} from '@flexio-oss/js-commons-bundle/js-validator-helper/index.js'
 
 
 /**

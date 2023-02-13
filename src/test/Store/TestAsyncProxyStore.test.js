@@ -1,8 +1,8 @@
 import {TestCase} from '@flexio-oss/code-altimeter-js'
-import {InMemoryStoreBuilder} from '../../js/Store/InMemoryStoreBuilder'
-import {AsyncProxyStoreBuilder} from '../../js/Store/AsyncProxyStoreBuilder'
+import {InMemoryStoreBuilder} from '../../js/Store/InMemoryStoreBuilder.js'
+import {AsyncProxyStoreBuilder} from '../../js/Store/AsyncProxyStoreBuilder.js'
 
-import {FakeValueObject, FakeValueObjectBuilder} from '../FakeValueObject'
+import {FakeValueObject, FakeValueObjectBuilder} from '../FakeValueObject.js'
 
 const assert = require('assert')
 

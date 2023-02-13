@@ -1,5 +1,5 @@
-import {StoreBaseConfig} from './StoreBaseConfig'
-import {TypeCheck as TypeTypeCheck} from '@flexio-oss/js-commons-bundle/assert'
+import {StoreBaseConfig} from './StoreBaseConfig.js'
+import {TypeCheck as TypeTypeCheck} from '@flexio-oss/js-commons-bundle/assert/index.js'
 
 /**
  * @template  TYPE, TYPE_BUILDER
