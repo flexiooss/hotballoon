@@ -1,7 +1,7 @@
 import {isNull, TypeCheck} from '@flexio-oss/js-commons-bundle/assert/index.js'
 import 'scheduler-polyfill'
 import {HBSchedulerTaskBuilderInterface} from "./HBSchedulerTaskBuilder.js";
-import {HBTaskInterface} from "./HBTask";
+import {HBTaskInterface} from "./HBTask.js";
 import {HBTaskAbortException} from "./HBTaskAbortException.js";
 import {PRIORITIES} from "./PRIORITIES.js";
 import {SchedulerHandlerInterface} from "./SchedulerHandler.js";
