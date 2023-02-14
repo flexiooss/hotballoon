@@ -125,10 +125,10 @@ export class AsyncProxyStore extends StoreBase {
   }
 
   /**
-   * @return {AsyncProxyStore}
+   * @return {Promise<AsyncProxyStore>}
    */
-  mapAndUpdate() {
-    this.#mapAndUpdate(this.#parentStore.state(), STORE_CHANGED)
+  async mapAndUpdate() {
+    await this.#mapAndUpdate(this.#parentStore.state(), STORE_CHANGED)
     return this
   }
 
