@@ -127,6 +127,14 @@ export class AsyncProxyStore extends StoreBase {
   /**
    * @return {AsyncProxyStore}
    */
+  mapAndUpdate() {
+    this.#mapAndUpdate(this.#parentStore.state(), STORE_CHANGED)
+    return this
+  }
+
+  /**
+   * @return {AsyncProxyStore}
+   */
   shouldUpdate() {
     this.#shouldUpdate = true
     return this

@@ -115,6 +115,14 @@ export class ProxyStore extends StoreBase {
   /**
    * @return {ProxyStore}
    */
+  mapAndUpdate(){
+    this.#mapAndUpdate(this.#parentStore.state(), STORE_CHANGED)
+    return this
+  }
+
+  /**
+   * @return {ProxyStore}
+   */
   shouldUpdate() {
     this.#shouldUpdate = true
     return this
