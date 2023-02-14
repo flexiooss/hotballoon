@@ -88,6 +88,31 @@ export class TestProxyStore extends TestCase {
       'Mapper should be invoked after store update')
   }
 
+  testUpdateFromTrig() {
+    let invoked = 0
+
+    this.proxyStore = new ProxyStoreBuilder()
+      .type(FakeValueObject)
+      .store(this.store)
+      .mapper(
+        /**
+         *
+         * @param {FakeValueObject} data
+         */
+        (data) => {
+          invoked++
+
+          return new FakeValueObjectBuilder()
+            .a(data.a() + 1)
+            .b(data.b() + 10)
+            .build()
+        })
+      .build()
+
+    this.proxyStore.mapAndUpdate()
+    assert.strictEqual(invoked, 2, 'Mapper should be invoked at init and at set')
+  }
+
   testChangeParentStore() {
     let invoked = 0
     const store2 = new InMemoryStoreBuilder()

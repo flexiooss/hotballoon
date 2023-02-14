@@ -97,6 +97,40 @@ export class TestAsyncProxyStore extends TestCase {
     })
   }
 
+  async asyncTestUpdateFromTrig() {
+    let invoked = 0
+
+    this.proxyStore = await new AsyncProxyStoreBuilder()
+      .type(FakeValueObject)
+      .store(this.store)
+      .mapper(
+        /**
+         *
+         * @param {FakeValueObject} data
+         */
+        async (data) => {
+          invoked++
+
+          return new FakeValueObjectBuilder()
+            .a(data.a() + 1)
+            .b(data.b() + 10)
+            .build()
+        })
+      .build()
+
+
+    return new Promise((ok, ko) => {
+
+      this.proxyStore.listenChanged(() => {
+        assert.strictEqual(invoked, 2, 'Mapper should be invoked at init and at set')
+        ok()
+      })
+
+      this.proxyStore.mapAndUpdate()
+
+    })
+  }
+
   async asyncTestChangeParentStore() {
     let invoked = 0
     const store2 = await new InMemoryStoreBuilder()
