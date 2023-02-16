@@ -53,6 +53,28 @@ export class TestStore extends TestCase {
     )
   }
 
+  testTrig() {
+    const valueObject = new FakeValueObjectBuilder()
+      .a(0)
+      .b(0)
+      .build()
+    this.store.set(valueObject)
+
+    const state1 = this.store.state()
+
+    this.store.trigChange()
+
+    assert.deepEqual(
+      this.store.state().data(),
+      state1.data()
+    )
+
+    assert.notEqual(
+      this.store.state().time(),
+      state1.time()
+    )
+  }
+
   testListen() {
     let a = 0
 

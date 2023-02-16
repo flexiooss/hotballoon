@@ -73,6 +73,14 @@ export class StoreBase extends WithID {
   }
 
   /**
+   * @return {this}
+   */
+  trigChange(){
+   this.set(this.state().data())
+    return this
+  }
+
+  /**
    * @return {OrderedEventHandler}
    * @protected
    */

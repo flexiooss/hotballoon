@@ -125,6 +125,14 @@ export class AsyncProxyStore extends StoreBase {
   }
 
   /**
+   * @return {AsyncProxyStore}
+   */
+  trigChange(){
+    this.mapAndUpdate()
+    return this
+  }
+
+  /**
    * @return {Promise<AsyncProxyStore>}
    */
   async mapAndUpdate() {

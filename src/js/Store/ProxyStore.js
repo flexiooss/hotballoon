@@ -113,6 +113,13 @@ export class ProxyStore extends StoreBase {
   }
 
   /**
+   * @return {this}
+   */
+  trigChange(){
+    return this.mapAndUpdate()
+  }
+
+  /**
    * @return {ProxyStore}
    */
   mapAndUpdate(){
