@@ -1,9 +1,9 @@
-import {isNull, NotOverrideException, TypeCheck} from '@flexio-oss/js-commons-bundle/assert'
-import {HBTaskAbortException} from "./HBTaskAbortException";
-import {PRIORITIES} from "./PRIORITIES";
-import {HBTaskInterface} from "./HBTask";
-import {HBSchedulerTaskBuilderInterface} from "./HBSchedulerTaskBuilder";
-import {SchedulerHandlerInterface} from "./SchedulerHandler";
+import {isNull, NotOverrideException, TypeCheck} from '@flexio-oss/js-commons-bundle/assert/index.js'
+import {HBTaskAbortException} from "./HBTaskAbortException.js";
+import {PRIORITIES} from "./PRIORITIES.js";
+import {HBTaskInterface} from "./HBTask.js";
+import {HBSchedulerTaskBuilderInterface} from "./HBSchedulerTaskBuilder.js";
+import {SchedulerHandlerInterface} from "./SchedulerHandler.js";
 
 export class BasicSchedulerHandler extends SchedulerHandlerInterface(class {
 

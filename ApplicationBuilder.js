@@ -1,6 +1,6 @@
-import {ApplicationBuilder as ApplicationBuilderBase , SyncDomAccessor} from './index'
-import {UID} from '@flexio-oss/js-commons-bundle/js-helpers'
-import {BasicSchedulerHandler} from "./src/js/Scheduler/BasicSchedulerHandler";
+import {ApplicationBuilder as ApplicationBuilderBase , SyncDomAccessor} from './index.js'
+import {UID} from '@flexio-oss/js-commons-bundle/js-helpers/index.js'
+import {BasicSchedulerHandler} from "./src/js/Scheduler/BasicSchedulerHandler.js";
 
 
 export class ApplicationBuilder {

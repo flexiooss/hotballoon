@@ -1,5 +1,5 @@
-import {isEmpty, isNull, TypeCheck} from "@flexio-oss/js-commons-bundle/assert";
-import {UIDMini} from "@flexio-oss/js-commons-bundle/js-helpers";
+import {isEmpty, isNull, TypeCheck} from '@flexio-oss/js-commons-bundle/assert/index.js';
+import {UIDMini} from '@flexio-oss/js-commons-bundle/js-helpers/index.js';
 
 class Handler {
   /**

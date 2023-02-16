@@ -1,4 +1,4 @@
-import {TypeCheck} from '@flexio-oss/js-commons-bundle/assert'
+import {TypeCheck} from '@flexio-oss/js-commons-bundle/assert/index.js'
 
 export class ListenedStore {
   /**

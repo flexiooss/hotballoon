@@ -1,10 +1,10 @@
-import {CLASS_TAG_NAME, CLASS_TAG_NAME_ACTION_SUBSCRIBER} from '../Types/HasTagClassNameInterface'
-import {WithID} from '../abstract/WithID'
-import {assertInstanceOf, isNull} from '@flexio-oss/js-commons-bundle/assert'
-import {ActionDispatcherConfig} from './ActionDispatcherConfig'
-import {ListenedAction} from './ListenedAction'
-import {EventListenerConfigBuilder} from '@flexio-oss/js-commons-bundle/event-handler'
-import {RemovedException} from "../Exception/RemovedException";
+import {CLASS_TAG_NAME, CLASS_TAG_NAME_ACTION_SUBSCRIBER} from '../Types/HasTagClassNameInterface.js'
+import {WithID} from '../abstract/WithID.js'
+import {assertInstanceOf, isNull} from '@flexio-oss/js-commons-bundle/assert/index.js'
+import {ActionDispatcherConfig} from './ActionDispatcherConfig.js'
+import {ListenedAction} from './ListenedAction.js'
+import {EventListenerConfigBuilder} from '@flexio-oss/js-commons-bundle/event-handler/index.js'
+import {RemovedException} from "../Exception/RemovedException.js";
 
 /**
  * @implements {HasTagClassNameInterface}

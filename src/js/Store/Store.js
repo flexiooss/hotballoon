@@ -1,7 +1,5 @@
-import {CLASS_TAG_NAME, CLASS_TAG_NAME_STORE} from '../Types/HasTagClassNameInterface'
-import {StoreInterface} from './StoreInterface'
-import {StoreBase} from './StoreBase'
-import {RemovedException} from "../Exception/RemovedException";
+import {CLASS_TAG_NAME, CLASS_TAG_NAME_STORE} from '../Types/HasTagClassNameInterface.js'
+import {StoreBase} from './StoreBase.js'
 
 export const STORE_INIT = Symbol('STORE.INIT')
 

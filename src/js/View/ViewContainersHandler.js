@@ -1,5 +1,5 @@
-import {ViewContainerMap} from './ViewContainerMap'
-import {AlreadyRegisteredException} from '../Exception/AlreadyRegisteredException'
+import {ViewContainerMap} from './ViewContainerMap.js'
+import {AlreadyRegisteredException} from '../Exception/AlreadyRegisteredException.js'
 
 export class ViewContainersHandler {
   #viewContainers = new ViewContainerMap()

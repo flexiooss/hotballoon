@@ -1,4 +1,4 @@
-import {isNode, assert, isNodeText, isNull} from '@flexio-oss/js-commons-bundle/assert'
+import {isNode, assert, isNodeText, isNull} from '@flexio-oss/js-commons-bundle/assert/index.js'
 import {select as $} from './ListenerAttributeHandler'
 import {ReconcileNodeProperties} from './ReconcileNodeProperties'
 import {RECONCILIATION_RULES as R} from './rules'

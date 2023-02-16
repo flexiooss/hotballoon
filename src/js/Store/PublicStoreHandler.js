@@ -1,5 +1,5 @@
-import {CLASS_TAG_NAME, CLASS_TAG_NAME_PUBLIC_STORE_HANDLER} from '../Types/HasTagClassNameInterface'
-import {TypeCheck} from '../Types/TypeCheck'
+import {CLASS_TAG_NAME, CLASS_TAG_NAME_PUBLIC_STORE_HANDLER} from '../Types/HasTagClassNameInterface.js'
+import {TypeCheck} from '../Types/TypeCheck.js'
 
 /**
  *

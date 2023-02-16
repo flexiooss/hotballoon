@@ -1,5 +1,5 @@
-import {FlexMap} from '@flexio-oss/js-commons-bundle/flex-types'
-import {TypeCheck} from '../Types/TypeCheck'
+import {FlexMap} from '@flexio-oss/js-commons-bundle/flex-types/index.js'
+import {TypeCheck} from '../Types/TypeCheck.js'
 
 /**
  * @extends {FlexMap<?Store>}

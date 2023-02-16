@@ -1,20 +1,20 @@
-import {WithID} from '../abstract/WithID'
+import {WithID} from '../abstract/WithID.js'
 import {
   assertInstanceOf,
   assertType,
   isNull,
   TypeCheck
-} from '@flexio-oss/js-commons-bundle/assert'
-import {StorageInterface} from './Storage/StorageInterface'
+} from '@flexio-oss/js-commons-bundle/assert/index.js'
+import {StorageInterface} from './Storage/StorageInterface.js'
 
-import {OrderedEventHandler} from '../Event/OrderedEventHandler'
-import {STORE_CHANGED, STORE_REMOVED} from './StoreInterface'
-import {ValidationError} from '../Exception/ValidationError'
-import {OrderedEventListenerConfigBuilder} from '@flexio-oss/js-commons-bundle/event-handler'
-import {StoreBaseConfig} from './StoreBaseConfig'
-import {ListenedStore} from './ListenedStore'
-import {RemovedException} from "../Exception/RemovedException";
-import {Logger} from "@flexio-oss/js-commons-bundle/hot-log";
+import {OrderedEventHandler} from '../Event/OrderedEventHandler.js'
+import {STORE_CHANGED, STORE_REMOVED} from './StoreInterface.js'
+import {ValidationError} from '../Exception/ValidationError.js'
+import {OrderedEventListenerConfigBuilder} from '@flexio-oss/js-commons-bundle/event-handler/index.js'
+import {StoreBaseConfig} from './StoreBaseConfig.js'
+import {ListenedStore} from './ListenedStore.js'
+import {RemovedException} from "../Exception/RemovedException.js";
+import {Logger} from '@flexio-oss/js-commons-bundle/hot-log/index.js';
 
 /**
  * @template TYPE, TYPE_BUILDER
@@ -70,6 +70,14 @@ export class StoreBase extends WithID {
     assertInstanceOf(value, StorageInterface, 'StorageInterface')
     this.#storage = value
     this.#stateUpdated()
+  }
+
+  /**
+   * @return {this}
+   */
+  trigChange(){
+   this.set(this.state().data())
+    return this
   }
 
   /**

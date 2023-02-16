@@ -1,5 +1,5 @@
-import {OrderedEventHandler as OrderedEventHandlerBase} from '@flexio-oss/js-commons-bundle/event-handler'
-import {isNull, TypeCheck} from "@flexio-oss/js-commons-bundle/assert";
+import {OrderedEventHandler as OrderedEventHandlerBase} from '@flexio-oss/js-commons-bundle/event-handler/index.js'
+import {isNull, TypeCheck} from '@flexio-oss/js-commons-bundle/assert/index.js';
 
 export class OrderedEventHandler extends OrderedEventHandlerBase {
   /**

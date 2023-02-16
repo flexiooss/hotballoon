@@ -1,9 +1,7 @@
-import {BrowserApplicationBuilder} from '../../../BrowserApplicationBuilder'
-import {Dispatcher} from '../../js/Dispatcher/Dispatcher'
-import {AsyncDomAccessor} from '../../js/View/DomAccessor'
-import {ViewContainer, ViewContainerParameters} from '../../js/View/ViewContainer'
-import {View} from '../../js/View/View'
-import {e} from '../../js/HotballoonNodeElement/ElementDescription'
+import {BrowserApplicationBuilder} from '../../../BrowserApplicationBuilder.js'
+import {ViewContainer, ViewContainerParameters} from '../../js/View/ViewContainer.js'
+import {View} from '../../js/View/View.js'
+import {e} from '../../js/HotballoonNodeElement/ElementDescription.js'
 
 class ViewDemo extends View {
   /**

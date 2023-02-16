@@ -1,5 +1,5 @@
-import {EventListenerConfigBuilder} from '../__import__flexio-nodes-reconciliation'
-import {ElementEventListenerConfig} from './ElementEventListenerConfig'
+import {EventListenerConfigBuilder} from '../__import__flexio-nodes-reconciliation.js'
+import {ElementEventListenerConfig} from './ElementEventListenerConfig.js'
 
 export class ElementEventListenerConfigBuilder extends EventListenerConfigBuilder {
   /**

@@ -1,5 +1,5 @@
-import {assertType, isBoolean, isNull, isNumber, isObject, isString} from '@flexio-oss/js-commons-bundle/assert'
-import {deepFreezeSeal} from '@flexio-oss/js-commons-bundle/js-generator-helpers'
+import {assertType, isBoolean, isNull, isNumber, isObject, isString} from '@flexio-oss/js-commons-bundle/assert/index.js'
+import {deepFreezeSeal} from '@flexio-oss/js-commons-bundle/js-generator-helpers/index.js'
 
 class FakeObject {
   /**

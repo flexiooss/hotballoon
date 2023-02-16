@@ -1,6 +1,6 @@
 import {TestCase} from '@flexio-oss/code-altimeter-js'
-import {InMemoryStoreBuilder} from '../../js/Store/InMemoryStoreBuilder'
-import {FakeValueObject, FakeValueObjectBuilder} from '../FakeValueObject'
+import {InMemoryStoreBuilder} from '../../js/Store/InMemoryStoreBuilder.js'
+import {FakeValueObject, FakeValueObjectBuilder} from '../FakeValueObject.js'
 
 
 const assert = require('assert')
@@ -50,6 +50,28 @@ export class TestStore extends TestCase {
     assert.deepEqual(
       this.store.state().data(),
       new FakeValueObjectBuilder().a(0).b(0).build()
+    )
+  }
+
+  testTrig() {
+    const valueObject = new FakeValueObjectBuilder()
+      .a(0)
+      .b(0)
+      .build()
+    this.store.set(valueObject)
+
+    const state1 = this.store.state()
+
+    this.store.trigChange()
+
+    assert.deepEqual(
+      this.store.state().data(),
+      state1.data()
+    )
+
+    assert.notEqual(
+      this.store.state().time(),
+      state1.time()
     )
   }
 

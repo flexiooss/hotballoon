@@ -1,6 +1,6 @@
-import {AlreadyRegisteredException} from '../Exception/AlreadyRegisteredException'
-import {ComponentContextMap} from './ComponentContextMap'
-import {Logger} from "@flexio-oss/js-commons-bundle/hot-log";
+import {AlreadyRegisteredException} from '../Exception/AlreadyRegisteredException.js'
+import {ComponentContextMap} from './ComponentContextMap.js'
+import {Logger} from '@flexio-oss/js-commons-bundle/hot-log/index.js';
 
 export class ComponentsContextHandler {
   /**

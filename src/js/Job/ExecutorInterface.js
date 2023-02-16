@@ -1,4 +1,4 @@
-import {CLASS_TAG_NAME, CLASS_TAG_NAME_EXECUTOR} from '../Types/HasTagClassNameInterface'
+import {CLASS_TAG_NAME, CLASS_TAG_NAME_EXECUTOR} from '../Types/HasTagClassNameInterface.js'
 
 /**
  * @interface ExecutorInterface

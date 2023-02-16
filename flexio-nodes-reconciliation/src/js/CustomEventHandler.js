@@ -1,6 +1,6 @@
-import {isNull, TypeCheck} from "@flexio-oss/js-commons-bundle/assert";
-import {getParentNode} from "@flexio-oss/js-commons-bundle/js-type-helpers";
-import {UID} from "@flexio-oss/js-commons-bundle/js-helpers";
+import {isNull, TypeCheck} from '@flexio-oss/js-commons-bundle/assert/index.js';
+import {getParentNode} from '@flexio-oss/js-commons-bundle/js-type-helpers/index.js';
+import {UID} from '@flexio-oss/js-commons-bundle/js-helpers/index.js';
 
 /**
  * @type {symbol}

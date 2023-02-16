@@ -1,9 +1,9 @@
-import {assertInstanceOf, assertType, TypeCheck} from '@flexio-oss/js-commons-bundle/assert'
-import {Dispatcher} from '../Dispatcher/Dispatcher'
-import {ViewRenderConfig} from './ViewRenderConfig'
-import {ComponentsContextHandler} from '../Component/ComponentsContextHandler'
-import {ExecutionConfig} from './ExecutionConfig'
-import {implementsSchedulerHandlerInterface} from "../Scheduler/SchedulerHandler";
+import {assertInstanceOf, assertType, TypeCheck} from '@flexio-oss/js-commons-bundle/assert/index.js'
+import {Dispatcher} from '../Dispatcher/Dispatcher.js'
+import {ViewRenderConfig} from './ViewRenderConfig.js'
+import {ComponentsContextHandler} from '../Component/ComponentsContextHandler.js'
+import {ExecutionConfig} from './ExecutionConfig.js'
+import {implementsSchedulerHandlerInterface} from "../Scheduler/SchedulerHandler.js";
 
 export class HotballoonApplicationConfig {
 

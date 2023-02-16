@@ -1,5 +1,5 @@
-import {isNode, assert, isNull} from '@flexio-oss/js-commons-bundle/assert'
-import {removeChildNodes} from '@flexio-oss/js-commons-bundle/js-type-helpers'
+import {isNode, assert, isNull} from '@flexio-oss/js-commons-bundle/assert/index.js'
+import {removeChildNodes} from '@flexio-oss/js-commons-bundle/js-type-helpers/index.js'
 import {select} from './ListenerAttributeHandler'
 import {nodeReconcile} from './NodeReconciliation'
 import {listenerEquals, listenerReconcile, listenerReplace} from './ListenerReconciliation'

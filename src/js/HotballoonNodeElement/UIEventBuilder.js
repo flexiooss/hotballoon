@@ -1,6 +1,6 @@
-import {ElementEventListenerConfigBuilder} from './ElementEventListenerConfigBuilder'
-import {assertType, isFunction} from '@flexio-oss/js-commons-bundle/assert'
-import {CustomEventHandler} from "../../../flexio-nodes-reconciliation";
+import {ElementEventListenerConfigBuilder} from './ElementEventListenerConfigBuilder.js'
+import {assertType, isFunction} from '@flexio-oss/js-commons-bundle/assert/index.js'
+import {CustomEventHandler} from "../../../flexio-nodes-reconciliation/index.js";
 
 export class UIEventBuilder {
 

@@ -1,7 +1,7 @@
-import {HotballoonElementParams} from './HotballoonElementParams'
-import {HyperFlex} from '../__import__flexio-hyperflex'
-import {$} from './HotBalloonAttributeHandler'
-import {RECONCILIATION_RULES} from '../__import__flexio-nodes-reconciliation'
+import {HotballoonElementParams} from './HotballoonElementParams.js'
+import {HyperFlex} from '../__import__flexio-hyperflex.js'
+import {$} from './HotBalloonAttributeHandler.js'
+import {RECONCILIATION_RULES} from '../__import__flexio-nodes-reconciliation.js'
 
 /**
  * @extends HyperFlex

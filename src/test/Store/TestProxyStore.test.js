@@ -1,8 +1,8 @@
 import {TestCase} from '@flexio-oss/code-altimeter-js'
-import {InMemoryStoreBuilder} from '../../js/Store/InMemoryStoreBuilder'
-import {ProxyStoreBuilder} from '../../js/Store/ProxyStoreBuilder'
+import {InMemoryStoreBuilder} from '../../js/Store/InMemoryStoreBuilder.js'
+import {ProxyStoreBuilder} from '../../js/Store/ProxyStoreBuilder.js'
 
-import {FakeValueObject, FakeValueObjectBuilder} from '../FakeValueObject'
+import {FakeValueObject, FakeValueObjectBuilder} from '../FakeValueObject.js'
 
 const assert = require('assert')
 
@@ -86,6 +86,31 @@ export class TestProxyStore extends TestCase {
         .b(30)
         .build(),
       'Mapper should be invoked after store update')
+  }
+
+  testUpdateFromTrig() {
+    let invoked = 0
+
+    this.proxyStore = new ProxyStoreBuilder()
+      .type(FakeValueObject)
+      .store(this.store)
+      .mapper(
+        /**
+         *
+         * @param {FakeValueObject} data
+         */
+        (data) => {
+          invoked++
+
+          return new FakeValueObjectBuilder()
+            .a(data.a() + 1)
+            .b(data.b() + 10)
+            .build()
+        })
+      .build()
+
+    this.proxyStore.mapAndUpdate()
+    assert.strictEqual(invoked, 2, 'Mapper should be invoked at init and at set')
   }
 
   testChangeParentStore() {

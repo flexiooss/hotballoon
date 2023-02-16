@@ -1,5 +1,5 @@
-import {Dispatcher} from "../../js/Dispatcher/Dispatcher";
-import {BrowserApplicationBuilder} from "../../../BrowserApplicationBuilder";
+import {Dispatcher} from "../../js/Dispatcher/Dispatcher.js";
+import {BrowserApplicationBuilder} from "../../../BrowserApplicationBuilder.js";
 
 /**
  * @type {HotBalloonApplication}

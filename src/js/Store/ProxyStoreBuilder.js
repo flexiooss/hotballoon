@@ -1,10 +1,10 @@
-import {UID} from '@flexio-oss/js-commons-bundle/js-helpers'
-import {InMemoryStorage} from './Storage/InMemoryStorage'
-import {StoreState} from './StoreState'
-import {StoreTypeConfig} from './StoreTypeConfig'
-import {ProxyStore} from './ProxyStore'
-import {ProxyStoreConfig} from './ProxyStoreConfig'
-import {isNull} from '@flexio-oss/js-commons-bundle/assert'
+import {UID} from '@flexio-oss/js-commons-bundle/js-helpers/index.js'
+import {InMemoryStorage} from './Storage/InMemoryStorage.js'
+import {StoreState} from './StoreState.js'
+import {StoreTypeConfig} from './StoreTypeConfig.js'
+import {ProxyStore} from './ProxyStore.js'
+import {ProxyStoreConfig} from './ProxyStoreConfig.js'
+import {isNull} from '@flexio-oss/js-commons-bundle/assert/index.js'
 
 /**
  *

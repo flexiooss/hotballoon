@@ -1,8 +1,8 @@
 import {TestCase} from '@flexio-oss/code-altimeter-js'
-import {InMemoryStoreBuilder} from '../../js/Store/InMemoryStoreBuilder'
-import {AsyncProxyStoreBuilder} from '../../js/Store/AsyncProxyStoreBuilder'
+import {InMemoryStoreBuilder} from '../../js/Store/InMemoryStoreBuilder.js'
+import {AsyncProxyStoreBuilder} from '../../js/Store/AsyncProxyStoreBuilder.js'
 
-import {FakeValueObject, FakeValueObjectBuilder} from '../FakeValueObject'
+import {FakeValueObject, FakeValueObjectBuilder} from '../FakeValueObject.js'
 
 const assert = require('assert')
 
@@ -93,6 +93,40 @@ export class TestAsyncProxyStore extends TestCase {
           .a(10)
           .b(20)
           .build())
+
+    })
+  }
+
+  async asyncTestUpdateFromTrig() {
+    let invoked = 0
+
+    this.proxyStore = await new AsyncProxyStoreBuilder()
+      .type(FakeValueObject)
+      .store(this.store)
+      .mapper(
+        /**
+         *
+         * @param {FakeValueObject} data
+         */
+        async (data) => {
+          invoked++
+
+          return new FakeValueObjectBuilder()
+            .a(data.a() + 1)
+            .b(data.b() + 10)
+            .build()
+        })
+      .build()
+
+
+    return new Promise((ok, ko) => {
+
+      this.proxyStore.listenChanged(() => {
+        assert.strictEqual(invoked, 2, 'Mapper should be invoked at init and at set')
+        ok()
+      })
+
+      this.proxyStore.mapAndUpdate()
 
     })
   }

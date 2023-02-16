@@ -1,11 +1,10 @@
-import {CLASS_TAG_NAME, CLASS_TAG_NAME_PROXYSTORE} from '../Types/HasTagClassNameInterface'
-import {StoreBase} from './StoreBase'
-import {StoreBaseConfig} from './StoreBaseConfig'
-import {assertInstanceOf, isNull} from '@flexio-oss/js-commons-bundle/assert'
-import {ProxyStoreConfig} from './ProxyStoreConfig'
-import {StoreState} from './StoreState'
-import {TypeCheck} from "../Types/TypeCheck";
-import {STORE_CHANGED} from "./StoreInterface";
+import {CLASS_TAG_NAME, CLASS_TAG_NAME_PROXYSTORE} from '../Types/HasTagClassNameInterface.js'
+import {StoreBase} from './StoreBase.js'
+import {StoreBaseConfig} from './StoreBaseConfig.js'
+import {assertInstanceOf, isNull} from '@flexio-oss/js-commons-bundle/assert/index.js'
+import {ProxyStoreConfig} from './ProxyStoreConfig.js'
+import {TypeCheck} from "../Types/TypeCheck.js";
+import {STORE_CHANGED} from "./StoreInterface.js";
 
 
 /**
@@ -111,6 +110,21 @@ export class ProxyStore extends StoreBase {
       this.set(state)
     }
     this.shouldUpdate()
+  }
+
+  /**
+   * @return {this}
+   */
+  trigChange(){
+    return this.mapAndUpdate()
+  }
+
+  /**
+   * @return {ProxyStore}
+   */
+  mapAndUpdate(){
+    this.#mapAndUpdate(this.#parentStore.state(), STORE_CHANGED)
+    return this
   }
 
   /**

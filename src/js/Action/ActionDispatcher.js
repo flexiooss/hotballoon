@@ -1,10 +1,9 @@
-import {assertInstanceOf, assertType, isNull, TypeCheck as TypeTypeCheck} from '@flexio-oss/js-commons-bundle/assert'
-import {EventAction} from './EventAction'
-import {ActionDispatcherConfig} from './ActionDispatcherConfig'
-import {ValidationError} from '../Exception/ValidationError'
-import {CLASS_TAG_NAME, CLASS_TAG_NAME_ACTION_DISPATCHER} from '../Types/HasTagClassNameInterface'
-import {ActionSubscriber} from './ActionSubscriber'
-import {RemovedException} from "../Exception/RemovedException";
+import { assertType, isNull, TypeCheck as TypeTypeCheck} from '@flexio-oss/js-commons-bundle/assert/index.js'
+import {EventAction} from './EventAction.js'
+import {ValidationError} from '../Exception/ValidationError.js'
+import { CLASS_TAG_NAME_ACTION_DISPATCHER} from '../Types/HasTagClassNameInterface.js'
+import {ActionSubscriber} from './ActionSubscriber.js'
+import {RemovedException} from "../Exception/RemovedException.js";
 
 
 /**

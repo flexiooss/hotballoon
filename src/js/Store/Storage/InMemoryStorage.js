@@ -1,7 +1,7 @@
-import {assertInstanceOf, isNull, TypeCheck} from '@flexio-oss/js-commons-bundle/assert'
-import {deepFreezeSeal} from '@flexio-oss/js-commons-bundle/js-generator-helpers'
-import {StoreState} from '../StoreState'
-import {StorageInterface} from './StorageInterface'
+import {assertInstanceOf, isNull, TypeCheck} from '@flexio-oss/js-commons-bundle/assert/index.js'
+import {deepFreezeSeal} from '@flexio-oss/js-commons-bundle/js-generator-helpers/index.js'
+import {StoreState} from '../StoreState.js'
+import {StorageInterface} from './StorageInterface.js'
 
 
 /**

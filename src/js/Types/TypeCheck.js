@@ -12,10 +12,10 @@ import {
   CLASS_TAG_NAME_VIEWCONTAINER,
   CLASS_TAG_NAME_ACTION_SUBSCRIBER,
   testClassTagName
-} from './HasTagClassNameInterface'
-import {assertType, isNull} from '@flexio-oss/js-commons-bundle/assert'
-import {ElementDescription} from '../HotballoonNodeElement/ElementDescription'
-import {RemovedException} from "../Exception/RemovedException";
+} from './HasTagClassNameInterface.js'
+import {assertType, isNull} from '@flexio-oss/js-commons-bundle/assert/index.js'
+import {ElementDescription} from '../HotballoonNodeElement/ElementDescription.js'
+import {RemovedException} from "../Exception/RemovedException.js";
 
 
 class TypeCheck {

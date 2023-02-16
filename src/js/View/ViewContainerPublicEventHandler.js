@@ -1,5 +1,5 @@
-import {assertType, isFunction} from '@flexio-oss/js-commons-bundle/assert'
-import {OrderedEventListenerConfigBuilder} from '@flexio-oss/js-commons-bundle/event-handler'
+import {assertType, isFunction} from '@flexio-oss/js-commons-bundle/assert/index.js'
+import {OrderedEventListenerConfigBuilder} from '@flexio-oss/js-commons-bundle/event-handler/index.js'
 
 export const WILL_REMOVE = 'WILL_REMOVE'
 

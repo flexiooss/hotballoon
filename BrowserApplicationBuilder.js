@@ -1,7 +1,7 @@
-import {ApplicationBuilder, AsyncDomAccessor} from './index'
-import { TypeCheck} from '@flexio-oss/js-commons-bundle/assert'
-import {UID} from '@flexio-oss/js-commons-bundle/js-helpers'
-import {BrowserSchedulerHandler} from "./src/js/Scheduler/BrowserSchedulerHandler";
+import {ApplicationBuilder, AsyncDomAccessor} from './index.js'
+import { TypeCheck} from '@flexio-oss/js-commons-bundle/assert/index.js'
+import {UID} from '@flexio-oss/js-commons-bundle/js-helpers/index.js'
+import {BrowserSchedulerHandler} from "./src/js/Scheduler/BrowserSchedulerHandler.js";
 
 
 export class BrowserApplicationBuilder {

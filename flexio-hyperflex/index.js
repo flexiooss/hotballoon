@@ -1,4 +1,4 @@
-import './generated/io/package'
-export * from './src/js/AttributeHandler'
-export * from './src/js/HyperFlex'
-export * from './src/js/HyperFlexParams'
+import './generated/io/package.js'
+export * from './src/js/AttributeHandler.js'
+export * from './src/js/HyperFlex.js'
+export * from './src/js/HyperFlexParams.js'

@@ -1,7 +1,7 @@
-import {StoreMap} from './StoreMap'
-import {ListenedStoreMap} from './ListenedStoreMap'
-import {AlreadyRegisteredException} from '../Exception/AlreadyRegisteredException'
-import {TypeCheck} from '../Types/TypeCheck'
+import {StoreMap} from './StoreMap.js'
+import {ListenedStoreMap} from './ListenedStoreMap.js'
+import {AlreadyRegisteredException} from '../Exception/AlreadyRegisteredException.js'
+import {TypeCheck} from '../Types/TypeCheck.js'
 
 /**
  * @template TYPE

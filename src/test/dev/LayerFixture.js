@@ -1,6 +1,6 @@
-import { globalFlexioImport } from '@flexio-oss/js-commons-bundle/global-import-registry'
-import { assertType, isBoolean, isObject, assert, isNumber, isNull, isString } from '@flexio-oss/js-commons-bundle/assert'
-import { deepFreezeSeal } from '@flexio-oss/js-commons-bundle/js-generator-helpers'
+import { globalFlexioImport } from '@flexio-oss/js-commons-bundle/global-import-registry/index.js'
+import { assertType, isBoolean, isObject, assert, isNumber, isNull, isString } from '@flexio-oss/js-commons-bundle/assert/index.js'
+import { deepFreezeSeal } from '@flexio-oss/js-commons-bundle/js-generator-helpers/index.js'
 
 class Layer {
   /**

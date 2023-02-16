@@ -1,4 +1,4 @@
-import {NotOverrideException} from "@flexio-oss/js-commons-bundle/assert";
+import {NotOverrideException} from '@flexio-oss/js-commons-bundle/assert/index.js';
 
 
 export const STORE_CHANGED = '__HB__.STORE.CHANGED'

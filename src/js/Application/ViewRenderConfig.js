@@ -1,5 +1,5 @@
-import {assertInstanceOf, assertType, TypeCheck} from '@flexio-oss/js-commons-bundle/assert'
-import {DomAccessor} from '../View/DomAccessor'
+import {assertInstanceOf,  TypeCheck} from '@flexio-oss/js-commons-bundle/assert/index.js'
+import {DomAccessor} from '../View/DomAccessor.js'
 
 
 export class ViewRenderConfig {

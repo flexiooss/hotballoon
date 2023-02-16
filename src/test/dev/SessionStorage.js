@@ -1,7 +1,7 @@
-import {JsStorageStoreBuilder} from "../../js/Store/JsStorageStoreBuilder";
-import {Layer} from "./LayerFixture";
-import {UIDMini} from "@flexio-oss/js-commons-bundle/js-helpers";
-import {BrowserApplicationBuilder} from "../../../BrowserApplicationBuilder";
+import {JsStorageStoreBuilder} from "../../js/Store/JsStorageStoreBuilder.js";
+import {Layer} from "./LayerFixture.js";
+import {UIDMini} from '@flexio-oss/js-commons-bundle/js-helpers/index.js';
+import {BrowserApplicationBuilder} from "../../../BrowserApplicationBuilder.js";
 
 /**
  * @type {HotBalloonApplication}

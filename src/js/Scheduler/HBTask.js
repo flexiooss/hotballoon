@@ -1,7 +1,5 @@
-import {isNull, NotOverrideException} from "@flexio-oss/js-commons-bundle/assert";
-import {isImplement} from '@flexio-oss/js-commons-bundle/js-helpers'
-import {PRIORITIES} from "./PRIORITIES";
-import {HBTaskAbortException} from "./HBTaskAbortException";
+import { NotOverrideException} from '@flexio-oss/js-commons-bundle/assert/index.js';
+import {isImplement} from '@flexio-oss/js-commons-bundle/js-helpers/index.js'
 
 export const HBTaskInterface = (Base = class  {
   

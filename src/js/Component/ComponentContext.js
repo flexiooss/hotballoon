@@ -1,16 +1,16 @@
-import {assertInstanceOf, assertType, isNull, isString, TypeCheck} from '@flexio-oss/js-commons-bundle/assert'
-import {Sequence} from '@flexio-oss/js-commons-bundle/js-helpers'
-import {WithID} from '../abstract/WithID'
-import {CLASS_TAG_NAME, CLASS_TAG_NAME_COMPONENT} from '../Types/HasTagClassNameInterface'
-import {TypeCheck as HBTypeCheck} from '../Types/TypeCheck'
-import {ActionsHandler} from '../Action/ActionsHandler'
-import {StoresHandler} from '../Store/StoresHandler'
-import {ViewContainersHandler} from '../View/ViewContainersHandler'
-import {OrderedEventHandler} from '../Event/OrderedEventHandler'
-import {OrderedEventListenerConfigBuilder} from '@flexio-oss/js-commons-bundle/event-handler'
-import {Logger} from "@flexio-oss/js-commons-bundle/hot-log";
-import {IntersectionObserverHandler} from "../Application/intersectionObserver/IntersectionObserverHandler";
-import {SchedulerHandlerInterface} from "../Scheduler/SchedulerHandler";
+import {assertInstanceOf,  isNull,  TypeCheck} from '@flexio-oss/js-commons-bundle/assert/index.js'
+import {Sequence} from '@flexio-oss/js-commons-bundle/js-helpers/index.js'
+import {WithID} from '../abstract/WithID.js'
+import {CLASS_TAG_NAME, CLASS_TAG_NAME_COMPONENT} from '../Types/HasTagClassNameInterface.js'
+import {TypeCheck as HBTypeCheck} from '../Types/TypeCheck.js'
+import {ActionsHandler} from '../Action/ActionsHandler.js'
+import {StoresHandler} from '../Store/StoresHandler.js'
+import {ViewContainersHandler} from '../View/ViewContainersHandler.js'
+import {OrderedEventHandler} from '../Event/OrderedEventHandler.js'
+import {OrderedEventListenerConfigBuilder} from '@flexio-oss/js-commons-bundle/event-handler/index.js'
+import {Logger} from '@flexio-oss/js-commons-bundle/hot-log/index.js';
+import {IntersectionObserverHandler} from "../Application/intersectionObserver/IntersectionObserverHandler.js";
+import {SchedulerHandlerInterface} from "../Scheduler/SchedulerHandler.js";
 
 const REMOVE = 'REMOVE'
 

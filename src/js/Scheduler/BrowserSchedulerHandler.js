@@ -1,10 +1,10 @@
-import {isNull, TypeCheck} from '@flexio-oss/js-commons-bundle/assert'
+import {isNull, TypeCheck} from '@flexio-oss/js-commons-bundle/assert/index.js'
 import 'scheduler-polyfill'
-import {HBSchedulerTaskBuilderInterface} from "./HBSchedulerTaskBuilder";
-import {HBTaskInterface} from "./HBTask";
-import {HBTaskAbortException} from "./HBTaskAbortException";
-import {PRIORITIES} from "./PRIORITIES";
-import {SchedulerHandlerInterface} from "./SchedulerHandler";
+import {HBSchedulerTaskBuilderInterface} from "./HBSchedulerTaskBuilder.js";
+import {HBTaskInterface} from "./HBTask.js";
+import {HBTaskAbortException} from "./HBTaskAbortException.js";
+import {PRIORITIES} from "./PRIORITIES.js";
+import {SchedulerHandlerInterface} from "./SchedulerHandler.js";
 
 export class BrowserSchedulerHandler extends SchedulerHandlerInterface(class {
 

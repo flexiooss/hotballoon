@@ -1,7 +1,7 @@
-import {ListenedActionMap} from './ListenedActionMap'
-import {TypeCheck} from '../Types/TypeCheck'
-import {ActionMap} from './ActionMap'
-import {AlreadyRegisteredException} from '../Exception/AlreadyRegisteredException'
+import {ListenedActionMap} from './ListenedActionMap.js'
+import {TypeCheck} from '../Types/TypeCheck.js'
+import {ActionMap} from './ActionMap.js'
+import {AlreadyRegisteredException} from '../Exception/AlreadyRegisteredException.js'
 
 /**
  * @template TYPE

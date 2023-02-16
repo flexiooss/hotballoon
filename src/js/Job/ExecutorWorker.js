@@ -1,6 +1,6 @@
-import {ExecutorInterface} from './ExecutorInterface'
-import {TypeCheck} from '../Types/TypeCheck'
-import {assertType} from '@flexio-oss/js-commons-bundle/assert'
+import {ExecutorInterface} from './ExecutorInterface.js'
+import {TypeCheck} from '../Types/TypeCheck.js'
+import {assertType} from '@flexio-oss/js-commons-bundle/assert/index.js'
 
 export class ExecutorWorker extends ExecutorInterface {
   /**
