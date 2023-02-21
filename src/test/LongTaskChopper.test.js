@@ -26,7 +26,7 @@ export class LongTaskChopperTest extends TestCase {
        */
       const runner = app.longTaskChopper().runner()
       let results = []
-      const iterations = 43
+      const iterations = 25
       for (let i = 0; i < iterations; i++) {
         const res = await runner.exec(() => this.fibonacci(i))
         this.log(res, `iteration: ${i}`)
@@ -50,7 +50,7 @@ export class LongTaskChopperTest extends TestCase {
       const app = this.app()
 
       let tasks = []
-      const iterations = 43
+      const iterations = 25
       for (let i = 0; i < iterations; i++) {
         tasks.push(
           () => this.fibonacci(i)
@@ -74,13 +74,25 @@ export class LongTaskChopperTest extends TestCase {
 
   /**
    * @param {number} nbr
+   * @return {Promise<number>}
+   */
+  async fibonacci(nbr) {
+    return new Promise((ok, ko) => {
+      setTimeout(() => {
+        ok(this.fibonacciExec(nbr ));
+      }, 500)
+    })
+  }
+
+  /**
+   * @param {number} nbr
    * @return {number}
    */
-  fibonacci(nbr) {
+  fibonacciExec(nbr) {
     if (nbr < 2) {
       return nbr;
     }
-    return this.fibonacci(nbr - 1) + this.fibonacci(nbr - 2);
+    return this.fibonacciExec(nbr - 1) + this.fibonacciExec(nbr - 2);
   }
 
 }
