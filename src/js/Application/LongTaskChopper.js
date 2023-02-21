@@ -111,11 +111,10 @@ class RunnerMulti extends AbstractRunner {
         if (this._isInputPending() || (this._now() >= this._deadline())) {
           await LongTaskChopper.yieldToMain();
           this._updateDeadLine()
-          console.log('#############################')
           continue;
         }
         const task = this.#tasks.shift();
-        results.push(task.call(null));
+        results.push(await task.call(null));
       }
       ok(results)
     })
