@@ -23,7 +23,7 @@
     "mocha": "^10.2.0"
   },
   "dependencies": {
-    "@flexio-oss/js-commons-bundle": "1.66.0",
+    "@flexio-oss/js-commons-bundle": "1.67.0-dev",
     "scheduler-polyfill": "1.0.0"
   },
   "hotballoon-shed": {
