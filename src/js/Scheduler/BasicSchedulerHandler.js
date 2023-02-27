@@ -122,7 +122,7 @@ class HBTaskImpl extends HBTaskInterface() {
       return new Promise((ok, ko) => {
         this.#token = setTimeout(() => {
           if (!isNull(this.#task)) {
-            ok(this.#task.call(null), 0)
+            ok(this.#task.call(null), this.#delay ?? 0)
           } else {
             ko(new HBTaskAbortException())
           }
