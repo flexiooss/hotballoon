@@ -163,7 +163,6 @@ class HBTaskImpl extends HBTaskInterface() {
    */
   toPriorityBlocking() {
     if (!isNull(this.#controller)) {
-      console.log('ici')
       this.#controller.setPriority(PRIORITIES.BLOCKING)
     }
     return this
