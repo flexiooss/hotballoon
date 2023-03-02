@@ -337,6 +337,72 @@ export class TestAsyncProxyStore extends TestCase {
 
     return true
   }
+
+  async asyncTestAsyncStartDiffMaxMappingAtInit() {
+    let invoked = 0
+    let mapperInvoked = 0
+    this.store.listenChanged(()=>{
+      invoked++
+    })
+
+    setTimeout(() => {
+      this.store.set(
+        new FakeValueObjectBuilder().a(2).build()
+      )
+      this.store.set(
+        new FakeValueObjectBuilder().a(3).build()
+      )
+
+    }, 1000)
+
+    setTimeout(() => {
+      this.store.set(
+        new FakeValueObjectBuilder().a(4).build()
+      )
+      this.store.set(
+        new FakeValueObjectBuilder().a(5).build()
+      )
+      this.store.set(
+        new FakeValueObjectBuilder().a(6).build()
+      )
+
+    }, 1500)
+
+    this.proxyStore = await new AsyncProxyStoreBuilder()
+      .maxInitialMapping(0)
+      .type(FakeValueObject)
+      .store(this.store)
+      .mapper(
+        /**
+         *
+         * @param {FakeValueObject} data
+         */
+        async (data) => {
+          mapperInvoked++
+          return new Promise((ok, ko) => {
+            setTimeout(() => {
+              Promise.resolve().then(() => {
+                ok(new FakeValueObjectBuilder().a(data.a() + 1).build())
+              })
+            }, 2000)
+          })
+        })
+      .build()
+
+    this.log(this.proxyStore.state().data(), 'state before parent change')
+    this.log(invoked, 'store parent invoked')
+    this.log(mapperInvoked, 'mapper invoked')
+    assert.strictEqual(invoked, 5, 'store parent should be invoked')
+    assert.strictEqual(mapperInvoked, 1, 'Mapper should be invoked at init')
+    assert.deepEqual(
+      this.proxyStore.state().data(),
+      new FakeValueObjectBuilder()
+        .a(2)
+        .build(),
+      ' data should map the last trig')
+
+    return true
+  }
 }
 
 runTest(TestAsyncProxyStore)
