@@ -14,11 +14,24 @@ export class AsyncProxyStoreBuilder extends ProxyStoreBuilder {
    * @type {boolean}
    */
   #asyncInitialValue = false
+  /**
+   * @type {number}
+   */
+  #maxInitialMapping = 10
+
+  /**
+   * @param {number} value
+   * @return {AsyncProxyStoreBuilder}
+   */
+  maxInitialMapping(value) {
+    this.#maxInitialMapping = value;
+    return this
+  }
 
   /**
    * @return {AsyncProxyStoreBuilder}
    */
-  asyncInitialValue(){
+  asyncInitialValue() {
     this.#asyncInitialValue = true
     return this
   }
@@ -38,10 +51,39 @@ export class AsyncProxyStoreBuilder extends ProxyStoreBuilder {
   async build() {
 
     const id = this._uniqName()
+    /**
+     * @type {?TYPE}
+     */
+    let iniV = null
 
-    const iniV = this.#asyncInitialValue
-      ? null
-      : await this._mapper.call(null, this._store.state().data())
+    if (!this.#asyncInitialValue) {
+      /**
+       * @type {number}
+       */
+      let parentInvoked = 0
+      /**
+       * @type {ListenedStore}
+       */
+      const storeHandler = this._store.listenChanged(() => {
+        parentInvoked++
+      })
+      /**
+       * @type {number}
+       */
+      let invoked = parentInvoked
+      /**
+       * @type {number}
+       */
+      let iteration = 0
+
+      do {
+        invoked = parentInvoked
+        iniV = await this._mapper.call(null, this._store.state().data())
+        iteration++
+      } while (invoked !== parentInvoked && iteration <= this.#maxInitialMapping)
+
+      storeHandler.remove()
+    }
 
     return new AsyncProxyStore(
       new ProxyStoreConfig(

@@ -5,6 +5,7 @@ import {assertInstanceOf, isNull} from '@flexio-oss/js-commons-bundle/assert/ind
 import {ProxyStoreConfig} from './ProxyStoreConfig.js'
 import {TypeCheck} from "../Types/TypeCheck.js";
 import {STORE_CHANGED} from "./StoreInterface.js";
+import {BaseException} from "@flexio-oss/js-commons-bundle/js-type-helpers/index.js";
 
 
 /**
@@ -34,6 +35,10 @@ export class AsyncProxyStore extends StoreBase {
    * @type {?TYPE}
    */
   #initialData = null
+  /**
+   * @type {?AbortController}
+   */
+  #controller = null
 
   /**
    * @param {ProxyStoreConfig<STORE_TYPE, TYPE, TYPE_BUILDER>} proxyStoreConfig
@@ -114,20 +119,61 @@ export class AsyncProxyStore extends StoreBase {
    * @param {string} eventType
    */
   async #mapAndUpdate(payload, eventType) {
-    /**
-     * @type {TYPE}
-     */
-    const state = await this._mapper().call(null, payload.data(), this)
-    if (this.#shouldUpdate) {
-      this.set(state)
+    if(!isNull(this.#controller)){
+      this.#controller.abort()
     }
-    this.shouldUpdate()
+    /**
+     * @type {AbortController}
+     */
+    this.#controller = new AbortController();
+    try {
+      /**
+       * @type {TYPE}
+       */
+      const state = await this.#mapWithAbort(this.#controller.signal, () => this._mapper().call(null, payload.data(), this))
+      this.#controller = null
+      if (this.#shouldUpdate) {
+        this.set(state)
+      }
+      this.shouldUpdate()
+
+    } catch (e) {
+      if (!e instanceof AbortedException) {
+        throw e
+      }
+    }
+  }
+
+  /**
+   * @param{AbortSignal}  abortSignal
+   * @param {function():Promise<TYPE>} clb
+   * @return {Promise<void>}
+   */
+  async #mapWithAbort(abortSignal, clb) {
+
+    if (abortSignal?.aborted) {
+      return Promise.reject(new AbortedException("Aborted"));
+    }
+    return new Promise((resolve, reject) => {
+      let timeout;
+      const abortHandler = () => {
+        clearTimeout(timeout);
+        reject(new AbortedException("Aborted"));
+      }
+
+      timeout = setTimeout(() => {
+        resolve(clb.call(null));
+        abortSignal?.removeEventListener("abort", abortHandler);
+      }, 0);
+
+      abortSignal?.addEventListener("abort", abortHandler);
+    });
   }
 
   /**
    * @return {AsyncProxyStore}
    */
-  trigChange(){
+  trigChange() {
     this.mapAndUpdate()
     return this
   }
@@ -166,5 +212,12 @@ export class AsyncProxyStore extends StoreBase {
   remove() {
     this.#listenedStore.remove()
     super.remove()
+  }
+}
+
+class AbortedException extends BaseException {
+
+  realName() {
+    return 'AbortedException';
   }
 }
