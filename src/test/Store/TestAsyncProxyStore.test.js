@@ -301,7 +301,6 @@ export class TestAsyncProxyStore extends TestCase {
       this.store.set(
         new FakeValueObjectBuilder().a(2).build()
       )
-      console.log('la')
     }, 1000)
 
     this.proxyStore = await new AsyncProxyStoreBuilder()

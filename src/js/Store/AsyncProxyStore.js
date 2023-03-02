@@ -6,6 +6,7 @@ import {ProxyStoreConfig} from './ProxyStoreConfig.js'
 import {TypeCheck} from "../Types/TypeCheck.js";
 import {STORE_CHANGED} from "./StoreInterface.js";
 import {BaseException} from "@flexio-oss/js-commons-bundle/js-type-helpers/index.js";
+import {Logger} from "@flexio-oss/js-commons-bundle/hot-log/index.js";
 
 
 /**
@@ -39,6 +40,10 @@ export class AsyncProxyStore extends StoreBase {
    * @type {?AbortController}
    */
   #controller = null
+  /**
+   * @type {Logger}
+   */
+  #logger
 
   /**
    * @param {ProxyStoreConfig<STORE_TYPE, TYPE, TYPE_BUILDER>} proxyStoreConfig
@@ -62,9 +67,13 @@ export class AsyncProxyStore extends StoreBase {
       enumerable: true,
       value: CLASS_TAG_NAME_PROXYSTORE
     })
+
+    this.#logger = Logger.getLogger(this.constructor.name, 'hotballoon.store.AsyncProxyStore', this.ID())
     this.#parentStore = TypeCheck.assertStoreBase(this.#config.store())
+    this.#initialData = proxyStoreConfig.initialData()
 
     this.#subscribeToStore()
+
     if (asyncInitialValue) {
       this._mapper().call(null, this.#parentStore.state().data(), this).then(v => {
         this.#initialData = v
@@ -119,7 +128,7 @@ export class AsyncProxyStore extends StoreBase {
    * @param {string} eventType
    */
   async #mapAndUpdate(payload, eventType) {
-    if(!isNull(this.#controller)){
+    if (!isNull(this.#controller)) {
       this.#controller.abort()
     }
     /**
@@ -140,6 +149,8 @@ export class AsyncProxyStore extends StoreBase {
     } catch (e) {
       if (!e instanceof AbortedException) {
         throw e
+      } else {
+        this.#logger.debug('mapping aborted')
       }
     }
   }
