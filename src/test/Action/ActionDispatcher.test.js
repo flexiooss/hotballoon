@@ -3,16 +3,19 @@ import {ActionDispatcherBuilder} from '../../js/Action/ActionDispatcherBuilder.j
 import {FakeObject, FakeObjectBuilder} from './FakeObject.js'
 import {ApplicationBuilder} from '../../../ApplicationBuilder.js'
 import {ActionSubscriber} from "../../js/Action/ActionSubscriber.js";
+import {ActionResponseBuilder} from "../../js/Action/ActionResponseBuilder.js";
 
 
 const assert = require('assert')
 
 
 export class ActionDispatcherTest extends TestCase {
+  // debug = true
+
   /**
    * @return {HotBalloonApplication}
    */
-  app(){
+  app() {
     return new ApplicationBuilder()
       .build()
   }
@@ -33,10 +36,10 @@ export class ActionDispatcherTest extends TestCase {
       .dispatcher(this.componentContext.dispatcher())
       .build()
 
-    let p = null
-    let t = null
-
-    actionDispatcher.listen(
+    /**
+     * @type {ListenedAction}
+     */
+    const listenedAction = actionDispatcher.listen(
       (payload, type) => {
         throw new Error('listen')
       }
@@ -48,13 +51,74 @@ export class ActionDispatcherTest extends TestCase {
       .prop3(3)
       .build()
 
-    assert.throws(() => {
+    actionDispatcher.dispatch(payloadDispatched).catch((e) => {
+      this.log(e)
+    })
 
-        actionDispatcher.dispatch(payloadDispatched)
-      },
+    assert.rejects(
+      () => actionDispatcher.dispatch(payloadDispatched),
       /^Error: listen$/
     )
 
+  }
+
+  async asyncTestListenDispatch() {
+    /**
+     *
+     * @type {ActionDispatcher<FakeObject, FakeObjectBuilder>}
+     */
+    const actionDispatcher = new ActionDispatcherBuilder()
+      .type(FakeObject)
+      .dispatcher(this.componentContext.dispatcher())
+      .build()
+
+    return new Promise((ok, ko) => {
+
+      /**
+       * @type {ListenedAction}
+       */
+      const listenedAction = actionDispatcher.listen(
+        (payload, actionResponseBuilder, execution) => {
+          ok()
+        }
+      )
+
+      const payloadDispatched = new FakeObjectBuilder()
+        .prop1('toto')
+        .prop2(true)
+        .prop3(3)
+        .build()
+
+      actionDispatcher.dispatch(payloadDispatched).catch((e) => {
+        this.log(e)
+      })
+
+    })
+
+  }
+
+  testRemovedException() {
+    /**
+     *
+     * @type {ActionDispatcher<FakeObject, FakeObjectBuilder>}
+     */
+    const actionDispatcher = new ActionDispatcherBuilder()
+      .type(FakeObject)
+      .dispatcher(this.componentContext.dispatcher())
+      .build()
+
+    actionDispatcher.remove()
+
+    const payloadDispatched = new FakeObjectBuilder()
+      .prop1('toto')
+      .prop2(true)
+      .prop3(3)
+      .build()
+
+    assert.throws(
+      () => actionDispatcher.dispatch(payloadDispatched),
+      /RemovedException/
+    )
   }
 
   testListenDispatchValueListenDispatchValue() {
@@ -85,7 +149,7 @@ export class ActionDispatcherTest extends TestCase {
     actionDispatcher.dispatch(payloadDispatched)
 
     assert.deepStrictEqual(p, payloadDispatched)
-    assert.equal(t, actionDispatcher.ID())
+    assert.ok(t instanceof ActionResponseBuilder)
   }
 
   testListenDispatchOrder() {
@@ -175,8 +239,8 @@ export class ActionDispatcherTest extends TestCase {
 
     const action = actionDispatcher.listen(
       (payload) => {
-      a++
-    })
+        a++
+      })
 
     const payloadDispatched = new FakeObjectBuilder()
       .prop1('toto')
@@ -186,16 +250,16 @@ export class ActionDispatcherTest extends TestCase {
 
     actionDispatcher.dispatch(payloadDispatched)
 
-    assert.equal(a,1, 'action should be invoked')
+    assert.equal(a, 1, 'action should be invoked')
 
     actionDispatcher.dispatch(payloadDispatched)
 
-    assert.equal(a,2, 'action should be invoked')
+    assert.equal(a, 2, 'action should be invoked')
 
     action.remove()
     actionDispatcher.dispatch(payloadDispatched)
 
-    assert.equal(a,2, 'action should be removed')
+    assert.equal(a, 2, 'action should be removed')
   }
 
   testListenedActionGuard() {
@@ -225,32 +289,153 @@ export class ActionDispatcherTest extends TestCase {
      * @type {ListenedAction}
      */
     const action = actionSubscriber.listen(
-      payload=> {
-      a--
-    },
-      payload=> payload.prop3() === 4
+      payload => {
+        a--
+      },
+      payload => payload.prop3() === 4
     )
 
     /**
      * @type {ListenedAction}
      */
     const action2 = actionSubscriber.listen(
-      payload=> {
-      a++
-    },
-      payload=> payload.prop3() === 3
+      payload => {
+        a++
+      },
+      payload => payload.prop3() === 3
     )
 
     actionDispatcher.dispatch(payloadDispatched)
 
-    assert.equal(a,1, 'action should not be invoked')
+    assert.equal(a, 1, 'action should not be invoked')
 
     actionDispatcher.dispatch(payloadDispatched.withProp3(4))
 
-    assert.equal(a,0, 'action2 should be invoked')
+    assert.equal(a, 0, 'action2 should be invoked')
 
   }
 
+  async asyncTestListenedActionWithoutResponse() {
+    /**
+     *
+     * @type {ActionDispatcher<FakeObject, FakeObjectBuilder>}
+     */
+    const actionDispatcher = new ActionDispatcherBuilder()
+      .type(FakeObject)
+      .dispatcher(this.componentContext.dispatcher())
+      .build()
+
+    const payloadDispatched = new FakeObjectBuilder()
+      .prop1('toto')
+      .prop2(true)
+      .prop3(3)
+      .build()
+
+    /**
+     * @type {ListenedAction}
+     */
+    const listenedAction = actionDispatcher.listen(
+      (payload, responseBuilder) => {
+        responseBuilder.respond()
+      }
+    )
+
+    await actionDispatcher.dispatch(payloadDispatched)
+
+    return true
+
+  }
+
+  async asyncTestListenedActionWithResponse() {
+    /**
+     *
+     * @type {ActionDispatcher<FakeObject, FakeObjectBuilder>}
+     */
+    const actionDispatcher = new ActionDispatcherBuilder()
+      .type(FakeObject)
+      .withResponse()
+      .dispatcher(this.componentContext.dispatcher())
+      .build()
+
+    const payloadDispatched = new FakeObjectBuilder()
+      .prop1('toto')
+      .prop2(true)
+      .prop3(3)
+      .build()
+
+    /**
+     * @type {ListenedAction}
+     */
+    const listenedAction = actionDispatcher.listen(
+      (payload, responseBuilder) => {
+        setTimeout(() => {
+          responseBuilder.respond()
+        }, 1000)
+      }
+    )
+
+    await actionDispatcher.dispatch(payloadDispatched)
+
+    return true
+  }
+
+  testRemoveAction() {
+    /**
+     *
+     * @type {ActionDispatcher<FakeObject, FakeObjectBuilder>}
+     */
+    const actionDispatcher = new ActionDispatcherBuilder()
+      .type(FakeObject)
+      .withResponse()
+      .dispatcher(this.componentContext.dispatcher())
+      .build()
+
+    const id = actionDispatcher.ID()
+    const payloadDispatched = new FakeObjectBuilder()
+      .prop1('toto')
+      .prop2(true)
+      .prop3(3)
+      .build()
+
+    /**
+     * @type {ListenedAction}
+     */
+    const listenedAction = actionDispatcher.listen(
+      (payload, responseBuilder) => {
+      }
+    )
+    assert.ok(this.componentContext.dispatcher().hasEventListener(id, listenedAction.token()), 'should have listener')
+   actionDispatcher.dispatch(payloadDispatched)
+
+    assert.ok(this.componentContext.dispatcher().removeEventListener(ActionSubscriber.responseEventDispatcher(id)), 'should have response listener')
+
+
+    /**
+     *
+     * @type {ActionDispatcher<FakeObject, FakeObjectBuilder>}
+     */
+    const actionDispatcher2 = new ActionDispatcherBuilder()
+      .type(FakeObject)
+      .withResponse()
+      .dispatcher(this.componentContext.dispatcher())
+      .build()
+
+    /**
+     * @type {ListenedAction}
+     */
+    const listenedAction2 = actionDispatcher2.listen(
+      (payload, responseBuilder) => {
+      }
+    )
+
+    const id2 = actionDispatcher2.ID()
+    actionDispatcher2.dispatch(payloadDispatched)
+    actionDispatcher2.remove()
+
+    assert.ok(!this.componentContext.dispatcher().removeEventListener(id2), 'should not have listener')
+    assert.ok(!this.componentContext.dispatcher().removeEventListener(ActionSubscriber.responseEventDispatcher(id2)), 'should not have response listener')
+
+  }
 }
 
 

@@ -5,6 +5,7 @@ import {ActionDispatcherConfig} from './ActionDispatcherConfig.js'
 import {ListenedAction} from './ListenedAction.js'
 import {EventListenerConfigBuilder} from '@flexio-oss/js-commons-bundle/event-handler/index.js'
 import {RemovedException} from "../Exception/RemovedException.js";
+import {ActionResponseBuilder} from "./ActionResponseBuilder.js";
 
 /**
  * @implements {HasTagClassNameInterface}
@@ -44,7 +45,6 @@ export class ActionSubscriber extends WithID {
     return this.#config
   }
 
-
   /**
    * @return {?Class<TYPE>}
    */
@@ -63,13 +63,12 @@ export class ActionSubscriber extends WithID {
     return constructor === this.__type__()
   }
 
-
   /**
-   * @param {function(payload: ?TYPE, type: (string|Symbol))} callback
+   * @param {function(payload: ?TYPE, actionResponseBuilder: ActionResponseBuilder)} callback
    * @param {?function(payload: ?TYPE):boolean} [guard=null]
    * @returns {ListenedAction}
    */
-  listen(callback, guard =null) {
+  listen(callback, guard = null) {
     if (this.isRemoved()) {
       throw RemovedException.ACTION(this._ID)
     }
@@ -81,7 +80,15 @@ export class ActionSubscriber extends WithID {
         .addActionListener(
           EventListenerConfigBuilder
             .listen(this.ID())
-            .callback(callback)
+            .callback(
+              /**
+               * @param {?TYPE} payload
+               * @param {string} type
+               * @param {string} executionId
+               */
+              (payload, type, executionId) => {
+                callback.call(null, payload, new ActionResponseBuilder(this.config().dispatcher(), this.constructor.responseEventDispatcher(this.ID()), executionId))
+              })
             .guard(guard)
             .build()
         )
@@ -99,6 +106,7 @@ export class ActionSubscriber extends WithID {
   remove() {
     this.#removed = true
     this.#config.dispatcher().removeEventListener(this.ID())
+    this.#config.dispatcher().removeEventListener(this.constructor.responseEventDispatcher(this.ID()))
   }
 
   /**
@@ -112,7 +120,15 @@ export class ActionSubscriber extends WithID {
    * @param {ActionSubscriber} inst
    * @return {ActionSubscriber}
    */
-  static from(inst){
+  static from(inst) {
     return new this(inst.config())
+  }
+
+  /**
+   * @param {string} id
+   * @return {string}
+   */
+  static responseEventDispatcher(id) {
+    return `__ACTION_RESPONSE__${id}`
   }
 }

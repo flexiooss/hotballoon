@@ -1,5 +1,5 @@
-import {assertType} from '@flexio-oss/js-commons-bundle/assert/index.js'
-import {TypeCheck} from '../Types/TypeCheck.js'
+import {assertInstanceOf, TypeCheck} from '@flexio-oss/js-commons-bundle/assert/index.js'
+import {TypeCheck as HBTypeCheck} from '../Types/TypeCheck.js'
 import {ActionTypeConfig} from './ActionTypeConfig.js'
 
 /**
@@ -19,19 +19,21 @@ export class ActionDispatcherConfig {
    */
   #dispatcher
   /**
+   * @type {boolean}
+   */
+  #withResponse
+
+  /**
    * @param {(Symbol|String)} id
    * @param {ActionTypeConfig<TYPE, TYPE_BUILDER>} actionTypeParam
    * @param {Dispatcher} dispatcher
+   * @param {boolean} withResponse
    */
-  constructor(id, actionTypeParam, dispatcher) {
-
-    assertType(actionTypeParam instanceof ActionTypeConfig,
-      'hotballoon:ActionDispatcherConfig:constructor "actionTypeParam" should be ActionTypeConfig'
-    )
-
+  constructor(id, actionTypeParam, dispatcher, withResponse) {
     this.#id = id
-    this.#params = actionTypeParam
-    this.#dispatcher = TypeCheck.assertIsDispatcher(dispatcher)
+    this.#params = assertInstanceOf(actionTypeParam, ActionTypeConfig, 'ActionTypeConfig')
+    this.#dispatcher = HBTypeCheck.assertIsDispatcher(dispatcher)
+    this.#withResponse = TypeCheck.assertIsBoolean(withResponse)
   }
 
   /**
@@ -63,7 +65,7 @@ export class ActionDispatcherConfig {
   }
 
   /**
-   * @return {ActionTypeConfig~defaultCheckerClb<TYPE>}
+   * @return {function(data:TYPE):TYPE}
    */
   defaultChecker() {
     return this.#params.defaultChecker()
@@ -74,5 +76,12 @@ export class ActionDispatcherConfig {
    */
   dispatcher() {
     return this.#dispatcher
+  }
+
+  /**
+   * @return {boolean}
+   */
+  withResponse() {
+    return this.#withResponse
   }
 }

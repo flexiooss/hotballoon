@@ -8,40 +8,37 @@ import {isNull} from '@flexio-oss/js-commons-bundle/assert/index.js'
  * @template TYPE, TYPE_BUILDER
  */
 export class ActionDispatcherBuilder {
-  constructor() {
-    /**
-     * @type {?Dispatcher}
-     * @private
-     */
-    this.__dispatcher = null
-    /**
-     * @type {?Class<TYPE>}
-     * @private
-     */
-    this.__type = null
-    /**
-     * @type {?ValueObjectValidator}
-     * @private
-     */
-    this.__validator = null
-    /**
-     * @type {function(data:TYPE):TYPE}
-     * @private
-     */
-    this.__defaultChecker = v => v
-    /**
-     * @type {?string}
-     * @private
-     */
-    this.__name = null
-  }
+  /**
+   * @type {?Dispatcher}
+   */
+  #dispatcher = null
+  /**
+   * @type {?Class<TYPE>}
+   */
+  #type = null
+  /**
+   * @type {boolean}
+   */
+  #withResponse = false
+  /**
+   * @type {?ValueObjectValidator}
+   */
+  #validator = null
+  /**
+   * @type {function(data:TYPE):TYPE}
+   */
+  #defaultChecker = v => v
+  /**
+   * @type {?string}
+   */
+  #name = null
 
   /**
    * @param {string} name
    * @return {ActionDispatcherBuilder}
    */
   name(name) {
-    this.__name = name.replace(new RegExp('\\s+', 'g'), '')
+    this.#name = name.replace(new RegExp('\\s+', 'g'), '')
     return this
   }
 
@@ -50,7 +47,7 @@ export class ActionDispatcherBuilder {
    * @return {ActionDispatcherBuilder}
    */
   dispatcher(dispatcher) {
-    this.__dispatcher = dispatcher
+    this.#dispatcher = dispatcher
     return this
   }
 
@@ -59,7 +56,7 @@ export class ActionDispatcherBuilder {
    * @return {ActionDispatcherBuilder}
    */
   type(type) {
-    this.__type = type
+    this.#type = type
     return this
   }
 
@@ -68,7 +65,7 @@ export class ActionDispatcherBuilder {
    * @return {ActionDispatcherBuilder}
    */
   defaultChecker(defaultChecker) {
-    this.__defaultChecker = defaultChecker
+    this.#defaultChecker = defaultChecker
     return this
   }
 
@@ -77,7 +74,15 @@ export class ActionDispatcherBuilder {
    * @return {ActionDispatcherBuilder}
    */
   validator(validator) {
-    this.__validator = validator
+    this.#validator = validator
+    return this
+  }
+
+  /**
+   * @return {ActionDispatcherBuilder}
+   */
+  withResponse() {
+    this.#withResponse = true
     return this
   }
 
@@ -85,8 +90,8 @@ export class ActionDispatcherBuilder {
    * @return {string}
    * @private
    */
-  __uniqName() {
-    return UID((isNull(this.__name) ? (isNull(this.__type) ? '' : this.__type.name) : this.__name) + '_')
+  #uniqName() {
+    return UID((isNull(this.#name) ? (isNull(this.#type) ? '' : this.#type.name) : this.#name) + '_')
   }
 
   /**
@@ -96,13 +101,14 @@ export class ActionDispatcherBuilder {
 
     return new ActionDispatcher(
       new ActionDispatcherConfig(
-        this.__uniqName(),
+        this.#uniqName(),
         new ActionTypeConfig(
-          this.__type,
-          this.__defaultChecker,
-          this.__validator
+          this.#type,
+          this.#defaultChecker,
+          this.#validator
         ),
-        this.__dispatcher
+        this.#dispatcher,
+        this.#withResponse
       )
     )
   }
