@@ -72,9 +72,9 @@ export class ActionDispatcher extends ActionSubscriber {
   /**
    * @param {?TYPE} [payload=null]
    * @throws {RemovedException}
-   * @return {Promise<void>}
+   * @return {?Promise<void>}
    */
-   dispatch(payload = null) {
+  dispatch(payload = null) {
     if (this.isRemoved()) {
       throw RemovedException.ACTION(this.ID())
     }
@@ -94,10 +94,11 @@ export class ActionDispatcher extends ActionSubscriber {
      * @type {EventAction}
      */
     const event = EventAction.create(this.ID(), payload)
-
-    return new Promise((ok, ko) => {
-
-      if (this.config().withResponse()) {
+    if (!this.config().withResponse()) {
+      this.config().dispatcher().dispatchAction(event)
+      return null
+    } else {
+      return new Promise((ok, ko) => {
         /**
          * @type {string}
          */
@@ -119,14 +120,9 @@ export class ActionDispatcher extends ActionSubscriber {
                 .guard(executionId => event.id() === executionId)
                 .build()
             )
-      }
-
-      this.config().dispatcher().dispatchAction(event)
-
-      if (!this.config().withResponse()) {
-        ok()
-      }
-    })
+        this.config().dispatcher().dispatchAction(event)
+      })
+    }
   }
 
 }

@@ -40,7 +40,40 @@ export class ActionDispatcherTest extends TestCase {
      * @type {ListenedAction}
      */
     const listenedAction = actionDispatcher.listen(
-      (payload, type) => {
+      (payload, actionResponseBuilder) => {
+        throw new Error('listen')
+      }
+    )
+
+    const payloadDispatched = new FakeObjectBuilder()
+      .prop1('toto')
+      .prop2(true)
+      .prop3(3)
+      .build()
+
+    assert.throws(
+      () => actionDispatcher.dispatch(payloadDispatched),
+      /^Error: listen$/
+    )
+
+  }
+
+  testListenDispatchWithResponseRejected() {
+    /**
+     *
+     * @type {ActionDispatcher<FakeObject, FakeObjectBuilder>}
+     */
+    const actionDispatcher = new ActionDispatcherBuilder()
+      .type(FakeObject)
+      .withResponse()
+      .dispatcher(this.componentContext.dispatcher())
+      .build()
+
+    /**
+     * @type {ListenedAction}
+     */
+    const listenedAction = actionDispatcher.listen(
+      (payload, actionResponseBuilder) => {
         throw new Error('listen')
       }
     )
