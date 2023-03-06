@@ -168,10 +168,18 @@ class TypeCheck {
 
   /**
    * @param {PublicStoreHandler} inst
+   * @param {Class} typeOf
+   * @param {?string} stringName
    * @return {PublicStoreHandler}
+   * @throws {TypeError}
    */
-  static assertIsPublicStoreHandler(inst) {
+  static assertIsPublicStoreHandler(inst, typeOf = null, stringName = null) {
     assertType(TypeCheck.isPublicStoreHandler(inst), '`inst` should be `PublicStoreHandler`')
+    if (!isNull(typeOf)) {
+      assertType(inst.isTypeOf(typeOf),
+        `TypeCheck:assertIsPublicStoreHandler: \`inst\` argument should be a ${!isNull(stringName) ? stringName : typeOf.constructor.name}`
+      )
+    }
     return inst
   }
 
