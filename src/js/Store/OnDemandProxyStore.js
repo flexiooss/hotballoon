@@ -26,7 +26,7 @@ export class OnDemandProxyStore extends ProxyStore {
    * @param {!StoreState<TYPE>}  payload
    */
   _dispatch(eventType, payload = this.state()) {
-    this._eventHandler().dispatch(eventType, payload)
+    this._eventHandler()?.dispatch(eventType, payload)
   }
 
   onceOnUpdated(clb) {

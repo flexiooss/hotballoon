@@ -44,9 +44,9 @@ export class ComponentContext extends WithID {
    */
   #viewContainersHandler
   /**
-   * @type {OrderedEventHandler}
+   * @type {?OrderedEventHandler}
    */
-  #eventHandler = new OrderedEventHandler()
+  #eventHandler = null
   /**
    * @type {?IntersectionObserverHandler}
    */
@@ -135,6 +135,7 @@ export class ComponentContext extends WithID {
    * @return {EventHandler}
    */
   onRemove(clb) {
+    this.#ensureEventHandler()
     return new EventHandler(this.#eventHandler.on(OrderedEventListenerConfigBuilder.listen(REMOVE).callback(clb).build()), this)
   }
 
@@ -143,7 +144,7 @@ export class ComponentContext extends WithID {
    * @return {ComponentContext}
    */
   unregisterEvent(token) {
-    this.#eventHandler.removeEventListener(token)
+    this.#eventHandler?.removeEventListener(token)
     return this
   }
 
@@ -157,6 +158,16 @@ export class ComponentContext extends WithID {
     return this.#intersectionObserverHandler;
   }
 
+  /**
+   * @return {ComponentContext}
+   */
+  #ensureEventHandler(){
+    if(isNull(this.#eventHandler)){
+      this.#eventHandler = new OrderedEventHandler()
+    }
+    return this
+  }
+
   remove() {
     this.#removed = true
     if (!isNull(this.#intersectionObserverHandler)) {
@@ -167,9 +178,11 @@ export class ComponentContext extends WithID {
     this.#viewContainersHandler.remove()
     this.APP().components().detach(this)
 
-    this.#eventHandler.dispatch(REMOVE, null)
+    this.#eventHandler?.dispatch(REMOVE, null)
 
     this.#logger.info('Remove : ' + this.ID())
+    this.#eventHandler?.clear()
+    this.#eventHandler = null
   }
 
   /**

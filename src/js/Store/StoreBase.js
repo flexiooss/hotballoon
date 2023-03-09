@@ -34,9 +34,9 @@ export class StoreBase extends WithID {
    */
   #initialData = null
   /**
-   * @type {OrderedEventHandler}
+   * @type {?OrderedEventHandler}
    */
-  #eventHandler = new OrderedEventHandler(100, () => !this.#removed)
+  #eventHandler = null
   /**
    * @type {StoreBaseConfig<TYPE, TYPE_BUILDER>}
    */
@@ -64,6 +64,16 @@ export class StoreBase extends WithID {
   }
 
   /**
+   * @return {StoreBase}
+   */
+  #ensureEventHandler() {
+    if (isNull(this.#eventHandler)) {
+      this.#eventHandler = new OrderedEventHandler(100, () => !this.#removed)
+    }
+    return this
+  }
+
+  /**
    * @param {StorageInterface<TYPE>} value
    */
   #setStorage(value) {
@@ -75,13 +85,13 @@ export class StoreBase extends WithID {
   /**
    * @return {this}
    */
-  trigChange(){
-   this.set(this.state().data())
+  trigChange() {
+    this.set(this.state().data())
     return this
   }
 
   /**
-   * @return {OrderedEventHandler}
+   * @return {?OrderedEventHandler}
    * @protected
    */
   _eventHandler() {
@@ -179,6 +189,7 @@ export class StoreBase extends WithID {
     if (this.#removed) {
       throw RemovedException.STORE(this._ID)
     }
+    this.#ensureEventHandler()
     return this.#eventHandler.on(orderedEventListenerConfig)
   }
 
@@ -187,7 +198,7 @@ export class StoreBase extends WithID {
    * @param {String} token
    */
   unSubscribe(event, token) {
-    return this.#eventHandler.removeEventListener(event, token)
+    return this.#eventHandler?.removeEventListener(event, token)
   }
 
   /**
@@ -197,7 +208,7 @@ export class StoreBase extends WithID {
    */
   _dispatch(eventType, payload = this.state()) {
     if (payload.time().getTime() === this.state().time().getTime()) {
-      this.#eventHandler.dispatch(eventType, payload)
+      this.#eventHandler?.dispatch(eventType, payload)
     }
   }
 
@@ -254,7 +265,7 @@ export class StoreBase extends WithID {
    * @return {boolean}
    */
   isDispatching() {
-    return this.#eventHandler.isDispatching()
+    return this.#eventHandler?.isDispatching() ?? false
   }
 
   /**
@@ -276,12 +287,13 @@ export class StoreBase extends WithID {
    * @return {ListenedStore}
    * @throws {RemovedException}
    */
-  listenChanged(callback, priority = 100, guard=null) {
+  listenChanged(callback, priority = 100, guard = null) {
     if (this.#removed) {
       throw RemovedException.STORE(this._ID)
     }
     TypeCheck.assertIsFunction(callback)
     TypeCheck.assertIsNumber(priority)
+    this.#ensureEventHandler()
 
     /**
      * @type {string}
@@ -313,13 +325,13 @@ export class StoreBase extends WithID {
    * @return {ListenedStore}
    * @throws {RemovedException}
    */
-  listenRemoved(callback, priority = 100,guard=null) {
+  listenRemoved(callback, priority = 100, guard = null) {
     if (this.#removed) {
       throw RemovedException.STORE(this._ID)
     }
     TypeCheck.assertIsFunction(callback)
     TypeCheck.assertIsNumber(priority)
-
+    this.#ensureEventHandler()
     /**
      * @type {string}
      */
@@ -345,20 +357,21 @@ export class StoreBase extends WithID {
    * @param {(string|Symbol)} token
    */
   stopListenChanged(token) {
-    this.#eventHandler.removeEventListener(this.changedEventName(), token)
+    this.#eventHandler?.removeEventListener(this.changedEventName(), token)
   }
 
   /**
    * @param {(string|Symbol)} token
    */
   stopListenRemoved(token) {
-    this.#eventHandler.removeEventListener(this.removedEventName(), token)
+    this.#eventHandler?.removeEventListener(this.removedEventName(), token)
   }
 
   remove() {
-    this.#eventHandler.dispatch(this.removedEventName(), null)
+    this.#eventHandler?.dispatch(this.removedEventName(), null)
     this.#removed = true
-    this.#eventHandler.clear()
+    this.#eventHandler?.clear()
+    this.#eventHandler = null
     this.#storage = this.#storage.set(this.ID(), null)
     this.#logger.info('Store REMOVED : ' + this.ID())
   }
