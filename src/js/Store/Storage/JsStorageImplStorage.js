@@ -105,4 +105,17 @@ export class JsStorageImplStorage extends StorageInterface {
     }
     return constructor === this.__type__()
   }
+
+  /**
+   * @param {string|Symbol} storeId
+   */
+  clean(storeId){
+    this.#storage.removeItem(this.key())
+  }
+  /**
+   * @param {string|Symbol} storeId
+   */
+  remove(storeId){
+    //DO NOTHING
+  }
 }

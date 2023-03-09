@@ -45,6 +45,7 @@ export class InMemoryStorage extends StorageInterface {
     )
   }
 
+
   /**
    * @returns {?StoreState<TYPE>}
    */
@@ -68,5 +69,19 @@ export class InMemoryStorage extends StorageInterface {
       return isNull(constructor)
     }
     return constructor === this.__type__()
+  }
+
+  /**
+   * @param {string|Symbol} storeId
+   */
+  clean(storeId) {
+    return this.remove(storeId);
+  }
+
+  /**
+   * @param {string|Symbol} storeId
+   */
+  remove(storeId) {
+    return this.set(storeId, null)
   }
 }

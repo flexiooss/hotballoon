@@ -372,7 +372,7 @@ export class StoreBase extends WithID {
     this.#removed = true
     this.#eventHandler?.clear()
     this.#eventHandler = null
-    this.#storage = this.#storage.set(this.ID(), null)
+    this.#storage = this.#storage.remove(this.ID())
     this.#logger.info('Store REMOVED : ' + this.ID())
   }
 
