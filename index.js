@@ -7,7 +7,7 @@ export {ExecutionConfig} from './src/js/Application/ExecutionConfig.js'
 
 export {Dispatcher} from './src/js/Dispatcher/Dispatcher.js'
 
-export {Component} from './src/js/Component/Component.js'
+export {HBComponent} from './src/js/Component/Component.js'
 export {ComponentsContextHandler} from './src/js/Component/ComponentsContextHandler.js'
 
 export {ActionDispatcherBuilder} from './src/js/Action/ActionDispatcherBuilder.js'
