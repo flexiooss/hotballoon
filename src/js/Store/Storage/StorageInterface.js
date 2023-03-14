@@ -21,4 +21,16 @@ export class StorageInterface {
   get() {
     throw NotOverrideException.FROM_INTERFACE('StorageInterface')
   }
+  /**
+   * @param {string|Symbol} storeId
+   */
+  clean(storeId){
+    throw NotOverrideException.FROM_INTERFACE('StorageInterface')
+  }
+  /**
+   * @param {string|Symbol} storeId
+   */
+  remove(storeId){
+    throw NotOverrideException.FROM_INTERFACE('StorageInterface')
+  }
 }

@@ -5,6 +5,7 @@ import {ViewContainerBaseMap} from './ViewContainerBaseMap.js'
 import {StoresHandler} from '../Store/StoresHandler.js'
 import {RemovedException} from "../Exception/RemovedException.js";
 import {Logger} from '@flexio-oss/js-commons-bundle/hot-log/index.js';
+import {isNull} from "@flexio-oss/js-commons-bundle/assert/index.js";
 
 
 /**
@@ -25,9 +26,9 @@ export class ViewContainerBase extends WithID {
    */
   #parentNode
   /**
-   * @type {OrderedEventHandler}
+   * @type {?OrderedEventHandler}
    */
-  #eventHandler = new OrderedEventHandler(100, ()=>!this.isRemoved())
+  #eventHandler = null
   /**
    * @type {ViewContainerBaseMap}
    */
@@ -51,6 +52,16 @@ export class ViewContainerBase extends WithID {
   constructor(id) {
     super(id)
     this.#stores = new StoresHandler()
+  }
+
+  /**
+   * @return {ViewContainerBase}
+   */
+  #ensureEventHandler(){
+    if(isNull(this.#eventHandler)){
+      this.#eventHandler = new OrderedEventHandler(100, ()=>!this.isRemoved())
+    }
+    return this
   }
 
   /**
@@ -116,6 +127,7 @@ export class ViewContainerBase extends WithID {
     if(this.isRemoved()){
       throw RemovedException.VIEW_CONTAINER(this._ID)
     }
+    this.#ensureEventHandler()
     return this.#eventHandler.on(orderedEventListenerConfig)
   }
 
@@ -128,12 +140,13 @@ export class ViewContainerBase extends WithID {
     if(this.isRemoved()){
       throw RemovedException.VIEW_CONTAINER(this._ID)
     }
-    this.#eventHandler.dispatch(eventType, payload)
+    this.#eventHandler?.dispatch(eventType, payload)
   }
 
   remove() {
     this.#removed = true
-    this.#eventHandler.clear()
+    this.#eventHandler?.clear()
+    this.#eventHandler = null
     this.#stores.remove()
 
     this.views().forEach(

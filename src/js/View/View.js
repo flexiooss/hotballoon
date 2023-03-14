@@ -755,4 +755,18 @@ export class View extends ViewContainerBase {
   __IFRAME__(elementBuilder = null) {
     return this.#buildElement(elementBuilder, e('iframe'))
   }
+  /**
+   * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
+   * @return {Element}
+   */
+  __ICON__(elementBuilder = null) {
+    return this.#buildElement(elementBuilder, e('i'))
+  }
+  /**
+   * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
+   * @return {Element}
+   */
+  __I__(elementBuilder = null) {
+    return this.#buildElement(elementBuilder, e('i'))
+  }
 }

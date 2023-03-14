@@ -62,12 +62,12 @@ export class Dispatcher extends EventHandlerBase {
   }
 
   /**
-   * @param {String} event
-   * @param {String} id
+   * @param {String} actionId
+   * @param {String} listenerToken
    * @returns void
    */
-  removeActionListener(event, id) {
-    this.removeEventListener(event, id)
+  removeActionListener(actionId, listenerToken) {
+    this.removeEventListener(actionId, listenerToken)
   }
 
   /**
@@ -77,6 +77,6 @@ export class Dispatcher extends EventHandlerBase {
     assertInstanceOf(eventAction, EventAction, 'EventAction')
 
     this.#logger.debug('ActionDispatcher dispatched : ' + eventAction.name(), eventAction)
-    super.dispatch(eventAction.name(), eventAction.payload())
+    super.dispatch(eventAction.name(), eventAction.payload(), eventAction.id())
   }
 }

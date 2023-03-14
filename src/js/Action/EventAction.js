@@ -1,5 +1,6 @@
 import {assert, isNull, isPrimitive} from '@flexio-oss/js-commons-bundle/assert/index.js'
 import {deepFreezeSeal} from '@flexio-oss/js-commons-bundle/js-generator-helpers/index.js'
+import {UIDMini} from "@flexio-oss/js-commons-bundle/js-helpers/index.js";
 
 
 /**
@@ -14,6 +15,10 @@ export class EventAction {
    * @type {?TYPE}
    */
   #payload = null
+  /**
+   * @type {string}
+   */
+  #id = UIDMini()
 
   /**
    * @param {(string|Symbol)} name
@@ -37,6 +42,13 @@ export class EventAction {
    */
   static create(name, payload) {
     return deepFreezeSeal(new EventAction(name, payload))
+  }
+
+  /**
+   * @return {string}
+   */
+  id() {
+    return this.#id
   }
 
   /**

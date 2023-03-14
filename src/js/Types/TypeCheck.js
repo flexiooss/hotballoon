@@ -16,6 +16,7 @@ import {
 import {assertType, isNull} from '@flexio-oss/js-commons-bundle/assert/index.js'
 import {ElementDescription} from '../HotballoonNodeElement/ElementDescription.js'
 import {RemovedException} from "../Exception/RemovedException.js";
+import {implementsHBComponent} from "../Component/Component.js";
 
 
 class TypeCheck {
@@ -33,7 +34,7 @@ class TypeCheck {
    * @throws {TypeError}
    */
   static assertIsHotBalloonApplication(inst) {
-    assertType(TypeCheck.isHotballoonApplication(inst),      '`inst` should be an HotballoonApplication')
+    assertType(TypeCheck.isHotballoonApplication(inst), '`inst` should be an HotballoonApplication')
     return inst
   }
 
@@ -168,10 +169,18 @@ class TypeCheck {
 
   /**
    * @param {PublicStoreHandler} inst
+   * @param {Class} typeOf
+   * @param {?string} stringName
    * @return {PublicStoreHandler}
+   * @throws {TypeError}
    */
-  static assertIsPublicStoreHandler(inst) {
+  static assertIsPublicStoreHandler(inst, typeOf = null, stringName = null) {
     assertType(TypeCheck.isPublicStoreHandler(inst), '`inst` should be `PublicStoreHandler`')
+    if (!isNull(typeOf)) {
+      assertType(inst.isTypeOf(typeOf),
+        `TypeCheck:assertIsPublicStoreHandler: \`inst\` argument should be a ${!isNull(stringName) ? stringName : typeOf.constructor.name}`
+      )
+    }
     return inst
   }
 
@@ -289,6 +298,24 @@ class TypeCheck {
    */
   static isRemovedException(instance) {
     return instance instanceof RemovedException
+  }
+
+  /**
+   * @param {*} instance
+   * @return {boolean}
+   */
+  static implementsComponent(instance) {
+    return implementsHBComponent(instance)
+  }
+
+  /**
+   * @param {Component} instance
+   * @return {Component}
+   * @throws {TypeError}
+   */
+  static assertImplementsComponent(instance) {
+    assertType(implementsHBComponent(instance), 'should be a Component')
+    return instance
   }
 }
 

@@ -7,7 +7,7 @@ import {FakeValueObject, FakeValueObjectBuilder} from '../FakeValueObject.js'
 const assert = require('assert')
 
 export class TestAsyncProxyStore extends TestCase {
-  // debug = true
+  debug = true
 
   setUp() {
     this.store = new InMemoryStoreBuilder()
@@ -182,6 +182,226 @@ export class TestAsyncProxyStore extends TestCase {
       this.proxyStore.changeParentStore(store2)
 
     })
+  }
+
+  async asyncTestLastChangeMappedValue() {
+    let invoked = 0
+    let mapperInvoked = 0
+
+    this.proxyStore = await new AsyncProxyStoreBuilder()
+      .type(FakeValueObject)
+      .store(this.store)
+      .mapper(
+        /**
+         *
+         * @param {FakeValueObject} data
+         */
+        async (data) => {
+          mapperInvoked++
+          return new Promise((ok, ko) => {
+            if (invoked === 1) {
+              console.log('ici')
+              setTimeout(() => {
+                Promise.resolve().then(() => {
+                  ok(new FakeValueObjectBuilder().a(1).build())
+                })
+              }, 2000)
+            } else {
+              Promise.resolve().then(() => {
+                ok(new FakeValueObjectBuilder().a(10).build())
+              })
+            }
+          })
+        })
+      .build()
+
+    this.log(this.proxyStore.state().data(), 'state before parent change')
+    assert.strictEqual(mapperInvoked, 1, 'Mapper should be invoked at init')
+
+    let changed = 0
+    return new Promise((ok, ko) => {
+      this.proxyStore.listenChanged(() => {
+        this.log(this.proxyStore.state().data(), 'state after parent change')
+        changed++
+        setTimeout(() => {
+          assert.strictEqual(mapperInvoked, 2, 'Mapper should be invoked at init and at change')
+          assert.strictEqual(changed, 1, 'only last Mapper should finish')
+
+          assert.deepEqual(
+            this.proxyStore.state().data(),
+            new FakeValueObjectBuilder()
+              .a(10)
+              .build(),
+            ' last Mapper should change and update data')
+
+          ok()
+        }, 3000)
+      })
+
+      invoked++
+      this.store.trigChange()
+      invoked++
+      this.store.trigChange()
+
+    })
+  }
+
+  async asyncTestAsyncInit() {
+    let invoked = 0
+    let mapperInvoked = 0
+    this.store.listenChanged(()=>{
+      invoked++
+    })
+
+    this.proxyStore = await new AsyncProxyStoreBuilder()
+      .type(FakeValueObject)
+      .store(this.store)
+      .mapper(
+        /**
+         *
+         * @param {FakeValueObject} data
+         */
+        async (data) => {
+          mapperInvoked++
+          return new Promise((ok, ko) => {
+            setTimeout(() => {
+              Promise.resolve().then(() => {
+                ok(new FakeValueObjectBuilder().a(data.a() + 1).build())
+              })
+            }, 2000)
+          })
+        })
+      .build()
+
+    this.log(this.proxyStore.state().data(), 'state before parent change')
+    this.log(invoked, 'store parent invoked')
+    this.log(mapperInvoked, 'mapper invoked')
+    assert.strictEqual(invoked, 0, 'store parent should be invoked')
+    assert.strictEqual(mapperInvoked, 1, 'Mapper should be invoked at init')
+    assert.deepEqual(
+      this.proxyStore.state().data(),
+      new FakeValueObjectBuilder()
+        .a(2)
+        .build(),
+      ' data should map the last trig')
+
+
+    return true
+
+  }
+
+  async asyncTestAsyncStartDiffInit() {
+    let invoked = 0
+    let mapperInvoked = 0
+    this.store.listenChanged(()=>{
+      invoked++
+    })
+
+    setTimeout(() => {
+      this.store.set(
+        new FakeValueObjectBuilder().a(2).build()
+      )
+    }, 1000)
+
+    this.proxyStore = await new AsyncProxyStoreBuilder()
+      .type(FakeValueObject)
+      .store(this.store)
+      .mapper(
+        /**
+         *
+         * @param {FakeValueObject} data
+         */
+        async (data) => {
+          mapperInvoked++
+          return new Promise((ok, ko) => {
+            setTimeout(() => {
+              Promise.resolve().then(() => {
+                ok(new FakeValueObjectBuilder().a(data.a() + 1).build())
+              })
+            }, 2000)
+          })
+        })
+      .build()
+
+    this.log(this.proxyStore.state().data(), 'state before parent change')
+    this.log(invoked, 'store parent invoked')
+    this.log(mapperInvoked, 'mapper invoked')
+    assert.strictEqual(invoked, 1, 'store parent should be invoked')
+    assert.strictEqual(mapperInvoked, 2, 'Mapper should be invoked at init')
+    assert.deepEqual(
+      this.proxyStore.state().data(),
+      new FakeValueObjectBuilder()
+        .a(3)
+        .build(),
+      ' data should map the last trig')
+
+    return true
+  }
+
+  async asyncTestAsyncStartDiffMaxMappingAtInit() {
+    let invoked = 0
+    let mapperInvoked = 0
+    this.store.listenChanged(()=>{
+      invoked++
+    })
+
+    setTimeout(() => {
+      this.store.set(
+        new FakeValueObjectBuilder().a(2).build()
+      )
+      this.store.set(
+        new FakeValueObjectBuilder().a(3).build()
+      )
+
+    }, 1000)
+
+    setTimeout(() => {
+      this.store.set(
+        new FakeValueObjectBuilder().a(4).build()
+      )
+      this.store.set(
+        new FakeValueObjectBuilder().a(5).build()
+      )
+      this.store.set(
+        new FakeValueObjectBuilder().a(6).build()
+      )
+
+    }, 1500)
+
+    this.proxyStore = await new AsyncProxyStoreBuilder()
+      .maxInitialMapping(0)
+      .type(FakeValueObject)
+      .store(this.store)
+      .mapper(
+        /**
+         *
+         * @param {FakeValueObject} data
+         */
+        async (data) => {
+          mapperInvoked++
+          return new Promise((ok, ko) => {
+            setTimeout(() => {
+              Promise.resolve().then(() => {
+                ok(new FakeValueObjectBuilder().a(data.a() + 1).build())
+              })
+            }, 2000)
+          })
+        })
+      .build()
+
+    this.log(this.proxyStore.state().data(), 'state before parent change')
+    this.log(invoked, 'store parent invoked')
+    this.log(mapperInvoked, 'mapper invoked')
+    assert.strictEqual(invoked, 5, 'store parent should be invoked')
+    assert.strictEqual(mapperInvoked, 1, 'Mapper should be invoked at init')
+    assert.deepEqual(
+      this.proxyStore.state().data(),
+      new FakeValueObjectBuilder()
+        .a(2)
+        .build(),
+      ' data should map the last trig')
+
+    return true
   }
 }
 

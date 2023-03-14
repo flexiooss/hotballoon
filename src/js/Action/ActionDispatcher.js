@@ -1,9 +1,10 @@
-import { assertType, isNull, TypeCheck as TypeTypeCheck} from '@flexio-oss/js-commons-bundle/assert/index.js'
+import {assertType, isNull, TypeCheck as TypeTypeCheck} from '@flexio-oss/js-commons-bundle/assert/index.js'
 import {EventAction} from './EventAction.js'
 import {ValidationError} from '../Exception/ValidationError.js'
-import { CLASS_TAG_NAME_ACTION_DISPATCHER} from '../Types/HasTagClassNameInterface.js'
+import {CLASS_TAG_NAME_ACTION_DISPATCHER} from '../Types/HasTagClassNameInterface.js'
 import {ActionSubscriber} from './ActionSubscriber.js'
 import {RemovedException} from "../Exception/RemovedException.js";
+import {EventListenerConfigBuilder} from "@flexio-oss/js-commons-bundle/event-handler/index.js";
 
 
 /**
@@ -17,7 +18,7 @@ export class ActionDispatcher extends ActionSubscriber {
    * @param {ActionDispatcherConfig<TYPE, TYPE_BUILDER>} config
    */
   constructor(config) {
-    super(config,CLASS_TAG_NAME_ACTION_DISPATCHER)
+    super(config, CLASS_TAG_NAME_ACTION_DISPATCHER)
   }
 
   /**
@@ -71,20 +72,17 @@ export class ActionDispatcher extends ActionSubscriber {
   /**
    * @param {?TYPE} [payload=null]
    * @throws {RemovedException}
+   * @return {?Promise<void>}
    */
   dispatch(payload = null) {
     if (this.isRemoved()) {
-      throw RemovedException.ACTION(this._ID)
+      throw RemovedException.ACTION(this.ID())
     }
     if (!isNull(this.config().type())) {
-      const checker = this.config().defaultChecker()
-      /**
-       * @type {TYPE}
-       */
-      const data = checker(payload)
+      payload = this.config().defaultChecker().call(null, payload)
 
       assertType(
-        data instanceof this.__type__(),
+        payload instanceof this.__type__(),
         'hotballoon:ActionDispatcher:dispatch "data" argument should be an instance of %s',
         this.__type__().name
       )
@@ -92,10 +90,39 @@ export class ActionDispatcher extends ActionSubscriber {
         throw new ValidationError('hotballoon:ActionDispatcher:dispatch "data" argument failed to validation')
       }
     }
-
-    this.config().dispatcher().dispatchAction(
-      EventAction.create(this.ID(), payload)
-    )
+    /**
+     * @type {EventAction}
+     */
+    const event = EventAction.create(this.ID(), payload)
+    if (!this.config().withResponse()) {
+      this.config().dispatcher().dispatchAction(event)
+      return null
+    } else {
+      return new Promise((ok, ko) => {
+        /**
+         * @type {string}
+         */
+        const token =
+          this.config().dispatcher()
+            .addEventListener(
+              EventListenerConfigBuilder
+                .listen(this.constructor.responseEventDispatcher(this.ID()))
+                .once()
+                .callback(
+                  /**
+                   * @param {?TYPE} payload
+                   * @param {string} type
+                   * @param {string} executionId
+                   */
+                  (payload, type, executionId) => {
+                    ok()
+                  })
+                .guard(executionId => event.id() === executionId)
+                .build()
+            )
+        this.config().dispatcher().dispatchAction(event)
+      })
+    }
   }
 
 }

@@ -11,7 +11,8 @@ const app = new BrowserApplicationBuilder()
   .document(document)
   .build()
 
-app.scheduler().postTask(() => '1 => 1').blocking().build().exec().then(r => {
+const a = app.scheduler().postTask(() => '1 => 1').blocking().build()
+  a.exec().then(r => {
   console.log(r)
 })
 
@@ -40,6 +41,7 @@ never.exec()
     console.log(r)
   })
   .catch(e => {
+    console.error('catched error ::')
     console.error(e)
   })
 
@@ -48,4 +50,9 @@ never.abort()
 app.scheduler().postTask(() => '6 => 5').build().exec().then(r => {
   console.log(r)
 })
+
+setTimeout(()=>{
+  console.log('do nothing')
+  a.abort()
+},1000)
 
