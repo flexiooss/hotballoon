@@ -124,6 +124,17 @@ class CustomEventBuilder {
       .build()
   }
 
+  /**
+   * @param {function(CustomEvent)} callback
+   * @return {ElementEventListenerConfig}
+   */
+  static holdOrRight(callback) {
+    return ElementEventListenerConfigBuilder
+      .listen(CustomEventHandler.HOLD_OR_RIGHT)
+      .callback(callback)
+      .build()
+  }
+
 }
 class PointerEventBuilder {
 

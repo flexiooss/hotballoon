@@ -19,6 +19,7 @@ export class CustomEventHandler {
   static cancelAnimationFrame = null
   static TAP = 'HB_TAP'
   static HOLD = 'HB_HOLD'
+  static HOLD_OR_RIGHT = 'HOLD_OR_RIGHT'
   static DOUBLE_TAP = 'HB_DOUBLE_TAP'
   /**
    * @type {string}
@@ -50,6 +51,11 @@ export class CustomEventHandler {
    * @private
    */
   _hold = false
+  /**
+   * @type {boolean}
+   * @private
+   */
+  _hold_or_right = false
   /**
    * @type {boolean}
    * @private
@@ -130,7 +136,7 @@ export class CustomEventHandler {
    * @return {boolean}
    */
   static isCustomEvent(event) {
-    return [CustomEventHandler.TAP, CustomEventHandler.DOUBLE_TAP, CustomEventHandler.HOLD].includes(event)
+    return [CustomEventHandler.TAP, CustomEventHandler.DOUBLE_TAP, CustomEventHandler.HOLD,, CustomEventHandler.HOLD_OR_RIGHT].includes(event)
   }
 
   /**
@@ -182,6 +188,15 @@ export class CustomEventHandler {
 
   /**
    * @param {PointerEvent} event
+   * @return {boolean}
+   * @private
+   */
+  static isRightClick(event) {
+    return event.pointerType === 'mouse' && event.button === 2
+  }
+
+  /**
+   * @param {PointerEvent} event
    * @private
    */
   _pointerdown(event) {
@@ -190,7 +205,11 @@ export class CustomEventHandler {
      */
     const handler = CustomEventHandler.findParentHandler(event.target);
     if (!isNull(handler)) {
-      if (event.pointerType === 'mouse' && event.button !== 0) return
+      if (this._hold_or_right) {
+        if (event.pointerType === 'mouse' && event.button !== 0 && !CustomEventHandler.isRightClick(event)) return
+      } else {
+        if (event.pointerType === 'mouse' && event.button !== 0) return
+      }
       event.stopPropagation()
       handler.pointerdownExe(event)
     }
@@ -206,7 +225,11 @@ export class CustomEventHandler {
      */
     const handler = CustomEventHandler.findParentHandler(event.target)
     if (!isNull(handler)) {
-      if (event.pointerType === 'mouse' && event.button !== 0) return
+      if (!this._hold_or_right) {
+        if (event.pointerType === 'mouse' && event.button !== 0 && !CustomEventHandler.isRightClick(event)) return
+      } else {
+        if (event.pointerType === 'mouse' && event.button !== 0) return
+      }
       event.stopPropagation()
       handler.pointerupExe(event)
     }
@@ -320,6 +343,7 @@ export class CustomEventHandler {
    * @param {PointerEvent} event
    */
   pointerdownExe(event) {
+
     this._up = false
     this
       ._resetMoving()
@@ -329,7 +353,8 @@ export class CustomEventHandler {
       y: event.y
     }
     this._start = new Date()
-    if (this._hold) {
+
+    if (this._hold || (this._hold_or_right && !CustomEventHandler.isRightClick(event))) {
 
       this._element.addEventListener('pointermove', this._pointermove)
       // this._timerHold = setTimeout(
@@ -345,7 +370,12 @@ export class CustomEventHandler {
         () => {
           this._element.removeEventListener('pointermove', this._pointermove)
           if (isNull(this._timerHold) || this._up || this._moving || isNull(this._start)) return
-          this._dispatchEvent(CustomEventHandler.HOLD, event)
+          if (this._hold_or_right) {
+            this._dispatchEvent(CustomEventHandler.HOLD_OR_RIGHT, event)
+          }
+          if (this._hold) {
+            this._dispatchEvent(CustomEventHandler.HOLD, event)
+          }
           this._start = null
         },
         this._holdThreshold
@@ -384,14 +414,17 @@ export class CustomEventHandler {
      * @type {Date}
      */
     const now = new Date()
-    if (this._hold) {
+    if (this._hold || (this._hold_or_right && !CustomEventHandler.isRightClick(event))) {
       this._element.removeEventListener('pointermove', this._pointermove)
       this
         ._clearHold()
         ._resetMoving()
     }
-
-    if (this._doubleTap && ((now - this._end) < this._doubleThreshold)) {
+    if (CustomEventHandler.isRightClick(event)) {
+      if (this._hold_or_right) {
+        this._dispatchEvent(CustomEventHandler.HOLD_OR_RIGHT, event)
+      }
+    } else if (this._doubleTap && ((now - this._end) < this._doubleThreshold)) {
       this._clearTap()
       this._dispatchEvent(CustomEventHandler.DOUBLE_TAP, event)
     } else if (this._tap && !isNull(this._start) && isNull(this._timer)) {
@@ -424,6 +457,14 @@ export class CustomEventHandler {
   /**
    * @return {CustomEventHandler}
    */
+  holdOrRight() {
+    this._hold_or_right = true
+    return this
+  }
+
+  /**
+   * @return {CustomEventHandler}
+   */
   doubleTap() {
     this._doubleTap = true
     return this
@@ -442,6 +483,14 @@ export class CustomEventHandler {
    */
   offHold() {
     this._hold = false
+    return this
+  }
+
+  /**
+   * @return {CustomEventHandler}
+   */
+  offHoldOrRight() {
+    this._hold_or_right = false
     return this
   }
 
@@ -470,6 +519,9 @@ export class CustomEventHandler {
       case CustomEventHandler.HOLD:
         this.offHold();
         break;
+      case CustomEventHandler.HOLD_OR_RIGHT:
+        this.offHoldOrRight();
+        break;
       case CustomEventHandler.DOUBLE_TAP:
         this.offDoubleTap();
         break;
@@ -489,6 +541,10 @@ export class CustomEventHandler {
       case CustomEventHandler.HOLD:
         this.hold();
         break;
+      case CustomEventHandler.HOLD_OR_RIGHT:
+        this.holdOrRight();
+        this._disableContextualMenu()
+        break;
       case CustomEventHandler.DOUBLE_TAP:
         this.doubleTap();
         break;
@@ -500,12 +556,21 @@ export class CustomEventHandler {
   }
 
   /**
-   * @param {string} event
+   * @param {string} eventName
    * @param {PointerEvent} event
    * @return {CustomEventHandler}
    */
   _dispatchEvent(eventName, event) {
     this._element.dispatchEvent(new CustomEvent(eventName, {detail: {source: event.target}}))
+    return this
+  }
+
+  /**
+   * @return {CustomEventHandler}
+   * @private
+   */
+  _disableContextualMenu(){
+    this._element.addEventListener("contextmenu", e => e.preventDefault());
     return this
   }
 
@@ -520,7 +585,7 @@ export class CustomEventHandler {
    * @return {boolean}
    */
   isEmpty() {
-    return !(this._tap && this._doubleTap && this._hold)
+    return !(this._tap && this._doubleTap && this._hold&& this._hold_or_right)
   }
 
   remove() {
