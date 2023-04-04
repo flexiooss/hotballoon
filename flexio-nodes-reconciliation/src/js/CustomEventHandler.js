@@ -245,7 +245,7 @@ export class CustomEventHandler {
      */
     const handler = CustomEventHandler.findParentHandler(event.target)
     if (!isNull(handler)) {
-      if (event.pointerType === 'mouse' && event.button !== 0) return
+      if (event.pointerType === 'mouse' && !(event.button === 0 || event.button === -1)) return
       event.stopPropagation()
       handler.pointermoveExe(event)
     }
@@ -318,13 +318,13 @@ export class CustomEventHandler {
   pointermoveExe(event) {
     this._captureEvent(event.pointerId);
     CustomEventHandler.requestAnimationFrame(() => {
-      //   try {
-      //     this._captureEvent(event.pointerId);
-      //   } catch (e) {
-      //     if (!e instanceof DOMException) {
-      //       throw e
-      //     }
+      // try {
+      //   this._captureEvent(event.pointerId);
+      // } catch (e) {
+      //   if (!e instanceof DOMException) {
+      //     throw e
       //   }
+      // }
       if (!this._moving) {
         if (!isNull(this._startCoords)) {
           if (Math.abs(this._startCoords.x - event.x) > this._moveThreshold) {
