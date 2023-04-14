@@ -1,5 +1,5 @@
 import {deepMerge} from '@flexio-oss/js-commons-bundle/js-type-helpers/index.js'
-import {isNull, isFunction, TypeCheck} from '@flexio-oss/js-commons-bundle/assert/index.js'
+import {isNull, isFunction, TypeCheck, isArray} from '@flexio-oss/js-commons-bundle/assert/index.js'
 import {globalFlexioImport} from '@flexio-oss/js-commons-bundle/global-import-registry/index.js'
 
 export class HyperFlexParams {
@@ -50,6 +50,7 @@ export class HyperFlexParams {
   childNodeSequenceList() {
     return this.#childNodeSequenceList
   }
+
   /**
    * @return {StringArray}
    */
@@ -302,19 +303,25 @@ export class HyperFlexParams {
 
   /**
    * @param {(boolean|function():boolean)} statement
-   * @param {(String|function():String)} classNameTrue
-   * @param {(String|function():String)} [classNameFalse=null]
+   * @param {(String|string[]|function():String|string[])} classNameTrue
+   * @param {(String|string[]|function():String|string[])} [classNameFalse=null]
    * @return {this}
    */
   bindClassName(statement, classNameTrue, classNameFalse = null) {
 
     if ((isFunction(statement) ? statement() : statement) === true) {
-      this.addClassName((isFunction(classNameTrue) ? classNameTrue() : classNameTrue))
+      classNameTrue = (isFunction(classNameTrue)) ? classNameTrue() : classNameTrue
+      classNameTrue = (isArray(classNameTrue)) ? classNameTrue : [classNameTrue]
+      classNameTrue.forEach(value => {
+        this.addClassName(value)
+      })
     } else {
       classNameFalse = isFunction(classNameFalse) ? classNameFalse() : classNameFalse
       if (!isNull(classNameFalse)) {
-
-        this.addClassName(classNameFalse)
+        classNameFalse = (isArray(classNameFalse)) ? classNameFalse : [classNameFalse]
+        classNameFalse.forEach(value => {
+          this.addClassName(value)
+        })
       }
     }
     return this

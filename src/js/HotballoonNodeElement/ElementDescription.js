@@ -180,9 +180,9 @@ export class ElementDescription {
 
   /**
    *
-   * @param { boolean} statement
-   * @param {String} classNameTrue
-   * @param {String} [classNameFalse=null]
+   * @param { boolean|function():boolean} statement
+   * @param {(String|string[]|function():String|string[])} classNameTrue
+   * @param {(String|string[]|function():String|string[])} [classNameFalse=null]
    * @return {this}
    */
   bindClassName(statement, classNameTrue, classNameFalse = null) {

@@ -40,7 +40,7 @@ export class ActionsHandler {
   /**
    * @param {ActionSubscriber} actionSubscriber
    * @param {function(payload: ?TYPE, type: (string|Symbol))}  callback
-   * @param {?function(state: StoreState<TYPE>)} [guard=null]
+   * @param {?function(payload: ?TYPE)} [guard=null]
    * @return {ListenedAction}
    */
   listen(actionSubscriber, callback, guard=null) {
