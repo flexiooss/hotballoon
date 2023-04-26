@@ -2,6 +2,7 @@ import {ListenedActionMap} from './ListenedActionMap.js'
 import {TypeCheck} from '../Types/TypeCheck.js'
 import {ActionMap} from './ActionMap.js'
 import {AlreadyRegisteredException} from '../Exception/AlreadyRegisteredException.js'
+import {listenedEventInterface} from "../Event/ListenedEvent.js";
 
 /**
  * @template TYPE
@@ -95,7 +96,10 @@ export class ActionsHandler {
   }
 }
 
-class ListenedAction {
+/**
+ * @implements {ListenedEvent}
+ */
+class ListenedAction extends listenedEventInterface(){
   /**
    * @type {ActionsHandler}
    */
@@ -110,6 +114,7 @@ class ListenedAction {
    * @param {string} token
    */
   constructor(handler, token) {
+    super()
     this.#handler = handler
     this.#token = token
   }
@@ -121,10 +126,7 @@ class ListenedAction {
     return this.#token
   }
 
-  /**
-   * @return {boolean}
-   */
   remove() {
-    return this.#handler.unListen(this.#token)
+     this.#handler.unListen(this.#token)
   }
 }

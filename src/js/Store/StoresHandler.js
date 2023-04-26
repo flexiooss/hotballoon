@@ -2,6 +2,7 @@ import {StoreMap} from './StoreMap.js'
 import {ListenedStoreMap} from './ListenedStoreMap.js'
 import {AlreadyRegisteredException} from '../Exception/AlreadyRegisteredException.js'
 import {TypeCheck} from '../Types/TypeCheck.js'
+import {listenedEventInterface} from "../Event/ListenedEvent.js";
 
 /**
  * @template TYPE
@@ -44,9 +45,9 @@ export class StoresHandler {
    * @param {?function(state: StoreState<TYPE>)} [guard=null]
    * @return {ListenedStore}
    */
-  listen(store, callback, priority = 100,guard=null) {
+  listen(store, callback, priority = 100, guard = null) {
     TypeCheck.assertStoreBase(store)
-    const listenedStore =store.listenChanged(callback, priority, guard)
+    const listenedStore = store.listenChanged(callback, priority, guard)
     this.#listenedStores.set(listenedStore.token(), listenedStore)
 
     return new ListenedStore(this, listenedStore.token())
@@ -95,7 +96,10 @@ export class StoresHandler {
   }
 }
 
-class ListenedStore {
+/**
+ * @implements {ListenedEvent}
+ */
+class ListenedStore extends listenedEventInterface() {
   /**
    * @type {StoresHandler}
    */
@@ -110,6 +114,7 @@ class ListenedStore {
    * @param {string} token
    */
   constructor(handler, token) {
+    super()
     this.#handler = handler
     this.#token = token
   }
@@ -121,10 +126,8 @@ class ListenedStore {
     return this.#token
   }
 
-  /**
-   * @return {boolean}
-   */
+
   remove() {
-    return this.#handler.unListen(this.#token)
+    this.#handler.unListen(this.#token)
   }
 }

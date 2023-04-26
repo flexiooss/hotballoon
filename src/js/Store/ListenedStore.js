@@ -1,6 +1,9 @@
 import {TypeCheck} from '@flexio-oss/js-commons-bundle/assert/index.js'
-
-export class ListenedStore {
+import {listenedEventInterface} from "../Event/ListenedEvent.js";
+/**
+ * @implements {ListenedEvent}
+ */
+export class ListenedStore extends listenedEventInterface(){
   /**
    * @type  {OrderedEventHandler}
    */
@@ -20,6 +23,7 @@ export class ListenedStore {
    * @param {string} token
    */
   constructor(eventHandler, event, token) {
+   super()
     this.#eventHandler = eventHandler
     this.#event = TypeCheck.assertIsString(event)
     this.#token = TypeCheck.assertIsString(token)
