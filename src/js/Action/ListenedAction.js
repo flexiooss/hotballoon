@@ -1,4 +1,9 @@
-export class ListenedAction {
+import {listenedEventInterface} from "../Event/ListenedEvent.js";
+
+/**
+ * @implements {ListenedEvent}
+ */
+export class ListenedAction  extends listenedEventInterface(){
   /**
    * @type {Dispatcher}
    */
@@ -18,6 +23,7 @@ export class ListenedAction {
    * @param {string} token
    */
   constructor(dispatcher, actionID, token) {
+    super()
     this.#dispatcher = dispatcher
     this.#actionID = actionID
     this.#token = token

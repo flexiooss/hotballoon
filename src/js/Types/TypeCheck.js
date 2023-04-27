@@ -17,6 +17,7 @@ import {assertType, isNull} from '@flexio-oss/js-commons-bundle/assert/index.js'
 import {ElementDescription} from '../HotballoonNodeElement/ElementDescription.js'
 import {RemovedException} from "../Exception/RemovedException.js";
 import {implementsHBComponent} from "../Component/Component.js";
+import {implementsListenedEvent} from "../Event/ListenedEvent.js";
 
 
 class TypeCheck {
@@ -317,6 +318,25 @@ class TypeCheck {
     assertType(implementsHBComponent(instance), 'should be a Component')
     return instance
   }
+
+  /**
+   * @param {ListenedEvent} inst
+   * @return {boolean}
+   */
+  static implementsListenedEvent(inst){
+    return implementsListenedEvent(inst)
+  }
+
+  /**
+   * @param {ListenedEvent} instance
+   * @return {ListenedEvent}
+   * @throws {TypeError}
+   */
+  static assertImplementsListenedEvent(instance) {
+    assertType(implementsListenedEvent(instance), 'should be a ListenedEvent')
+    return instance
+  }
+
 }
 
 
