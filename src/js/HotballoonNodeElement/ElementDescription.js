@@ -128,7 +128,7 @@ export class ElementDescription {
 
   /**
    *
-   * @param {Object.<String, String>} properties
+   * @param {Object.<String, *>} properties
    * @return {this}
    */
   properties(properties) {

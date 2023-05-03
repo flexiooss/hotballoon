@@ -204,7 +204,7 @@ export class HyperFlexParams {
   }
 
   /**
-   * @param {Object.<String, String>} properties
+   * @param {Object.<String, *>} properties
    * @return {this}
    */
   addProperties(properties) {
