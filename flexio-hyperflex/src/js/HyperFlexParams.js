@@ -204,7 +204,7 @@ export class HyperFlexParams {
   }
 
   /**
-   * @param {Object.<String, String>} properties
+   * @param {Object.<String, *>} properties
    * @return {this}
    */
   addProperties(properties) {
@@ -283,8 +283,8 @@ export class HyperFlexParams {
   /**
    * @param {String} key
    * @param {(boolean|function():boolean)} statement
-   * @param {(String|function():String)} property
-   * @param {(String|function():String)} [propertyFalse=null]
+   * @param {(*|function():*)} property
+   * @param {(*|function():*)} [propertyFalse=null]
    * @return {this}
    */
   bindProperty(key, statement, property, propertyFalse = null) {
