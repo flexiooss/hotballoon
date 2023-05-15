@@ -32,14 +32,27 @@ if ("content" in document.createElement("template")) {
     li[0].textContent = `item ${i}`;
     li[0].id = `${i}`;
     list.appendChild(clone)
-    componentContext.intersectionObserverHandler().observe(document.getElementById(`${i}`), (el) => {
+    componentContext.intersectionObserverHandler().observeOnce(document.getElementById(`${i}`), (el) => {
       console.log(el.id)
       el.textContent += ' OK'
     })
   }
 
+  for (let i = 1000; i < 2000; i++) {
+
+    let clone = document.importNode(template.content, true);
+    let li = clone.querySelectorAll("li");
+    li[0].textContent = `item ${i}`;
+    li[0].id = `${i}`;
+    list.appendChild(clone)
+    componentContext.intersectionObserverHandler().observe(document.getElementById(`${i}`), (el, visibility) => {
+      console.log(el.id, visibility)
+      el.textContent += (visibility ? ' OK' : ' KO')
+    })
+  }
+
 }
 
-setTimeout(() => {
-  componentContext.intersectionObserverHandler().remove()
-},3000)
+// setTimeout(() => {
+//   componentContext.intersectionObserverHandler().remove()
+// },3000)
