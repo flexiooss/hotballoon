@@ -514,6 +514,13 @@ export class View extends ViewContainerBase {
   }
 
   /**
+   * @return {IntersectionObserverHandler}
+   */
+  intersectionObserverHandler() {
+    return this.#container.intersectionObserverHandler()
+  }
+
+  /**
    * @return {string}
    */
   containerID() {

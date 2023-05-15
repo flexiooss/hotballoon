@@ -231,6 +231,14 @@ export class ViewContainerBase extends WithID {
   }
 
   /**
+   * @return {IntersectionObserverHandler}
+   * @abstract
+   */
+  intersectionObserverHandler() {
+    throw NotOverrideException.FROM_ABSTRACT('Hotballoon/ViewContainerBase::intersectionObserverHandler')
+  }
+
+  /**
    * @return {string}
    * @abstract
    */
