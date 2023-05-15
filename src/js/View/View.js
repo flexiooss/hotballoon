@@ -19,7 +19,7 @@ import {
   VIEW_UPDATE,
   VIEW_UPDATED,
   VIEW_REMOVE,
-  ViewPublicEventHandler
+  ViewPublicEventHandler, VIEW_UNMOUNT
 } from './ViewPublicEventHandler.js'
 import {RemovedException} from "../Exception/RemovedException.js";
 import {Logger} from '@flexio-oss/js-commons-bundle/hot-log/index.js';
@@ -562,6 +562,7 @@ export class View extends ViewContainerBase {
    */
   unMount() {
     if (!isNull(this.node()) && !isNull(this.node().parentNode)) {
+      this.dispatch(VIEW_UNMOUNT, {})
       this.parentNode.removeChild(this.node())
     }
     this._mounted = false
