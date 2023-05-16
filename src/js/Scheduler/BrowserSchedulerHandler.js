@@ -13,6 +13,10 @@ export class BrowserSchedulerHandler extends SchedulerHandlerInterface(class {
    * @type {Window}
    */
   #global
+  /**
+   * @type {(callback: IdleRequestCallback, options?: IdleRequestOptions) => number}
+   */
+  #requestIdleCallback
 
   /**
    * @param {Window} global
@@ -20,6 +24,24 @@ export class BrowserSchedulerHandler extends SchedulerHandlerInterface(class {
   constructor(global) {
     super()
     this.#global = TypeCheck.assertIsObject(global)
+    if (!this.#global.requestIdleCallback) {
+      /**
+       * @type {(callback: IdleRequestCallback, options?: IdleRequestOptions) => number}
+       */
+      this.#requestIdleCallback = (callback,options) => this.#global.requestIdleCallback(callback,options)
+    } else {
+      this.#requestIdleCallback = (cb) => {
+        return setTimeout(function () {
+          const start = Date.now();
+          cb({
+            didTimeout: false,
+            timeRemaining: function () {
+              return Math.max(0, 50 - (Date.now() - start));
+            }
+          });
+        }, 1);
+      }
+    }
   }
 
   /**
@@ -28,6 +50,14 @@ export class BrowserSchedulerHandler extends SchedulerHandlerInterface(class {
    */
   postTask(task) {
     return new HBSchedulerTaskBuilderImpl(this.#global, task)
+  }
+
+  /**
+   * @param {IdleRequestCallback} task
+   * @return {number}
+   */
+  requestIdleCallback(task) {
+    return this.#requestIdleCallback(task)
   }
 }
 
@@ -136,14 +166,14 @@ class HBTaskImpl extends HBTaskInterface() {
     this.#task = TypeCheck.assertIsFunction(task);
     this.#priority = priority;
     this.#delay = TypeCheck.assertIsNumberOrNull(delay);
-    this.#controller = new this.#global.TaskController( {priority: this.#priority})
+    this.#controller = new this.#global.TaskController({priority: this.#priority})
   }
 
   /**
    * @return {Promise<*>}
    */
   async exec() {
-    let options = { signal: this.#controller.signal}
+    let options = {signal: this.#controller.signal}
     if (!isNull(this.#delay)) {
       options.delay = this.#delay
     }

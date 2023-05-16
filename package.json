@@ -15,7 +15,8 @@
     "customEvents": "hbshed dev --entry src/test/dev/customEvents.js --server-config local",
     "SessionStorage": "hbshed dev --entry src/test/dev/SessionStorage.js --server-config local",
     "intersectionObserver": "hbshed dev --entry src/test/dev/intersectionObserver.js --server-config local",
-    "scheduler": "hbshed dev --entry src/test/dev/scheduler.js --server-config local"
+    "scheduler": "hbshed dev --entry src/test/dev/scheduler.js --server-config local",
+    "requestIdleCallback": "hbshed dev --entry src/test/dev/requestIdleCallback.js --server-config local"
   },
   "repository": "https://github.com/flexiooss/hotballoon.git",
   "devDependencies": {
