@@ -222,6 +222,14 @@ class ComponentContextScheduler extends SchedulerHandlerInterface() {
       }
     );
   }
+
+  /**
+   * @param  {IdleRequestCallback} task
+   * @return {number}
+   */
+  requestIdleCallback(task) {
+    return this.#componentContext.APP().scheduler().requestIdleCallback(task)
+  }
 }
 
 

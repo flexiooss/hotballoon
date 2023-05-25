@@ -14,10 +14,12 @@ class Handler {
   constructor() {
     this.#observer = new IntersectionObserver(function (entries, observer) {
       entries.forEach(function (entry) {
+        let item = entry.target;
         if (entry.isIntersecting) {
-          let item = entry.target;
           item.dispatchEvent(new Event('__HB_VISIBLE__'))
-          observer.unobserve(item);
+          // observer.unobserve(item);
+        } else {
+          item.dispatchEvent(new Event('__HB_HIDDEN__'))
         }
       });
     })
@@ -32,16 +34,32 @@ class Handler {
     if (handler.callBacks.has(item.id)) {
       setTimeout(() => {
         if (handler.callBacks.has(item.id)) {
-          handler.callBacks.get(item.id).callback().call(null, item)
+          handler.callBacks.get(item.id).callback().call(null, item, true)
         }
       })
     }
   }
 
   /**
+   * @param {Event} event
+   */
+  execHidden(event) {
+    let item = event.target
+    let handler = getObserverHandler()
+    if (handler.callBacks.has(item.id)) {
+      setTimeout(() => {
+        if (handler.callBacks.has(item.id)) {
+          handler.callBacks.get(item.id).callback().call(null, item, false)
+        }
+      })
+    }
+  }
+
+
+  /**
    * @param {string} group
    * @param {HTMLElement} element
-   * @param {function(el:HTMLElement):void} clb
+   * @param {function(el:HTMLElement, DocumentVisibilityState:boolean):void} clb
    * @return {Handler}
    */
   observe(group, element, clb) {
@@ -56,9 +74,36 @@ class Handler {
     this.callBacks.set(element.id, new Observable(
       group,
       element,
+      (item, visibility) => {
+        TypeCheck.assertIsFunction(clb).call(null, item, visibility)
+      })
+    )
+    element.addEventListener('__HB_VISIBLE__', this.execVisible)
+    element.addEventListener('__HB_HIDDEN__', this.execHidden)
+    return this
+  }
+
+  /**
+   * @param {string} group
+   * @param {HTMLElement} element
+   * @param {function(el:HTMLElement):void} clb
+   * @return {Handler}
+   */
+  observeOnce(group, element, clb) {
+    TypeCheck.assertIsNode(element)
+    this.#observer.observe(element)
+    if (isEmpty(element.id)) {
+      throw new Error('Handler:IntersectionObserver: element should have an id')
+    }
+    if (this.callBacks.has(element.id)) {
+      throw new Error('Handler:IntersectionObserver: element already observed id:' + element.id)
+    }
+    this.callBacks.set(element.id, new Observable(
+      group,
+      element,
       (item) => {
-        TypeCheck.assertIsFunction(clb).call(null, item)
         this.unObserve(item, true)
+        TypeCheck.assertIsFunction(clb).call(null, item)
       })
     )
     element.addEventListener('__HB_VISIBLE__', this.execVisible)
@@ -74,6 +119,7 @@ class Handler {
     this.callBacks.delete(element.id)
     this.#observer.unobserve(element)
     element.removeEventListener('__HB_VISIBLE__', this.execVisible)
+    element.removeEventListener('__HB_HIDDEN__', this.execHidden)
     return this
   }
 
@@ -136,14 +182,14 @@ class Observable {
    */
   #element
   /**
-   * @type function(el:HTMLElement):void
+   * @type function(el:HTMLElement, visibility: boolean):void
    */
   #callback
 
   /**
    * @param {string} group
    * @param {HTMLElement} element
-   * @param { function(el:HTMLElement):void} callback
+   * @param { function(el:HTMLElement, visibility: boolean):void} callback
    */
   constructor(group, element, callback) {
     this.#group = group;
@@ -166,7 +212,7 @@ class Observable {
   }
 
   /**
-   * @return {function(HTMLElement): void}
+   * @return {function(HTMLElement, visibility: boolean): void}
    */
   callback() {
     return this.#callback;
@@ -209,13 +255,28 @@ export class IntersectionObserverHandler {
 
   /**
    * @param {HTMLElement} element
-   * @param {function(el:HTMLElement):void} clb
+   * @param {function(el:HTMLElement, visibility:boolean):void} clb
    * @return {IntersectionObserverHandler}
    */
   observe(element, clb) {
     this.#ensureObserver()
     if (!isNull(this.#observer)) {
       this.#observer.observe(this.#id, element, clb)
+    } else {
+      setTimeout(clb, 100)
+    }
+    return this
+  }
+
+  /**
+   * @param {HTMLElement} element
+   * @param {function(el:HTMLElement):void} clb
+   * @return {IntersectionObserverHandler}
+   */
+  observeOnce(element, clb) {
+    this.#ensureObserver()
+    if (!isNull(this.#observer)) {
+      this.#observer.observeOnce(this.#id, element, clb)
     } else {
       setTimeout(clb, 100)
     }

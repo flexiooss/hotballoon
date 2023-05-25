@@ -16,6 +16,22 @@ export class BasicSchedulerHandler extends SchedulerHandlerInterface(class {
   postTask(task) {
     return new HBSchedulerTaskBuilderImpl(task)
   }
+
+  /**
+   * @param {IdleRequestCallback} task
+   * @return {number}
+   */
+  requestIdleCallback(task) {
+    return setTimeout(function () {
+      const start = Date.now();
+      task({
+        didTimeout: false,
+        timeRemaining: function () {
+          return Math.max(0, 50 - (Date.now() - start));
+        }
+      });
+    }, 1)
+  }
 }
 
 class HBSchedulerTaskBuilderImpl extends HBSchedulerTaskBuilderInterface(class {

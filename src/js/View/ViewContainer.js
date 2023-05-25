@@ -184,6 +184,13 @@ export class ViewContainer extends ViewContainerBase {
   }
 
   /**
+   * @return {IntersectionObserverHandler}
+   */
+  intersectionObserverHandler() {
+    return this.#config.componentContext().intersectionObserverHandler()
+  }
+
+  /**
    * @return {ViewContainerPublicEventHandler}
    */
   on() {

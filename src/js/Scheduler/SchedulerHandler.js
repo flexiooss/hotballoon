@@ -14,6 +14,13 @@ export const SchedulerHandlerInterface = (Base = class{}) => {
     postTask(task) {
       throw NotOverrideException.FROM_INTERFACE('SchedulerHandler')
     }
+    /**
+     * @param  {IdleRequestCallback} task
+     * @return {number}
+     */
+    requestIdleCallback(task) {
+      throw NotOverrideException.FROM_INTERFACE('SchedulerHandler')
+    }
   }
 
 }

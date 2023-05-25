@@ -6,6 +6,7 @@ import {StoresHandler} from '../Store/StoresHandler.js'
 import {RemovedException} from "../Exception/RemovedException.js";
 import {Logger} from '@flexio-oss/js-commons-bundle/hot-log/index.js';
 import {isNull} from "@flexio-oss/js-commons-bundle/assert/index.js";
+import {VIEW_REMOVE, VIEW_UNMOUNT} from "./ViewPublicEventHandler.js";
 
 
 /**
@@ -125,7 +126,7 @@ export class ViewContainerBase extends WithID {
    */
   _on(orderedEventListenerConfig) {
     if(this.isRemoved()){
-      throw RemovedException.VIEW_CONTAINER(this._ID)
+      throw RemovedException.VIEW_CONTAINER(this.ID())
     }
     this.#ensureEventHandler()
     return this.#eventHandler.on(orderedEventListenerConfig)
@@ -137,8 +138,9 @@ export class ViewContainerBase extends WithID {
    * @throws {RemovedException}
    */
   dispatch(eventType, payload) {
-    if(this.isRemoved()){
-      throw RemovedException.VIEW_CONTAINER(this._ID)
+
+    if(this.isRemoved() && !([VIEW_REMOVE, VIEW_UNMOUNT]).includes(eventType)){
+      throw RemovedException.VIEW_CONTAINER(this.ID())
     }
     this.#eventHandler?.dispatch(eventType, payload)
   }
@@ -169,7 +171,7 @@ export class ViewContainerBase extends WithID {
    */
   addView(view) {
     if(this.isRemoved()){
-      throw RemovedException.VIEW_CONTAINER(this._ID)
+      throw RemovedException.VIEW_CONTAINER(this.ID())
     }
     this.#views.set(view.ID(), view)
     return view
@@ -228,6 +230,14 @@ export class ViewContainerBase extends WithID {
    */
   scheduler() {
     throw NotOverrideException.FROM_ABSTRACT('Hotballoon/ViewContainerBase::scheduler')
+  }
+
+  /**
+   * @return {IntersectionObserverHandler}
+   * @abstract
+   */
+  intersectionObserverHandler() {
+    throw NotOverrideException.FROM_ABSTRACT('Hotballoon/ViewContainerBase::intersectionObserverHandler')
   }
 
   /**

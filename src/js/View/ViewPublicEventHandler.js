@@ -7,6 +7,7 @@ export const VIEW_UPDATE = 'VIEW_UPDATE'
 export const VIEW_UPDATED = 'VIEW_UPDATED'
 export const VIEW_STORE_CHANGED = 'VIEW_STORE_CHANGED'
 export const VIEW_MOUNT = 'VIEW_MOUNT'
+export const VIEW_UNMOUNT = 'VIEW_UNMOUNT'
 export const VIEW_MOUNTED = 'VIEW_MOUNTED'
 export const VIEW_REMOVE = 'VIEW_REMOVE'
 
@@ -60,7 +61,7 @@ export class ViewPublicEventHandler {
 
   /**
    *
-   * @param {ViewCounterEvent~update} clb
+   * @param {ViewPublicEventHandler~update} clb
    * @return {String}
    */
   update(clb) {
@@ -68,12 +69,12 @@ export class ViewPublicEventHandler {
   }
 
   /**
-   * @callback ViewCounterEvent~update
+   * @callback ViewPublicEventHandler~update
    */
 
   /**
    *
-   * @param {ViewCounterEvent~updated} clb
+   * @param {ViewPublicEventHandler~updated} clb
    * @return {String}
    */
   updated(clb) {
@@ -81,12 +82,12 @@ export class ViewPublicEventHandler {
   }
 
   /**
-   * @callback ViewCounterEvent~updated
+   * @callback ViewPublicEventHandler~updated
    */
 
   /**
    *
-   * @param {ViewCounterEvent~render} clb
+   * @param {ViewPublicEventHandler~render} clb
    * @return {String}
    */
   render(clb) {
@@ -94,12 +95,12 @@ export class ViewPublicEventHandler {
   }
 
   /**
-   * @callback ViewCounterEvent~render
+   * @callback ViewPublicEventHandler~render
    */
 
   /**
    *
-   * @param {ViewCounterEvent~rendered} clb
+   * @param {ViewPublicEventHandler~rendered} clb
    * @return {String}
    */
   rendered(clb) {
@@ -107,12 +108,12 @@ export class ViewPublicEventHandler {
   }
 
   /**
-   * @callback ViewCounterEvent~rendered
+   * @callback ViewPublicEventHandler~rendered
    */
 
   /**
    *
-   * @param {ViewCounterEvent~mount} clb
+   * @param {ViewPublicEventHandler~mount} clb
    * @return {String}
    */
   mount(clb) {
@@ -120,12 +121,24 @@ export class ViewPublicEventHandler {
   }
 
   /**
-   * @callback ViewCounterEvent~mount
+   * @callback ViewPublicEventHandler~mount
+   */
+
+  /**
+   * @param {ViewPublicEventHandler~unMount} clb
+   * @return {String}
+   */
+  unMount(clb) {
+    return this._subscribeTo(VIEW_UNMOUNT, clb)
+  }
+
+  /**
+   * @callback ViewPublicEventHandler~unMount
    */
 
   /**
    *
-   * @param {ViewCounterEvent~mounted} clb
+   * @param {ViewPublicEventHandler~mounted} clb
    * @return {String}
    */
   mounted(clb) {
@@ -133,12 +146,11 @@ export class ViewPublicEventHandler {
   }
 
   /**
-   * @callback ViewCounterEvent~mounted
+   * @callback ViewPublicEventHandler~mounted
    */
 
   /**
-   *
-   * @param {ViewCounterEvent~storeChanged} clb
+   * @param {ViewPublicEventHandler~storeChanged} clb
    * @return {String}
    */
   storeChanged(clb) {
@@ -146,7 +158,11 @@ export class ViewPublicEventHandler {
   }
 
   /**
-   * @callback ViewCounterEvent~storeChanged
+   * @callback ViewPublicEventHandler~storeChanged
+   */
+
+  /**
+   * @callback ViewPublicEventHandler~storeChanged
    * @param {StoreState} payload
    */
 
