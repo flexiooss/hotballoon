@@ -85,7 +85,7 @@ export class UIEventBuilder {
    * @return {BaseEventBuilder.}
    */
   static baseEvent() {
-    return CompositionEventBuilder
+    return BaseEventBuilder
   }
 
 }
