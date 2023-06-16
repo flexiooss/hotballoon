@@ -1,6 +1,7 @@
-import {isNull, TypeCheck} from '@flexio-oss/js-commons-bundle/assert/index.js';
+import {assert, isNull, isNumber, TypeCheck} from '@flexio-oss/js-commons-bundle/assert/index.js'
 import {getParentNode} from '@flexio-oss/js-commons-bundle/js-type-helpers/index.js';
 import {UID} from '@flexio-oss/js-commons-bundle/js-helpers/index.js';
+import {globalFlexioImport} from '@flexio-oss/js-commons-bundle/global-import-registry'
 
 /**
  * @type {symbol}
@@ -136,7 +137,7 @@ export class CustomEventHandler {
    * @return {boolean}
    */
   static isCustomEvent(event) {
-    return [CustomEventHandler.TAP, CustomEventHandler.DOUBLE_TAP, CustomEventHandler.HOLD,, CustomEventHandler.HOLD_OR_RIGHT].includes(event)
+    return [CustomEventHandler.TAP, CustomEventHandler.DOUBLE_TAP, CustomEventHandler.HOLD,CustomEventHandler.HOLD_OR_RIGHT].includes(event)
   }
 
   /**
@@ -561,7 +562,17 @@ export class CustomEventHandler {
    * @return {CustomEventHandler}
    */
   _dispatchEvent(eventName, event) {
-    this._element.dispatchEvent(new CustomEvent(eventName, {detail: {source: event.target}}))
+    let x = Math.round(event.x)
+    let y = Math.round(event.y)
+    this._element.dispatchEvent(new CustomEvent(eventName,
+      {
+        detail: {
+          source: event.target,
+          x: isNumber(x) ? x : null,
+          y: isNumber(y) ? y : null
+        }
+      }
+    ))
     return this
   }
 
@@ -592,5 +603,22 @@ export class CustomEventHandler {
     this._element[__CustomEventHandler__] = null
     this._element.removeEventListener('pointerdown', this._pointerdown)
     this._element.removeEventListener('pointerup', this._pointerup)
+  }
+}
+
+
+export class CustomEventDOMPositionHelper {
+  /**
+   * @param {CustomEvent} event
+   * @return {DOMPosition}
+   */
+  static getCursorPosition(event) {
+    assert(CustomEventHandler.isCustomEvent(event.type), 'Event should be hotBalloon custom event')
+    return globalFlexioImport.io.flexio.flex_types.DOMPosition.builder()
+      .x(event.detail.x)
+      .y(event.detail.y)
+      .width(0)
+      .height(0)
+      .build()
   }
 }
