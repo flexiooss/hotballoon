@@ -3,7 +3,7 @@
   "description": "Small JavaScript library for building interfaces by Flexio",
   "main": "index.js",
   "module": "index.js",
-  "version": "0.86.0",
+  "version": "0.87.0-dev",
   "type": "module",
   "license": "Apache-2.0",
   "bugs": {
