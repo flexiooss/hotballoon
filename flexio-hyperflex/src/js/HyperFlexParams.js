@@ -169,7 +169,7 @@ export class HyperFlexParams {
   addChildNodes(childNodes) {
     this.#childNodes.push(...childNodes)
     this.#childNodeSequenceList.push(globalFlexioImport.io.flexio.flexio_hyperflex.types.ChildNodesSequence.builder()
-      .type(globalFlexioImport.io.flexio.flexio_hyperflex.types.childnodessequence.ChildNodesSequenceType.APPEND_NODE)
+      .type(globalFlexioImport.io.flexio.flexio_hyperflex.types.childnodessequence.Type.APPEND_NODE)
       .count(childNodes.length)
       .build())
     return this
@@ -343,7 +343,7 @@ export class HyperFlexParams {
   prependHTML(...HTMLTxt) {
     this.#afterBeginHTML.push(...HTMLTxt.reverse())
     this.#childNodeSequenceList.push(globalFlexioImport.io.flexio.flexio_hyperflex.types.ChildNodesSequence.builder()
-      .type(globalFlexioImport.io.flexio.flexio_hyperflex.types.childnodessequence.ChildNodesSequenceType.PREPEND_HTML)
+      .type(globalFlexioImport.io.flexio.flexio_hyperflex.types.childnodessequence.Type.PREPEND_HTML)
       .count(HTMLTxt.length)
       .build())
     return this
@@ -356,7 +356,7 @@ export class HyperFlexParams {
   appendHTML(...HTMLTxt) {
     this.#beforeEndHTML.push(...HTMLTxt)
     this.#childNodeSequenceList.push(globalFlexioImport.io.flexio.flexio_hyperflex.types.ChildNodesSequence.builder()
-      .type(globalFlexioImport.io.flexio.flexio_hyperflex.types.childnodessequence.ChildNodesSequenceType.APPEND_HTML)
+      .type(globalFlexioImport.io.flexio.flexio_hyperflex.types.childnodessequence.Type.APPEND_HTML)
       .count(HTMLTxt.length)
       .build())
     HTMLTxt.length

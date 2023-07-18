@@ -332,14 +332,14 @@ class ChildNodesHandler {
 
     for (/**@type{ChildNodesSequence}*/const childNodesSequence of this.#config.childNodeSequenceList()) {
       switch (childNodesSequence.type()) {
-        case globalFlexioImport.io.flexio.flexio_hyperflex.types.childnodessequence.ChildNodesSequenceType.APPEND_NODE:
+        case globalFlexioImport.io.flexio.flexio_hyperflex.types.childnodessequence.Type.APPEND_NODE:
           this.#appendNode(childNodesSequence.count())
           break
-        case globalFlexioImport.io.flexio.flexio_hyperflex.types.childnodessequence.ChildNodesSequenceType.PREPEND_HTML:
+        case globalFlexioImport.io.flexio.flexio_hyperflex.types.childnodessequence.Type.PREPEND_HTML:
           this.#prependHTML(childNodesSequence.count());
           shouldBeSanitized = true;
           break
-        case globalFlexioImport.io.flexio.flexio_hyperflex.types.childnodessequence.ChildNodesSequenceType.APPEND_HTML:
+        case globalFlexioImport.io.flexio.flexio_hyperflex.types.childnodessequence.Type.APPEND_HTML:
           this.#appendHTML(childNodesSequence.count());
           shouldBeSanitized = true;
           break
