@@ -137,7 +137,7 @@ export class CustomEventHandler {
    * @return {boolean}
    */
   static isCustomEvent(event) {
-    return [CustomEventHandler.TAP, CustomEventHandler.DOUBLE_TAP, CustomEventHandler.HOLD,CustomEventHandler.HOLD_OR_RIGHT].includes(event)
+    return [CustomEventHandler.TAP, CustomEventHandler.DOUBLE_TAP, CustomEventHandler.HOLD, CustomEventHandler.HOLD_OR_RIGHT].includes(event)
   }
 
   /**
@@ -436,10 +436,16 @@ export class CustomEventHandler {
         // }, this._doubleThreshold)
 
         this._timer = CustomEventHandler.requestTimeout(() => {
+          if (event.pointerType !== 'mouse') {
+            event.target?.focus()
+          }
           this._dispatchEvent(CustomEventHandler.TAP, event)
           this._clearTap()
         }, this._doubleThreshold)
       } else {
+        if (event.pointerType !== 'mouse') {
+          event.target?.focus()
+        }
         this._dispatchEvent(CustomEventHandler.TAP, event)
       }
 
@@ -580,7 +586,7 @@ export class CustomEventHandler {
    * @return {CustomEventHandler}
    * @private
    */
-  _disableContextualMenu(){
+  _disableContextualMenu() {
     this._element.addEventListener("contextmenu", e => e.preventDefault());
     return this
   }
@@ -596,7 +602,7 @@ export class CustomEventHandler {
    * @return {boolean}
    */
   isEmpty() {
-    return !(this._tap && this._doubleTap && this._hold&& this._hold_or_right)
+    return !(this._tap && this._doubleTap && this._hold && this._hold_or_right)
   }
 
   remove() {
