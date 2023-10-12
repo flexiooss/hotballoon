@@ -290,16 +290,17 @@ export class Reconciliation {
    * @return {?Element}
    */
   __findNodeByIdInChildNodes(parentNode, id, start) {
-   // return  parentNode.querySelector(`:scope > #${id}`) // TODO @thomas check performance when better support of :scope pseudo-class
-    if (parentNode.childNodes.length > MAX_SLIBINGS_NODES_UPDATE_BY_ID) {
-      return null
-    }
-    for (let i = parentNode.childNodes.length - 1; i >= 0; i--) {
-      if (parentNode.childNodes[i].id === id) {
-        return parentNode.childNodes[i]
-      }
-    }
-    return null
+    return parentNode.ownerDocument.getElementById(id)
+   // // return  parentNode.querySelector(`:scope > #${id}`) // TODO @thomas check performance when better support of :scope pseudo-class
+   //  if (parentNode.childNodes.length > MAX_SLIBINGS_NODES_UPDATE_BY_ID) {
+   //    return null
+   //  }
+   //  for (let i = parentNode.childNodes.length - 1; i >= 0; i--) {
+   //    if (parentNode.childNodes[i].id === id) {
+   //      return parentNode.childNodes[i]
+   //    }
+   //  }
+   //  return null
   }
 
   /**
