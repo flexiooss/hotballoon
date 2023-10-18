@@ -23,8 +23,8 @@ export class Reconciliation {
    */
   constructor(current, candidate, parentCurrent = null) {
     assert(isNode(current) && isNode(candidate),
-      'Reconciliation: `current : %s` and  `candidate : %s` arguments assert be Node',
-      typeof current, typeof candidate)
+        'Reconciliation: `current : %s` and  `candidate : %s` arguments assert be Node',
+        typeof current, typeof candidate)
 
     /**
      * @params {Element}
@@ -123,8 +123,8 @@ export class Reconciliation {
    */
   static startReconciliation(current, candidate, parentCurrent) {
     return new Reconciliation(current, candidate, parentCurrent)
-      .withRootReconciliation(true)
-      .reconcile()
+        .withRootReconciliation(true)
+        .reconcile()
   }
 
   /**
@@ -142,15 +142,15 @@ export class Reconciliation {
    */
   reconcile() {
     if (
-      this._hasByPassRule()
-      || (
-        this.__isEqualNode()
-        && (
-          (!this._hasReconcileListenersRule() && !this._hasForceListenersRule())
-          || (this._hasReconcileListenersRule() && !this.__isEqualListeners()
-          )
+        this._hasByPassRule()
+        || (
+            this.__isEqualNode()
+            && (
+                (!this._hasReconcileListenersRule() && !this._hasForceListenersRule())
+                || (this._hasReconcileListenersRule() && !this.__isEqualListeners()
+                )
+            )
         )
-      )
     ) {
       return this._abort()
     }
@@ -290,17 +290,16 @@ export class Reconciliation {
    * @return {?Element}
    */
   __findNodeByIdInChildNodes(parentNode, id, start) {
-    return parentNode.ownerDocument.getElementById(id)
-   // // return  parentNode.querySelector(`:scope > #${id}`) // TODO @thomas check performance when better support of :scope pseudo-class
-   //  if (parentNode.childNodes.length > MAX_SLIBINGS_NODES_UPDATE_BY_ID) {
-   //    return null
-   //  }
-   //  for (let i = parentNode.childNodes.length - 1; i >= 0; i--) {
-   //    if (parentNode.childNodes[i].id === id) {
-   //      return parentNode.childNodes[i]
-   //    }
-   //  }
-   //  return null
+    return  parentNode.querySelector(`:scope > #${id}`) // TODO @thomas check performance when better support of :scope pseudo-class
+    //  if (parentNode.childNodes.length > MAX_SLIBINGS_NODES_UPDATE_BY_ID) {
+    //    return null
+    //  }
+    //  for (let i = parentNode.childNodes.length - 1; i >= 0; i--) {
+    //    if (parentNode.childNodes[i].id === id) {
+    //      ret = parentNode.childNodes[i]
+    //    }
+    //  }
+    //  return null
   }
 
   /**
