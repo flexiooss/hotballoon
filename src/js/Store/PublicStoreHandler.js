@@ -61,7 +61,7 @@ export class PublicStoreHandler {
   }
 
   /**
-   * @param {OrderedEventListenerConfig} orderedEventListenerConfig
+   * @param {function(OrderedEventListenerConfigBuilder):OrderedEventListenerConfig} orderedEventListenerConfig
    * @return {String} token
    */
   subscribe(orderedEventListenerConfig) {

@@ -64,9 +64,11 @@ export class AsyncProxyStoreBuilder extends ProxyStoreBuilder {
       /**
        * @type {ListenedStore}
        */
-      const storeHandler = this._store.listenChanged(() => {
+      const storeHandler = this._store.listenChanged(
+        builder=>builder.callback(() => {
         parentInvoked++
-      })
+      }).build()
+      )
       /**
        * @type {number}
        */

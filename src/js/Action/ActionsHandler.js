@@ -40,15 +40,14 @@ export class ActionsHandler {
 
   /**
    * @param {ActionSubscriber} actionSubscriber
-   * @param {function(payload: ?TYPE, type: (string|Symbol))}  callback
-   * @param {?function(payload: ?TYPE)} [guard=null]
+   * @param {function(EventListenerConfigBuilder):EventListenerConfig} eventListenerConfigBuilderClb
    * @return {ListenedAction}
    */
-  listen(actionSubscriber, callback, guard=null) {
+  listen(actionSubscriber, eventListenerConfigBuilderClb) {
     /**
      * @type {ListenedAction}
      */
-    const listenedAction = TypeCheck.assertIsActionSubscriber(actionSubscriber).listen(callback, guard)
+    const listenedAction = TypeCheck.assertIsActionSubscriber(actionSubscriber).listen(eventListenerConfigBuilderClb)
     this.#listenedActions.set(listenedAction.token(), listenedAction)
     return new ListenedAction(this, listenedAction.token())
   }

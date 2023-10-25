@@ -83,10 +83,11 @@ export class AsyncProxyStore extends StoreBase {
   }
 
   #subscribeToStore() {
-    this.#listenedStore = this._store().listenChanged(
-      (payload, eventType) => {
+    this.#listenedStore = this._store().listenChanged(builder=>builder
+      .callback((payload, eventType) => {
         this.#mapAndUpdate(payload, eventType)
-      }
+      })
+      .build()
     )
   }
 

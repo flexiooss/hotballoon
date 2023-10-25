@@ -1,7 +1,7 @@
 import {WithID} from '../abstract/WithID.js'
 import {
   assertInstanceOf,
-  assertType,
+  assertType, isFunction,
   isNull,
   TypeCheck
 } from '@flexio-oss/js-commons-bundle/assert/index.js'
@@ -10,7 +10,10 @@ import {StorageInterface} from './Storage/StorageInterface.js'
 import {OrderedEventHandler} from '../Event/OrderedEventHandler.js'
 import {STORE_CHANGED, STORE_REMOVED} from './StoreInterface.js'
 import {ValidationError} from '../Exception/ValidationError.js'
-import {OrderedEventListenerConfigBuilder} from '@flexio-oss/js-commons-bundle/event-handler/index.js'
+import {
+  OrderedEventListenerConfig,
+  OrderedEventListenerConfigBuilder
+} from '@flexio-oss/js-commons-bundle/event-handler/index.js'
 import {StoreBaseConfig} from './StoreBaseConfig.js'
 import {ListenedStore} from './ListenedStore.js'
 import {RemovedException} from "../Exception/RemovedException.js";
@@ -19,6 +22,7 @@ import {Logger} from '@flexio-oss/js-commons-bundle/hot-log/index.js';
 /**
  * @template TYPE, TYPE_BUILDER
  * @implements {GenericType<TYPE>}
+ * @implements {StoreInterface<TYPE, TYPE_BUILDER>}
  */
 export class StoreBase extends WithID {
   /**
@@ -182,18 +186,6 @@ export class StoreBase extends WithID {
   }
 
   /**
-   * @param {OrderedEventListenerConfig}  orderedEventListenerConfig
-   * @return {String} token
-   */
-  subscribe(orderedEventListenerConfig) {
-    if (this.#removed) {
-      throw RemovedException.STORE(this._ID)
-    }
-    this.#ensureEventHandler()
-    return this.#eventHandler.on(orderedEventListenerConfig)
-  }
-
-  /**
    * @param {String} event
    * @param {String} token
    */
@@ -281,34 +273,44 @@ export class StoreBase extends WithID {
   }
 
   /**
-   * @param {function(state: StoreState<TYPE>)} callback
-   * @param {number} [priority=100]
-   * @param {?function(state: StoreState<TYPE>)} [guard=null]
-   * @return {ListenedStore}
-   * @throws {RemovedException}
+   * @param {OrderedEventListenerConfig|function(OrderedEventListenerConfigBuilder):OrderedEventListenerConfig} orderedEventListenerConfig
+   * @return {String} token
    */
-  listenChanged(callback, priority = 100, guard = null) {
+  subscribe(orderedEventListenerConfig) {
     if (this.#removed) {
       throw RemovedException.STORE(this._ID)
     }
-    TypeCheck.assertIsFunction(callback)
-    TypeCheck.assertIsNumber(priority)
+    this.#ensureEventHandler()
+    return this.#eventHandler.on(orderedEventListenerConfig)
+  }
+
+  /**
+   * @param {OrderedEventListenerConfig|function(OrderedEventListenerConfigBuilder):OrderedEventListenerConfig} orderedEventListenerConfig
+   * @param {number} [priority=100]
+   * @return {ListenedStore}
+   * @throws {RemovedException}
+   */
+  listenChanged(orderedEventListenerConfig) {
+    if (this.#removed) {
+      throw RemovedException.STORE(this._ID)
+    }
     this.#ensureEventHandler()
 
+    if (isFunction(orderedEventListenerConfig)) {
+      orderedEventListenerConfig = orderedEventListenerConfig.call(null, new OrderedEventListenerConfigBuilder().events(this.changedEventName()))
+    }
+
+    assertInstanceOf(orderedEventListenerConfig, OrderedEventListenerConfig, 'OrderedEventListenerConfig')
+    const callback = orderedEventListenerConfig.callback()
     /**
      * @type {string}
      */
     const token = this.#eventHandler.on(
-      OrderedEventListenerConfigBuilder
-        .listen(this.changedEventName())
-        .callback((payload) => {
-          if (!this.#removed) {
-            callback(payload)
-          }
-        })
-        .priority(priority)
-        .guard(guard)
-        .build()
+      orderedEventListenerConfig.withCallback((payload) => {
+        if (!this.#removed) {
+          callback(payload)
+        }
+      })
     )
 
     return new ListenedStore(
@@ -319,32 +321,23 @@ export class StoreBase extends WithID {
   }
 
   /**
-   * @param {function()} callback
-   * @param {number} [priority=100]
-   * @param {?function(state: StoreState<TYPE>)} [guard=null]
+   * @param {OrderedEventListenerConfig|function(OrderedEventListenerConfigBuilder):OrderedEventListenerConfig} orderedEventListenerConfig
    * @return {ListenedStore}
    * @throws {RemovedException}
    */
-  listenRemoved(callback, priority = 100, guard = null) {
+  listenRemoved(orderedEventListenerConfig) {
     if (this.#removed) {
       throw RemovedException.STORE(this._ID)
     }
-    TypeCheck.assertIsFunction(callback)
-    TypeCheck.assertIsNumber(priority)
     this.#ensureEventHandler()
+
+    if (isFunction(orderedEventListenerConfig)) {
+      orderedEventListenerConfig = orderedEventListenerConfig.call(null, new OrderedEventListenerConfigBuilder().events(this.changedEventName()))
+    }
     /**
      * @type {string}
      */
-    const token = this.#eventHandler.on(
-      OrderedEventListenerConfigBuilder
-        .listen(this.removedEventName())
-        .callback(() => {
-          callback()
-        })
-        .priority(priority)
-        .guard(guard)
-        .build()
-    )
+    const token = this.#eventHandler.on(orderedEventListenerConfig)
 
     return new ListenedStore(
       this.#eventHandler,

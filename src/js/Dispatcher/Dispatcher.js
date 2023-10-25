@@ -54,8 +54,7 @@ export class Dispatcher extends EventHandlerBase {
   }
 
   /**
-   * @param {EventListenerConfig} eventListenerConfig
-   * @returns {(String|StringArray)} token
+   * @param {EventListenerConfig|function(EventListenerConfigBuilder):EventListenerConfig} eventListenerConfig   * @returns {(String|StringArray)} token
    */
   addActionListener(eventListenerConfig) {
     return this.addEventListener(eventListenerConfig)
@@ -63,7 +62,7 @@ export class Dispatcher extends EventHandlerBase {
 
   /**
    * @param {String} actionId
-   * @param {String} listenerToken
+   * @param {?String} listenerToken
    * @returns void
    */
   removeActionListener(actionId, listenerToken) {

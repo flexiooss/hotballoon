@@ -57,10 +57,13 @@ export class ProxyStore extends StoreBase {
   }
 
   #subscribeToStore() {
-    this.#listenedStore = this._store().listenChanged(
-      (payload, eventType) => {
-        this.#mapAndUpdate(payload, eventType)
-      }
+    this.#listenedStore = this._store().listenChanged(builder => builder
+      .callback(
+        (payload, eventType) => {
+          this.#mapAndUpdate(payload, eventType)
+        }
+      )
+      .build()
     )
   }
 
@@ -115,14 +118,14 @@ export class ProxyStore extends StoreBase {
   /**
    * @return {this}
    */
-  trigChange(){
+  trigChange() {
     return this.mapAndUpdate()
   }
 
   /**
    * @return {ProxyStore}
    */
-  mapAndUpdate(){
+  mapAndUpdate() {
     this.#mapAndUpdate(this.#parentStore.state(), STORE_CHANGED)
     return this
   }

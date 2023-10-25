@@ -141,15 +141,18 @@ export class View extends ViewContainerBase {
 
     return this.stores().listen(
       store,
-      (payload, type) => {
-        if (!this.isRemoved()) {
-          if (clb.call(null, payload) === true) {
-            this.dispatch(VIEW_STORE_CHANGED, payload)
-            this.updateNode()
+      builder => builder
+        .callback((payload, type) => {
+            if (!this.isRemoved()) {
+              if (clb.call(null, payload) === true) {
+                this.dispatch(VIEW_STORE_CHANGED, payload)
+                this.updateNode()
+              }
+            }
           }
-        }
-      }, 100,
-      guard
+        )
+        .guard(guard)
+        .build()
     )
   }
 

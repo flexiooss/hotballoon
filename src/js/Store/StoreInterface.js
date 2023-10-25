@@ -34,7 +34,7 @@ export class StoreInterface {
   }
 
   /**
-   * @param {OrderedEventListenerConfig} orderedEventListenerConfig
+   * @param {OrderedEventListenerConfig|function(OrderedEventListenerConfigBuilder):OrderedEventListenerConfig} orderedEventListenerConfig
    * @return {String} token
    */
   subscribe(orderedEventListenerConfig) {
@@ -50,12 +50,10 @@ export class StoreInterface {
   }
 
   /**
-   * @param {function(state: StoreState<TYPE>)} callback
-   * @param {number} priority
-   * @param {?function(state: StoreState<TYPE>)} [guard=null]
+   * @param {OrderedEventListenerConfig|function(OrderedEventListenerConfigBuilder):OrderedEventListenerConfig} orderedEventListenerConfig
    * @return {ListenedStore}
    */
-  listenChanged(callback, priority, guard=null) {
+  listenChanged(orderedEventListenerConfig) {
     NotOverrideException.FROM_INTERFACE('StoreInterface')
   }
 
@@ -67,12 +65,10 @@ export class StoreInterface {
   }
 
   /**
-   * @param {function()} callback
-   * @param {number} priority
-   * @param {?function(state: StoreState<TYPE>)} [guard=null]
+   * @param {OrderedEventListenerConfig|function(OrderedEventListenerConfigBuilder):OrderedEventListenerConfig} orderedEventListenerConfig
    * @return {ListenedStore}
    */
-  listenRemoved(callback, priority, guard=null) {
+  listenRemoved(orderedEventListenerConfig) {
     NotOverrideException.FROM_INTERFACE('StoreInterface')
   }
 
