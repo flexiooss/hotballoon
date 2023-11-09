@@ -3,7 +3,7 @@
   "description": "Small JavaScript library for building interfaces by Flexio",
   "main": "index.js",
   "module": "index.js",
-  "version": "0.111.0",
+  "version": "0.112.0",
   "type": "module",
   "license": "Apache-2.0",
   "bugs": {
@@ -24,7 +24,7 @@
     "mocha": "^10.2.0"
   },
   "dependencies": {
-    "@flexio-oss/js-commons-bundle": "1.115.0",
+    "@flexio-oss/js-commons-bundle": "1.116.0",
     "scheduler-polyfill": "1.0.0"
   },
   "hotballoon-shed": {
@@ -42,8 +42,8 @@
   },
   "peerDependencies": {
     "@flexio-oss/code-altimeter-js": "1.5.0",
-    "@flexio-oss/hotballoon": "0.105.0-dev",
-    "@flexio-oss/js-commons-bundle": "1.109.0-dev",
+    "@flexio-oss/hotballoon": "0.112.0-dev",
+    "@flexio-oss/js-commons-bundle": "1.115.0",
     "luxon": "3.3.0",
     "mocha": "10.2.0",
     "scheduler-polyfill": "1.0.0"
