@@ -25,6 +25,7 @@ import {RemovedException} from "../Exception/RemovedException.js";
 import {Logger} from '@flexio-oss/js-commons-bundle/hot-log/index.js';
 import {e} from "../HotballoonNodeElement/ElementDescription.js";
 import {DOMError} from '../Exception/DOMError.js'
+import {ViewPublicEventUnSubscriber} from "./ViewPublicEventUnSubscriber.js";
 
 export const ATTRIBUTE_NODEREF = '_hb_noderef'
 
@@ -532,6 +533,13 @@ export class View extends ViewContainerBase {
    */
   on() {
     return new ViewPublicEventHandler(a => this._on(a))
+  }
+
+  /**
+   * @return {ViewPublicEventUnSubscriber}
+   */
+  off() {
+    return new ViewPublicEventUnSubscriber((a,b) => this._off(a,b))
   }
 
   /**
