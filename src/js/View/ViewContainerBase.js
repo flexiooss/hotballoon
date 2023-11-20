@@ -133,6 +133,21 @@ export class ViewContainerBase extends WithID {
   }
 
   /**
+   * @param {(String|Symbol)} event - eventName  of Listener
+   * @param {String} [token=null]
+   * @throws {RemovedException}
+   * @throws AssertionError
+   * @return {boolean}
+   */
+  _off(event, token) {
+    if(this.isRemoved()){
+      throw RemovedException.VIEW_CONTAINER(this.ID())
+    }
+    this.#ensureEventHandler()
+    return this.#eventHandler.removeEventListener(event, token)
+  }
+
+  /**
    * @param {(String|Symbol)} eventType
    * @param {Object} payload
    * @throws {RemovedException}
