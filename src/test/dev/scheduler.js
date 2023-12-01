@@ -11,8 +11,14 @@ const app = new BrowserApplicationBuilder()
   .document(document)
   .build()
 
+const start = performance.now();
+
+app.scheduler().postTask(() => {
+  console.log('BACKGROUND DELAY', performance.now() - start)
+}).background().delay(1000).build().exec()
+
 const a = app.scheduler().postTask(() => '1 => 1').blocking().build()
-  a.exec().then(r => {
+a.exec().then(r => {
   console.log(r)
 })
 
@@ -51,8 +57,8 @@ app.scheduler().postTask(() => '6 => 5').build().exec().then(r => {
   console.log(r)
 })
 
-setTimeout(()=>{
+setTimeout(() => {
   console.log('do nothing')
   a.abort()
-},1000)
+}, 1000)
 

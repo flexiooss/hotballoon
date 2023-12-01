@@ -8,6 +8,7 @@ import {ViewContainerPublicEventHandler} from './ViewContainerPublicEventHandler
 import {TypeCheck} from '../Types/TypeCheck.js'
 import {RemovedException} from "../Exception/RemovedException.js";
 import {Logger} from '@flexio-oss/js-commons-bundle/hot-log/index.js';
+import {ViewContainerPublicEventUnSubscriber} from "./ViewContainerPublicEventUnSubscriber.js";
 
 /**
  * @description viewContainer is a Views container who can subscribe to Stores to dispatch state to Views
@@ -56,15 +57,15 @@ export class ViewContainer extends ViewContainerBase {
    * @param {?function(data:StoreState<STORE_TYPE>)} [guard=null]
    * @return {ListenedStore}
    */
-  subscribeToStore(store, clb = (state) => true,guard=null) {
-    if(this.isRemoved()){
+  subscribeToStore(store, clb = (state) => true, guard = null) {
+    if (this.isRemoved()) {
       throw RemovedException.VIEW_CONTAINER(this._ID)
     }
     return this.stores().listen(store, (payload, type) => {
       if (!this.isRemoved()) {
         clb.call(null, payload.data())
       }
-    },100,guard)
+    }, 100, guard)
   }
 
   /**
@@ -89,7 +90,7 @@ export class ViewContainer extends ViewContainerBase {
    * @description Render all views
    */
   render() {
-    if(this.isRemoved()){
+    if (this.isRemoved()) {
       throw RemovedException.VIEW_CONTAINER(this._ID)
     }
     this.#renderViews()
@@ -97,7 +98,7 @@ export class ViewContainer extends ViewContainerBase {
   }
 
   updateViewsNode() {
-    if(this.isRemoved()){
+    if (this.isRemoved()) {
       throw RemovedException.VIEW_CONTAINER(this._ID)
     }
     this.views().forEach((view, key, map) => {
@@ -109,7 +110,7 @@ export class ViewContainer extends ViewContainerBase {
    * @return {Element} parentNode
    */
   mount() {
-    if(this.isRemoved()){
+    if (this.isRemoved()) {
       throw RemovedException.VIEW_CONTAINER(this._ID)
     }
     this.#mountViews()
@@ -195,6 +196,13 @@ export class ViewContainer extends ViewContainerBase {
    */
   on() {
     return new ViewContainerPublicEventHandler(a => this._on(a))
+  }
+
+  /**
+   * @return {ViewContainerPublicEventUnSubscriber}
+   */
+  off() {
+    return new ViewContainerPublicEventUnSubscriber((a, b) => this._off(a, b))
   }
 
   remove() {

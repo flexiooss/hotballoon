@@ -5,6 +5,7 @@ import {StorageInterface} from './StorageInterface.js'
 import {StoreStateBuilder} from '../StoreState.js'
 import {HotLog, Logger} from '@flexio-oss/js-commons-bundle/hot-log/index.js';
 import {BaseException} from '@flexio-oss/js-commons-bundle/js-type-helpers/index.js';
+import {Base64} from '@flexio-oss/js-commons-bundle/js-helpers/index.js';
 
 /**
  * @template TYPE
@@ -58,7 +59,7 @@ export class JsStorageImplStorage extends StorageInterface {
    * @return {StorageInterface}
    */
   set(storeID, data) {
-    this.#storage.setItem(this.key(), btoa(JSON.stringify(new StoreState(storeID, this.#type, data))))
+    this.#storage.setItem(this.key(), Base64.encode(JSON.stringify(new StoreState(storeID, this.#type, data))))
     return this
   }
 
@@ -70,7 +71,7 @@ export class JsStorageImplStorage extends StorageInterface {
     try {
       let data = this.#storage.getItem(this.key())
       if (!isNull(data)) {
-        data = atob(data)
+        data = Base64.decode(data)
         ret = StoreStateBuilder
           .fromJSON(data, this.#type)
           .storeID(this.#storeID)
@@ -109,13 +110,14 @@ export class JsStorageImplStorage extends StorageInterface {
   /**
    * @param {string|Symbol} storeId
    */
-  clean(storeId){
+  clean(storeId) {
     this.#storage.removeItem(this.key())
   }
+
   /**
    * @param {string|Symbol} storeId
    */
-  remove(storeId){
+  remove(storeId) {
     //DO NOTHING
   }
 }
