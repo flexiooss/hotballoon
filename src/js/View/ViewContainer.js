@@ -1,6 +1,6 @@
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_VIEWCONTAINER} from '../Types/HasTagClassNameInterface.js'
 import {
-  assertInstanceOf,
+  assertInstanceOf, isFunction,
   TypeCheck as TypeTypeCheck
 } from '@flexio-oss/js-commons-bundle/assert/index.js'
 import {ViewContainerBase} from './ViewContainerBase.js'
@@ -9,6 +9,7 @@ import {TypeCheck} from '../Types/TypeCheck.js'
 import {RemovedException} from "../Exception/RemovedException.js";
 import {Logger} from '@flexio-oss/js-commons-bundle/hot-log/index.js';
 import {ViewContainerPublicEventUnSubscriber} from "./ViewContainerPublicEventUnSubscriber.js";
+import {UID, UIDMini} from "@flexio-oss/js-commons-bundle/js-helpers/index.js";
 
 /**
  * @description viewContainer is a Views container who can subscribe to Stores to dispatch state to Views
@@ -26,9 +27,12 @@ export class ViewContainer extends ViewContainerBase {
   #logger = Logger.getLogger(this.constructor.name, 'HotBalloon.ViewContainerBase')
 
   /**
-   * @param {ViewContainerParameters} config
+   * @param {ViewContainerParameters|function(ViewContainerParametersBuilder):ViewContainerParameters} config
    */
   constructor(config) {
+    if(isFunction(config)){
+      config = config.call(null, new ViewContainerParametersBuilder())
+    }
     assertInstanceOf(config, ViewContainerParameters, 'ViewContainerParameters')
     super(config.id())
     this.#config = config
@@ -214,6 +218,53 @@ export class ViewContainer extends ViewContainerBase {
     this.#config.componentContext().viewContainers().detach(this)
   }
 }
+
+class ViewContainerParametersBuilder {
+  /**
+   * @type {ComponentContext}
+   */
+  #componentContext
+  /**
+   * @type {string}
+   */
+  #id= UIDMini('viewcontainer-')
+  /**
+   * @type {Element}
+   */
+  #parentNode
+
+  /**
+   * @return {ViewContainerParametersBuilder}
+   */
+  componentContext(value) {
+    this.#componentContext = value
+    return this
+  }
+
+  /**
+   * @return {ViewContainerParametersBuilder}
+   */
+  id(value) {
+    this.#id = value
+    return this
+  }
+
+  /**
+   * @return {ViewContainerParametersBuilder}
+   */
+  parentNode(value) {
+    this.#parentNode = value
+    return this
+  }
+
+  /**
+   * @return {ViewContainerParameters}
+   */
+  build(){
+    return new ViewContainerParameters(this.#componentContext, this.#id, this.#parentNode)
+  }
+}
+
 
 export class ViewContainerParameters {
   /**
