@@ -84,13 +84,11 @@ export class PublicStoreHandler {
   }
 
   /**
-   * @param {function(state: StoreState<TYPE>)} callback
-   * @param {number} [priority=100]
-   * @param {?function(state: StoreState<TYPE>)} [guard=null]
+   * @param {OrderedEventListenerConfig|function(OrderedEventListenerConfigBuilder):OrderedEventListenerConfig} orderedEventListenerConfig
    * @return {ListenedStore}
    */
-  listenChanged(callback, priority = 100,guard=null) {
-    return this.#store.listenChanged(callback, priority, guard)
+  listenChanged(orderedEventListenerConfig) {
+    return this.#store.listenChanged(orderedEventListenerConfig)
   }
 
   /**
