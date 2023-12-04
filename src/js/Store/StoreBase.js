@@ -286,7 +286,6 @@ export class StoreBase extends WithID {
 
   /**
    * @param {OrderedEventListenerConfig|function(OrderedEventListenerConfigBuilder):OrderedEventListenerConfig} orderedEventListenerConfig
-   * @param {number} [priority=100]
    * @return {ListenedStore}
    * @throws {RemovedException}
    */
