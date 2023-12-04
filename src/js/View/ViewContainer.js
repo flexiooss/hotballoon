@@ -30,7 +30,7 @@ export class ViewContainer extends ViewContainerBase {
    * @param {ViewContainerParameters|function(ViewContainerParametersBuilder):ViewContainerParameters} config
    */
   constructor(config) {
-    if(isFunction(config)){
+    if (isFunction(config)) {
       config = config.call(null, new ViewContainerParametersBuilder())
     }
     assertInstanceOf(config, ViewContainerParameters, 'ViewContainerParameters')
@@ -65,11 +65,15 @@ export class ViewContainer extends ViewContainerBase {
     if (this.isRemoved()) {
       throw RemovedException.VIEW_CONTAINER(this._ID)
     }
-    return this.stores().listen(store, (payload, type) => {
-      if (!this.isRemoved()) {
-        clb.call(null, payload.data())
-      }
-    }, 100, guard)
+    return this.stores().listen(store, builder => builder
+      .callback((payload, type) => {
+        if (!this.isRemoved()) {
+          clb.call(null, payload.data())
+        }
+      })
+      .guard(guard)
+      .build()
+    )
   }
 
   /**
@@ -227,7 +231,7 @@ class ViewContainerParametersBuilder {
   /**
    * @type {string}
    */
-  #id= UIDMini('viewcontainer-')
+  #id = UIDMini('viewcontainer-')
   /**
    * @type {Element}
    */
@@ -260,7 +264,7 @@ class ViewContainerParametersBuilder {
   /**
    * @return {ViewContainerParameters}
    */
-  build(){
+  build() {
     return new ViewContainerParameters(this.#componentContext, this.#id, this.#parentNode)
   }
 }
