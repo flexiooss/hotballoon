@@ -40,7 +40,7 @@ export class ActionsHandler {
 
   /**
    * @param {ActionSubscriber} actionSubscriber
-   * @param {function(EventListenerConfigBuilder):EventListenerConfig} eventListenerConfigBuilderClb
+   * @param {function(ActionEventListenerConfigBuilder):EventListenerConfig} eventListenerConfigBuilderClb
    * @return {ListenedAction}
    */
   listen(actionSubscriber, eventListenerConfigBuilderClb) {

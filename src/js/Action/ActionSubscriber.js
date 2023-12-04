@@ -7,6 +7,7 @@ import {EventListenerConfigBuilder} from '@flexio-oss/js-commons-bundle/event-ha
 import {RemovedException} from "../Exception/RemovedException.js";
 import {ActionResponseBuilder} from "./ActionResponseBuilder.js";
 import {TypeCheck} from "@flexio-oss/js-commons-bundle/assert/index.js";
+import {ActionEventListenerConfigBuilder} from "./ActionEventListenerConfigBuilder.js";
 
 /**
  * @implements {HasTagClassNameInterface}
@@ -14,146 +15,148 @@ import {TypeCheck} from "@flexio-oss/js-commons-bundle/assert/index.js";
  * @template TYPE, TYPE_BUILDER
  */
 export class ActionSubscriber extends WithID {
-  /**
-   * @type {boolean}
-   */
-  #removed = false
-  /**
-   * @type ActionDispatcherConfig<TYPE, TYPE_BUILDER>}
-   */
-  #config
-
-  /**
-   * @param {ActionDispatcherConfig<TYPE, TYPE_BUILDER>} config
-   * @param {symbol} HBClassName
-   */
-  constructor(config, HBClassName = CLASS_TAG_NAME_ACTION_SUBSCRIBER) {
-    super(config.id())
-    this.#config = assertInstanceOf(config, ActionDispatcherConfig, 'ActionDispatcherConfig')
-
-    Object.defineProperty(this, CLASS_TAG_NAME, {
-      configurable: false,
-      writable: false,
-      enumerable: true,
-      value: HBClassName
-    })
-  }
-
-  /**
-   * @return {ActionDispatcherConfig<TYPE, TYPE_BUILDER>}}
-   */
-  config() {
-    return this.#config
-  }
-
-  /**
-   * @return {?Class<TYPE>}
-   */
-  __type__() {
-    return this.#config.type()
-  }
-
-  /**
-   * @param {Class} constructor
-   * @return {boolean}
-   */
-  isTypeOf(constructor) {
-    if (isNull(this.#config.type())) {
-      return isNull(constructor)
-    }
-    return constructor === this.__type__()
-  }
-
-  /**
-   * @param {function(EventListenerConfigBuilder):EventListenerConfig} eventListenerConfigBuilderClb
-   * @returns {ListenedAction}
-   */
-  listen(eventListenerConfigBuilderClb) {
-    if (this.isRemoved()) {
-      throw RemovedException.ACTION(this._ID)
-    }
-    TypeCheck.assertIsFunction(eventListenerConfigBuilderClb)
-    const config = eventListenerConfigBuilderClb.call(null, EventListenerConfigBuilder.listen(this.ID()))
-    const baseCallback = config.callback()
     /**
-     * @type {string}
+     * @type {boolean}
      */
-    const token =
-      this.#config.dispatcher()
-        .addActionListener(
-          config.withCallback(
-            /**
-             * @param {?TYPE} payload
-             * @param {string} type
-             * @param {string} executionId
-             */
-            (payload, type, executionId) => {
-              baseCallback.call(
-                null,
-                payload,
-                new ActionResponseBuilder(
-                  this.config().dispatcher(),
-                  this.constructor.responseEventDispatcher(this.ID()), executionId)
-              )
-            }
-          )
-          // EventListenerConfigBuilder
-          //   .listen(this.ID())
-          //   .callback(
-          //     /**
-          //      * @param {?TYPE} payload
-          //      * @param {string} type
-          //      * @param {string} executionId
-          //      */
-          //     (payload, type, executionId) => {
-          //       callback.call(
-          //         null,
-          //         payload,
-          //         new ActionResponseBuilder(
-          //           this.config().dispatcher(),
-          //           this.constructor.responseEventDispatcher(this.ID()), executionId)
-          //       )
-          //     })
-          //   .guard(guard)
-          //   .build()
-        )
+    #removed = false
+    /**
+     * @type ActionDispatcherConfig<TYPE, TYPE_BUILDER>}
+     */
+    #config
 
-    return new ListenedAction(this.#config.dispatcher(), this.ID(), token)
-  }
+    /**
+     * @param {ActionDispatcherConfig<TYPE, TYPE_BUILDER>} config
+     * @param {symbol} HBClassName
+     */
+    constructor(config, HBClassName = CLASS_TAG_NAME_ACTION_SUBSCRIBER) {
+        super(config.id())
+        this.#config = assertInstanceOf(config, ActionDispatcherConfig, 'ActionDispatcherConfig')
 
-  /**
-   * @param {...string} token
-   */
-  waitFor(...token) {
-    this.#config.dispatcher().waitFor(this.ID(), token)
-  }
+        Object.defineProperty(this, CLASS_TAG_NAME, {
+            configurable: false,
+            writable: false,
+            enumerable: true,
+            value: HBClassName
+        })
+    }
 
-  remove() {
-    this.#removed = true
-    this.#config.dispatcher().removeEventListener(this.ID())
-    this.#config.dispatcher().removeEventListener(this.constructor.responseEventDispatcher(this.ID()))
-  }
+    /**
+     * @return {ActionDispatcherConfig<TYPE, TYPE_BUILDER>}}
+     */
+    config() {
+        return this.#config
+    }
 
-  /**
-   * @return {boolean}
-   */
-  isRemoved() {
-    return this.#removed
-  }
+    /**
+     * @return {?Class<TYPE>}
+     */
+    __type__() {
+        return this.#config.type()
+    }
 
-  /**
-   * @param {ActionSubscriber} inst
-   * @return {ActionSubscriber}
-   */
-  static from(inst) {
-    return new this(inst.config())
-  }
+    /**
+     * @param {Class} constructor
+     * @return {boolean}
+     */
+    isTypeOf(constructor) {
+        if (isNull(this.#config.type())) {
+            return isNull(constructor)
+        }
+        return constructor === this.__type__()
+    }
 
-  /**
-   * @param {string} id
-   * @return {string}
-   */
-  static responseEventDispatcher(id) {
-    return `__ACTION_RESPONSE__${id}`
-  }
+    /**
+     * @param {function(ActionEventListenerConfigBuilder):EventListenerConfig} eventListenerConfigBuilderClb
+     * @returns {ListenedAction}
+     */
+    listen(eventListenerConfigBuilderClb) {
+        if (this.isRemoved()) {
+            throw RemovedException.ACTION(this._ID)
+        }
+        TypeCheck.assertIsFunction(eventListenerConfigBuilderClb)
+        const config = eventListenerConfigBuilderClb.call(null, ActionEventListenerConfigBuilder.listen(this.ID()))
+        const baseCallback = config.callback()
+        /**
+         * @type {string}
+         */
+        const token =
+            this.#config.dispatcher()
+                .addActionListener(
+                    config.withCallback(
+                        /**
+                         * @param {?TYPE} payload
+                         * @param {string} type
+                         * @param {string} executionId
+                         */
+                        (payload, type, executionId) => {
+                            baseCallback.call(
+                                null,
+                                payload,
+                                new ActionResponseBuilder(
+                                    this.config().dispatcher(),
+                                    this.constructor.responseEventDispatcher(this.ID()), executionId),
+                                type,
+                                executionId
+                            )
+                        }
+                    )
+                    // EventListenerConfigBuilder
+                    //   .listen(this.ID())
+                    //   .callback(
+                    //     /**
+                    //      * @param {?TYPE} payload
+                    //      * @param {string} type
+                    //      * @param {string} executionId
+                    //      */
+                    //     (payload, type, executionId) => {
+                    //       callback.call(
+                    //         null,
+                    //         payload,
+                    //         new ActionResponseBuilder(
+                    //           this.config().dispatcher(),
+                    //           this.constructor.responseEventDispatcher(this.ID()), executionId)
+                    //       )
+                    //     })
+                    //   .guard(guard)
+                    //   .build()
+                )
+
+        return new ListenedAction(this.#config.dispatcher(), this.ID(), token)
+    }
+
+    /**
+     * @param {...string} token
+     */
+    waitFor(...token) {
+        this.#config.dispatcher().waitFor(this.ID(), token)
+    }
+
+    remove() {
+        this.#removed = true
+        this.#config.dispatcher().removeEventListener(this.ID())
+        this.#config.dispatcher().removeEventListener(this.constructor.responseEventDispatcher(this.ID()))
+    }
+
+    /**
+     * @return {boolean}
+     */
+    isRemoved() {
+        return this.#removed
+    }
+
+    /**
+     * @param {ActionSubscriber} inst
+     * @return {ActionSubscriber}
+     */
+    static from(inst) {
+        return new this(inst.config())
+    }
+
+    /**
+     * @param {string} id
+     * @return {string}
+     */
+    static responseEventDispatcher(id) {
+        return `__ACTION_RESPONSE__${id}`
+    }
 }
