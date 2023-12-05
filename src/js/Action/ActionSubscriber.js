@@ -66,7 +66,7 @@ export class ActionSubscriber extends WithID {
     }
 
     /**
-     * @param {function(ActionEventListenerConfigBuilder):EventListenerConfig} eventListenerConfigBuilderClb
+     * @param {function(ActionEventListenerConfigBuilder<TYPE>):EventListenerConfig} eventListenerConfigBuilderClb
      * @returns {ListenedAction}
      */
     listen(eventListenerConfigBuilderClb) {
@@ -80,46 +80,46 @@ export class ActionSubscriber extends WithID {
          * @type {string}
          */
         const token =
-            this.#config.dispatcher()
-                .addActionListener(
-                    config.withCallback(
-                        /**
-                         * @param {?TYPE} payload
-                         * @param {string} type
-                         * @param {string} executionId
-                         */
-                        (payload, type, executionId) => {
-                            baseCallback.call(
-                                null,
-                                payload,
-                                new ActionResponseBuilder(
-                                    this.config().dispatcher(),
-                                    this.constructor.responseEventDispatcher(this.ID()), executionId),
-                                type,
-                                executionId
-                            )
-                        }
+          this.#config.dispatcher()
+            .addActionListener(
+              config.withCallback(
+                /**
+                 * @param {?TYPE} payload
+                 * @param {string} type
+                 * @param {string} executionId
+                 */
+                (payload, type, executionId) => {
+                    baseCallback.call(
+                      null,
+                      payload,
+                      new ActionResponseBuilder(
+                        this.config().dispatcher(),
+                        this.constructor.responseEventDispatcher(this.ID()), executionId),
+                      type,
+                      executionId
                     )
-                    // EventListenerConfigBuilder
-                    //   .listen(this.ID())
-                    //   .callback(
-                    //     /**
-                    //      * @param {?TYPE} payload
-                    //      * @param {string} type
-                    //      * @param {string} executionId
-                    //      */
-                    //     (payload, type, executionId) => {
-                    //       callback.call(
-                    //         null,
-                    //         payload,
-                    //         new ActionResponseBuilder(
-                    //           this.config().dispatcher(),
-                    //           this.constructor.responseEventDispatcher(this.ID()), executionId)
-                    //       )
-                    //     })
-                    //   .guard(guard)
-                    //   .build()
-                )
+                }
+              )
+              // EventListenerConfigBuilder
+              //   .listen(this.ID())
+              //   .callback(
+              //     /**
+              //      * @param {?TYPE} payload
+              //      * @param {string} type
+              //      * @param {string} executionId
+              //      */
+              //     (payload, type, executionId) => {
+              //       callback.call(
+              //         null,
+              //         payload,
+              //         new ActionResponseBuilder(
+              //           this.config().dispatcher(),
+              //           this.constructor.responseEventDispatcher(this.ID()), executionId)
+              //       )
+              //     })
+              //   .guard(guard)
+              //   .build()
+            )
 
         return new ListenedAction(this.#config.dispatcher(), this.ID(), token)
     }
