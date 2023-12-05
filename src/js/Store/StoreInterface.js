@@ -34,7 +34,7 @@ export class StoreInterface {
   }
 
   /**
-   * @param {OrderedEventListenerConfig|function(OrderedEventListenerConfigBuilder):OrderedEventListenerConfig} orderedEventListenerConfig
+   * @param {OrderedEventListenerConfig|function(StoreEventListenerConfigBuilder<TYPE>):OrderedEventListenerConfig} orderedEventListenerConfig
    * @return {String} token
    */
   subscribe(orderedEventListenerConfig) {
@@ -50,7 +50,7 @@ export class StoreInterface {
   }
 
   /**
-   * @param {OrderedEventListenerConfig|function(OrderedEventListenerConfigBuilder):OrderedEventListenerConfig} orderedEventListenerConfig
+   * @param {OrderedEventListenerConfig|function(StoreEventListenerConfigBuilder<TYPE>):OrderedEventListenerConfig} orderedEventListenerConfig
    * @return {ListenedStore}
    */
   listenChanged(orderedEventListenerConfig) {
@@ -65,7 +65,7 @@ export class StoreInterface {
   }
 
   /**
-   * @param {OrderedEventListenerConfig|function(OrderedEventListenerConfigBuilder):OrderedEventListenerConfig} orderedEventListenerConfig
+   * @param {OrderedEventListenerConfig|function(StoreEventListenerConfigBuilder<TYPE>):OrderedEventListenerConfig} orderedEventListenerConfig
    * @return {ListenedStore}
    */
   listenRemoved(orderedEventListenerConfig) {

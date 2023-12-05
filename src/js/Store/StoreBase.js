@@ -1,7 +1,7 @@
 import {WithID} from '../abstract/WithID.js'
 import {
   assertInstanceOf,
-  assertType, isFunction,
+  assertType, formatType, isFunction,
   isNull,
   TypeCheck
 } from '@flexio-oss/js-commons-bundle/assert/index.js'
@@ -18,6 +18,7 @@ import {StoreBaseConfig} from './StoreBaseConfig.js'
 import {ListenedStore} from './ListenedStore.js'
 import {RemovedException} from "../Exception/RemovedException.js";
 import {Logger} from '@flexio-oss/js-commons-bundle/hot-log/index.js';
+import {StoreEventListenerConfigBuilder} from "./StoreEventListenerConfigBuilder.js";
 
 /**
  * @template TYPE, TYPE_BUILDER
@@ -226,9 +227,7 @@ export class StoreBase extends WithID {
     const data = this.#config.defaultChecker().call(null, dataStore)
 
     assertType(data instanceof this.__type__(),
-      'StoreBase:set: `dataStore` should be an instanceof `%s`, `%s` given',
-      this.__type__().name,
-      dataStore.constructor.name
+      () => `StoreBase:set: \`dataStore\` should be ${this.__type__().name}, given:${formatType(dataStore)}`
     )
 
     if (!isNull(this.#config.validator()) && !this.#config.validator().isValid(data)) {
@@ -273,7 +272,7 @@ export class StoreBase extends WithID {
   }
 
   /**
-   * @param {OrderedEventListenerConfig|function(OrderedEventListenerConfigBuilder):OrderedEventListenerConfig} orderedEventListenerConfig
+   * @param {OrderedEventListenerConfig|function(StoreEventListenerConfigBuilder<TYPE>):OrderedEventListenerConfig} orderedEventListenerConfig
    * @return {String} token
    */
   subscribe(orderedEventListenerConfig) {
@@ -281,11 +280,15 @@ export class StoreBase extends WithID {
       throw RemovedException.STORE(this._ID)
     }
     this.#ensureEventHandler()
+    if (isFunction(orderedEventListenerConfig)) {
+      orderedEventListenerConfig = orderedEventListenerConfig.call(null,  StoreEventListenerConfigBuilder.listen(this.changedEventName()))
+    }
+    assertInstanceOf(orderedEventListenerConfig, OrderedEventListenerConfig, 'OrderedEventListenerConfig')
     return this.#eventHandler.on(orderedEventListenerConfig)
   }
 
   /**
-   * @param {OrderedEventListenerConfig|function(OrderedEventListenerConfigBuilder):OrderedEventListenerConfig} orderedEventListenerConfig
+   * @param {OrderedEventListenerConfig|function(StoreEventListenerConfigBuilder<TYPE>):OrderedEventListenerConfig} orderedEventListenerConfig
    * @return {ListenedStore}
    * @throws {RemovedException}
    */
@@ -296,18 +299,17 @@ export class StoreBase extends WithID {
     this.#ensureEventHandler()
 
     if (isFunction(orderedEventListenerConfig)) {
-      orderedEventListenerConfig = orderedEventListenerConfig.call(null, new OrderedEventListenerConfigBuilder().events(this.changedEventName()))
+      orderedEventListenerConfig = orderedEventListenerConfig.call(null,  StoreEventListenerConfigBuilder.listen(this.changedEventName()))
     }
 
     assertInstanceOf(orderedEventListenerConfig, OrderedEventListenerConfig, 'OrderedEventListenerConfig')
-    const callback = orderedEventListenerConfig.callback()
     /**
      * @type {string}
      */
     const token = this.#eventHandler.on(
       orderedEventListenerConfig.withCallback((payload) => {
         if (!this.#removed) {
-          callback(payload)
+          orderedEventListenerConfig.callback().call(null,payload)
         }
       })
     )
@@ -320,7 +322,7 @@ export class StoreBase extends WithID {
   }
 
   /**
-   * @param {OrderedEventListenerConfig|function(OrderedEventListenerConfigBuilder):OrderedEventListenerConfig} orderedEventListenerConfig
+   * @param {OrderedEventListenerConfig|function(StoreEventListenerConfigBuilder<TYPE>):OrderedEventListenerConfig} orderedEventListenerConfig
    * @return {ListenedStore}
    * @throws {RemovedException}
    */
@@ -331,8 +333,9 @@ export class StoreBase extends WithID {
     this.#ensureEventHandler()
 
     if (isFunction(orderedEventListenerConfig)) {
-      orderedEventListenerConfig = orderedEventListenerConfig.call(null, new OrderedEventListenerConfigBuilder().events(this.changedEventName()))
+      orderedEventListenerConfig = orderedEventListenerConfig.call(null, StoreEventListenerConfigBuilder.listen(this.removedEventName()))
     }
+    assertInstanceOf(orderedEventListenerConfig, OrderedEventListenerConfig, 'OrderedEventListenerConfig')
     /**
      * @type {string}
      */
