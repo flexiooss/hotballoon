@@ -6,6 +6,8 @@ import {ListenedAction} from './ListenedAction.js'
 import {EventListenerConfigBuilder} from '@flexio-oss/js-commons-bundle/event-handler/index.js'
 import {RemovedException} from "../Exception/RemovedException.js";
 import {ActionResponseBuilder} from "./ActionResponseBuilder.js";
+import {TypeCheck} from "@flexio-oss/js-commons-bundle/assert/index.js";
+import {ActionEventListenerConfigBuilder} from "./ActionEventListenerConfigBuilder.js";
 
 /**
  * @implements {HasTagClassNameInterface}
@@ -64,33 +66,40 @@ export class ActionSubscriber extends WithID {
   }
 
   /**
-   * @param {function(payload: ?TYPE, actionResponseBuilder: ActionResponseBuilder)} callback
-   * @param {?function(payload: ?TYPE):boolean} [guard=null]
+   * @param {function(ActionEventListenerConfigBuilder<TYPE>):EventListenerConfig} eventListenerConfigBuilderClb
    * @returns {ListenedAction}
    */
-  listen(callback, guard = null) {
+  listen(eventListenerConfigBuilderClb) {
     if (this.isRemoved()) {
       throw RemovedException.ACTION(this._ID)
     }
+    TypeCheck.assertIsFunction(eventListenerConfigBuilderClb)
+    const config = eventListenerConfigBuilderClb.call(null, ActionEventListenerConfigBuilder.listen(this.ID()))
+    const baseCallback = config.callback()
     /**
      * @type {string}
      */
     const token =
       this.#config.dispatcher()
         .addActionListener(
-          EventListenerConfigBuilder
-            .listen(this.ID())
-            .callback(
-              /**
-               * @param {?TYPE} payload
-               * @param {string} type
-               * @param {string} executionId
-               */
-              (payload, type, executionId) => {
-                callback.call(null, payload, new ActionResponseBuilder(this.config().dispatcher(), this.constructor.responseEventDispatcher(this.ID()), executionId))
-              })
-            .guard(guard)
-            .build()
+          config.withCallback(
+            /**
+             * @param {?TYPE} payload
+             * @param {string} type
+             * @param {string} executionId
+             */
+            (payload, type, executionId) => {
+              baseCallback.call(
+                null,
+                payload,
+                new ActionResponseBuilder(
+                  this.config().dispatcher(),
+                  this.constructor.responseEventDispatcher(this.ID()), executionId),
+                type,
+                executionId
+              )
+            }
+          )
         )
 
     return new ListenedAction(this.#config.dispatcher(), this.ID(), token)

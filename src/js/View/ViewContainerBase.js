@@ -120,8 +120,8 @@ export class ViewContainerBase extends WithID {
 
   /**
    * @protected
-   * @param {OrderedEventListenerConfig} orderedEventListenerConfig
-   * @return {(String|StringArray)} token
+   * @param {OrderedEventListenerConfig|function(OrderedEventListenerConfigBuilder):OrderedEventListenerConfig} orderedEventListenerConfig
+   * @return {(String|StringArray)} token   * @return {(String|StringArray)} token
    * @throws {RemovedException}
    */
   _on(orderedEventListenerConfig) {

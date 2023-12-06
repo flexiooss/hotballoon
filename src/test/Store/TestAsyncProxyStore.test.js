@@ -75,18 +75,19 @@ export class TestAsyncProxyStore extends TestCase {
       .build()
     return new Promise((ok, ko) => {
 
-      this.proxyStore.listenChanged(() => {
+      this.proxyStore.listenChanged(builder => builder.callback(() => {
 
-        assert.strictEqual(invoked, 2, 'Mapper should be invoked at init and at set')
-        assert.deepEqual(
-          this.proxyStore.state().data(),
-          new FakeValueObjectBuilder()
-            .a(11)
-            .b(30)
-            .build(),
-          'Mapper should be invoked after store update')
-        ok()
-      })
+          assert.strictEqual(invoked, 2, 'Mapper should be invoked at init and at set')
+          assert.deepEqual(
+            this.proxyStore.state().data(),
+            new FakeValueObjectBuilder()
+              .a(11)
+              .b(30)
+              .build(),
+            'Mapper should be invoked after store update')
+          ok()
+        }).build()
+      )
 
       this.store.set(
         new FakeValueObjectBuilder()
@@ -121,10 +122,12 @@ export class TestAsyncProxyStore extends TestCase {
 
     return new Promise((ok, ko) => {
 
-      this.proxyStore.listenChanged(() => {
-        assert.strictEqual(invoked, 2, 'Mapper should be invoked at init and at set')
-        ok()
-      })
+      this.proxyStore.listenChanged(
+        builder => builder.callback(() => {
+          assert.strictEqual(invoked, 2, 'Mapper should be invoked at init and at set')
+          ok()
+        }).build()
+      )
 
       this.proxyStore.mapAndUpdate()
 
@@ -165,19 +168,21 @@ export class TestAsyncProxyStore extends TestCase {
     assert.strictEqual(invoked, 1, 'Mapper should be invoked at init')
 
     return new Promise((ok, ko) => {
-      this.proxyStore.listenChanged(() => {
-        this.log(this.proxyStore.state().data(), 'state after parent change')
-        assert.strictEqual(invoked, 2, 'Mapper should be invoked at init and at change')
+      this.proxyStore.listenChanged(
+        builder => builder.callback(() => {
+          this.log(this.proxyStore.state().data(), 'state after parent change')
+          assert.strictEqual(invoked, 2, 'Mapper should be invoked at init and at change')
 
-        assert.deepEqual(
-          this.proxyStore.state().data(),
-          new FakeValueObjectBuilder()
-            .a(10001)
-            .b(10010)
-            .build(),
-          'ParentStore should be changed and data updated')
-        ok()
-      })
+          assert.deepEqual(
+            this.proxyStore.state().data(),
+            new FakeValueObjectBuilder()
+              .a(10001)
+              .b(10010)
+              .build(),
+            'ParentStore should be changed and data updated')
+          ok()
+        }).build()
+      )
 
       this.proxyStore.changeParentStore(store2)
 
@@ -220,7 +225,8 @@ export class TestAsyncProxyStore extends TestCase {
 
     let changed = 0
     return new Promise((ok, ko) => {
-      this.proxyStore.listenChanged(() => {
+      this.proxyStore.listenChanged(
+        builder => builder.callback(() => {
         this.log(this.proxyStore.state().data(), 'state after parent change')
         changed++
         setTimeout(() => {
@@ -236,7 +242,8 @@ export class TestAsyncProxyStore extends TestCase {
 
           ok()
         }, 3000)
-      })
+      }).build()
+      )
 
       invoked++
       this.store.trigChange()
@@ -249,9 +256,10 @@ export class TestAsyncProxyStore extends TestCase {
   async asyncTestAsyncInit() {
     let invoked = 0
     let mapperInvoked = 0
-    this.store.listenChanged(()=>{
+    this.store.listenChanged(builder => builder.callback(() => {
       invoked++
-    })
+    }).build()
+    )
 
     this.proxyStore = await new AsyncProxyStoreBuilder()
       .type(FakeValueObject)
@@ -293,9 +301,10 @@ export class TestAsyncProxyStore extends TestCase {
   async asyncTestAsyncStartDiffInit() {
     let invoked = 0
     let mapperInvoked = 0
-    this.store.listenChanged(()=>{
+    this.store.listenChanged(builder => builder.callback(() => {
       invoked++
-    })
+    }).build()
+    )
 
     setTimeout(() => {
       this.store.set(
@@ -341,9 +350,11 @@ export class TestAsyncProxyStore extends TestCase {
   async asyncTestAsyncStartDiffMaxMappingAtInit() {
     let invoked = 0
     let mapperInvoked = 0
-    this.store.listenChanged(()=>{
+    this.store.listenChanged(
+      builder => builder.callback(() => {
       invoked++
-    })
+    }).build()
+    )
 
     setTimeout(() => {
       this.store.set(

@@ -172,6 +172,7 @@ export class ComponentContext extends WithID {
     this.#removed = true
     if (!isNull(this.#intersectionObserverHandler)) {
       this.#intersectionObserverHandler.remove()
+      this.#intersectionObserverHandler = null
     }
     this.#actionsHandler.remove()
     this.#storesHandler.remove()

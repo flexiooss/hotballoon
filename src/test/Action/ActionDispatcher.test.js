@@ -40,9 +40,11 @@ export class ActionDispatcherTest extends TestCase {
      * @type {ListenedAction}
      */
     const listenedAction = actionDispatcher.listen(
-      (payload, actionResponseBuilder) => {
-        throw new Error('listen')
-      }
+      builder => builder
+        .callback((payload, actionResponseBuilder) => {
+            throw new Error('listen')
+          }
+        ).build()
     )
 
     const payloadDispatched = new FakeObjectBuilder()
@@ -73,9 +75,10 @@ export class ActionDispatcherTest extends TestCase {
      * @type {ListenedAction}
      */
     const listenedAction = actionDispatcher.listen(
-      (payload, actionResponseBuilder) => {
-        throw new Error('listen')
-      }
+      builder => builder.callback((payload, actionResponseBuilder) => {
+          throw new Error('listen')
+        }
+      ).build()
     )
 
     const payloadDispatched = new FakeObjectBuilder()
@@ -111,9 +114,10 @@ export class ActionDispatcherTest extends TestCase {
        * @type {ListenedAction}
        */
       const listenedAction = actionDispatcher.listen(
-        (payload, actionResponseBuilder, execution) => {
-          ok()
-        }
+        builder => builder.callback((payload, actionResponseBuilder, execution) => {
+            ok()
+          }
+        ).build()
       )
 
       const payloadDispatched = new FakeObjectBuilder()
@@ -168,10 +172,11 @@ export class ActionDispatcherTest extends TestCase {
     let t = null
 
     actionDispatcher.listen(
-      (payload, type) => {
-        p = payload
-        t = type
-      }
+      builder => builder.callback((payload, type) => {
+          p = payload
+          t = type
+        }
+      ).build()
     )
 
     const payloadDispatched = new FakeObjectBuilder()
@@ -198,15 +203,17 @@ export class ActionDispatcherTest extends TestCase {
     let p = []
 
     actionDispatcher.listen(
-      (payload, type) => {
-        p.push(1)
-      }
+      builder => builder.callback((payload, type) => {
+          p.push(1)
+        }
+      ).build()
     )
 
     actionDispatcher.listen(
-      (payload, type) => {
-        p.push(2)
-      }
+      builder => builder.callback((payload, type) => {
+          p.push(2)
+        }
+      ).build()
     )
 
     const payloadDispatched = new FakeObjectBuilder()
@@ -234,17 +241,19 @@ export class ActionDispatcherTest extends TestCase {
     let a = false
 
     const token1 = actionDispatcher.listen(
-      (payload, type) => {
-        actionDispatcher.waitFor(token2.token())
-        p.push(1)
-      }
+      builder => builder.callback((payload, type) => {
+          actionDispatcher.waitFor(token2.token())
+          p.push(1)
+        }
+      ).build()
     )
 
     const token2 = actionDispatcher.listen(
-      (payload, type) => {
-        a = true
-        p.push(2)
-      }
+      builder => builder.callback((payload, type) => {
+          a = true
+          p.push(2)
+        }
+      ).build()
     )
 
     const payloadDispatched = new FakeObjectBuilder()
@@ -271,9 +280,9 @@ export class ActionDispatcherTest extends TestCase {
     let a = 0
 
     const action = actionDispatcher.listen(
-      (payload) => {
+      builder => builder.callback((payload) => {
         a++
-      })
+      }).build())
 
     const payloadDispatched = new FakeObjectBuilder()
       .prop1('toto')
@@ -322,20 +331,24 @@ export class ActionDispatcherTest extends TestCase {
      * @type {ListenedAction}
      */
     const action = actionSubscriber.listen(
-      payload => {
-        a--
-      },
-      payload => payload.prop3() === 4
+      builder => builder
+        .callback(payload => {
+          a--
+        })
+        .guard(payload => payload.prop3() === 4)
+        .build()
     )
 
     /**
      * @type {ListenedAction}
      */
     const action2 = actionSubscriber.listen(
-      payload => {
-        a++
-      },
-      payload => payload.prop3() === 3
+      builder => builder
+        .callback(payload => {
+          a++
+        })
+        .guard(payload => payload.prop3() === 3)
+        .build()
     )
 
     actionDispatcher.dispatch(payloadDispatched)
@@ -368,9 +381,10 @@ export class ActionDispatcherTest extends TestCase {
      * @type {ListenedAction}
      */
     const listenedAction = actionDispatcher.listen(
-      (payload, responseBuilder) => {
-        responseBuilder.respond()
-      }
+      builder => builder.callback((payload, responseBuilder) => {
+          responseBuilder.respond()
+        }
+      ).build()
     )
 
     await actionDispatcher.dispatch(payloadDispatched)
@@ -400,11 +414,12 @@ export class ActionDispatcherTest extends TestCase {
      * @type {ListenedAction}
      */
     const listenedAction = actionDispatcher.listen(
-      (payload, responseBuilder) => {
-        setTimeout(() => {
-          responseBuilder.respond()
-        }, 1000)
-      }
+      builder => builder.callback((payload, responseBuilder) => {
+          setTimeout(() => {
+            responseBuilder.respond()
+          }, 1000)
+        }
+      ).build()
     )
 
     await actionDispatcher.dispatch(payloadDispatched)
@@ -434,11 +449,12 @@ export class ActionDispatcherTest extends TestCase {
      * @type {ListenedAction}
      */
     const listenedAction = actionDispatcher.listen(
-      (payload, responseBuilder) => {
-      }
+      builder => builder.callback((payload, responseBuilder) => {
+        }
+      ).build()
     )
     assert.ok(this.componentContext.dispatcher().hasEventListener(id, listenedAction.token()), 'should have listener')
-   actionDispatcher.dispatch(payloadDispatched)
+    actionDispatcher.dispatch(payloadDispatched)
 
     assert.ok(this.componentContext.dispatcher().removeEventListener(ActionSubscriber.responseEventDispatcher(id)), 'should have response listener')
 
@@ -457,8 +473,9 @@ export class ActionDispatcherTest extends TestCase {
      * @type {ListenedAction}
      */
     const listenedAction2 = actionDispatcher2.listen(
-      (payload, responseBuilder) => {
-      }
+      builder => builder.callback((payload, responseBuilder) => {
+        }
+      ).build()
     )
 
     const id2 = actionDispatcher2.ID()

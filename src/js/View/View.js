@@ -1,4 +1,4 @@
-import {Checksum, UID} from '@flexio-oss/js-commons-bundle/js-helpers/index.js'
+import {Checksum, UID, UIDMini} from '@flexio-oss/js-commons-bundle/js-helpers/index.js'
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_VIEW} from '../Types/HasTagClassNameInterface.js'
 import {
   assertType, formatType, isNode,
@@ -80,7 +80,7 @@ export class View extends ViewContainerBase {
    */
   constructor(container) {
     assertType(HBTypeCheck.isViewContainerBase(container), '`container` should be ViewContainerBase')
-    super(UID('View__' + (container.constructor.name).replace(/\W*/ig, '') + '_'))
+    super(UIDMini('View__' + (container.constructor.name).replace(/\W*/ig, '') + '_'))
 
     this.#container = container
     this.parentNode = container.parentNode
@@ -142,15 +142,18 @@ export class View extends ViewContainerBase {
 
     return this.stores().listen(
       store,
-      (payload, type) => {
-        if (!this.isRemoved()) {
-          if (clb.call(null, payload) === true) {
-            this.dispatch(VIEW_STORE_CHANGED, payload)
-            this.updateNode()
+      builder => builder
+        .callback((payload, type) => {
+            if (!this.isRemoved()) {
+              if (clb.call(null, payload) === true) {
+                this.dispatch(VIEW_STORE_CHANGED, payload)
+                this.updateNode()
+              }
+            }
           }
-        }
-      }, 100,
-      guard
+        )
+        .guard(guard)
+        .build()
     )
   }
 

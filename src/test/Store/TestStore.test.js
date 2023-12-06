@@ -7,7 +7,8 @@ const assert = require('assert')
 
 
 export class TestStore extends TestCase {
-  debug=true
+  debug = true
+
   setUp() {
     this.store = new InMemoryStoreBuilder()
       .type(FakeValueObject)
@@ -79,10 +80,12 @@ export class TestStore extends TestCase {
     let a = 0
 
 
-    const storeHandler = this.store.listenChanged((state) => {
-      console.log('CHANGED')
-      a = state.data().a()
-    })
+    const storeHandler = this.store.listenChanged(
+      builder => builder.callback((state) => {
+        console.log('CHANGED')
+        a = state.data().a()
+      }).build()
+    )
 
     const t_1 = new FakeValueObjectBuilder()
       .a(1)
@@ -120,14 +123,16 @@ export class TestStore extends TestCase {
     /**
      * @type {ListenedStore}
      */
-   let listened = this.store.listenChanged((state) => {
-      listened.disable()
-      count++
-      this.log(state.data(), 'state')
-      this.log(count, 'count')
-      assert.equal(state.data().a(), 3, 'last value should be dispatched')
-      assert.equal(count, 1, 'should be dispatched once')
-    })
+    let listened = this.store.listenChanged(
+      builder => builder.callback((state) => {
+        listened.disable()
+        count++
+        this.log(state.data(), 'state')
+        this.log(count, 'count')
+        assert.equal(state.data().a(), 3, 'last value should be dispatched')
+        assert.equal(count, 1, 'should be dispatched once')
+      }).build()
+    )
 
     this.store.onceOnUpdated((state) => {
 
@@ -150,12 +155,13 @@ export class TestStore extends TestCase {
     /**
      * @type {ListenedStore}
      */
-    const storeHandler = this.store.listenChanged((state) => {
-        console.log('CHANGED')
-        a = state.data().a()
-      },
-      100,
-      payload => payload.data().a() % 2 === 0
+    const storeHandler = this.store.listenChanged(
+      builder => builder.callback((state) => {
+          console.log('CHANGED')
+          a = state.data().a()
+        }
+      ).guard(payload => payload.data().a() % 2 === 0)
+        .build()
     )
 
     const t_1 = new FakeValueObjectBuilder()

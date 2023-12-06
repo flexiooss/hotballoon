@@ -61,7 +61,7 @@ export class PublicStoreHandler {
   }
 
   /**
-   * @param {OrderedEventListenerConfig} orderedEventListenerConfig
+   * @param {function(StoreEventListenerConfigBuilder<TYPE>):OrderedEventListenerConfig} orderedEventListenerConfig
    * @return {String} token
    */
   subscribe(orderedEventListenerConfig) {
@@ -84,13 +84,11 @@ export class PublicStoreHandler {
   }
 
   /**
-   * @param {function(state: StoreState<TYPE>)} callback
-   * @param {number} [priority=100]
-   * @param {?function(state: StoreState<TYPE>)} [guard=null]
+   * @param {OrderedEventListenerConfig|function(StoreEventListenerConfigBuilder<TYPE>):OrderedEventListenerConfig} orderedEventListenerConfig
    * @return {ListenedStore}
    */
-  listenChanged(callback, priority = 100,guard=null) {
-    return this.#store.listenChanged(callback, priority, guard)
+  listenChanged(orderedEventListenerConfig) {
+    return this.#store.listenChanged(orderedEventListenerConfig)
   }
 
   /**
@@ -115,13 +113,11 @@ export class PublicStoreHandler {
   }
 
   /**
-   * @param {function()} callback
-   * @param {number} priority
-   * @param {?function(state: StoreState<TYPE>)} [guard=null]
+   * @param {OrderedEventListenerConfig|function(StoreEventListenerConfigBuilder<TYPE>):OrderedEventListenerConfig} orderedEventListenerConfig
    * @return {ListenedStore}
    */
-  listenRemoved(callback, priority,guard=null) {
-    return this.#store.listenRemoved(callback, priority, guard)
+  listenRemoved(orderedEventListenerConfig) {
+    return this.#store.listenRemoved(orderedEventListenerConfig)
   }
 
   /**

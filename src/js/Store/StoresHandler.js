@@ -40,14 +40,12 @@ export class StoresHandler {
 
   /**
    * @param {StoreInterface} store
-   * @param {function(state: StoreState<TYPE>)} callback
-   * @param {number} [priority=100]
-   * @param {?function(state: StoreState<TYPE>)} [guard=null]
+   * @param {OrderedEventListenerConfig|function(OrderedEventListenerConfigBuilder):OrderedEventListenerConfig} orderedEventListenerConfig
    * @return {ListenedStore}
    */
-  listen(store, callback, priority = 100, guard = null) {
+  listen(store, orderedEventListenerConfig) {
     TypeCheck.assertStoreBase(store)
-    const listenedStore = store.listenChanged(callback, priority, guard)
+    const listenedStore = store.listenChanged(orderedEventListenerConfig)
     this.#listenedStores.set(listenedStore.token(), listenedStore)
 
     return new ListenedStore(this, listenedStore.token())

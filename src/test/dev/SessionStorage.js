@@ -35,15 +35,15 @@ const localStorage = new JsStorageStoreBuilder()
   .initialData(Layer.builder().id('test').show(true).build())
   .build()
 
-sessionStorage.listenChanged(state => {
+sessionStorage.listenChanged(b=>b.callback(state => {
   console.log('SESSION STORAGE CHANGE')
   console.log(state)
-})
+}).build())
 
-localStorage.listenChanged(state => {
+localStorage.listenChanged(b=>b.callback(state => {
   console.log('LOCAL STORAGE CHANGE')
   console.log(state)
-})
+}).build())
 
 globalThis.__session = function () {
   sessionStorage.set(Layer.builder().id('test').collection(UIDMini()).show(true).build())

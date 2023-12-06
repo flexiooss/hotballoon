@@ -17,8 +17,7 @@ export class OrderedEventHandler extends OrderedEventHandlerBase {
   }
 
   /**
-   * @param {OrderedEventListenerConfig} orderedEventListenerConfig
-   * @return {(String|StringArray)} token
+   * @param {OrderedEventListenerConfig|function(OrderedEventListenerConfigBuilder):OrderedEventListenerConfig} orderedEventListenerConfig   * @return {(String|StringArray)} token
    * @throws AssertionError
    */
   on(orderedEventListenerConfig) {
