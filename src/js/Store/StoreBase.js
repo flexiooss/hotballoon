@@ -10,10 +10,7 @@ import {StorageInterface} from './Storage/StorageInterface.js'
 import {OrderedEventHandler} from '../Event/OrderedEventHandler.js'
 import {STORE_CHANGED, STORE_REMOVED} from './StoreInterface.js'
 import {ValidationError} from '../Exception/ValidationError.js'
-import {
-  OrderedEventListenerConfig,
-  OrderedEventListenerConfigBuilder
-} from '@flexio-oss/js-commons-bundle/event-handler/index.js'
+import {  OrderedEventListenerConfig} from '@flexio-oss/js-commons-bundle/event-handler/index.js'
 import {StoreBaseConfig} from './StoreBaseConfig.js'
 import {ListenedStore} from './ListenedStore.js'
 import {RemovedException} from "../Exception/RemovedException.js";

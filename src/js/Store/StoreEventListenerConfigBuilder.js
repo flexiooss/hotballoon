@@ -1,30 +1,20 @@
-import {OrderedEventListenerConfigBuilder} from "@flexio-oss/js-commons-bundle/event-handler";
+import {OrderedEventListenerConfigBuilder} from "@flexio-oss/js-commons-bundle/event-handler/index.js";
 
 /**
  * @template TYPE
  */
 export class StoreEventListenerConfigBuilder extends OrderedEventListenerConfigBuilder{
-    /**
-     * @callback StoreEventListenerConfigBuilder~eventClb
-     * @param {?TYPE} payload
-     * @param {(string|Symbol)} eventName
-     * @param {string} executionId
-     */
-    /**
-     * @callback StoreEventListenerConfigBuilder~guardClb
-     * @param {?TYPE} payload
-     * @return {boolean}
-     */
 
     /**
-     * @param {StoreEventListenerConfigBuilder~eventClb} clb
+     * @param {function(payload:?TYPE, eventName:(string|Symbol), executionId:string)} clb
      * @return {this}
      */
     callback(clb) {
         return super.callback(clb)
     }
+
     /**
-     * @param {?StoreEventListenerConfigBuilder~guardClb} clb
+     * @param {{function(payload:?TYPE)}} clb
      * @return {this}
      */
     guard(clb) {
