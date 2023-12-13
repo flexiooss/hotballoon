@@ -16,13 +16,15 @@ import {ListenedStore} from './ListenedStore.js'
 import {RemovedException} from "../Exception/RemovedException.js";
 import {Logger} from '@flexio-oss/js-commons-bundle/hot-log/index.js';
 import {StoreEventListenerConfigBuilder} from "./StoreEventListenerConfigBuilder.js";
+import {listenableInterface} from "./Listenable.js";
 
 /**
  * @template TYPE, TYPE_BUILDER
  * @implements {GenericType<TYPE>}
  * @implements {StoreInterface<TYPE, TYPE_BUILDER>}
+ * @implements {Listenable<TYPE>}
  */
-export class StoreBase extends WithID {
+export class StoreBase extends listenableInterface(WithID) {
   /**
    * @type {boolean}
    */

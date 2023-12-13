@@ -5,6 +5,7 @@ export const listenableInterface = (Base=class{}) => {
   /**
    * @interface
    * @template TYPE, TYPE_BUILDER
+   * @mixin
    */
   return class Listenable extends Base{
     /**
