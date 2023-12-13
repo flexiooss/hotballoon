@@ -1,7 +1,7 @@
 import {Throttle, UIDMini} from "@flexio-oss/js-commons-bundle/js-helpers/index.js";
-import {assertInstanceOf, isFunction, isNull} from "@flexio-oss/js-commons-bundle/assert/index.js";
+import {assertInstanceOf, isFunction, isNull, TypeCheck} from "@flexio-oss/js-commons-bundle/assert/index.js";
 import {OrderedEventHandler} from "../Event/OrderedEventHandler.js";
-import {TypeCheck} from "../Types/TypeCheck.js";
+import {TypeCheck as HBTypeCheck} from "../Types/TypeCheck.js";
 import {HBComponent} from "../Component/Component.js";
 import {RemovedException} from "../Exception/RemovedException.js";
 import {StoreEventListenerConfigBuilder} from "./StoreEventListenerConfigBuilder.js";
@@ -23,6 +23,10 @@ export class ProxyStoreListenerThrottledBuilder {
    * @type {string} - FIRST_LAST, FIRST, LAST
    */
   #dispatchingType = 'FIRST_LAST'
+  /**
+   * @type {boolean}
+   */
+  #async = false
 
 
   /**
@@ -40,6 +44,14 @@ export class ProxyStoreListenerThrottledBuilder {
    */
   store(value) {
     this.#store = value;
+    return this
+  }
+
+  /**
+   * @return {ProxyStoreListenerThrottledBuilder}
+   */
+  async() {
+    this.#async = true;
     return this
   }
 
@@ -85,7 +97,7 @@ export class ProxyStoreListenerThrottledBuilder {
         }
         break;
     }
-    return new ProxyStoreListenerThrottled(this.#store, throttle, dispatcherClb)
+    return new ProxyStoreListenerThrottled(this.#store, throttle, dispatcherClb, this.#async)
   }
 }
 
@@ -120,17 +132,23 @@ class ProxyStoreListenerThrottled extends HBComponent(listenableInterface(WithID
    * @type {?ListenedStore}
    */
   #listenedStore = null
+  /**
+   * @type {boolean}
+   */
+  #async
 
   /**
    * @param {StoreInterface<TYPE,TYPE_BUILDER>} store
    * @param {Throttle} throttle
    * @param {function(clb:function())} dispatcherClb
+   * @param {boolean} async
    */
-  constructor(store, throttle, dispatcherClb) {
+  constructor(store, throttle, dispatcherClb, async) {
     super(UIDMini(store.storeId()))
     this.#throttle = throttle;
-    this.#store = TypeCheck.assertStoreBase(store);
+    this.#store = HBTypeCheck.assertStoreBase(store);
     this.#dispatcherClb = dispatcherClb
+    this.#async = TypeCheck.assertIsBoolean(async)
   }
 
   /**
@@ -149,7 +167,7 @@ class ProxyStoreListenerThrottled extends HBComponent(listenableInterface(WithID
    */
   listenChanged(orderedEventListenerConfig) {
     if (this.#removed) {
-      throw RemovedException.STORE(this.#store.ID())
+      throw RemovedException.STORE(this.ID())
     }
     this
       .#ensureEventHandler()
@@ -183,21 +201,39 @@ class ProxyStoreListenerThrottled extends HBComponent(listenableInterface(WithID
    */
   #subscribeToStore() {
     if (isNull(this.#listenedStore)) {
-      this.#listenedStore = this.#store.listenChanged(builder => builder
-        .callback(
-          (payload, eventType) => {
-            // console.log('ici')
-            this.#dispatcherClb.call(null, () => {
-              this.#eventHandler?.dispatch(
-                ProxyStoreListenerThrottled.#CHANGE_STATE,
-                payload,
-                eventType
-              )
-            })
-          }
+      if (this.#async) {
+        this.#listenedStore = this.#store.listenChanged(builder => builder
+          .callback(
+            (payload, eventType) => {
+              if(this.isRemoving()) return
+              this.#dispatcherClb.call(null, () => {
+                this.#eventHandler?.dispatch(
+                  ProxyStoreListenerThrottled.#CHANGE_STATE,
+                  payload,
+                  eventType
+                )
+              })
+            }
+          )
+          .async()
+          .build()
         )
-        .build()
-      )
+      } else {
+        this.#listenedStore = this.#store.listenChanged(builder => builder
+          .callback(
+            (payload, eventType) => {
+              this.#dispatcherClb.call(null, () => {
+                this.#eventHandler?.dispatch(
+                  ProxyStoreListenerThrottled.#CHANGE_STATE,
+                  payload,
+                  eventType
+                )
+              })
+            }
+          )
+          .build()
+        )
+      }
     }
 
     return this
@@ -216,5 +252,6 @@ class ProxyStoreListenerThrottled extends HBComponent(listenableInterface(WithID
     this.#eventHandler = null
     this.#listenedStore?.remove()
     this.#listenedStore = null
+    this.#throttle = null
   }
 }
