@@ -182,6 +182,7 @@ class ProxyStoreListenerThrottled extends HBComponent() {
       this.#listenedStore = this.#store.listenChanged(builder => builder
         .callback(
           (payload, eventType) => {
+            // console.log('ici')
             this.#dispatcherClb.call(null, () => {
               this.#eventHandler?.dispatch(
                 ProxyStoreListenerThrottled.#CHANGE_STATE,

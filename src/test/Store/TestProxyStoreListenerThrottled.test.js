@@ -36,6 +36,7 @@ export class TestProxyStoreListenerThrottledTest extends TestCase {
      */
     this.proxyStore = new ProxyStoreListenerThrottledBuilder()
       .store(this.store)
+      .timeToThrottle(300)
       .build()
 
     this.proxyStore.listenChanged(
