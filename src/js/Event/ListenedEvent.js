@@ -1,4 +1,4 @@
-import {isUndefined, NotOverrideException} from '@flexio-oss/js-commons-bundle/assert/index.js';
+import {assertType, formatType, isUndefined, NotOverrideException} from '@flexio-oss/js-commons-bundle/assert/index.js';
 import {isImplement} from '@flexio-oss/js-commons-bundle/js-helpers/index.js'
 
 export const listenedEventInterface = (Base=class{}) => {
@@ -34,4 +34,12 @@ const constructorString = Object.getPrototypeOf(new (listenedEventInterface((cla
  */
 export const implementsListenedEvent = (inst) => {
   return isImplement(inst, constructorString)
+}
+/**
+ * @param {ListenedEvent} inst
+ * @return {ListenedEvent}
+ */
+export const assertImplementsListenedEvent = (inst) => {
+  assertType(implementsListenedEvent(inst), ()=>`should be ListenedEvent, given:${formatType(inst)}`)
+  return inst
 }

@@ -3,6 +3,8 @@ import {ListenedStoreMap} from './ListenedStoreMap.js'
 import {AlreadyRegisteredException} from '../Exception/AlreadyRegisteredException.js'
 import {TypeCheck} from '../Types/TypeCheck.js'
 import {listenedEventInterface} from "../Event/ListenedEvent.js";
+import {assertInstanceOf} from "@flexio-oss/js-commons-bundle/assert";
+import {ListenedStore} from "./ListenedStore.js";
 
 /**
  * @template TYPE
@@ -41,14 +43,14 @@ export class StoresHandler {
   /**
    * @param {StoreInterface} store
    * @param {OrderedEventListenerConfig|function(OrderedEventListenerConfigBuilder):OrderedEventListenerConfig} orderedEventListenerConfig
-   * @return {ListenedStore}
+   * @return {HandledListenedStore}
    */
   listen(store, orderedEventListenerConfig) {
     TypeCheck.assertStoreBase(store)
     const listenedStore = store.listenChanged(orderedEventListenerConfig)
     this.#listenedStores.set(listenedStore.token(), listenedStore)
 
-    return new ListenedStore(this, listenedStore.token())
+    return new HandledListenedStore(this, listenedStore.token())
   }
 
   /**
@@ -97,7 +99,7 @@ export class StoresHandler {
 /**
  * @implements {ListenedEvent}
  */
-class ListenedStore extends listenedEventInterface() {
+class HandledListenedStore extends listenedEventInterface() {
   /**
    * @type {StoresHandler}
    */
