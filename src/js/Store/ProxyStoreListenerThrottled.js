@@ -8,6 +8,7 @@ import {StoreEventListenerConfigBuilder} from "./StoreEventListenerConfigBuilder
 import {OrderedEventListenerConfig} from "@flexio-oss/js-commons-bundle/event-handler/index.js";
 import {ListenedStore} from "./ListenedStore.js";
 import {WithID} from "../abstract/WithID.js";
+import {listenableInterface} from "./Listenable.js";
 
 export class ProxyStoreListenerThrottledBuilder {
   /**
@@ -90,8 +91,10 @@ export class ProxyStoreListenerThrottledBuilder {
 
 /**
  * @template TYPE, TYPE_BUILDER
+ * @implements {Listenable<TYPE>}
+ * @implements {Component}
  */
-class ProxyStoreListenerThrottled extends HBComponent(WithID) {
+class ProxyStoreListenerThrottled extends HBComponent(listenableInterface(WithID)) {
   static #CHANGE_STATE = 'CHANGE_STATE'
   /**
    * @type {Throttle}
