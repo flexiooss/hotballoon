@@ -1,5 +1,6 @@
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_PUBLIC_STORE_HANDLER} from '../Types/HasTagClassNameInterface.js'
 import {TypeCheck} from '../Types/TypeCheck.js'
+import {listenableInterface} from "./Listenable.js";
 
 /**
  *
@@ -7,8 +8,9 @@ import {TypeCheck} from '../Types/TypeCheck.js'
  * @implements  {HasTagClassNameInterface}
  * @implements {GenericType<TYPE>}
  * @template TYPE, TYPE_BUILDER
+ * @implements {Listenable<TYPE>}
  */
-export class PublicStoreHandler {
+export class PublicStoreHandler extends listenableInterface(){
 
   /**
    * @type {StoreInterface<TYPE, TYPE_BUILDER>}
@@ -19,6 +21,7 @@ export class PublicStoreHandler {
    * @param {StoreInterface<TYPE, TYPE_BUILDER>} store
    */
   constructor(store) {
+    super()
     Object.defineProperty(this, CLASS_TAG_NAME, {
       configurable: false,
       writable: false,
