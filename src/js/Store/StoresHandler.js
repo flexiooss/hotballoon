@@ -1,9 +1,19 @@
-import {StoreMap} from './StoreMap.js'
 import {ListenedStoreMap} from './ListenedStoreMap.js'
 import {AlreadyRegisteredException} from '../Exception/AlreadyRegisteredException.js'
 import {TypeCheck} from '../Types/TypeCheck.js'
 import {listenedEventInterface} from "../Event/ListenedEvent.js";
+import {ListenedStore} from "./ListenedStore.js";
+import {assertImplementsListenable} from "./Listenable.js";
+import {FlexMap} from '@flexio-oss/js-commons-bundle/flex-types/index.js'
 
+/**
+ * @extends {FlexMap<?Listenable>}
+ */
+ class StoreMap extends FlexMap {
+  _validate(v) {
+    assertImplementsListenable(v)
+  }
+}
 /**
  * @template TYPE
  */
@@ -18,8 +28,8 @@ export class StoresHandler {
   #listenedStores = new ListenedStoreMap()
 
   /**
-   * @param {StoreBase} store
-   * @return {StoreBase}
+   * @param {Listenable} store
+   * @return {Listenable}
    */
   attach(store) {
     if (this.#stores.has(store.ID())) {
@@ -39,16 +49,16 @@ export class StoresHandler {
   }
 
   /**
-   * @param {StoreInterface} store
+   * @param {Listenable} store
    * @param {OrderedEventListenerConfig|function(OrderedEventListenerConfigBuilder):OrderedEventListenerConfig} orderedEventListenerConfig
-   * @return {ListenedStore}
+   * @return {HandledListenedStore}
    */
   listen(store, orderedEventListenerConfig) {
-    TypeCheck.assertStoreBase(store)
+    assertImplementsListenable(store)
     const listenedStore = store.listenChanged(orderedEventListenerConfig)
     this.#listenedStores.set(listenedStore.token(), listenedStore)
 
-    return new ListenedStore(this, listenedStore.token())
+    return new HandledListenedStore(this, listenedStore.token())
   }
 
   /**
@@ -97,7 +107,7 @@ export class StoresHandler {
 /**
  * @implements {ListenedEvent}
  */
-class ListenedStore extends listenedEventInterface() {
+class HandledListenedStore extends listenedEventInterface() {
   /**
    * @type {StoresHandler}
    */

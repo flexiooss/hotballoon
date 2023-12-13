@@ -36,6 +36,7 @@ export class TestTypeCheck extends TestCase {
       .initialData(new FakeValueObject())
       .build()
 
+    assert.ok(TypeCheck.isStoreBase(store, FakeValueObject, 'FakeValueObject'))
     assert.ok(TypeCheck.isStoreBase(store))
 
     /**
@@ -56,7 +57,9 @@ export class TestTypeCheck extends TestCase {
         (data) => FakeValueObjectBuilder.from(data).build())
       .build()
 
+    assert.ok(TypeCheck.isStoreBase(proxyStore,FakeValueObject, 'FakeValueObject'))
     assert.ok(TypeCheck.isStoreBase(proxyStore))
+    assert.ok(TypeCheck.isProxyStore(proxyStore, FakeValueObject, 'FakeValueObject'))
     assert.ok(TypeCheck.isProxyStore(proxyStore))
     assert.doesNotThrow(() => TypeCheck.assertIsProxyStore(proxyStore))
 
@@ -71,7 +74,9 @@ export class TestTypeCheck extends TestCase {
         (data) => FakeValueObjectBuilder.from(data).build())
       .build()
     assert.ok(TypeCheck.isStoreBase(proxyStoreFromPublic))
+    assert.ok(TypeCheck.isStoreBase(proxyStoreFromPublic, FakeValueObject, 'FakeValueObject'))
     assert.ok(TypeCheck.isProxyStore(proxyStoreFromPublic))
+    assert.ok(TypeCheck.isProxyStore(proxyStoreFromPublic, FakeValueObject, 'FakeValueObject'))
   }
 
   testIsHotballoonApplication() {
@@ -109,6 +114,7 @@ export class TestTypeCheck extends TestCase {
       .build()
 
     assert.ok(TypeCheck.isActionDispatcher(action))
+    assert.ok(TypeCheck.isActionDispatcher(action, FakeValueObject, 'FakeValueObject'))
     assert.doesNotThrow(() => TypeCheck.assertIsActionDispatcher(action))
   }
 
