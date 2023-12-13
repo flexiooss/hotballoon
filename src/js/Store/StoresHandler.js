@@ -3,7 +3,6 @@ import {ListenedStoreMap} from './ListenedStoreMap.js'
 import {AlreadyRegisteredException} from '../Exception/AlreadyRegisteredException.js'
 import {TypeCheck} from '../Types/TypeCheck.js'
 import {listenedEventInterface} from "../Event/ListenedEvent.js";
-import {assertInstanceOf} from "@flexio-oss/js-commons-bundle/assert";
 import {ListenedStore} from "./ListenedStore.js";
 
 /**

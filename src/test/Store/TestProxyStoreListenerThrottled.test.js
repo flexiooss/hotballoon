@@ -7,7 +7,7 @@ import {ProxyStoreListenerThrottledBuilder} from "../../js/Store/ProxyStoreListe
 const assert = require('assert')
 
 export class TestProxyStoreListenerThrottledTest extends TestCase {
-  debug = true
+  // debug = true
 
   setUp() {
     this.store = new InMemoryStoreBuilder()
