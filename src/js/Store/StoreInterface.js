@@ -1,4 +1,5 @@
 import {NotOverrideException} from '@flexio-oss/js-commons-bundle/assert/index.js';
+import {listenableInterface} from "./Listenable.js";
 
 
 export const STORE_CHANGED = '__HB__.STORE.CHANGED'
@@ -9,9 +10,10 @@ export const STORE_REMOVED = '__HB__.STORE.REMOVED'
  * @interface
  * @extends WithID
  * @implements {GenericType<TYPE>}
+ * @implements {Listenable<TYPE>}
  * @template TYPE, TYPE_BUILDER
  */
-export class StoreInterface {
+export class StoreInterface extends listenableInterface(){
   /**
    * @return {(Symbol|string)}
    */
@@ -46,14 +48,6 @@ export class StoreInterface {
    * @param {String} token
    */
   unSubscribe(event, token) {
-    NotOverrideException.FROM_INTERFACE('StoreInterface')
-  }
-
-  /**
-   * @param {OrderedEventListenerConfig|function(StoreEventListenerConfigBuilder<TYPE>):OrderedEventListenerConfig} orderedEventListenerConfig
-   * @return {ListenedStore}
-   */
-  listenChanged(orderedEventListenerConfig) {
     NotOverrideException.FROM_INTERFACE('StoreInterface')
   }
 
@@ -99,13 +93,6 @@ export class StoreInterface {
    * @return {boolean}
    */
   isTypeOf(constructor) {
-    NotOverrideException.FROM_INTERFACE('StoreInterface')
-  }
-
-  /**
-   * @return {boolean}
-   */
-  isRemoving() {
     NotOverrideException.FROM_INTERFACE('StoreInterface')
   }
 

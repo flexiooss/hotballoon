@@ -1,4 +1,4 @@
-import {Throttle} from "@flexio-oss/js-commons-bundle/js-helpers/index.js";
+import {Throttle, UIDMini} from "@flexio-oss/js-commons-bundle/js-helpers/index.js";
 import {assertInstanceOf, isFunction, isNull} from "@flexio-oss/js-commons-bundle/assert/index.js";
 import {OrderedEventHandler} from "../Event/OrderedEventHandler.js";
 import {TypeCheck} from "../Types/TypeCheck.js";
@@ -7,6 +7,7 @@ import {RemovedException} from "../Exception/RemovedException.js";
 import {StoreEventListenerConfigBuilder} from "./StoreEventListenerConfigBuilder.js";
 import {OrderedEventListenerConfig} from "@flexio-oss/js-commons-bundle/event-handler/index.js";
 import {ListenedStore} from "./ListenedStore.js";
+import {WithID} from "../abstract/WithID.js";
 
 export class ProxyStoreListenerThrottledBuilder {
   /**
@@ -90,7 +91,7 @@ export class ProxyStoreListenerThrottledBuilder {
 /**
  * @template TYPE, TYPE_BUILDER
  */
-class ProxyStoreListenerThrottled extends HBComponent() {
+class ProxyStoreListenerThrottled extends HBComponent(WithID) {
   static #CHANGE_STATE = 'CHANGE_STATE'
   /**
    * @type {Throttle}
@@ -118,12 +119,12 @@ class ProxyStoreListenerThrottled extends HBComponent() {
   #listenedStore = null
 
   /**
-   * @param StoreInterface<TYPE,TYPE_BUILDER>} store
+   * @param {StoreInterface<TYPE,TYPE_BUILDER>} store
    * @param {Throttle} throttle
    * @param {function(clb:function())} dispatcherClb
    */
   constructor(store, throttle, dispatcherClb) {
-    super()
+    super(UIDMini(store.storeId()))
     this.#throttle = throttle;
     this.#store = TypeCheck.assertStoreBase(store);
     this.#dispatcherClb = dispatcherClb
