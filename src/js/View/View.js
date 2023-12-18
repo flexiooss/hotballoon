@@ -798,4 +798,57 @@ export class View extends ViewContainerBase {
   __LABEL__(elementBuilder = null) {
     return this.#buildElement(elementBuilder, e('label'))
   }
+
+  /**
+   * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
+   * @return {Element}
+   */
+  __TABLE__(elementBuilder = null) {
+    return this.#buildElement(elementBuilder, e('table'))
+  }
+
+  /**
+   * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
+   * @return {Element}
+   */
+  __TR__(elementBuilder = null) {
+    return this.#buildElement(elementBuilder, e('tr'))
+  }
+  /**
+   * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
+   * @return {Element}
+   */
+  __TD__(elementBuilder = null) {
+    return this.#buildElement(elementBuilder, e('td'))
+  }
+  /**
+   * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
+   * @return {Element}
+   */
+  __TBODY__(elementBuilder = null) {
+    return this.#buildElement(elementBuilder, e('tbody'))
+  }
+  /**
+   * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
+   * @return {Element}
+   */
+  __THEAD__(elementBuilder = null) {
+    return this.#buildElement(elementBuilder, e('thead'))
+  }
+  /**
+   * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
+   * @return {Element}
+   */
+  __TH__(elementBuilder = null) {
+    return this.#buildElement(elementBuilder, e('th'))
+  }
+  /**
+   * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
+   * @return {Element}
+   */
+  __TFOOT__(elementBuilder = null) {
+    return this.#buildElement(elementBuilder, e('tfoot'))
+  }
+
+
 }

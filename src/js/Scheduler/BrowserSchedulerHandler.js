@@ -28,7 +28,7 @@ export class BrowserSchedulerHandler extends SchedulerHandlerInterface(class {
       /**
        * @type {(callback: IdleRequestCallback, options?: IdleRequestOptions) => number}
        */
-      this.#requestIdleCallback = (callback,options) => this.#global.requestIdleCallback(callback,options)
+      this.#requestIdleCallback = (callback, options) => this.#global.requestIdleCallback(callback, options)
     } else {
       this.#requestIdleCallback = (cb) => {
         return setTimeout(function () {
@@ -185,7 +185,6 @@ class HBTaskImpl extends HBTaskInterface() {
       this.#controller.abort(new HBTaskAbortException())
       this.#controller = null
     }
-    this.#task = null
   }
 
   /**
