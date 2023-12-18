@@ -54,3 +54,4 @@ export {ValidationError} from './src/js/Exception/ValidationError.js'
 export {DOMError} from './src/js/Exception/DOMError.js'
 
 export {ProxyStoreListenerThrottledBuilder} from './src/js/Store/ProxyStoreListenerThrottled.js'
+export {HBTaskAbortException} from './src/js/Scheduler/HBTaskAbortException.js'
