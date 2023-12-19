@@ -44,36 +44,43 @@ export class View extends ViewContainerBase {
   #node = null
   /**
    * @type {boolean}
+   * @protected
    */
-  #shouldRender = true
+  _shouldRender = true
   /**
    * @type {boolean}
+   * @protected
    */
-  #shouldMount = true
+  _shouldMount = true
   /**
    * @type {boolean}
+   * @protected
    */
-  #shouldUpdate = true
+  _shouldUpdate = true
   /**
    * @type {boolean}
+   * @protected
    */
-  #synchronousUpdate = false
+  _synchronousUpdate = false
   /**
    * @type {boolean}
+   * @protected
    */
-  #synchronousRender = false
+  _synchronousRender = false
   /**
    * @type {Map<string, Element>}
+   * @protected
    */
-  #nodeRefs = new Map()
+  _nodeRefs = new Map()
   /**
+   * @protected
    * @type {number}
    */
-  #updateRequests = 0
+  _updateRequests = 0
   /**
    * @type {Logger}
    */
-  #logger = Logger.getLogger(this.constructor.name, 'HotBalloon.View')
+  _logger = Logger.getLogger(this.constructor.name, 'HotBalloon.View')
 
   /**
    * @param {ViewContainerBase} container
@@ -95,8 +102,10 @@ export class View extends ViewContainerBase {
     container.addView(this)
   }
 
+
+
   /**
-   * @return {?Element}
+   * @return {?(Element|Element[])}
    * @abstract
    */
   template() {
@@ -157,10 +166,13 @@ export class View extends ViewContainerBase {
     )
   }
 
-  #update() {
-    if (!this.isRemoved() && this.#updateRequests === 1) {
+  /**
+   * @protected
+   */
+  _updateExe() {
+    if (!this.isRemoved() && this._updateRequests === 1) {
 
-      this.#nodeRefs.clear()
+      this._nodeRefs.clear()
       /**
        * @type {?Element}
        */
@@ -168,10 +180,10 @@ export class View extends ViewContainerBase {
 
       if (isNull(candidate) || isNull(this.node())) {
         if (!isNull(candidate)) {
-          this.#replaceNode(candidate)
+          this._replaceNode(candidate)
           this.mount()
         } else {
-          this.#removeNode()
+          this._removeNode()
         }
       } else {
 
@@ -183,54 +195,54 @@ export class View extends ViewContainerBase {
       }
 
       this.dispatch(VIEW_UPDATED, {})
-      this.#logger.debug('UpdateNode : ' + this.ID())
+      this._logger.debug('UpdateNode : ' + this.ID())
     }
-    this.#updateRequests--
+    this._updateRequests--
   }
 
   /**
-   * @return {View}
+   * @return {this}
    * @throws {RemovedException}
    */
   updateNode() {
     if (this.isRemoved()) {
       throw RemovedException.VIEW_CONTAINER(this._ID)
     }
-    if (this.isRendered() && this.#shouldUpdate) {
+    if (this.isRendered() && this._shouldUpdate) {
 
       this.dispatch(VIEW_UPDATE, {})
 
-      this.#updateRequests++
+      this._updateRequests++
       if (this.isSynchronous() || this.isSynchronousUpdate()) {
-        this.#update()
+        this._updateExe()
       } else {
         this.viewRenderConfig().domAccessor().write(() => {
-          this.#update()
+          this._updateExe()
         })
       }
     }
-    this.#shouldUpdate = true
+    this._shouldUpdate = true
     return this
   }
 
   /**
-   * @return {View}
+   * @return {this}
    */
   setSynchronousRender() {
-    this.#synchronousRender = true
+    this._synchronousRender = true
     return this
   }
 
   /**
-   * @return {View}
+   * @return {this}
    */
   setSynchronousUpdate() {
-    this.#synchronousUpdate = true
+    this._synchronousUpdate = true
     return this
   }
 
   /**
-   * @return {View}
+   * @return {this}
    */
   setSynchronous() {
     this.setSynchronousRender()
@@ -249,63 +261,66 @@ export class View extends ViewContainerBase {
    * @return {boolean}
    */
   isSynchronousRender() {
-    return this.#synchronousRender === true
+    return this._synchronousRender === true
   }
 
   /**
    * @return {boolean}
    */
   isSynchronousUpdate() {
-    return this.#synchronousUpdate === true
+    return this._synchronousUpdate === true
   }
 
   /**
-   * @return {View}
+   * @return {this}
    */
   shouldNotUpdate() {
-    this.#shouldUpdate = false
+    this._shouldUpdate = false
     return this
   }
 
   /**
-   * @private
+   * @protected
    */
-  #render() {
-    this.#replaceNode()
+  _renderExe() {
+    this._replaceNode()
     this.#setNodeViewRef()
   }
 
   /**
-   * @return {Element}
+   * @return {?Element}
    * @throws {RemovedException}
    */
   render() {
     if (this.isRemoved()) {
       throw RemovedException.VIEW_CONTAINER(this.ID())
     }
-    this.#logger.info('Render : ' + this.ID(), this)
+    this._logger.info('Render : ' + this.ID(), this)
 
-    if (this.#shouldRender) {
+    if (this._shouldRender) {
       this.dispatch(VIEW_RENDER, {})
-      this.#render()
+      this._renderExe()
       this._rendered = true
       this.dispatch(VIEW_RENDERED, {})
     }
 
-    this.#shouldRender = true
+    this._shouldRender = true
 
     return this.node()
   }
 
   /**
-   * @return {View}
+   * @return {this}
    */
   shouldNotRender() {
-    this.#shouldRender = false
+    this._shouldRender = false
     return this
   }
 
-  #appendChild() {
+  /**
+   * @protected
+   */
+  _appendChild() {
     if (this.isRemoved()) {
       return
     }
@@ -313,7 +328,7 @@ export class View extends ViewContainerBase {
       this.parentNode.appendChild(this.node())
     }
     this._mounted = true
-    this.#shouldMount = true
+    this._shouldMount = true
     this.dispatch(VIEW_MOUNTED, {})
   }
 
@@ -324,18 +339,18 @@ export class View extends ViewContainerBase {
     if (this.isRemoved()) {
       throw RemovedException.VIEW_CONTAINER(this._ID)
     }
-    if (this.#shouldMount) {
+    if (this._shouldMount) {
       this.dispatch(VIEW_MOUNT, {})
 
       if (this.isSynchronous() || this.isSynchronousRender()) {
-        this.#appendChild()
+        this._appendChild()
       } else {
         this.viewRenderConfig().domAccessor().write(() => {
-          this.#appendChild()
+          this._appendChild()
         })
       }
     } else {
-      this.#shouldMount = true
+      this._shouldMount = true
     }
   }
 
@@ -351,15 +366,15 @@ export class View extends ViewContainerBase {
   }
 
   /**
-   * @return {View}
+   * @return {this}
    */
   shouldNotMount() {
-    this.#shouldMount = false
+    this._shouldMount = false
     return this
   }
 
   /**
-   * @return {View}
+   * @return {this}
    */
   renderAndMount() {
     this.render()
@@ -386,7 +401,7 @@ export class View extends ViewContainerBase {
     if (this.isRemoved()) {
       throw RemovedException.VIEW_CONTAINER(this._ID)
     }
-    if (!this.#nodeRefs.has(key)) {
+    if (!this._nodeRefs.has(key)) {
       /**
        * @type {?HTMLElement}
        */
@@ -394,9 +409,9 @@ export class View extends ViewContainerBase {
       if (isNull(element)) {
         element = this.parentNode.querySelector('#' + this.elementIdFromRef(key))
       }
-      this.#nodeRefs.set(key, element)
+      this._nodeRefs.set(key, element)
     }
-    return this.#nodeRefs.get(key)
+    return this._nodeRefs.get(key)
   }
 
   /**
@@ -405,7 +420,7 @@ export class View extends ViewContainerBase {
    * @return {HotBalloonAttributeHandler}
    */
   $(key) {
-    return $(this.#nodeRefs.get(key))
+    return $(this._nodeRefs.get(key))
   }
 
   /**
@@ -414,8 +429,8 @@ export class View extends ViewContainerBase {
    * @return {Element}
    */
   addNodeRef(key, node) {
-    if (!this._rendered && !this.#nodeRefs.has(key)) {
-      this.#nodeRefs.set(key, node)
+    if (!this._rendered && !this._nodeRefs.has(key)) {
+      this._nodeRefs.set(key, node)
     }
     return this.#addNodeRef(key, node)
   }
@@ -455,8 +470,9 @@ export class View extends ViewContainerBase {
 
   /**
    * @return {?Element}
+   * @protected
    */
-  #replaceNode(candidate = null) {
+  _replaceNode(candidate = null) {
     this.#node = candidate ?? this.buildTemplate()
     return this.#node
   }
@@ -475,11 +491,8 @@ export class View extends ViewContainerBase {
     } catch (e) {
       throw new DOMError(JSON.stringify(e.stack))
     }
-    assertType(
-      isNull(template) || isNode(template),
-      () => `View[${this.constructor.name}]:template() bad return type, should be ?Element given:${formatType(template)}`
-    )
-    return template
+
+    return TypeCheck.assertIsNodeOrNull(template)
   }
 
   /**
@@ -542,7 +555,7 @@ export class View extends ViewContainerBase {
    * @return {ViewPublicEventUnSubscriber}
    */
   off() {
-    return new ViewPublicEventUnSubscriber((a,b) => this._off(a,b))
+    return new ViewPublicEventUnSubscriber((a, b) => this._off(a, b))
   }
 
   /**
@@ -556,17 +569,17 @@ export class View extends ViewContainerBase {
   }
 
   remove() {
-    this.#logger.info('Remove : ' + this.ID())
+    this._logger.info('Remove : ' + this.ID())
     this.dispatch(VIEW_REMOVE, {})
 
-    this.#nodeRefs.clear()
+    this._nodeRefs.clear()
 
     if (this.isSynchronous() || this.isSynchronousUpdate()) {
-      this.#removeNode()
+      this._removeNode()
     } else {
       this.viewRenderConfig().domAccessor().write(
         () => {
-          this.#removeNode()
+          this._removeNode()
         }
       )
     }
@@ -576,7 +589,7 @@ export class View extends ViewContainerBase {
   }
 
   /**
-   * @return {View}
+   * @return {this}
    */
   unMount() {
     if (!isNull(this.node()) && !isNull(this.node().parentNode)) {
@@ -588,9 +601,10 @@ export class View extends ViewContainerBase {
   }
 
   /**
-   * @return {View}
+   * @return {this}
+   * @protected
    */
-  #removeNode() {
+  _removeNode() {
     this.unMount()
     this.#node = null
     return this
@@ -814,6 +828,7 @@ export class View extends ViewContainerBase {
   __TR__(elementBuilder = null) {
     return this.#buildElement(elementBuilder, e('tr'))
   }
+
   /**
    * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
    * @return {Element}
@@ -821,6 +836,7 @@ export class View extends ViewContainerBase {
   __TD__(elementBuilder = null) {
     return this.#buildElement(elementBuilder, e('td'))
   }
+
   /**
    * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
    * @return {Element}
@@ -828,6 +844,7 @@ export class View extends ViewContainerBase {
   __TBODY__(elementBuilder = null) {
     return this.#buildElement(elementBuilder, e('tbody'))
   }
+
   /**
    * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
    * @return {Element}
@@ -835,6 +852,7 @@ export class View extends ViewContainerBase {
   __THEAD__(elementBuilder = null) {
     return this.#buildElement(elementBuilder, e('thead'))
   }
+
   /**
    * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
    * @return {Element}
@@ -842,6 +860,7 @@ export class View extends ViewContainerBase {
   __TH__(elementBuilder = null) {
     return this.#buildElement(elementBuilder, e('th'))
   }
+
   /**
    * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
    * @return {Element}
@@ -852,3 +871,4 @@ export class View extends ViewContainerBase {
 
 
 }
+

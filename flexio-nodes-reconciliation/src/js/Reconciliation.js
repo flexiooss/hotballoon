@@ -1,4 +1,4 @@
-import {isNode, assert, isNull} from '@flexio-oss/js-commons-bundle/assert/index.js'
+import {isNode, assert, isNull, isNodeDocumentFragment} from '@flexio-oss/js-commons-bundle/assert/index.js'
 import {removeChildNodes} from '@flexio-oss/js-commons-bundle/js-type-helpers/index.js'
 import {select} from './ListenerAttributeHandler'
 import {nodeReconcile} from './NodeReconciliation'
@@ -23,8 +23,8 @@ export class Reconciliation {
    */
   constructor(current, candidate, parentCurrent = null) {
     assert(isNode(current) && isNode(candidate),
-        'Reconciliation: `current : %s` and  `candidate : %s` arguments assert be Node',
-        typeof current, typeof candidate)
+      'Reconciliation: `current : %s` and  `candidate : %s` arguments assert be Node',
+      typeof current, typeof candidate)
 
     /**
      * @params {Element}
@@ -123,8 +123,8 @@ export class Reconciliation {
    */
   static startReconciliation(current, candidate, parentCurrent) {
     return new Reconciliation(current, candidate, parentCurrent)
-        .withRootReconciliation(true)
-        .reconcile()
+      .withRootReconciliation(true)
+      .reconcile()
   }
 
   /**
@@ -141,37 +141,40 @@ export class Reconciliation {
    * @return {boolean}
    */
   reconcile() {
-    if (
+
+    if (this._isDocumentFragment()) {
+      this.__reconcileChildNodes()
+    } else {
+      if (
         this._hasByPassRule()
         || (
-            this.__isEqualNode()
-            && (
-                (!this._hasReconcileListenersRule() && !this._hasForceListenersRule())
-                || (this._hasReconcileListenersRule() && !this.__isEqualListeners()
-                )
+          this.__isEqualNode()
+          && (
+            (!this._hasReconcileListenersRule() && !this._hasForceListenersRule())
+            || (this._hasReconcileListenersRule() && !this.__isEqualListeners()
             )
+          )
         )
-    ) {
-      return this._abort()
-    }
-
-    if (!this.__isEqualNode()) {
-
-      if (!this._hasOnlyChildrenRule() && (!this.__isEqualWithoutChildren() || this._hasReplaceRule())) {
-
-        this.__updateCurrent()
+      ) {
+        return this._abort()
       }
 
-      if ((!this._isCurrentReplaced && !this._hasExcludeChildrenRule())) {
+      if (!this.__isEqualNode()) {
 
-        this.__reconcileChildNodes()
+        if (!this._hasOnlyChildrenRule() && (!this.__isEqualWithoutChildren() || this._hasReplaceRule())) {
+
+          this.__updateCurrent()
+        }
+
+        if ((!this._isCurrentReplaced && !this._hasExcludeChildrenRule())) {
+          this.__reconcileChildNodes()
+        }
       }
-    }
-    if (this._hasForceListenersRule()) {
-      listenerReplace(this.current, this.$current, this.candidate, this.$candidate)
-    } else if (!this._hasOnlyChildrenRule() && this._hasReconcileListenersRule() && !this._isCurrentReplaced && !this.__isEqualListeners()) {
-
-      listenerReconcile(this.current, this.$current, this.candidate, this.$candidate)
+      if (this._hasForceListenersRule()) {
+        listenerReplace(this.current, this.$current, this.candidate, this.$candidate)
+      } else if (!this._hasOnlyChildrenRule() && this._hasReconcileListenersRule() && !this._isCurrentReplaced && !this.__isEqualListeners()) {
+        listenerReconcile(this.current, this.$current, this.candidate, this.$candidate)
+      }
     }
 
     return this._isCurrentReplaced
@@ -290,7 +293,7 @@ export class Reconciliation {
    * @return {?Element}
    */
   __findNodeByIdInChildNodes(parentNode, id, start) {
-    return  parentNode.querySelector(`:scope > #${id}`) // TODO @thomas check performance when better support of :scope pseudo-class
+    return parentNode.querySelector(`:scope > #${id}`) // TODO @thomas check performance when better support of :scope pseudo-class
     //  if (parentNode.childNodes.length > MAX_SLIBINGS_NODES_UPDATE_BY_ID) {
     //    return null
     //  }
@@ -341,6 +344,14 @@ export class Reconciliation {
    */
   _hasByPassRule() {
     return this.$candidate.hasReconciliationRule(R.BYPASS)
+  }
+
+  /**
+   * @return {boolean}
+   * @protected
+   */
+  _isDocumentFragment() {
+    return isNodeDocumentFragment(this.candidate)
   }
 
   /**
