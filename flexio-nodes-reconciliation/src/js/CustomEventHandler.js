@@ -1,4 +1,4 @@
-import {assert, isNull, isNumber, TypeCheck} from '@flexio-oss/js-commons-bundle/assert/index.js'
+import {assert, isFunction, isNull, isNumber, TypeCheck} from '@flexio-oss/js-commons-bundle/assert/index.js'
 import {getParentNode} from '@flexio-oss/js-commons-bundle/js-type-helpers/index.js';
 import {UID} from '@flexio-oss/js-commons-bundle/js-helpers/index.js';
 import {globalFlexioImport} from '@flexio-oss/js-commons-bundle/global-import-registry'
@@ -570,7 +570,8 @@ export class CustomEventHandler {
   _dispatchEvent(eventName, event) {
     let x = Math.round(event.x)
     let y = Math.round(event.y)
-    this._element.dispatchEvent(new CustomEvent(eventName,
+
+    const customEvent = new CustomEvent(eventName,
       {
         detail: {
           source: event.target,
@@ -578,7 +579,25 @@ export class CustomEventHandler {
           y: isNumber(y) ? y : null
         }
       }
-    ))
+    )
+
+    this._element.dispatchEvent(customEvent)
+
+    switch (eventName) {
+      case CustomEventHandler.HOLD:
+        if (isFunction(this._element?.onHold)) this._element.onHold.call(null, customEvent)
+        break;
+      case CustomEventHandler.HOLD_OR_RIGHT:
+        if (isFunction(this._element?.onHoldOrRight)) this._element.onHoldOrRight.call(null, customEvent)
+        break;
+      case CustomEventHandler.DOUBLE_TAP:
+        if (isFunction(this._element?.onDoubleTap)) this._element.onDoubleTap.call(null, customEvent)
+        break;
+      case CustomEventHandler.TAP:
+        if (isFunction(this._element?.onTap)) this._element.onTap.call(null, customEvent)
+        break;
+    }
+
     return this
   }
 
