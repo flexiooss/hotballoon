@@ -15,6 +15,7 @@ export {ActionSubscriber} from './src/js/Action/ActionSubscriber.js'
 export {ActionsHandler} from './src/js/Action/ActionsHandler.js'
 
 export {ViewContainersHandler} from './src/js/View/ViewContainersHandler.js'
+export {ViewFragment} from './src/js/View/ViewFragment.js'
 export {View} from './src/js/View/View.js'
 export {ViewContainer, ViewContainerParameters} from './src/js/View/ViewContainer.js'
 export {ViewContainerPublicEventHandler} from './src/js/View/ViewContainerPublicEventHandler.js'

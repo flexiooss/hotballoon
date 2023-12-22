@@ -25,6 +25,18 @@ class HotballoonElementReconciliation extends Reconciliation {
       .withRootReconciliation(true)
       .reconcile()
   }
+  /**
+   * @static
+   * @param {Element} current
+   * @param {Element} candidate
+   * @param {Element} parentCurrent Parent of current element
+   * @return {boolean}
+   */
+  static startChildrenReconciliation(current, candidate, parentCurrent) {
+    return new HotballoonElementReconciliation(current, candidate, parentCurrent)
+      .withRootReconciliation(false)
+      .reconcile()
+  }
 
   /**
    * @param {Element} current
@@ -68,3 +80,4 @@ class HotballoonElementReconciliation extends Reconciliation {
 
 export const reconcile = HotballoonElementReconciliation.reconciliation
 export const startReconcile = HotballoonElementReconciliation.startReconciliation
+export const startChildrenReconciliation = HotballoonElementReconciliation.startChildrenReconciliation
