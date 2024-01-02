@@ -27,8 +27,8 @@
   },
   "peerDependencies": {
     "@flexio-oss/code-altimeter-js": "1.5.0",
-    "@flexio-oss/hotballoon": "0.125.0-dev",
-    "@flexio-oss/js-commons-bundle": "1.128.0",
+    "@flexio-oss/hotballoon": "0.126.0-dev",
+    "@flexio-oss/js-commons-bundle": "1.130.0-dev",
     "luxon": "3.3.0",
     "scheduler-polyfill": "1.0.0"
   }
