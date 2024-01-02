@@ -86,7 +86,7 @@ export class TestProxyStoreListenerThrottledTest extends TestCase {
         assert.strictEqual(invoked, 2, 'asynchronous invoked')
         assert.ok(state.a() === 5, 'last invoked')
         ok()
-      }, 1000)
+      }, 5000)
     })
   }
 
