@@ -21,10 +21,15 @@ class ViewDemo extends View {
         this.html(e('div#tutu')
           .styles({'background-color': 'blue'})
           .text(`8:: tutu`)
+          .listenEvent(b=>b.customEvent().tap(e=>{
+            console.log(e)
+          }))
         )
       )
       .appendHTML(`<p>9:: insertion 4.1</p>`, `<p>10:: insertion 4.2</p>`)
       .prependHTML(`<h1>1:: insertion 5.1, version ${this.#increment}</h1>`, `<p>2:: insertion 5.2</p>`)
+      .reconciliationRules(r=>r.force().build())
+      .properties({test: this.#increment})
       .childNodes(
         this.html(e('div#titi')
           .styles({'background-color': 'pink'})

@@ -134,7 +134,7 @@ export class AsyncDomAccessor extends DomAccessor {
         this.#runTasks(this.#writes, start)
       }
     } catch (e) {
-      const error = new DOMError(e.toString())
+      const error = DOMError.fromError(e)
       error.stack = e.stack
       this.#logger.error('UNEXPECTED FLUSHING ERROR', error)
     }
