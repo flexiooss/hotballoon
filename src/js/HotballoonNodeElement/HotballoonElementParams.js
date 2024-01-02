@@ -1,5 +1,5 @@
 import {HyperFlexParams} from '../__import__flexio-hyperflex.js'
-import {isFunction, isNull} from '@flexio-oss/js-commons-bundle/assert/index.js';
+import {isFunction, isNull, TypeCheck} from '@flexio-oss/js-commons-bundle/assert/index.js';
 
 /**
  *
@@ -16,10 +16,10 @@ export class HotballoonElementParams extends HyperFlexParams {
     this._views = []
     /**
      *
-     * @params {Array.<String>}
+     * @params {Set<String>}
      * @private
      */
-    this._reconciliationRules = []
+    this._reconciliationRules = new Set()
     /**
      *
      * @params {Array<ElementEventListenerConfig>}
@@ -47,7 +47,7 @@ export class HotballoonElementParams extends HyperFlexParams {
    * @constructor
    */
   static withReconciliationRules(...rules) {
-    return new this().addReconciliationRules(...rules)
+    return new this().addReconciliationRules(rules)
   }
 
   /**
@@ -61,7 +61,7 @@ export class HotballoonElementParams extends HyperFlexParams {
   }
 
   /**
-   * @return {Array.<string>}
+   * @return {Set<string>}
    */
   reconciliationRules() {
     return this._reconciliationRules
@@ -96,7 +96,7 @@ export class HotballoonElementParams extends HyperFlexParams {
    * @param {(View|function():?View)} [viewFalse=null]
    * @return {this}
    */
-  bindView( statement, view, viewFalse = null) {
+  bindView(statement, view, viewFalse = null) {
     if ((isFunction(statement) ? statement() : statement) === true) {
       this._views.push((isFunction(view) ? view() : view))
     } else {
@@ -109,14 +109,14 @@ export class HotballoonElementParams extends HyperFlexParams {
   }
 
   /**
-   * @param {...string} reconciliationRules
+   * @param {string[]} reconciliationRules
    * @return {this}
    */
-  addReconciliationRules(...reconciliationRules) {
-    reconciliationRules.forEach((r) => {
-      this._reconciliationRules.push(...reconciliationRules)
+  addReconciliationRules(reconciliationRules) {
+    TypeCheck.assertIsArray(reconciliationRules)
+    reconciliationRules.forEach(v=>{
+      this._reconciliationRules.add(v)
     })
-
     return this
   }
 

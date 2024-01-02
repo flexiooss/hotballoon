@@ -46,7 +46,7 @@ export class ViewFragment extends View {
     try {
       template = this.template()
     } catch (e) {
-      throw new DOMError(JSON.stringify(e.stack))
+      throw DOMError.fromError(e)
     }
     if (isNull(template)) return null
 

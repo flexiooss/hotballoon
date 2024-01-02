@@ -15,7 +15,6 @@ class CreateHotBalloonElement extends HyperFlex {
    * @type {?HotBalloonAttributeHandler}
    */
   #$element = null
-
   /**
    * @param {View} scope
    * @param {string} querySelector
@@ -58,7 +57,7 @@ class CreateHotBalloonElement extends HyperFlex {
     return this
       .#setViews(this._params.views())
       .#setReconciliationRule(this._params.reconciliationRules())
-      .#setReconciliationProperties(Object.keys(this._params.properties()))
+      .#setReconciliationProperties(new Set(Object.keys(this._params.properties())))
       .#setEventListeners(this._params.eventListeners())
   }
 
@@ -105,8 +104,8 @@ class CreateHotBalloonElement extends HyperFlex {
    */
   #ensureChildrenRules(views) {
     if (views.length) {
-      if (this._params.reconciliationRules().indexOf(RECONCILIATION_RULES.FORCE) < 0) {
-        this._params.addReconciliationRules(RECONCILIATION_RULES.BYPASS_CHILDREN)
+      if (!this._params.reconciliationRules().has(RECONCILIATION_RULES.FORCE) ) {
+        this._params.addReconciliationRules([RECONCILIATION_RULES.BYPASS_CHILDREN])
       }
     }
     return this
@@ -123,11 +122,11 @@ class CreateHotBalloonElement extends HyperFlex {
   }
 
   /**
-   * @param {Array.<string>} rules
+   * @param {Set<string>} rules
    * @return {CreateHotBalloonElement}
    */
-  #setReconciliationRule(...rules) {
-    this.#$element.addReconcileRules(...rules)
+  #setReconciliationRule(rules) {
+    this.#$element.addReconcileRules(rules)
     return this
   }
 
@@ -143,7 +142,7 @@ class CreateHotBalloonElement extends HyperFlex {
   }
 
   /**
-   * @param {Array.<string>} propertiesToReconciliate
+   * @param {Set<string>} propertiesToReconciliate
    * @return {CreateHotBalloonElement}
    */
   #setReconciliationProperties(propertiesToReconciliate) {

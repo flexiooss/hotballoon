@@ -1,5 +1,7 @@
 import {HotballoonElementParams} from './HotballoonElementParams.js'
-
+import {isFunction, isString} from "@flexio-oss/js-commons-bundle/assert/index.js";
+import {RECONCILIATION_RULES} from "../../../flexio-nodes-reconciliation/index.js";
+import {UIEventBuilder} from './UIEventBuilder.js'
 
 export class ElementDescription {
   /**
@@ -28,32 +30,41 @@ export class ElementDescription {
   }
 
   /**
-   *
-   * @param {string} reconciliationRules
+   * @param {string,string[]|function(ReconciliationRulesBuilder):string[]} reconciliationRules
    * @return {ElementDescription}
    */
-  reconciliationRules(...reconciliationRules) {
-    this._params.addReconciliationRules(...reconciliationRules)
+  reconciliationRules(reconciliationRules) {
+    if (isFunction(reconciliationRules)) {
+      reconciliationRules = reconciliationRules.call(null, new ReconciliationRulesBuilder())
+    }
+    if(isString(reconciliationRules)){
+      reconciliationRules= [reconciliationRules]
+    }
+    this._params.addReconciliationRules(reconciliationRules)
+
     return this
   }
 
   /**
-   *
-   * @param {ElementEventListenerConfig} nodeEventListenerParam
+   * @param {ElementEventListenerConfig|function(UIEventBuilder.):ElementEventListenerConfig} nodeEventListenerParam
    * @return {this}
    */
   listenEvent(nodeEventListenerParam) {
+    if (isFunction(nodeEventListenerParam)) {
+      nodeEventListenerParam = nodeEventListenerParam.call(null, UIEventBuilder)
+    }
     this._params.addEventListener(nodeEventListenerParam)
+
     return this
   }
 
   /**
-   *
    * @param {View} views
    * @return {this}
    */
   views(...views) {
     this._params.addViews(views)
+
     return this
   }
 
@@ -63,7 +74,7 @@ export class ElementDescription {
    * @param {(View|function():?View)} [viewFalse=null]
    * @return {this}
    */
-  bindView( statement, view, viewFalse = null) {
+  bindView(statement, view, viewFalse = null) {
     this._params.bindView(statement, view, viewFalse)
     return this
   }
@@ -114,7 +125,6 @@ export class ElementDescription {
   }
 
   /**
-   *
    * @param {String} key
    * @param {(boolean|function():boolean)} statement
    * @param {(*|function():*)} property
@@ -224,3 +234,117 @@ export class ElementDescription {
  * @return {ElementDescription}
  */
 export const e = (querySelector) => new ElementDescription(querySelector)
+
+
+class ReconciliationRulesBuilder {
+  /**
+   * @type {string[]}
+   */
+  #list = []
+
+  /**
+   * @return {ReconciliationRulesBuilder}
+   * @constructor
+   */
+  replace() {
+    this.#list.push(RECONCILIATION_RULES.REPLACE)
+    return this
+  }
+
+  /**
+   * @return {ReconciliationRulesBuilder}
+   * @constructor
+   */
+  bypass() {
+    this.#list.push(RECONCILIATION_RULES.BYPASS)
+    return this
+  }
+
+  /**
+   * @return {ReconciliationRulesBuilder}
+   * @constructor
+   */
+  bypassOnce() {
+    this.#list.push(RECONCILIATION_RULES.BYPASS_ONCE)
+    return this
+  }
+
+  /**
+   * @return {ReconciliationRulesBuilder}
+   * @constructor
+   */
+  bypassChildren() {
+    this.#list.push(RECONCILIATION_RULES.BYPASS_CHILDREN)
+    return this
+  }
+
+  /**
+   * @return {ReconciliationRulesBuilder}
+   * @constructor
+   */
+  onlyChildren() {
+    this.#list.push(RECONCILIATION_RULES.ONLY_CHILDREN)
+    return this
+  }
+
+  /**
+   * @return {ReconciliationRulesBuilder}
+   * @constructor
+   */
+  bypassChildrenOnce() {
+    this.#list.push(RECONCILIATION_RULES.BYPASS_CHILDREN_ONCE)
+    return this
+  }
+
+  /**
+   * @return {ReconciliationRulesBuilder}
+   * @constructor
+   */
+  reconcileListeners() {
+    this.#list.push(RECONCILIATION_RULES.RECONCILE_LISTENERS)
+    return this
+  }
+
+  /**
+   * @return {ReconciliationRulesBuilder}
+   * @constructor
+   */
+  replaceListeners() {
+    this.#list.push(RECONCILIATION_RULES.REPLACE_LISTENERS)
+    return this
+  }
+
+  /**
+   * @return {ReconciliationRulesBuilder}
+   * @constructor
+   */
+  bypassListeners() {
+    this.#list.push(RECONCILIATION_RULES.BYPASS_LISTENERS)
+    return this
+  }
+
+  /**
+   * @return {ReconciliationRulesBuilder}
+   * @constructor
+   */
+  bypassListenersOnce() {
+    this.#list.push(RECONCILIATION_RULES.BYPASS_LISTENERS_ONCE)
+    return this
+  }
+
+  /**
+   * @return {ReconciliationRulesBuilder}
+   * @constructor
+   */
+  force() {
+    this.#list.push(RECONCILIATION_RULES.FORCE)
+    return this
+  }
+
+  /**
+   * @return {string[]}
+   */
+  build() {
+    return this.#list
+  }
+}
