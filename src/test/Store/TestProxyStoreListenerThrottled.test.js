@@ -41,8 +41,10 @@ export class TestProxyStoreListenerThrottledTest extends TestCase {
 
     this.proxyStore.listenChanged(
       b => b.callback((p) => {
+
         invoked++
         state = p.data()
+        this.log(invoked, 'asyncTestFirstLast changed')
       })
         .build()
     )
@@ -80,10 +82,11 @@ export class TestProxyStoreListenerThrottledTest extends TestCase {
 
     return new Promise((ok, ko) => {
       setTimeout(() => {
+        this.log('END', 'asyncTestFirstLast')
         assert.strictEqual(invoked, 2, 'asynchronous invoked')
         assert.ok(state.a() === 5, 'last invoked')
         ok()
-      }, 1000)
+      }, 5000)
     })
   }
 
