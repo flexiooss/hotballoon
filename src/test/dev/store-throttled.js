@@ -27,6 +27,8 @@ proxyStore.listenChanged(
 
     invoked++
     state = p.data()
+    console.log(invoked, state)
+
   })
     .build()
 )
