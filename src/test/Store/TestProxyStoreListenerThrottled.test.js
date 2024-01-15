@@ -92,8 +92,8 @@ export class TestProxyStoreListenerThrottledTest extends TestCase {
         this.log('last not invoked')
 
         }
-        // assert.strictEqual(invoked, 2, 'asynchronous invoked')
-        // assert.ok(state.a() === 5, 'last invoked')
+        assert.strictEqual(invoked, 2, 'asynchronous invoked')
+        assert.ok(state.a() === 5, 'last invoked')
         ok()
       }, 10000)
     })
