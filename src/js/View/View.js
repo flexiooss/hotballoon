@@ -625,6 +625,14 @@ export class View extends ViewContainerBase {
    * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
    * @return {Element}
    */
+  __CANEVAS__(elementBuilder = null) {
+    return this.#buildElement(elementBuilder, e('canvas'))
+  }
+
+  /**
+   * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
+   * @return {Element}
+   */
   __DIV__(elementBuilder = null) {
     return this.#buildElement(elementBuilder, e('div'))
   }
