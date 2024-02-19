@@ -869,6 +869,14 @@ export class View extends ViewContainerBase {
     return this.#buildElement(elementBuilder, e('tfoot'))
   }
 
+ /**
+   * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
+   * @return {Element}
+   */
+  __VIDEO__(elementBuilder = null) {
+    return this.#buildElement(elementBuilder, e('video'))
+  }
+
 
 }
 
