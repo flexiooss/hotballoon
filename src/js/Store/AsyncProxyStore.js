@@ -83,7 +83,8 @@ export class AsyncProxyStore extends StoreBase {
   }
 
   #subscribeToStore() {
-    this.#listenedStore = this._store().listenChanged(builder=>builder
+    if (this._store().isRemoving()) return
+    this.#listenedStore = this._store().listenChanged(builder => builder
       .callback((payload, eventType) => {
         this.#mapAndUpdate(payload, eventType)
       })
@@ -141,11 +142,12 @@ export class AsyncProxyStore extends StoreBase {
        * @type {TYPE}
        */
       const state = await this.#mapWithAbort(this.#controller.signal, () => this._mapper().call(null, payload.data(), this))
+
       this.#controller = null
-      if (this.#shouldUpdate) {
+      if (!this.isRemoving() && this.#shouldUpdate) {
         this.set(state)
+        this.shouldUpdate()
       }
-      this.shouldUpdate()
 
     } catch (e) {
       if (!e instanceof AbortedException) {

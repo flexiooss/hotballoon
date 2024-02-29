@@ -37,7 +37,7 @@ export class AsyncProxyStoreBuilder extends ProxyStoreBuilder {
   }
 
   /**
-   * @param {function(state: STORE_TYPE, proxyStore:AsyncProxyStore<STORE_TYPE, STORE_TYPE_BUILDER, TYPE, TYPE_BUILDER> ):Promise<TYPE>} mapper
+   * @param {function(state: STORE_TYPE, proxyStore:?AsyncProxyStore<STORE_TYPE, STORE_TYPE_BUILDER, TYPE, TYPE_BUILDER> ):Promise<TYPE>} mapper
    * @return {ProxyStoreBuilder}
    */
   mapper(mapper) {
@@ -66,8 +66,8 @@ export class AsyncProxyStoreBuilder extends ProxyStoreBuilder {
        */
       const storeHandler = this._store.listenChanged(
         builder=>builder.callback(() => {
-        parentInvoked++
-      }).build()
+          parentInvoked++
+        }).build()
       )
       /**
        * @type {number}
@@ -80,7 +80,7 @@ export class AsyncProxyStoreBuilder extends ProxyStoreBuilder {
 
       do {
         invoked = parentInvoked
-        iniV = await this._mapper.call(null, this._store.state().data())
+        iniV = await this._mapper.call(null, this._store.state().data(),null)
         iteration++
       } while (invoked !== parentInvoked && iteration <= this.#maxInitialMapping)
 
