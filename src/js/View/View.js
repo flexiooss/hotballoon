@@ -625,6 +625,14 @@ export class View extends ViewContainerBase {
    * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
    * @return {Element}
    */
+  __CANVAS__(elementBuilder = null) {
+    return this.#buildElement(elementBuilder, e('canvas'))
+  }
+
+  /**
+   * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
+   * @return {Element}
+   */
   __DIV__(elementBuilder = null) {
     return this.#buildElement(elementBuilder, e('div'))
   }
@@ -867,6 +875,14 @@ export class View extends ViewContainerBase {
    */
   __TFOOT__(elementBuilder = null) {
     return this.#buildElement(elementBuilder, e('tfoot'))
+  }
+
+ /**
+   * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
+   * @return {Element}
+   */
+  __VIDEO__(elementBuilder = null) {
+    return this.#buildElement(elementBuilder, e('video'))
   }
 
 
