@@ -3,7 +3,7 @@
   "description": "Small JavaScript library for building interfaces by Flexio",
   "main": "index.js",
   "module": "index.js",
-  "version": "0.142.0-dev",
+  "version": "0.143.0-dev",
   "type": "module",
   "license": "Apache-2.0",
   "bugs": {
@@ -24,7 +24,7 @@
     "@flexio-oss/code-altimeter-js": "1.5.0"
   },
   "dependencies": {
-    "@flexio-oss/js-commons-bundle": "1.143.0-dev",
+    "@flexio-oss/js-commons-bundle": "1.143.0",
     "scheduler-polyfill": "1.0.0"
   },
   "hotballoon-shed": {
