@@ -37,7 +37,7 @@ export class ProxyStoreConfig extends StoreBaseConfig {
   }
 
   /**
-   * @return{function(state: STORE_TYPE,proxyStore:?TYPE): TYPE | function(state: STORE_TYPE,proxyStore:?TYPE): Promise<TYPE>}
+   * @return{ function(state: STORE_TYPE,proxyStore:?StoreInterface<TYPE>): Promise<TYPE>}
    */
   mapper() {
     return this._mapper

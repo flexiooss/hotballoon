@@ -146,8 +146,8 @@ export class AsyncProxyStore extends StoreBase {
       this.#controller = null
       if (!this.isRemoving() && this.#shouldUpdate) {
         this.set(state)
-        this.shouldUpdate()
       }
+      this.shouldUpdate()
 
     } catch (e) {
       if (!e instanceof AbortedException) {

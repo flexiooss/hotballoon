@@ -125,7 +125,7 @@ export class StoreBase extends listenableInterface(WithID) {
   }
 
   /**
-   * @returns {StoreState<TYPE>} state
+   * @returns {StoreState<TYPE>} 
    * @frozen
    */
   state() {
