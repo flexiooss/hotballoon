@@ -37,7 +37,7 @@ export class AsyncProxyStoreBuilder extends ProxyStoreBuilder {
   }
 
   /**
-   * @param {function(state: STORE_TYPE, proxyStore:?AsyncProxyStore<STORE_TYPE, STORE_TYPE_BUILDER, TYPE, TYPE_BUILDER> ):Promise<TYPE>} mapper
+   * @param {function(state: STORE_TYPE, proxyStore:?StoreInterface<TYPE> ):Promise<TYPE>} mapper
    * @return {ProxyStoreBuilder}
    */
   mapper(mapper) {
