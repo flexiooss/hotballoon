@@ -148,6 +148,17 @@ class TypeCheck {
   }
 
   /**
+   * @param {?Store<*,*>} inst
+   * @param {?Class} [typeOf=null]
+   * @param {?string} [stringName=null]
+   * @return {Store<*>}
+   * @throws {TypeError}
+   */
+  static assertIsStoreOrNull(inst, typeOf = null, stringName = null) {
+    return (isNull(inst)) ? inst : TypeCheck.assertIsStore(inst, typeOf, stringName)
+  }
+
+  /**
    * @param {Object} inst
    * @param {?Class} [typeOf=null]
    * @return {boolean}

@@ -81,6 +81,10 @@ export class View extends ViewContainerBase {
    * @type {Logger}
    */
   _logger = Logger.getLogger(this.constructor.name, 'HotBalloon.View')
+  /**
+   * @type {Promise<void>}
+   */
+  #montedPromise
 
   /**
    * @param {ViewContainerBase} container
@@ -100,8 +104,33 @@ export class View extends ViewContainerBase {
     })
 
     container.addView(this)
+
+    this.on().unMount(() => {
+      this.#attachMountedPromise()
+    })
+
+    this.#attachMountedPromise()
   }
 
+  /**
+   * @return {Promise<void>}
+   */
+  mounting(){
+    return this.#montedPromise
+  }
+
+  /**
+   * @return {View}
+   */
+  #attachMountedPromise() {
+    this.#montedPromise = new Promise((ok, ko) => {
+      this.on().mount(() => {
+        ok()
+      })
+    })
+
+    return this
+  }
 
 
   /**
@@ -489,7 +518,7 @@ export class View extends ViewContainerBase {
     try {
       template = this.template()
     } catch (e) {
-      throw  DOMError.fromError(e)
+      throw DOMError.fromError(e)
     }
 
     return TypeCheck.assertIsNodeOrNull(template)
@@ -877,12 +906,76 @@ export class View extends ViewContainerBase {
     return this.#buildElement(elementBuilder, e('tfoot'))
   }
 
- /**
+  /**
    * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
    * @return {Element}
    */
   __VIDEO__(elementBuilder = null) {
     return this.#buildElement(elementBuilder, e('video'))
+  }
+
+  /**
+   * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
+   * @return {Element}
+   */
+  __H1__(elementBuilder = null) {
+    return this.#buildElement(elementBuilder, e('h1'))
+  }
+
+  /**
+   * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
+   * @return {Element}
+   */
+  __H2__(elementBuilder = null) {
+    return this.#buildElement(elementBuilder, e('h2'))
+  }
+
+  /**
+   * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
+   * @return {Element}
+   */
+  __H3__(elementBuilder = null) {
+    return this.#buildElement(elementBuilder, e('h3'))
+  }
+
+  /**
+   * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
+   * @return {Element}
+   */
+  __H4__(elementBuilder = null) {
+    return this.#buildElement(elementBuilder, e('h4'))
+  }
+
+  /**
+   * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
+   * @return {Element}
+   */
+  __H5__(elementBuilder = null) {
+    return this.#buildElement(elementBuilder, e('h5'))
+  }
+
+  /**
+   * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
+   * @return {Element}
+   */
+  __H6__(elementBuilder = null) {
+    return this.#buildElement(elementBuilder, e('h6'))
+  }
+
+  /**
+   * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
+   * @return {Element}
+   */
+  __H7__(elementBuilder = null) {
+    return this.#buildElement(elementBuilder, e('h7'))
+  }
+
+  /**
+   * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
+   * @return {Element}
+   */
+  __H8__(elementBuilder = null) {
+    return this.#buildElement(elementBuilder, e('h8'))
   }
 
 
