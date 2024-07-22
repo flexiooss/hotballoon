@@ -102,6 +102,17 @@ class TypeCheck {
   }
 
   /**
+   * @param {?ActionDispatcher<*>} inst
+   * @param {?Class} [typeOf=null]
+   * @param {?string} [stringName=null]
+   * @return {?ActionDispatcher<*>}
+   * @throws {TypeError}
+   */
+  static assertIsActionDispatcherOrNull(inst, typeOf = null, stringName = null) {
+    return isNull(inst) ? null : TypeCheck.assertIsActionDispatcher(inst, typeOf, stringName)
+  }
+
+  /**
    * @param {Object} inst
    * @param {?Class} [typeOf=null]
    * @return {boolean}
@@ -123,6 +134,18 @@ class TypeCheck {
       () => `should be an ActionSubscriber<${stringName ?? '*'}, given:${formatType(inst)}>`
     )
     return inst
+  }
+
+
+  /**
+   * @param {?ActionSubscriber<*>} inst
+   * @param {?Class} [typeOf=null]
+   * @param {?string} [stringName=null]
+   * @return {?ActionSubscriber<*>}
+   * @throws {TypeError}
+   */
+  static assertIsActionSubscriberOrNull(inst, typeOf = null, stringName = null) {
+    return isNull(inst) ? null : TypeCheck.assertIsActionSubscriber(inst, typeOf, stringName)
   }
 
   /**
@@ -197,8 +220,20 @@ class TypeCheck {
    * @throws {TypeError}
    */
   static assertIsPublicStoreHandler(inst, typeOf = null, stringName = null) {
-    assertType(TypeCheck.isPublicStoreHandler(inst,typeOf), () => `should be an PublicStoreHandler<${stringName ?? '*'}, given:${formatType(inst)}>`)
+    assertType(TypeCheck.isPublicStoreHandler(inst, typeOf), () => `should be an PublicStoreHandler<${stringName ?? '*'}, given:${formatType(inst)}>`)
+    return inst
+  }
 
+  /**
+   * @param {?PublicStoreHandler<*>} inst
+   * @param {?Class} [typeOf=null]
+   * @param {?string} [stringName=null]
+   * @return {?PublicStoreHandler<*>}
+   * @throws {TypeError}
+   */
+  static assertIsPublicStoreHandlerOrNull(inst, typeOf = null, stringName = null) {
+    return isNull(inst)
+      ? null : TypeCheck.assertIsPublicStoreHandler(inst, typeOf, stringName)
     return inst
   }
 
@@ -207,8 +242,8 @@ class TypeCheck {
    * @param {?Class} [typeOf=null]
    * @return {boolean}
    */
-  static isStoreBase(inst,typeOf = null) {
-    return (testClassTagName(inst, CLASS_TAG_NAME_STORE) || testClassTagName(inst, CLASS_TAG_NAME_PROXYSTORE) || testClassTagName(inst, CLASS_TAG_NAME_PUBLIC_STORE_HANDLER)) &&  (!isNull(typeOf) ? inst.isTypeOf(typeOf) : true)
+  static isStoreBase(inst, typeOf = null) {
+    return (testClassTagName(inst, CLASS_TAG_NAME_STORE) || testClassTagName(inst, CLASS_TAG_NAME_PROXYSTORE) || testClassTagName(inst, CLASS_TAG_NAME_PUBLIC_STORE_HANDLER)) && (!isNull(typeOf) ? inst.isTypeOf(typeOf) : true)
   }
 
   /**
@@ -219,7 +254,7 @@ class TypeCheck {
    * @return {StoreBase<*>}
    */
   static assertStoreBase(inst, typeOf = null, stringName = null) {
-    assertType(TypeCheck.isStoreBase(inst,typeOf ),
+    assertType(TypeCheck.isStoreBase(inst, typeOf),
       () => `should be an StoreBase<${stringName ?? '*'}, given:${formatType(inst)}>`
     )
     return inst
