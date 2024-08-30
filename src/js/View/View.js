@@ -670,6 +670,14 @@ export class View extends ViewContainerBase {
    * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
    * @return {Element}
    */
+  __DIALOG__(elementBuilder = null) {
+    return this.#buildElement(elementBuilder, e('dialog'))
+  }
+
+  /**
+   * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
+   * @return {Element}
+   */
   __SPAN__(elementBuilder = null) {
     return this.#buildElement(elementBuilder, e('span'))
   }
