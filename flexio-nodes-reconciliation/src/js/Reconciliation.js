@@ -4,6 +4,7 @@ import {select} from './ListenerAttributeHandler'
 import {nodeReconcile} from './NodeReconciliation'
 import {listenerEquals, listenerReconcile, listenerReplace} from './ListenerReconciliation'
 import {RECONCILIATION_RULES as R} from './rules'
+import {ReconciliationException} from "./ReconciliationException";
 
 
 const MAX_SLIBINGS_NODES_UPDATE_BY_ID = 500
@@ -139,38 +140,38 @@ export class Reconciliation {
 
   /**
    * @return {boolean}
+   * @throws ReconciliationException
    */
   reconcile() {
 
     if (this._isDocumentFragment()) {
       this.__reconcileChildNodes()
     } else {
-      if (
-        this._hasByPassRule()
-        || (
-          this.__isEqualNode()
-          && (
-            (!this._hasReconcileListenersRule() && !this._hasForceListenersRule())
-            || (this._hasReconcileListenersRule() && !this.__isEqualListeners()
-            )
-          )
-        )
-      ) {
-        return this._abort()
-      }
+      if (this._hasByPassRule()) return this._abort()
 
-      if (!this.__isEqualNode()) {
+      if (this._hasOnlyChildrenRule()) {
+        if (this._hasReplaceRule()) throw new ReconciliationException('REPLACE rule can not be applied with ONLY_CHILDREN rule')
+        if (this._hasExcludeChildrenRule()) throw new ReconciliationException('BYPASS_CHILDREN rule can not be applied with ONLY_CHILDREN rule')
 
-        if (!this._hasOnlyChildrenRule() && (!this.__isEqualWithoutChildren() || this._hasReplaceRule())) {
-
+        this.__reconcileChildNodes()
+      } else {
+        if (this._hasReplaceRule()) {
           this.__updateCurrent()
-        }
+        } else if (this.__isEqualNode()) {
+          if ((!this._hasReconcileListenersRule() && !this._hasForceListenersRule())
+            || (this._hasReconcileListenersRule() && this.__isEqualListeners())) return this._abort()
+        } else {
+          if (!this.__isEqualWithoutChildren()) {
+            this.__updateCurrent()
+          }
 
-        if ((!this._isCurrentReplaced && !this._hasExcludeChildrenRule())) {
-          this.__reconcileChildNodes()
+          if ((!this._isCurrentReplaced && !this._hasExcludeChildrenRule())) {
+            this.__reconcileChildNodes()
+          }
         }
       }
-      if (this._hasForceListenersRule()) {
+
+      if (!this._isCurrentReplaced && this._hasForceListenersRule()) {
         listenerReplace(this.current, this.$current, this.candidate, this.$candidate)
       } else if (!this._hasOnlyChildrenRule() && this._hasReconcileListenersRule() && !this._isCurrentReplaced && !this.__isEqualListeners()) {
         listenerReconcile(this.current, this.$current, this.candidate, this.$candidate)
@@ -293,7 +294,7 @@ export class Reconciliation {
    * @return {?Element}
    */
   __findNodeByIdInChildNodes(parentNode, id, start) {
-    return parentNode.querySelector(`:scope > #${id}`) // TODO @thomas check performance when better support of :scope pseudo-class
+    return parentNode.querySelector(`:scope > #${id}`)
     //  if (parentNode.childNodes.length > MAX_SLIBINGS_NODES_UPDATE_BY_ID) {
     //    return null
     //  }

@@ -54,6 +54,6 @@ export class RemovedException extends HBException {
    * @return {RemovedException}
    */
   static VIEW(id) {
-    return new RemovedException(`ViewContainer: ${id}`)
+    return new RemovedException(`View: ${id}`)
   }
 }

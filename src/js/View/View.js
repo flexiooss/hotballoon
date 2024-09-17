@@ -147,7 +147,7 @@ export class View extends ViewContainerBase {
    */
   templateToString() {
     if (this.isRemoved()) {
-      throw RemovedException.VIEW_CONTAINER(this._ID)
+      throw RemovedException.VIEW(this._ID)
     }
     /**
      * @type {?Element}
@@ -175,7 +175,7 @@ export class View extends ViewContainerBase {
    */
   subscribeToStore(store, clb = (state) => true, guard = null) {
     if (this.isRemoved()) {
-      throw RemovedException.VIEW_CONTAINER(this._ID)
+      throw RemovedException.VIEW(this._ID)
     }
 
     return this.stores().listen(
@@ -235,7 +235,7 @@ export class View extends ViewContainerBase {
    */
   updateNode() {
     if (this.isRemoved()) {
-      throw RemovedException.VIEW_CONTAINER(this._ID)
+      throw RemovedException.VIEW(this._ID)
     }
     if (this.isRendered() && this._shouldUpdate) {
 
@@ -322,7 +322,7 @@ export class View extends ViewContainerBase {
    */
   render() {
     if (this.isRemoved()) {
-      throw RemovedException.VIEW_CONTAINER(this.ID())
+      throw RemovedException.VIEW(this.ID())
     }
     this._logger.info('Render : ' + this.ID(), this)
 
@@ -366,7 +366,7 @@ export class View extends ViewContainerBase {
    */
   mount() {
     if (this.isRemoved()) {
-      throw RemovedException.VIEW_CONTAINER(this._ID)
+      throw RemovedException.VIEW(this._ID)
     }
     if (this._shouldMount) {
       this.dispatch(VIEW_MOUNT, {})
@@ -428,7 +428,7 @@ export class View extends ViewContainerBase {
    */
   nodeRef(key) {
     if (this.isRemoved()) {
-      throw RemovedException.VIEW_CONTAINER(this._ID)
+      throw RemovedException.VIEW(this._ID)
     }
     if (!this._nodeRefs.has(key)) {
       /**
@@ -664,6 +664,14 @@ export class View extends ViewContainerBase {
    */
   __DIV__(elementBuilder = null) {
     return this.#buildElement(elementBuilder, e('div'))
+  }
+
+  /**
+   * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
+   * @return {Element}
+   */
+  __DIALOG__(elementBuilder = null) {
+    return this.#buildElement(elementBuilder, e('dialog'))
   }
 
   /**
