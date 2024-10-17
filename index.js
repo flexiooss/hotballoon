@@ -1,3 +1,4 @@
+import './generated/io/package.js'
 export {HotBalloonApplication} from './src/js/Application/HotBalloonApplication.js'
 export {HotballoonApplicationConfig} from './src/js/Application/HotballoonApplicationConfig.js'
 export {ApplicationBuilder} from './src/js/Application/ApplicationBuilder.js'

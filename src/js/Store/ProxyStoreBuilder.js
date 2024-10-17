@@ -5,24 +5,20 @@ import {StoreTypeConfig} from './StoreTypeConfig.js'
 import {ProxyStore} from './ProxyStore.js'
 import {ProxyStoreConfig} from './ProxyStoreConfig.js'
 import {isNull} from '@flexio-oss/js-commons-bundle/assert/index.js'
+import {AbstractStoreBuilder} from "./AbstractStoreBuilder.js";
 
 /**
  *
  * @template  STORE_TYPE, STORE_TYPE_BUILDER,  TYPE, TYPE_BUILDER
  */
-export class ProxyStoreBuilder {
+export class ProxyStoreBuilder extends AbstractStoreBuilder{
   constructor() {
+    super()
     /**
      * @type {?StoreInterface<STORE_TYPE>}
      * @protected
      */
     this._store = null
-
-    /**
-     * @type {?TYPE.}
-     * @protected
-     */
-    this._type = null
 
     /**
      * @type  {?ValueObjectValidator}
@@ -72,15 +68,6 @@ export class ProxyStoreBuilder {
    */
   mapper(mapper) {
     this._mapper = mapper
-    return this
-  }
-
-  /**
-   * @param {TYPE.} type
-   * @return {ProxyStoreBuilder}
-   */
-  type(type) {
-    this._type = type
     return this
   }
 

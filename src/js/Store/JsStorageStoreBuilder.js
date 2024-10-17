@@ -4,15 +4,12 @@ import {JsStorageImplStorage} from './Storage/JsStorageImplStorage.js'
 import {StoreTypeConfig} from './StoreTypeConfig.js'
 import {isNull} from '@flexio-oss/js-commons-bundle/assert/index.js'
 import {JSStorageStore} from "./JSStorageStore.js";
+import {AbstractStoreBuilder} from "./AbstractStoreBuilder.js";
 
 /**
  * @template TYPE, TYPE_BUILDER
  */
-export class JsStorageStoreBuilder {
-  /**
-   * @type {?TYPE.}
-   */
-  #type = null
+export class JsStorageStoreBuilder extends AbstractStoreBuilder{
 
   /**
    * @type {?TYPE}
@@ -49,15 +46,6 @@ export class JsStorageStoreBuilder {
    */
   name(name) {
     this.#name = name.replace(new RegExp('\\s+', 'g'), '')
-    return this
-  }
-
-  /**
-   * @param {TYPE.} type
-   * @return {this}
-   */
-  type(type) {
-    this.#type = type
     return this
   }
 
@@ -130,7 +118,7 @@ export class JsStorageStoreBuilder {
    * @return {string}
    */
   #uniqName() {
-    return UID((isNull(this.#name) ? this.#type.name : this.#name) + '_')
+    return UID((isNull(this.#name) ? this._type.name : this.#name) + '_')
   }
 
   /**
@@ -146,7 +134,7 @@ export class JsStorageStoreBuilder {
      * @type {StorageInterface}
      */
     const storage = new JsStorageImplStorage(
-      this.#type,
+      this._type,
       id,
       this.#storage,
       this.#key
@@ -161,7 +149,7 @@ export class JsStorageStoreBuilder {
         id,
         this.#initialData,
         new StoreTypeConfig(
-          this.#type,
+          this._type,
           this.#defaultChecker,
           this.#validator
         ),
