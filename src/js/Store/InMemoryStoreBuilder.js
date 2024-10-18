@@ -112,7 +112,7 @@ export class InMemoryStoreBuilder extends AbstractStoreBuilder{
         this.#validator
       ),
       new InMemoryStorage(
-        this.#type,
+        this._type,
         new StoreState(
           id,
           this._type,

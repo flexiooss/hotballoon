@@ -4,7 +4,6 @@
   "main": "index.js",
   "module": "index.js",
   "version": "0.160.0-dev",
-  "type": "module",
   "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/flexiooss/hotballoon/issues"
