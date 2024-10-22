@@ -3,8 +3,7 @@
   "description": "Small JavaScript library for building interfaces by Flexio",
   "main": "index.js",
   "module": "index.js",
-  "version": "0.159.0",
-  "type": "module",
+  "version": "0.160.0",
   "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/flexiooss/hotballoon/issues"
@@ -24,7 +23,7 @@
     "@flexio-oss/code-altimeter-js": "1.5.0"
   },
   "dependencies": {
-    "@flexio-oss/js-commons-bundle": "1.161.0",
+    "@flexio-oss/js-commons-bundle": "1.162.0",
     "scheduler-polyfill": "1.0.0"
   },
   "hotballoon-shed": {
@@ -35,6 +34,11 @@
     "build": {
       "builder": "webpack5"
     },
+    "generate-sources": {
+      "value-objects": {
+        "extension": ".spec"
+      }
+    },
     "test": {
       "tester": "code-altimeter-js",
       "path": "src/test"
@@ -42,8 +46,8 @@
   },
   "peerDependencies": {
     "@flexio-oss/code-altimeter-js": "1.5.0",
-    "@flexio-oss/hotballoon": "0.132.0-dev",
-    "@flexio-oss/js-commons-bundle": "1.133.0-dev",
+    "@flexio-oss/hotballoon": "0.160.0-dev",
+    "@flexio-oss/js-commons-bundle": "1.162.0-dev",
     "luxon": "3.3.0",
     "scheduler-polyfill": "1.0.0"
   }

@@ -1,3 +1,4 @@
+import { globalFlexioImport } from '@flexio-oss/js-commons-bundle/global-import-registry'
 import {TestCase} from '@flexio-oss/code-altimeter-js'
 import {ApplicationBuilder} from '../../ApplicationBuilder.js'
 

@@ -6,15 +6,12 @@ import {StoreState} from './StoreState.js'
 import {StoreTypeConfig} from './StoreTypeConfig.js'
 import {isNull, TypeCheck} from '@flexio-oss/js-commons-bundle/assert/index.js'
 import {SingleStateStore} from "./SingleStateStore.js";
+import {AbstractStoreBuilder} from "./AbstractStoreBuilder.js";
 
 /**
  * @template TYPE, TYPE_BUILDER
  */
-export class InMemoryStoreBuilder {
-  /**
-   * @type {?TYPE.}
-   */
-  #type = null
+export class InMemoryStoreBuilder extends AbstractStoreBuilder{
   /**
    * @type {?TYPE}
    */
@@ -63,15 +60,6 @@ export class InMemoryStoreBuilder {
   }
 
   /**
-   * @param {TYPE.} type
-   * @return {InMemoryStoreBuilder}
-   */
-  type(type) {
-    this.#type = type
-    return this
-  }
-
-  /**
    * @param {TYPE} initialData
    * @return {InMemoryStoreBuilder}
    */
@@ -103,7 +91,7 @@ export class InMemoryStoreBuilder {
    * @private
    */
   #uniqName() {
-    return UID((isNull(this.#name) ? (isNull(this.#type) ? 'NULL' : this.#type.name) : this.#name) + '_')
+    return UID((isNull(this.#name) ? (isNull(this._type) ? 'NULL' : this._type.name) : this.#name) + '_')
   }
 
   /**
@@ -119,15 +107,15 @@ export class InMemoryStoreBuilder {
       id,
       this.#initialData,
       new StoreTypeConfig(
-        this.#type,
+        this._type,
         this.#defaultChecker,
         this.#validator
       ),
       new InMemoryStorage(
-        this.#type,
+        this._type,
         new StoreState(
           id,
-          this.#type,
+          this._type,
           this.#initialData
         )
       )

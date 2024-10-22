@@ -8,6 +8,10 @@ import {globalFlexioImport} from '@flexio-oss/js-commons-bundle/global-import-re
  */
 const __CustomEventHandler__ = Symbol('__CustomEventHandler__')
 
+/**
+ * @typedef {Object} TimerHandle
+ * @property {number} value
+ */
 
 export class CustomEventHandler {
   /**
@@ -88,12 +92,12 @@ export class CustomEventHandler {
    */
   _end = null
   /**
-   * @type {?number}
+   * @type {TimerHandle|null}
    * @private
    */
   _timerHold = null
   /**
-   * @type {?number}
+   * @type {TimerHandle|null}
    * @private
    */
   _timer = null
@@ -259,7 +263,6 @@ export class CustomEventHandler {
   _clearTap() {
     if (!isNull(this._timer)) {
       CustomEventHandler.clearRequestTimeout(this._timer)
-      // clearTimeout(this._timer)
       this._timer = null
     }
     return this
@@ -272,7 +275,6 @@ export class CustomEventHandler {
   _clearHold() {
     if (!isNull(this._timerHold)) {
       CustomEventHandler.clearRequestTimeout(this._timerHold)
-      // clearTimeout(this._timerHold)
       this._timerHold = null
     }
     return this
@@ -281,7 +283,7 @@ export class CustomEventHandler {
   /**
    * @param {function} fn
    * @param delay {number}
-   * @return {{value:number}}
+   * @return {TimerHandle}
    */
   static requestTimeout(fn, delay) {
 
@@ -303,7 +305,7 @@ export class CustomEventHandler {
   }
 
   /**
-   * @param {object} handle The callback function
+   * @param {TimerHandle} handle
    * @returns {void}
    */
   static clearRequestTimeout(handle) {
@@ -358,15 +360,6 @@ export class CustomEventHandler {
     if (this._hold || (this._hold_or_right && !CustomEventHandler.isRightClick(event))) {
 
       this._element.addEventListener('pointermove', this._pointermove)
-      // this._timerHold = setTimeout(
-      //   () => {
-      //     this._element.removeEventListener('pointermove', this._pointermove)
-      //     if (isNull(this._timerHold) || this._up || this._moving || isNull(this._start)) return
-      //     this._dispatchEvent(CustomEventHandler.HOLD, event)
-      //     this._start = null
-      //   },
-      //   this._holdThreshold
-      // )
       this._timerHold = CustomEventHandler.requestTimeout(
         () => {
           this._element.removeEventListener('pointermove', this._pointermove)
@@ -428,13 +421,8 @@ export class CustomEventHandler {
     } else if (this._doubleTap && ((now - this._end) < this._doubleThreshold)) {
       this._clearTap()
       this._dispatchEvent(CustomEventHandler.DOUBLE_TAP, event)
-    } else if (this._tap && !isNull(this._start) && isNull(this._timer)) {
+    } else if ((this._tap || this._doubleTap) && !isNull(this._start) && isNull(this._timer)) {
       if (this._doubleTap) {
-        // this._timer = setTimeout(() => {
-        //   this._dispatchEvent(CustomEventHandler.TAP, event)
-        //   this._clearTap()
-        // }, this._doubleThreshold)
-
         this._timer = CustomEventHandler.requestTimeout(() => {
           if (event.pointerType !== 'mouse') {
             event.target?.focus()
