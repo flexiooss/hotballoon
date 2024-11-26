@@ -29,10 +29,11 @@ export class OrderedEventHandler extends OrderedEventHandlerBase {
    * @param {DispatchExecution} dispatchExecution
    * @param {String} listenerToken
    * @param {EventHandlerBase~eventClb} clb
+   * @param {boolean} removeListenerBeforeCallabck
    */
-  _invokeCallback(dispatchExecution, listenerToken, clb) {
+  _invokeCallback(dispatchExecution, listenerToken, clb, removeListenerBeforeCallabck) {
     if (isNull(this.#callbackGuard) || this.#callbackGuard.call(null)) {
-      super._invokeCallback(dispatchExecution, listenerToken, clb)
+      super._invokeCallback(dispatchExecution, listenerToken, clb, removeListenerBeforeCallabck)
     }
   }
 }
