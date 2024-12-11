@@ -1,5 +1,7 @@
 import {Store} from "./Store.js";
 import {assertInstanceOf, isNull} from '@flexio-oss/js-commons-bundle/assert/index.js';
+import {globalFlexioImport} from "@flexio-oss/js-commons-bundle/global-import-registry/index.js";
+import {UIDMini} from "@flexio-oss/js-commons-bundle/js-helpers/index.js";
 
 /**
  * @type {?StoragesHandler}
@@ -12,14 +14,19 @@ class StoragesHandler {
    */
   #window
   /**
-   * @type {Map<string, JSStorageStore>}
+   * @type {Map<string, Set<JSStorageStore>>}
    * @private
    */
-  __stores = new Map()
+  #stores = new Map()
   /**
    * @type {boolean}
    */
   #initialized = false
+  /**
+   * @type {?BroadcastChannel}
+   */
+  #bc=null
+
 
   /**
    * @param {Window} window
@@ -27,7 +34,8 @@ class StoragesHandler {
    */
   #init(window) {
     this.#initialized = true
-    window.addEventListener('storage', this.__storageEventClb);
+    this.#bc = new BroadcastChannel(JSStorageStore.BC_KEY);
+    this.#bc.onmessage = this.__storageEventClb
     return this
   }
 
@@ -46,41 +54,77 @@ class StoragesHandler {
   }
 
   /**
-   * @param {StorageEvent} event
+   * @param {MessageEvent} message
    * @private
    */
-  __storageEventClb(event) {
-    /**
-     * @type {StoragesHandler}
-     */
-    const handler = StoragesHandler.getInstance()
-    if (handler.__stores.has(event?.key)) {
-      handler.__stores.get(event.key).dispatchStorageChange()
+  __storageEventClb(message) {
+    const data = message?.data ?? null;
+    if (!isNull(data)) {
+      /**
+       * @type {StoreMessage}
+       */
+      const storeMessage = globalFlexioImport.io.flexio.hotballoon.types.StoreMessage.fromObject(data).build();
+
+      /**
+       * @type {StoragesHandler}
+       */
+      const handler = StoragesHandler.getInstance()
+      if (handler.#stores.has(storeMessage.storageKey())) {
+        /**
+         * @type {Set<JSStorageStore>}
+         */
+        const stores = handler.#stores.get(storeMessage.storageKey());
+        stores.forEach((store) => {
+          if (store.ID() !== storeMessage.storeId()) {
+            store.dispatchStorageChange()
+          }
+        })
+      }
     }
   }
 
   /**
-   * @param {string} key
    * @param {JSStorageStore} store
    * @return {StoragesHandler}
    */
-  register(key, store) {
-    this.__stores.set(key, assertInstanceOf(store, JSStorageStore, 'JSStorageStore'))
+  register(store) {
+    assertInstanceOf(store, JSStorageStore, 'JSStorageStore')
+    if (!this.#stores.has(store.JSStorageKey())) {
+      this.#stores.set(store.JSStorageKey(), new Set());
+    }
+    /**
+     * @type {Set<JSStorageStore>}
+     */
+    const stores = this.#stores.get(store.JSStorageKey());
+
+    stores.add(store)
+
     return this
   }
 
   /**
-   * @param {string} key
+   * @param {JSStorageStore} store
    * @return {StoragesHandler}
    */
-  unregister(key) {
-    this.__stores.delete(key)
+  unregister(store) {
+    assertInstanceOf(store, JSStorageStore, 'JSStorageStore')
+    if (this.#stores.has(store.JSStorageKey())) {
+      /**
+       * @type {Set<JSStorageStore>}
+       */
+      const stores = this.#stores.get(store.JSStorageKey());
+      stores.delete(store)
+    }
+
     return this
   }
 
   remove() {
-    this.__stores.clear()
-    this.#window.removeEventListener('storage', this.__storageEventClb);
+    if (!isNull(this.#bc)) {
+      this.#bc.close()
+      this.#bc = null
+    }
+    this.#stores.clear()
   }
 }
 
@@ -94,10 +138,17 @@ class StoragesHandler {
  */
 export class JSStorageStore extends Store {
   /**
+   * @type {string}
+   */
+  static BC_KEY = 'FLX_STORE_CHANNEL'
+  /**
    * @type {?string}
-   * @private
    */
   #key
+  /**
+   * @type {?Window}
+   */
+  #window
 
   /**
    * @param {StoreConfig<TYPE, TYPE_BUILDER>} storeConfig
@@ -107,9 +158,38 @@ export class JSStorageStore extends Store {
   constructor(storeConfig, window = null, key = null) {
     super(storeConfig)
     this.#key = key
+    this.#window = window
     if (!isNull(window) && !isNull(key)) {
-      StoragesHandler.getInstance(window).register(key, this)
+      StoragesHandler.getInstance(window).register(this)
     }
+  }
+
+  /**
+   * @param {?TYPE} dataStore
+   * @throws {RemovedException}
+   */
+  set(dataStore = null) {
+    super.set(dataStore)
+    let bc = new BroadcastChannel(this.constructor.BC_KEY);
+
+    bc.postMessage(
+      globalFlexioImport.io.flexio.hotballoon.types.StoreMessage.builder()
+        .id(UIDMini())
+        .storageKey(this.#key)
+        .storeId(this.ID())
+        .build()
+        .toObject()
+    )
+    bc.close()
+    bc = null;
+  }
+
+  /**
+   * @return {?string}
+   * @constructor
+   */
+  JSStorageKey() {
+    return this.#key;
   }
 
   dispatchStorageChange() {
@@ -119,7 +199,10 @@ export class JSStorageStore extends Store {
   }
 
   remove() {
-    StoragesHandler.getInstance().unregister(this.#key)
+    StoragesHandler.getInstance().unregister(this)
     super.remove();
   }
 }
+
+
+
