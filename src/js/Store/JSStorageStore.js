@@ -171,7 +171,6 @@ export class JSStorageStore extends Store {
   set(dataStore = null) {
     super.set(dataStore)
     let bc = new BroadcastChannel(this.constructor.BC_KEY);
-
     bc.postMessage(
       globalFlexioImport.io.flexio.hotballoon.types.StoreMessage.builder()
         .id(UIDMini())
