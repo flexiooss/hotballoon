@@ -12,3 +12,9 @@ TimeValue:
   value: time
 DateTimeValue:
   value: date-time
+
+
+StoreMessage:
+  id: string
+  storage-key: string
+  store-id: string

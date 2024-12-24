@@ -1,5 +1,7 @@
 import {deepFreezeSeal} from '@flexio-oss/js-commons-bundle/js-generator-helpers/index.js'
 import {assertType, isNull} from '@flexio-oss/js-commons-bundle/assert/index.js'
+import { TypeCheck as FlxTypeCheck} from '@flexio-oss/js-commons-bundle/flex-types/index.js'
+import {FlexDateTimeExtended} from "@flexio-oss/js-commons-bundle/extended-flex-types";
 
 /**
  * @implements {GenericType<TYPE>}
@@ -15,7 +17,7 @@ export class StoreState {
    */
   #data
   /**
-   * @type {Date}
+   * @type {FlexDateTime}
    */
   #time
   /**
@@ -27,15 +29,12 @@ export class StoreState {
    * @param {(string|Symbol)} storeID
    * @param {?TYPE.} type
    * @param {TYPE} dataStore
-   * @param {?Date} [time=null]
-   * @return {unknown[]}
+   * @param {?FlexDateTime} [time=null]
    */
   constructor(storeID, type, dataStore, time = null) {
     this.#storeID = storeID
     this.#data = dataStore
-
-    time = time || new Date()
-    assertType(time instanceof Date, '`time` should be a `Date`')
+    time = FlxTypeCheck.assertIsFlexDateTimeOrNull(time) || FlexDateTimeExtended.now().toFlexDateTime()
     this.#time = time
     this.#type = type
     return deepFreezeSeal(this)
@@ -56,7 +55,7 @@ export class StoreState {
   }
 
   /**
-   * @return {Date}
+   * @return {FlexDateTime}
    */
   time() {
     return this.#time
@@ -85,7 +84,7 @@ export class StoreState {
    */
   toJSON() {
     return {
-      time: this.#time,
+      time: this.#time.toJSON(),
       data: this.#data
     }
   }
@@ -142,7 +141,7 @@ export class StoreStateBuilder {
   }
 
   /**
-   * @param {Date} value
+   * @param {FlexDateTime} value
    * @return {StoreStateBuilder}
    */
   time(value) {
@@ -166,7 +165,7 @@ export class StoreStateBuilder {
     builder.type(type)
 
     if (jsonObject['time'] !== undefined && !isNull(jsonObject['time'])) {
-      builder.time(new Date(jsonObject['time']))
+      builder.time(FlexDateTimeExtended.fromISO(jsonObject['time']).toFlexDateTime())
     }
     if (jsonObject['data'] !== undefined && !isNull(jsonObject['data'])) {
       builder.data(type.fromObject(jsonObject['data']).build())

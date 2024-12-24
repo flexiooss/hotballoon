@@ -101,7 +101,7 @@ export class JsStorageStoreBuilder extends AbstractStoreBuilder{
    */
   sessionStorage(window) {
     this.#storage = window.sessionStorage
-    // this.#window = window
+    this.#window = window
     return this
   }
 

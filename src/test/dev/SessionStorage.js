@@ -24,6 +24,18 @@ const sessionStorage = new JsStorageStoreBuilder()
   .initialData(Layer.builder().id('test').show(true).build())
   .build()
 
+
+/**
+ * @type {Store<Layer, LayerBuilder>}
+ */
+const sessionStorage2 = new JsStorageStoreBuilder()
+  .name('test-session-2')
+  .key('MY_DATA-sess')
+  .type(Layer)
+  .sessionStorage(app.viewRenderConfig().document().defaultView)
+  .initialData(Layer.builder().id('test').show(true).build())
+  .build()
+
 /**
  * @type {Store<Layer, LayerBuilder>}
  */
@@ -35,13 +47,33 @@ const localStorage = new JsStorageStoreBuilder()
   .initialData(Layer.builder().id('test').show(true).build())
   .build()
 
+/**
+ * @type {Store<Layer, LayerBuilder>}
+ */
+const localStorage2 = new JsStorageStoreBuilder()
+  .name('test-localStorage-2')
+  .key('MY_DATA-loc')
+  .type(Layer)
+  .localStorage(app.viewRenderConfig().document().defaultView)
+  .initialData(Layer.builder().id('test').show(true).build())
+  .build()
+
 sessionStorage.listenChanged(b=>b.callback(state => {
   console.log('SESSION STORAGE CHANGE')
+  console.log(state)
+}).build())
+sessionStorage2.listenChanged(b=>b.callback(state => {
+  console.log('SESSION STORAGE 2 CHANGE')
   console.log(state)
 }).build())
 
 localStorage.listenChanged(b=>b.callback(state => {
   console.log('LOCAL STORAGE CHANGE')
+  console.log(state)
+}).build())
+
+localStorage2.listenChanged(b=>b.callback(state => {
+  console.log('LOCAL STORAGE  2 CHANGE')
   console.log(state)
 }).build())
 
