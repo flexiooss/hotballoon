@@ -201,6 +201,10 @@ export class JSStorageStore extends Store {
     StoragesHandler.getInstance().unregister(this)
     super.remove();
   }
+
+  clean(){
+    this._storage().clean(this.ID())
+  }
 }
 
 

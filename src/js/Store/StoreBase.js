@@ -10,7 +10,7 @@ import {StorageInterface} from './Storage/StorageInterface.js'
 import {OrderedEventHandler} from '../Event/OrderedEventHandler.js'
 import {STORE_CHANGED, STORE_REMOVED} from './StoreInterface.js'
 import {ValidationError} from '../Exception/ValidationError.js'
-import {  OrderedEventListenerConfig} from '@flexio-oss/js-commons-bundle/event-handler/index.js'
+import {OrderedEventListenerConfig} from '@flexio-oss/js-commons-bundle/event-handler/index.js'
 import {StoreBaseConfig} from './StoreBaseConfig.js'
 import {ListenedStore} from './ListenedStore.js'
 import {RemovedException} from "../Exception/RemovedException.js";
@@ -125,7 +125,7 @@ export class StoreBase extends listenableInterface(WithID) {
   }
 
   /**
-   * @returns {StoreState<TYPE>} 
+   * @returns {StoreState<TYPE>}
    * @frozen
    */
   state() {
@@ -199,7 +199,7 @@ export class StoreBase extends listenableInterface(WithID) {
    * @param {!StoreState<TYPE>}  payload
    */
   _dispatch(eventType, payload = this.state()) {
-    if (payload.time().getTime() === this.state().time().getTime()) {
+    if (payload.time().equals(this.state().time())) {
       this.#eventHandler?.dispatch(eventType, payload)
     }
   }
@@ -280,7 +280,7 @@ export class StoreBase extends listenableInterface(WithID) {
     }
     this.#ensureEventHandler()
     if (isFunction(orderedEventListenerConfig)) {
-      orderedEventListenerConfig = orderedEventListenerConfig.call(null,  StoreEventListenerConfigBuilder.listen(this.changedEventName()))
+      orderedEventListenerConfig = orderedEventListenerConfig.call(null, StoreEventListenerConfigBuilder.listen(this.changedEventName()))
     }
     assertInstanceOf(orderedEventListenerConfig, OrderedEventListenerConfig, 'OrderedEventListenerConfig')
     return this.#eventHandler.on(orderedEventListenerConfig)
@@ -298,7 +298,7 @@ export class StoreBase extends listenableInterface(WithID) {
     this.#ensureEventHandler()
 
     if (isFunction(orderedEventListenerConfig)) {
-      orderedEventListenerConfig = orderedEventListenerConfig.call(null,  StoreEventListenerConfigBuilder.listen(this.changedEventName()))
+      orderedEventListenerConfig = orderedEventListenerConfig.call(null, StoreEventListenerConfigBuilder.listen(this.changedEventName()))
     }
 
     assertInstanceOf(orderedEventListenerConfig, OrderedEventListenerConfig, 'OrderedEventListenerConfig')
@@ -308,7 +308,7 @@ export class StoreBase extends listenableInterface(WithID) {
     const token = this.#eventHandler.on(
       orderedEventListenerConfig.withCallback((payload) => {
         if (!this.#removed) {
-          orderedEventListenerConfig.callback().call(null,payload)
+          orderedEventListenerConfig.callback().call(null, payload)
         }
       })
     )
