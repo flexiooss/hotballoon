@@ -46,7 +46,14 @@ export class PublicStoreHandler extends listenableInterface(){
    * @returns {StoreState<TYPE>} state frozen
    */
   state() {
-    return this.#store.state()
+    return this.#store.state();
+  }
+
+  /**
+   * @returns {Promise<StoreState<TYPE>>} state frozen
+   */
+  async asyncState() {
+    return this.#store.asyncState();
   }
 
   /**

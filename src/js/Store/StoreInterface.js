@@ -74,9 +74,16 @@ export class StoreInterface extends listenableInterface(){
   }
 
   /**
-   * @returns {StoreState<TYPE>} state frozen
+   * @returns {StoreState<TYPE>|Promise<StoreState<TYPE>>} state frozen
    */
   state() {
+    NotOverrideException.FROM_INTERFACE('StoreInterface')
+  }
+
+  /**
+   * @returns {Promise<StoreState<TYPE>>}
+   */
+  async asyncState() {
     NotOverrideException.FROM_INTERFACE('StoreInterface')
   }
 
