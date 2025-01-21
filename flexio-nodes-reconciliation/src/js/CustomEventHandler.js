@@ -341,6 +341,23 @@ export class CustomEventHandler {
     })
   }
 
+  trig(){
+    /**
+     * @type {DOMRect}
+     */
+    const RECT =this._element.getBoundingClientRect();
+    this.pointerdownExe(new PointerEvent("pointerdown", {
+      pointerType: 'mouse',
+      clientX:RECT.x,
+      clientY:RECT.y
+    }))
+    this.pointerupExe(new PointerEvent("pointerup", {
+      pointerType: 'mouse',
+      clientX:RECT.x,
+      clientY:RECT.y
+    }))
+  }
+
   /**
    * @type {function}
    * @param {PointerEvent} event
@@ -472,6 +489,8 @@ export class CustomEventHandler {
     this._tap = true
     return this
   }
+
+
 
   /**
    * @return {CustomEventHandler}
