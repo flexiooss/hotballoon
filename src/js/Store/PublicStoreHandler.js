@@ -64,6 +64,13 @@ export class PublicStoreHandler extends listenableInterface(){
   }
 
   /**
+   * @return {Promise<TYPE>} state#data
+   */
+  async asyncData() {
+    return this.asyncState().data()
+  }
+
+  /**
    * @return {(string|symbol)}
    */
   storeId() {
