@@ -1,5 +1,6 @@
 import {StoreState} from './StoreState.js'
 import {ProxyStore} from './ProxyStore.js'
+import {AsyncProxyStore} from "./AsyncProxyStore";
 
 /**
  * @implements {StoreInterface<TYPE>}
@@ -7,16 +8,22 @@ import {ProxyStore} from './ProxyStore.js'
  * @implements {GenericType<TYPE>}
  * @template STORE_TYPE, TYPE, TYPE_BUILDER
  */
-export class OnDemandProxyStore extends ProxyStore {
-
+export class OnDemandAsyncProxyStore extends AsyncProxyStore {
   /**
    * @returns {StoreState<TYPE>} state frozen
    */
   state() {
+    throw new Error('OnDemandAsyncProxyStore:state() can not be sync');
+  }
+
+  /**
+   * @returns {Promise<StoreState<TYPE>>}
+   */
+  async asyncState() {
     return new StoreState(
       this.ID(),
       this.__type__(),
-      this.validateDataStore(this._mapper().call(null, this._store().state().data()))
+      this.validateDataStore(await this._mapper().call(null, (await this._store().asyncState()).data()))
     )
   }
 
@@ -25,7 +32,7 @@ export class OnDemandProxyStore extends ProxyStore {
    * @param {String} eventType
    * @param {!StoreState<TYPE>}  payload
    */
-  _dispatch(eventType, payload) {
+  _dispatch(eventType, payload ) {
     this._eventHandler()?.dispatch(eventType, payload)
   }
 

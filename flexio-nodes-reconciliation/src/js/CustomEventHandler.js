@@ -341,12 +341,24 @@ export class CustomEventHandler {
     })
   }
 
+  trigUp() {
+    /**
+     * @type {DOMRect}
+     */
+    const RECT = this._element.getBoundingClientRect();
+
+    this.pointerupExe(new PointerEvent("pointerup", {
+      pointerType: 'mouse',
+      clientX: RECT.x,
+      clientY: RECT.y
+    }))
+  }
+
   /**
    * @type {function}
    * @param {PointerEvent} event
    */
   pointerdownExe(event) {
-
     this._up = false
     this
       ._resetMoving()
@@ -403,6 +415,7 @@ export class CustomEventHandler {
    * @param {PointerEvent} event
    */
   pointerupExe(event) {
+
     this._up = true
     /**
      * @type {Date}
@@ -431,6 +444,7 @@ export class CustomEventHandler {
           this._clearTap()
         }, this._doubleThreshold)
       } else {
+        if ((now - this._end) < this._doubleThreshold) return;
         if (event.pointerType !== 'mouse') {
           event.target?.focus()
         }
@@ -472,6 +486,7 @@ export class CustomEventHandler {
     this._tap = true
     return this
   }
+
 
   /**
    * @return {CustomEventHandler}

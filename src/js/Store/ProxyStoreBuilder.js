@@ -11,7 +11,7 @@ import {AbstractStoreBuilder} from "./AbstractStoreBuilder.js";
  *
  * @template  STORE_TYPE, STORE_TYPE_BUILDER,  TYPE, TYPE_BUILDER
  */
-export class ProxyStoreBuilder extends AbstractStoreBuilder{
+export class ProxyStoreBuilder extends AbstractStoreBuilder {
   constructor() {
     super()
     /**
@@ -98,34 +98,38 @@ export class ProxyStoreBuilder extends AbstractStoreBuilder{
   }
 
   /**
-   * @return {ProxyStore<STORE_TYPE, STORE_TYPE_BUILDER, TYPE, TYPE_BUILDER>}
+   * @return {ProxyStoreConfig}
+   * @protected
    */
-  build() {
-
+  _buildProxyStoreConfig() {
     const id = this._uniqName()
     const data = this._store.state().data()
     const initialData = this._mapper(data, null)
-
-    return new ProxyStore(
-      new ProxyStoreConfig(
-        id,
-        initialData,
-        this._store,
-        new StoreTypeConfig(
+    return new ProxyStoreConfig(
+      id,
+      initialData,
+      this._store,
+      new StoreTypeConfig(
+        this._type,
+        this._defaultChecker,
+        this._validator
+      ),
+      this._mapper,
+      new InMemoryStorage(
+        this._type,
+        new StoreState(
+          id,
           this._type,
-          this._defaultChecker,
-          this._validator
-        ),
-        this._mapper,
-        new InMemoryStorage(
-          this._type,
-          new StoreState(
-            id,
-            this._type,
-            initialData
-          )
+          initialData
         )
       )
     )
+  }
+
+  /**
+   * @return {ProxyStore<STORE_TYPE, STORE_TYPE_BUILDER, TYPE, TYPE_BUILDER>}
+   */
+  build() {
+    return new ProxyStore(this._buildProxyStoreConfig());
   }
 }

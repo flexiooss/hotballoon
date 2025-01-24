@@ -12,8 +12,9 @@ import {AsyncProxyStore} from "./AsyncProxyStore.js";
 export class AsyncProxyStoreBuilder extends ProxyStoreBuilder {
   /**
    * @type {boolean}
+   * @protected
    */
-  #asyncInitialValue = false
+  _asyncInitialValue = false
   /**
    * @type {number}
    */
@@ -32,7 +33,7 @@ export class AsyncProxyStoreBuilder extends ProxyStoreBuilder {
    * @return {AsyncProxyStoreBuilder}
    */
   asyncInitialValue() {
-    this.#asyncInitialValue = true
+    this._asyncInitialValue = true
     return this
   }
 
@@ -46,17 +47,17 @@ export class AsyncProxyStoreBuilder extends ProxyStoreBuilder {
   }
 
   /**
-   * @return {Promise<AsyncProxyStore<STORE_TYPE, STORE_TYPE_BUILDER, TYPE, TYPE_BUILDER>>}
+   * @return {Promise<ProxyStoreConfig>}
+   * @protected
    */
-  async build() {
-
+  async _buildProxyStoreConfig() {
     const id = this._uniqName()
     /**
      * @type {?TYPE}
      */
     let iniV = null
 
-    if (!this.#asyncInitialValue) {
+    if (!this._asyncInitialValue) {
       /**
        * @type {number}
        */
@@ -65,7 +66,7 @@ export class AsyncProxyStoreBuilder extends ProxyStoreBuilder {
        * @type {ListenedStore}
        */
       const storeHandler = this._store.listenChanged(
-        builder=>builder.callback(() => {
+        builder => builder.callback(() => {
           parentInvoked++
         }).build()
       )
@@ -80,34 +81,38 @@ export class AsyncProxyStoreBuilder extends ProxyStoreBuilder {
 
       do {
         invoked = parentInvoked
-        iniV = await this._mapper.call(null, this._store.state().data(),null)
+        iniV = await this._mapper.call(null, this._store.state().data(), null)
         iteration++
       } while (invoked !== parentInvoked && iteration <= this.#maxInitialMapping)
 
       storeHandler.remove()
     }
 
-    return new AsyncProxyStore(
-      new ProxyStoreConfig(
-        id,
-        iniV,
-        this._store,
-        new StoreTypeConfig(
-          this._type,
-          this._defaultChecker,
-          this._validator
-        ),
-        this._mapper,
-        new InMemoryStorage(
-          this._type,
-          new StoreState(
-            id,
-            this._type,
-            iniV
-          )
-        )
+    return new ProxyStoreConfig(
+      id,
+      iniV,
+      this._store,
+      new StoreTypeConfig(
+        this._type,
+        this._defaultChecker,
+        this._validator
       ),
-      this.#asyncInitialValue
+      this._mapper,
+      new InMemoryStorage(
+        this._type,
+        new StoreState(
+          id,
+          this._type,
+          iniV
+        )
+      )
     )
+  }
+
+  /**
+   * @return {Promise<AsyncProxyStore<STORE_TYPE, STORE_TYPE_BUILDER, TYPE, TYPE_BUILDER>>}
+   */
+  async build() {
+    return new AsyncProxyStore(await this._buildProxyStoreConfig(), this._asyncInitialValue);
   }
 }

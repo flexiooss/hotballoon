@@ -83,7 +83,7 @@ export class StoreBase extends listenableInterface(WithID) {
   #setStorage(value) {
     assertInstanceOf(value, StorageInterface, 'StorageInterface')
     this.#storage = value
-    this.#stateUpdated()
+    this.#stateUpdated(value.get())
   }
 
   /**
@@ -130,6 +130,14 @@ export class StoreBase extends listenableInterface(WithID) {
    */
   state() {
     return this.#storage.get()
+  }
+
+  /**
+   * @returns {Promise<StoreState<TYPE>>}
+   * @frozen
+   */
+  async asyncState() {
+    return this.state()
   }
 
   /**
@@ -198,7 +206,7 @@ export class StoreBase extends listenableInterface(WithID) {
    * @param {String} eventType
    * @param {!StoreState<TYPE>}  payload
    */
-  _dispatch(eventType, payload = this.state()) {
+  _dispatch(eventType, payload) {
     if (payload.time().equals(this.state().time())) {
       this.#eventHandler?.dispatch(eventType, payload)
     }
@@ -235,10 +243,13 @@ export class StoreBase extends listenableInterface(WithID) {
     return data
   }
 
-  #stateUpdated() {
-    this.#logger.info('Store STORE_CHANGED : ' + this.ID(), this.state())
+  /**
+   * @param {StoreState<TYPE>} state
+   */
+  #stateUpdated(currentState) {
+    this.#logger.info('Store STORE_CHANGED : ' + this.ID(), currentState)
 
-    let currentState = this.state()
+    // let currentState = this.state()
 
     try {
       if (!isNull(this.#onceOnUpdated)) {

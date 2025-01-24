@@ -24,8 +24,7 @@ export class Store extends StoreBase {
       enumerable: true,
       value: CLASS_TAG_NAME_STORE
     })
-
-    this._dispatch(STORE_INIT)
+    this._dispatch(STORE_INIT, storeConfig.storage().get())
   }
 
 }
