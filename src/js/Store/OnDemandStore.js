@@ -28,7 +28,7 @@ export class OnDemandStore extends Store {
   state() {
     return this._storage().set(
       this.ID(),
-      this.validateDataStore(this.#mapper.call(null, super.state())
+      this.validateDataStore(this.#mapper.call(null, super.state(),this,true)
       )
     )
   }

@@ -23,7 +23,7 @@ export class OnDemandAsyncProxyStore extends AsyncProxyStore {
     return new StoreState(
       this.ID(),
       this.__type__(),
-      this.validateDataStore(await this._mapper().call(null, (await this._store().asyncState()).data()))
+      this.validateDataStore(await this._mapper().call(null, (await this._store().asyncState()).data(), this,true))
     )
   }
 

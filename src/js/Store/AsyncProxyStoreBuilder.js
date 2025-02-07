@@ -81,7 +81,7 @@ export class AsyncProxyStoreBuilder extends ProxyStoreBuilder {
 
       do {
         invoked = parentInvoked
-        iniV = await this._mapper.call(null, this._store.state().data(), null)
+        iniV = await this._mapper.call(null, (await this._store.asyncState()).data(), null)
         iteration++
       } while (invoked !== parentInvoked && iteration <= this.#maxInitialMapping)
 

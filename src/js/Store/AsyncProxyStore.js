@@ -75,10 +75,14 @@ export class AsyncProxyStore extends StoreBase {
     this.#subscribeToStore()
 
     if (asyncInitialValue) {
-      this._mapper().call(null, this.#parentStore.state().data(), this).then(v => {
-        this.#initialData = v
-        this.set(v)
-      })
+      this.#parentStore.asyncState()
+        .then(state => {
+          this._mapper().call(null, state.data(), this).then(v => {
+            this.#initialData = v
+            this.set(v)
+          })
+        }
+      )
     }
   }
 
@@ -106,7 +110,13 @@ export class AsyncProxyStore extends StoreBase {
     }
     this.#parentStore = TypeCheck.assertStoreBase(store)
     this.#subscribeToStore()
-    this.#mapAndUpdate(this.#parentStore.state(), STORE_CHANGED)
+    this.#parentStore.asyncState()
+      .then((state) => {
+
+        this.#mapAndUpdate(state, STORE_CHANGED)
+      }).catch((err) => {
+      console.error(err)
+    })
     return this
   }
 
@@ -196,7 +206,7 @@ export class AsyncProxyStore extends StoreBase {
    * @return {Promise<AsyncProxyStore>}
    */
   async mapAndUpdate() {
-    await this.#mapAndUpdate(this.#parentStore.state(), STORE_CHANGED)
+    await this.#mapAndUpdate((await this.#parentStore.asyncState()), STORE_CHANGED)
     return this
   }
 
