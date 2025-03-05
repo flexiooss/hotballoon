@@ -415,7 +415,6 @@ export class CustomEventHandler {
    * @param {PointerEvent} event
    */
   pointerupExe(event) {
-
     this._up = true
     /**
      * @type {Date}
@@ -578,8 +577,13 @@ export class CustomEventHandler {
       {
         detail: {
           source: event.target,
+          sourceEvent: event,
           x: isNumber(x) ? x : null,
-          y: isNumber(y) ? y : null
+          y: isNumber(y) ? y : null,
+          altKey: event?.altKey ?? false,
+          ctrlKey: event?.ctrlKey ?? false,
+          metaKey: event?.metaKey ?? false,
+          shiftKey: event?.shiftKey ?? false
         }
       }
     )

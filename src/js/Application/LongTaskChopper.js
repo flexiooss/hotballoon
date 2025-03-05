@@ -56,7 +56,7 @@ class AbstractRunner {
    * @return {number}
    */
   _now() {
-    return this.#config.viewRenderConfig().document()?.defaultView?.performance?.now() ?? new Date().getTime()
+    return this.#config.viewRenderConfig().document()?.defaultView?.performance?.now?.() ?? new Date().getTime()
   }
 
   /**
@@ -64,7 +64,7 @@ class AbstractRunner {
    * @return {boolean}
    */
   _isInputPending() {
-    return this.#config.executionConfig().navigator()?.scheduling?.isInputPending() ?? false
+    return this.#config.executionConfig().navigator()?.scheduling?.isInputPending?.() ?? false
   }
 
   /**
