@@ -467,6 +467,7 @@ export class CustomEventHandler {
    */
   holdOrRight() {
     this._hold_or_right = true
+    this._disableContextualMenu()
     return this
   }
 
@@ -551,8 +552,7 @@ export class CustomEventHandler {
         this.hold();
         break;
       case CustomEventHandler.HOLD_OR_RIGHT:
-        this.holdOrRight();
-        this._disableContextualMenu()
+        this.holdOrRight()
         break;
       case CustomEventHandler.DOUBLE_TAP:
         this.doubleTap();
