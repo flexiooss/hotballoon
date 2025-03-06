@@ -149,10 +149,10 @@ export class ViewContainerBase extends WithID {
 
   /**
    * @param {(String|Symbol)} eventType
-   * @param {Object} payload
+   * @param {?Object} payload
    * @throws {RemovedException}
    */
-  dispatch(eventType, payload) {
+  dispatch(eventType, payload = null) {
 
     if(this.isRemoved() && !([VIEW_REMOVE, VIEW_UNMOUNT]).includes(eventType)){
       throw RemovedException.VIEW_CONTAINER(this.ID())
