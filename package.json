@@ -3,7 +3,7 @@
   "description": "Small JavaScript library for building interfaces by Flexio",
   "main": "index.js",
   "module": "index.js",
-  "version": "0.179.0",
+  "version": "0.180.0",
   "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/flexiooss/hotballoon/issues"
@@ -13,6 +13,7 @@
     "html": "hbshed dev --entry src/test/dev/html.js --server-config local",
     "htmlFragment": "hbshed dev --entry src/test/dev/htmlFragment.js --server-config local",
     "customEvents": "hbshed dev --entry src/test/dev/customEvents.js --server-config local",
+    "eventReconciliation": "hbshed dev --entry src/test/dev/eventReconciliation.js --server-config local",
     "SessionStorage": "hbshed dev --entry src/test/dev/SessionStorage.js --server-config local",
     "intersectionObserver": "hbshed dev --entry src/test/dev/intersectionObserver.js --server-config local",
     "scheduler": "hbshed dev --entry src/test/dev/scheduler.js --server-config local",
@@ -23,7 +24,7 @@
     "@flexio-oss/code-altimeter-js": "1.5.0"
   },
   "dependencies": {
-    "@flexio-oss/js-commons-bundle": "1.181.0",
+    "@flexio-oss/js-commons-bundle": "1.182.0",
     "scheduler-polyfill": "1.3.0"
   },
   "hotballoon-shed": {
