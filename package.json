@@ -13,6 +13,7 @@
     "html": "hbshed dev --entry src/test/dev/html.js --server-config local",
     "htmlFragment": "hbshed dev --entry src/test/dev/htmlFragment.js --server-config local",
     "customEvents": "hbshed dev --entry src/test/dev/customEvents.js --server-config local",
+    "eventReconciliation": "hbshed dev --entry src/test/dev/eventReconciliation.js --server-config local",
     "SessionStorage": "hbshed dev --entry src/test/dev/SessionStorage.js --server-config local",
     "intersectionObserver": "hbshed dev --entry src/test/dev/intersectionObserver.js --server-config local",
     "scheduler": "hbshed dev --entry src/test/dev/scheduler.js --server-config local",
