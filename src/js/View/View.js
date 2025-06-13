@@ -985,6 +985,20 @@ export class View extends ViewContainerBase {
   __H8__(elementBuilder = null) {
     return this.#buildElement(elementBuilder, e('h8'))
   }
+  /**
+   * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
+   * @return {Element}
+   */
+  __DETAILS__(elementBuilder = null) {
+    return this.#buildElement(elementBuilder, e('details'))
+  }
+  /**
+   * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
+   * @return {Element}
+   */
+  __SUMMARY__(elementBuilder = null) {
+    return this.#buildElement(elementBuilder, e('summary'))
+  }
 
 
 }
