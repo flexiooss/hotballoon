@@ -443,7 +443,7 @@ export class CustomEventHandler {
           this._clearTap()
         }, this._doubleThreshold)
       } else {
-        if ((now - this._end) < this._doubleThreshold) return;
+        if ((now - this._start) > this._doubleThreshold) return;
         if (event.pointerType !== 'mouse') {
           event.target?.focus()
         }
