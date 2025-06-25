@@ -1,5 +1,6 @@
 import {
   CLASS_TAG_NAME_ACTION_DISPATCHER,
+  CLASS_TAG_NAME_ACTION_SUBSCRIBER,
   CLASS_TAG_NAME_COMPONENT,
   CLASS_TAG_NAME_DISPATCHER,
   CLASS_TAG_NAME_EXECUTOR,
@@ -10,14 +11,13 @@ import {
   CLASS_TAG_NAME_STORE,
   CLASS_TAG_NAME_VIEW,
   CLASS_TAG_NAME_VIEWCONTAINER,
-  CLASS_TAG_NAME_ACTION_SUBSCRIBER,
   testClassTagName
 } from './HasTagClassNameInterface.js'
 import {assertType, formatType, isNull} from '@flexio-oss/js-commons-bundle/assert/index.js'
 import {ElementDescription} from '../HotballoonNodeElement/ElementDescription.js'
-import {RemovedException} from "../Exception/RemovedException.js";
-import {implementsHBComponent} from "../Component/Component.js";
-import {implementsListenedEvent} from "../Event/ListenedEvent.js";
+import {RemovedException} from '../Exception/RemovedException.js'
+import {implementsHBComponent} from '../Component/Component.js'
+import {implementsListenedEvent} from '../Event/ListenedEvent.js'
 
 
 class TypeCheck {
@@ -191,7 +191,7 @@ class TypeCheck {
   }
 
   /**
-   * @param {ProxyStore<*>} inst
+   * @param {ProxyStore<*>|AsyncProxyStore<*>} inst
    * @param {?Class} [typeOf=null]
    * @param {?string} [stringName=null]
    * @return {ProxyStore<*>}
@@ -201,6 +201,20 @@ class TypeCheck {
     assertType(TypeCheck.isProxyStore(inst, typeOf),
       () => `should be an ProxyStore<${stringName ?? '*'}, given:${formatType(inst)}>`)
     return inst
+  }
+
+  /**
+   * @template OUT_TYPE
+   * @template OUT_TYPE_BUILDER
+   *
+   * @param {ProxyStore<any, OUT_TYPE, OUT_TYPE_BUILDER>|AsyncProxyStore<any, OUT_TYPE, OUT_TYPE_BUILDER>|null} inst
+   * @param {?Class<OUT_TYPE>} [typeOf=null]
+   * @param {?string} [stringName=null]
+   * @return {StoreBase<OUT_TYPE, OUT_TYPE_BUILDER>|null}
+   * @throws {TypeError}
+   */
+  static assertIsProxyStoreOrNull(inst, typeOf = null, stringName = null) {
+    return (isNull(inst)) ? inst : TypeCheck.assertIsProxyStore(inst, typeOf, stringName)
   }
 
   /**
