@@ -1,5 +1,45 @@
 ---
 
 from:
-  - url: git@github.com:Flexio-corp/pipeline-hotballoon-package.git
-    branch: develop
+  - url: git@github.com:Flexio-corp/pipeline-hotballoon-env.git
+    branch: master
+
+stages:
+  - name: prepare-env
+    exec:
+      - $NOTIFY --data-urlencode "status=2" --data-urlencode "current-stage=$STAGE"
+      - git clone -b $FLEXIO_SCRIPTS_BRANCH $FLEXIO_SCRIPTS $WORKSPACE/flexio-ci-scripts && export PATH=$PATH:$WORKSPACE/flexio-ci-scripts/bin
+      - docker pull $CI_TOOLS_IMAGE
+    onlyWhen:
+      - branch in (master, develop, kcrebuild)
+
+  - name: prepare-sources
+    timeout: 60
+    exec:
+      - $NOTIFY --data-urlencode "status=2" --data-urlencode "current-stage=$STAGE"
+      - $HBSHED clean
+      - $HBSHED clean install --registry $JS_REGISTRY --username $JS_REGISTRY_USERNAME --password $JS_REGISTRY_PASSWORD --email $JS_REGISTRY_EMAIL
+      - $HBSHED generate-sources
+      - $HBSHED test
+    onlyWhen:
+      - branch in (master, develop, kcrebuild)
+
+  - name: extract-package
+    timeout: 60
+    exec:
+      - $NOTIFY --data-urlencode "status=2" --data-urlencode "current-stage=$STAGE"
+      - $HBSHED extract-package -T $EXTRACTED_PACKAGE_PATH
+    onlyWhen:
+      - branch in (master, develop, kcrebuild)
+
+  - name: deploy-package
+    timeout: 60
+    exec:
+      - $NOTIFY --data-urlencode "status=2" --data-urlencode "current-stage=$STAGE"
+      - $HBSHED publish -S $EXTRACTED_PACKAGE_PATH --registry $JS_REGISTRY --username $JS_REGISTRY_USERNAME --password $JS_REGISTRY_PASSWORD --email $JS_REGISTRY_EMAIL
+    onlyWhen:
+      - branch in (master, develop, kcrebuild)
+
+env:
+  - EXTRACTED_PACKAGE_PATH: /package
+  - HBSHED: docker run --rm -v $SRC:/src -v $WORKSPACE$EXTRACTED_PACKAGE_PATH:$EXTRACTED_PACKAGE_PATH $CI_TOOLS_IMAGE hbshed

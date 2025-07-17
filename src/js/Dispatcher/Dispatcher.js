@@ -1,4 +1,4 @@
-import {assert, assertType, isArray, isNull} from '@flexio-oss/js-commons-bundle/assert'
+import {assert, assertType, isArray, isNull, TypeCheck} from '@flexio-oss/js-commons-bundle/assert'
 import {EventHandlerBase} from '@flexio-oss/js-commons-bundle/event-handler'
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_DISPATCHER} from '../Types/HasTagClassNameInterface'
 import {EventAction} from '../Action/EventAction'
@@ -62,24 +62,16 @@ export class Dispatcher extends EventHandlerBase {
       return
     }
 
-    assertType(
-      !!isArray(ids),
-      'hotballoon:dispatcher:waitFor: `ids` argument should be Array params'
-    )
-
-    for (const listenerToken of ids) {
+    for (const listenerToken of TypeCheck.assertIsArray(ids)) {
       /**
-       *
        * @type {?DispatchExecution}
        */
       const execution = this.currentExecution()
 
       if (!isNull(execution)) {
-        if (!execution.isHandled(listenerToken)) {
-
-          this._invokeCallback(execution, listenerToken, execution.listeners().get(listenerToken).callback)
+        if (!execution.isHandled(listenerToken) && execution.listeners().get(listenerToken).active()) {
+          this._invokeCallback(execution, listenerToken, execution.listeners().get(listenerToken).callback())
         }
-
       }
     }
   }
