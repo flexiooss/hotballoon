@@ -24,7 +24,7 @@
     "@flexio-oss/code-altimeter-js": "1.5.0"
   },
   "dependencies": {
-    "@flexio-oss/js-commons-bundle": "1.200.0",
+    "@flexio-oss/js-commons-bundle": "1.201.0",
     "scheduler-polyfill": "1.3.0"
   },
   "hotballoon-shed": {
