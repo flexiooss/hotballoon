@@ -15,16 +15,31 @@ class ViewDemo extends View {
     this.#increment++
 
     return this.html(e('div#toto')
+      .listenEvent(
+        UIEventBuilder.pointerEvent().up(e=>{
+          console.log('UP')
+        })
+      )
       .styles({'color': 'red'})
       .appendHTML(`<p>5:: insertion 1</p>`)
       .prependHTML(`<p>3:: insertion 2.1</p>`, `<p>4:: insertion 2.2</p>`)
       .appendHTML(`<p>6:: insertion 3.1</p>`, `<p>7:: insertion 3.2</p>`)
       .childNodes(
+        this.html(e('div#toto')
+          .styles({'background-color': 'pink'})
+          .attributes({'draggable': 'true'})
+          .text(`drag`)
+
+        ),
         this.html(e('div#tutu')
           .styles({'background-color': 'blue'})
           .text(`8:: tutu`)
+          .listenEvent(UIEventBuilder.customEvent().tap(event => {
+              console.log('TAP 1', event)
+            })
+          )
         ),
-        this.__DIV__(e => e.text('HOLD TAP DOUBLE_TAP ' + this.#increment).styles({padding: '2rem'})
+        this.__DIV__(el => el.text('HOLD TAP DOUBLE_TAP ' + this.#increment).styles({padding: '2rem'})
           .listenEvent(UIEventBuilder.customEvent().hold(event => {
               console.log('HOLD', event)
             })
@@ -34,8 +49,15 @@ class ViewDemo extends View {
             })
           )
           .listenEvent(UIEventBuilder.customEvent().tap(event => {
-              console.log('TAP', event)
+              console.log('TAP 2', event)
             })
+          )
+          .childNodes(
+            this.html(e('div#drag2')
+              .styles({'background-color': 'pink'})
+              .attributes({'draggable': 'true'})
+              .text(`drag2`)
+            ),
           )
         ),
         this.__DIV__(e => e.text('HOLD TAP ' + this.#increment).styles({padding: '2rem'})
@@ -44,11 +66,11 @@ class ViewDemo extends View {
             })
           )
           .listenEvent(UIEventBuilder.customEvent().tap(event => {
-              console.log('TAP', event.detail.source)
+              console.log('TAP 3', event.detail.source)
             })
           )
           .childNodes(
-            this.__DIV__(e => e.text('inside 1 ').styles({padding: '2rem', background: 'cyan'})),
+            this.__DIV__(e => e.text('inside 1 ').styles({padding: '2rem', background: 'cyan', 'user-select': 'none'})),
             this.__DIV__(e => e.text('inside 2 ').styles({padding: '2rem', background: 'blue'}),
             )
           )
