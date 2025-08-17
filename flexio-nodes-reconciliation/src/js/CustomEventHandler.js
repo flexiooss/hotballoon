@@ -46,6 +46,7 @@ export class CustomEventHandler {
    * @private
    */
   _moving = false
+
   /**
    * @type {boolean}
    * @private
@@ -75,7 +76,7 @@ export class CustomEventHandler {
    * @type {number}
    * @private
    */
-  _moveThreshold = 5
+  static _moveThreshold = 3
   /**
    * @type {number}
    * @private
@@ -215,7 +216,7 @@ export class CustomEventHandler {
       } else {
         if (event.pointerType === 'mouse' && event.button !== 0) return
       }
-      event.stopPropagation()
+      // event.stopPropagation()
       handler.pointerdownExe(event)
     }
   }
@@ -235,7 +236,8 @@ export class CustomEventHandler {
       } else {
         if (event.pointerType === 'mouse' && event.button !== 0) return
       }
-      event.stopPropagation()
+      // event.stopPropagation()
+
       handler.pointerupExe(event)
     }
   }
@@ -251,7 +253,7 @@ export class CustomEventHandler {
     const handler = CustomEventHandler.findParentHandler(event.target)
     if (!isNull(handler)) {
       if (event.pointerType === 'mouse' && !(event.button === 0 || event.button === -1)) return
-      event.stopPropagation()
+      // event.stopPropagation()
       handler.pointermoveExe(event)
     }
   }
@@ -329,16 +331,26 @@ export class CustomEventHandler {
       //   }
       // }
       if (!this._moving) {
-        if (!isNull(this._startCoords)) {
-          if (Math.abs(this._startCoords.x - event.x) > this._moveThreshold) {
-            this._moving = true
-          }
-          if (Math.abs(this._startCoords.y - event.y) > this._moveThreshold) {
-            this._moving = true
-          }
-        }
+        this._moving = this.constructor.moved(this._startCoords, event);
       }
     })
+  }
+
+  /**
+   * @param {?{x:number, y:number}} startCoords
+   * @param {PointerEvent} event
+   * @return {boolean}
+   */
+  static moved(startCoords, event) {
+    if (!isNull(startCoords)) {
+      if (event.movementX >= this._moveThreshold || Math.abs(startCoords.x - event.x) >= this._moveThreshold) {
+        return true;
+      }
+      if (event.movementY >= this._moveThreshold || Math.abs(startCoords.y - event.y) >= this._moveThreshold) {
+        return true;
+      }
+    }
+    return false;
   }
 
   trigUp() {
@@ -417,6 +429,11 @@ export class CustomEventHandler {
   pointerupExe(event) {
     this._up = true
     /**
+      * @type {boolean}
+     */
+    const moved = this.constructor.moved(this._startCoords, event);
+
+    /**
      * @type {Date}
      */
     const now = new Date()
@@ -427,19 +444,23 @@ export class CustomEventHandler {
         ._resetMoving()
     }
     if (CustomEventHandler.isRightClick(event)) {
-      if (this._hold_or_right) {
+      if (this._hold_or_right && !moved) {
         this._dispatchEvent(CustomEventHandler.HOLD_OR_RIGHT, event)
       }
     } else if (this._doubleTap && ((now - this._end) < this._doubleThreshold)) {
       this._clearTap()
-      this._dispatchEvent(CustomEventHandler.DOUBLE_TAP, event)
+      if (!moved) {
+        this._dispatchEvent(CustomEventHandler.DOUBLE_TAP, event);
+      }
     } else if ((this._tap || this._doubleTap) && !isNull(this._start) && isNull(this._timer)) {
       if (this._doubleTap) {
         this._timer = CustomEventHandler.requestTimeout(() => {
           if (event.pointerType !== 'mouse') {
             event.target?.focus()
           }
-          this._dispatchEvent(CustomEventHandler.TAP, event)
+          if (!moved) {
+            this._dispatchEvent(CustomEventHandler.TAP, event)
+          }
           this._clearTap()
         }, this._doubleThreshold)
       } else {
@@ -447,7 +468,9 @@ export class CustomEventHandler {
         if (event.pointerType !== 'mouse') {
           event.target?.focus()
         }
-        this._dispatchEvent(CustomEventHandler.TAP, event)
+        if (!moved) {
+          this._dispatchEvent(CustomEventHandler.TAP, event)
+        }
       }
 
       this._end = now
