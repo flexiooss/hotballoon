@@ -216,7 +216,6 @@ export class CustomEventHandler {
       } else {
         if (event.pointerType === 'mouse' && event.button !== 0) return
       }
-      // event.stopPropagation()
       handler.pointerdownExe(event)
     }
   }
@@ -236,7 +235,6 @@ export class CustomEventHandler {
       } else {
         if (event.pointerType === 'mouse' && event.button !== 0) return
       }
-      // event.stopPropagation()
 
       handler.pointerupExe(event)
     }
@@ -253,7 +251,7 @@ export class CustomEventHandler {
     const handler = CustomEventHandler.findParentHandler(event.target)
     if (!isNull(handler)) {
       if (event.pointerType === 'mouse' && !(event.button === 0 || event.button === -1)) return
-      // event.stopPropagation()
+
       handler.pointermoveExe(event)
     }
   }
@@ -593,6 +591,7 @@ export class CustomEventHandler {
    * @return {CustomEventHandler}
    */
   _dispatchEvent(eventName, event) {
+    event.stopPropagation(); //TODO à supprimer après nettoyage du code sur EUIs
     let x = Math.round(event.x)
     let y = Math.round(event.y)
 
