@@ -119,8 +119,8 @@ export class CustomEventHandler {
   constructor(element) {
     this._element = TypeCheck.assertIsNode(element);
     this._element[__CustomEventHandler__] = this
-    this._element.addEventListener('pointerdown', this._pointerdown)
-    this._element.addEventListener('pointerup', this._pointerup)
+    this._element.addEventListener('pointerdown', this._pointerdown, true)
+    this._element.addEventListener('pointerup', this._pointerup, true)
     this.#ensureAnimation();
   }
 
@@ -655,8 +655,8 @@ export class CustomEventHandler {
 
   remove() {
     this._element[__CustomEventHandler__] = null
-    this._element.removeEventListener('pointerdown', this._pointerdown)
-    this._element.removeEventListener('pointerup', this._pointerup)
+    this._element.removeEventListener('pointerdown', this._pointerdown, true)
+    this._element.removeEventListener('pointerup', this._pointerup, true)
   }
 }
 
