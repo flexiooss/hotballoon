@@ -3,7 +3,9 @@ import {TypeCheck as HBTypeCheck} from '../Types/TypeCheck.js'
 import {ActionTypeConfig} from './ActionTypeConfig.js'
 
 /**
- * @template TYPE, TYPE_BUILDER
+ *
+ * @template TYPE
+ * @template TYPE_BUILDER
  */
 export class ActionDispatcherConfig {
   /**

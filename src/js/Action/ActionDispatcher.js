@@ -8,9 +8,11 @@ import {EventListenerConfigBuilder} from "@flexio-oss/js-commons-bundle/event-ha
 
 
 /**
+ *
+ * @template TYPE
+ * @template TYPE_BUILDER
  * @implements {HasTagClassNameInterface}
  * @implements {GenericType<TYPE>}
- * @template TYPE, TYPE_BUILDER
  */
 export class ActionDispatcher extends ActionSubscriber {
 

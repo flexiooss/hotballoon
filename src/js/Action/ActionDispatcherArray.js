@@ -3,10 +3,10 @@ import {FlexArray} from '@flexio-oss/js-commons-bundle/flex-types/index.js'
 import {TypeCheck} from '../Types/TypeCheck.js'
 
 /**
- * @extends {FlexArray<Action>}
+ * @extends {FlexArray<ActionDispatcher<*>>}
  */
 export class ActionDispatcherArray extends FlexArray {
   _validate(v) {
-    assertType(TypeCheck.assertIsActionDispatcher(v), 'ActionDispatcherArray: input should be an ActionDispatcher')
+    assertType(TypeCheck.isActionDispatcher(v), 'ActionDispatcherArray: input should be an ActionDispatcher')
   }
 }

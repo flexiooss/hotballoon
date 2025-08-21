@@ -2,7 +2,9 @@ import {StoreBaseConfig} from './StoreBaseConfig.js'
 import {TypeCheck as TypeTypeCheck} from '@flexio-oss/js-commons-bundle/assert/index.js'
 
 /**
- * @template  TYPE, TYPE_BUILDER
+ *
+ * @template TYPE
+ * @template TYPE_BUILDER
  */
 export class OnDemandStoreConfig extends StoreBaseConfig {
   /**

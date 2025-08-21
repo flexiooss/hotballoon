@@ -5,7 +5,9 @@ import {UID} from '@flexio-oss/js-commons-bundle/js-helpers/index.js'
 import {isNull} from '@flexio-oss/js-commons-bundle/assert/index.js'
 
 /**
- * @template TYPE, TYPE_BUILDER
+ *
+ * @template TYPE
+ * @template TYPE_BUILDER
  */
 export class ActionDispatcherBuilder {
   /**

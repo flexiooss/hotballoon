@@ -19,7 +19,9 @@ import {StoreEventListenerConfigBuilder} from "./StoreEventListenerConfigBuilder
 import {listenableInterface} from "./Listenable.js";
 
 /**
- * @template TYPE, TYPE_BUILDER
+ *
+ * @template TYPE
+ * @template TYPE_BUILDER
  * @implements {GenericType<TYPE>}
  * @implements {StoreInterface<TYPE, TYPE_BUILDER>}
  * @implements {Listenable<TYPE>}

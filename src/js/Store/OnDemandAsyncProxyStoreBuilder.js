@@ -1,9 +1,12 @@
-import {OnDemandAsyncProxyStore} from "./OnDemandAsyncProxyStore";
-import {AsyncProxyStoreBuilder} from "./AsyncProxyStoreBuilder";
+import {OnDemandAsyncProxyStore} from './OnDemandAsyncProxyStore'
+import {AsyncProxyStoreBuilder} from './AsyncProxyStoreBuilder'
 
 /**
  *
- * @template  STORE_TYPE, STORE_TYPE_BUILDER,  TYPE, TYPE_BUILDER
+ * @template STORE_TYPE
+ * @template STORE_TYPE_BUILDER
+ * @template TYPE
+ * @template TYPE_BUILDER
  */
 export class OnDemandAsyncProxyStoreBuilder extends AsyncProxyStoreBuilder {
   /**
@@ -11,12 +14,13 @@ export class OnDemandAsyncProxyStoreBuilder extends AsyncProxyStoreBuilder {
    * @return {this}
    */
   mapper(mapper) {
-    return super.mapper(mapper);
+    return super.mapper(mapper)
   }
+
   /**
    * @return {Promise<AsyncProxyStore<STORE_TYPE, STORE_TYPE_BUILDER, TYPE, TYPE_BUILDER>>}
    */
   async build() {
-    return new OnDemandAsyncProxyStore(await this._buildProxyStoreConfig(), this._asyncInitialValue);
+    return new OnDemandAsyncProxyStore(await this._buildProxyStoreConfig(), this._asyncInitialValue)
   }
 }

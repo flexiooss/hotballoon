@@ -282,7 +282,7 @@ export class CustomEventHandler {
 
   /**
    * @param {function} fn
-   * @param delay {number}
+   * @param {number} delay
    * @return {TimerHandle}
    */
   static requestTimeout(fn, delay) {

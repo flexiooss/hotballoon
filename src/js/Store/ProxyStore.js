@@ -8,10 +8,13 @@ import {STORE_CHANGED} from "./StoreInterface.js";
 
 
 /**
+ *
+ * @template STORE_TYPE
+ * @template TYPE
+ * @template TYPE_BUILDER
  * @implements {StoreInterface<TYPE>}
  * @implements {HasTagClassNameInterface}
  * @implements {GenericType<TYPE>}
- * @template STORE_TYPE, TYPE, TYPE_BUILDER
  */
 export class ProxyStore extends StoreBase {
   /**
@@ -19,7 +22,7 @@ export class ProxyStore extends StoreBase {
    */
   #shouldUpdate = true
   /**
-   * @type ProxyStoreConfig<STORE_TYPE, TYPE, TYPE_BUILDER>
+   * @type {ProxyStoreConfig<STORE_TYPE, TYPE, TYPE_BUILDER>}
    */
   #config
   /**
