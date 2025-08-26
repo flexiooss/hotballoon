@@ -6,7 +6,7 @@ import {OrderedEventHandler} from "../Event/OrderedEventHandler.js";
  */
 export class ListenedStore extends listenedEventInterface(){
   /**
-   * @type  {OrderedEventHandler}
+   * @type {OrderedEventHandler}
    */
   #eventHandler
   /**

@@ -3,7 +3,9 @@ import {assertType, isString, isSymbol} from '@flexio-oss/js-commons-bundle/asse
 import {StoreTypeConfig} from './StoreTypeConfig.js'
 
 /**
- * @template TYPE, TYPE_BUILDER
+ *
+ * @template TYPE
+ * @template TYPE_BUILDER
  */
 export class StoreBaseConfig {
   /**
@@ -62,7 +64,7 @@ export class StoreBaseConfig {
 
   /**
    *
-   * @return {StoreTypeConfig~validatorClb<TYPE>}
+   * @return {?ValueObjectValidator}
    */
   validator() {
     return this._storeTypeConfig.validator()

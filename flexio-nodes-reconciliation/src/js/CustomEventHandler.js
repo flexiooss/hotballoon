@@ -119,8 +119,8 @@ export class CustomEventHandler {
   constructor(element) {
     this._element = TypeCheck.assertIsNode(element);
     this._element[__CustomEventHandler__] = this
-    this._element.addEventListener('pointerdown', this._pointerdown)
-    this._element.addEventListener('pointerup', this._pointerup)
+    this._element.addEventListener('pointerdown', this._pointerdown, true)
+    this._element.addEventListener('pointerup', this._pointerup, true)
     this.#ensureAnimation();
   }
 
@@ -216,7 +216,6 @@ export class CustomEventHandler {
       } else {
         if (event.pointerType === 'mouse' && event.button !== 0) return
       }
-      // event.stopPropagation()
       handler.pointerdownExe(event)
     }
   }
@@ -236,7 +235,6 @@ export class CustomEventHandler {
       } else {
         if (event.pointerType === 'mouse' && event.button !== 0) return
       }
-      // event.stopPropagation()
 
       handler.pointerupExe(event)
     }
@@ -253,7 +251,7 @@ export class CustomEventHandler {
     const handler = CustomEventHandler.findParentHandler(event.target)
     if (!isNull(handler)) {
       if (event.pointerType === 'mouse' && !(event.button === 0 || event.button === -1)) return
-      // event.stopPropagation()
+
       handler.pointermoveExe(event)
     }
   }
@@ -284,7 +282,7 @@ export class CustomEventHandler {
 
   /**
    * @param {function} fn
-   * @param delay {number}
+   * @param {number} delay
    * @return {TimerHandle}
    */
   static requestTimeout(fn, delay) {
@@ -593,6 +591,7 @@ export class CustomEventHandler {
    * @return {CustomEventHandler}
    */
   _dispatchEvent(eventName, event) {
+    event.stopPropagation(); //TODO à supprimer après nettoyage du code sur EUIs
     let x = Math.round(event.x)
     let y = Math.round(event.y)
 
@@ -656,8 +655,8 @@ export class CustomEventHandler {
 
   remove() {
     this._element[__CustomEventHandler__] = null
-    this._element.removeEventListener('pointerdown', this._pointerdown)
-    this._element.removeEventListener('pointerup', this._pointerup)
+    this._element.removeEventListener('pointerdown', this._pointerdown, true)
+    this._element.removeEventListener('pointerup', this._pointerup, true)
   }
 }
 

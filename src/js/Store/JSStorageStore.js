@@ -130,7 +130,9 @@ class StoragesHandler {
 
 
 /**
- * @template TYPE, TYPE_BUILDER
+ *
+ * @template TYPE
+ * @template TYPE_BUILDER
  * @extends {StoreBase<TYPE, TYPE_BUILDER>}
  * @implements {StoreInterface<TYPE, TYPE_BUILDER>}
  * @implements {GenericType<TYPE>}

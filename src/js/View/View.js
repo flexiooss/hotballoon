@@ -165,7 +165,9 @@ export class View extends ViewContainerBase {
   }
 
   /**
-   * @template STORE_TYPE,STORE_TYPE_BUILDER
+   *
+   * @template STORE_TYPE
+   * @template STORE_TYPE_BUILDER
    * @description subscribe subView an events of this fieldView
    * @param {StoreInterface<STORE_TYPE,STORE_TYPE_BUILDER>} store
    * @param {function(data:StoreState<STORE_TYPE>):boolean} clb

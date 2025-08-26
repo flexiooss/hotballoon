@@ -2,10 +2,13 @@ import {StoreState} from './StoreState.js'
 import {ProxyStore} from './ProxyStore.js'
 
 /**
+ *
+ * @template STORE_TYPE
+ * @template TYPE
+ * @template TYPE_BUILDER
  * @implements {StoreInterface<TYPE>}
  * @implements {HasTagClassNameInterface}
  * @implements {GenericType<TYPE>}
- * @template STORE_TYPE, TYPE, TYPE_BUILDER
  */
 export class OnDemandProxyStore extends ProxyStore {
 

@@ -182,7 +182,7 @@ class Observable {
    */
   #element
   /**
-   * @type function(el:HTMLElement, visibility: boolean):void
+   * @type {function(el:HTMLElement, visibility: boolean):void}
    */
   #callback
 

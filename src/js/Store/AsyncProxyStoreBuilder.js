@@ -7,7 +7,10 @@ import {AsyncProxyStore} from "./AsyncProxyStore.js";
 
 /**
  *
- * @template  STORE_TYPE, STORE_TYPE_BUILDER,  TYPE, TYPE_BUILDER
+ * @template STORE_TYPE
+ * @template STORE_TYPE_BUILDER
+ * @template TYPE
+ * @template TYPE_BUILDER
  */
 export class AsyncProxyStoreBuilder extends ProxyStoreBuilder {
   /**
@@ -47,7 +50,7 @@ export class AsyncProxyStoreBuilder extends ProxyStoreBuilder {
   }
 
   /**
-   * @return {Promise<ProxyStoreConfig>}
+   * @return {Promise<ProxyStoreConfig<STORE_TYPE, TYPE, TYPE_BUILDER>>}
    * @protected
    */
   async _buildProxyStoreConfig() {
