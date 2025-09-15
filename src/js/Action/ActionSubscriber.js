@@ -1,18 +1,18 @@
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_ACTION_SUBSCRIBER} from '../Types/HasTagClassNameInterface.js'
 import {WithID} from '../abstract/WithID.js'
-import {assertInstanceOf, isNull} from '@flexio-oss/js-commons-bundle/assert/index.js'
+import {assertInstanceOf, isNull, TypeCheck} from '@flexio-oss/js-commons-bundle/assert/index.js'
 import {ActionDispatcherConfig} from './ActionDispatcherConfig.js'
 import {ListenedAction} from './ListenedAction.js'
-import {EventListenerConfigBuilder} from '@flexio-oss/js-commons-bundle/event-handler/index.js'
-import {RemovedException} from "../Exception/RemovedException.js";
-import {ActionResponseBuilder} from "./ActionResponseBuilder.js";
-import {TypeCheck} from "@flexio-oss/js-commons-bundle/assert/index.js";
-import {ActionEventListenerConfigBuilder} from "./ActionEventListenerConfigBuilder.js";
+import {RemovedException} from '../Exception/RemovedException.js'
+import {ActionResponseBuilder} from './ActionResponseBuilder.js'
+import {ActionEventListenerConfigBuilder} from './ActionEventListenerConfigBuilder.js'
 
 /**
+ *
+ * @template TYPE
+ * @template TYPE_BUILDER
  * @implements {HasTagClassNameInterface}
  * @implements {GenericType<TYPE>}
- * @template TYPE, TYPE_BUILDER
  */
 export class ActionSubscriber extends WithID {
   /**
@@ -20,7 +20,7 @@ export class ActionSubscriber extends WithID {
    */
   #removed = false
   /**
-   * @type ActionDispatcherConfig<TYPE, TYPE_BUILDER>}
+   * @type {ActionDispatcherConfig<TYPE, TYPE_BUILDER>}
    */
   #config
 
@@ -41,7 +41,23 @@ export class ActionSubscriber extends WithID {
   }
 
   /**
-   * @return {ActionDispatcherConfig<TYPE, TYPE_BUILDER>}}
+   * @param {ActionSubscriber} inst
+   * @return {ActionSubscriber}
+   */
+  static from(inst) {
+    return new this(inst.config())
+  }
+
+  /**
+   * @param {string} id
+   * @return {string}
+   */
+  static responseEventDispatcher(id) {
+    return `__ACTION_RESPONSE__${id}`
+  }
+
+  /**
+   * @return {ActionDispatcherConfig<TYPE, TYPE_BUILDER>}
    */
   config() {
     return this.#config
@@ -123,21 +139,5 @@ export class ActionSubscriber extends WithID {
    */
   isRemoved() {
     return this.#removed
-  }
-
-  /**
-   * @param {ActionSubscriber} inst
-   * @return {ActionSubscriber}
-   */
-  static from(inst) {
-    return new this(inst.config())
-  }
-
-  /**
-   * @param {string} id
-   * @return {string}
-   */
-  static responseEventDispatcher(id) {
-    return `__ACTION_RESPONSE__${id}`
   }
 }

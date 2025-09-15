@@ -10,10 +10,13 @@ import {Logger} from "@flexio-oss/js-commons-bundle/hot-log/index.js";
 
 
 /**
+ *
+ * @template STORE_TYPE
+ * @template TYPE
+ * @template TYPE_BUILDER
  * @implements {StoreInterface<TYPE>}
  * @implements {HasTagClassNameInterface}
  * @implements {GenericType<TYPE>}
- * @template STORE_TYPE, TYPE, TYPE_BUILDER
  */
 export class AsyncProxyStore extends StoreBase {
   /**
@@ -21,7 +24,7 @@ export class AsyncProxyStore extends StoreBase {
    */
   #shouldUpdate = true
   /**
-   * @type ProxyStoreConfig<STORE_TYPE, TYPE, TYPE_BUILDER>
+   * @type {ProxyStoreConfig<STORE_TYPE, TYPE, TYPE_BUILDER>}
    */
   #config
   /**

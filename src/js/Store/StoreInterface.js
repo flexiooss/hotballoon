@@ -7,11 +7,13 @@ export const STORE_REMOVED = '__HB__.STORE.REMOVED'
 
 
 /**
+ *
+ * @template TYPE
+ * @template TYPE_BUILDER
  * @interface
  * @extends WithID
  * @implements {GenericType<TYPE>}
  * @implements {Listenable<TYPE>}
- * @template TYPE, TYPE_BUILDER
  */
 export class StoreInterface extends listenableInterface(){
   /**

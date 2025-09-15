@@ -2,7 +2,17 @@ import {assertType, isClass, isFunction, isNull, TypeCheck} from '@flexio-oss/js
 import {TypeCheck as TypeCheckValidator} from '@flexio-oss/js-commons-bundle/js-validator-helper/index.js'
 
 /**
- * @template TYPE, TYPE_BUILDER
+ *
+ * @callback StoreTypeConfig~defaultCheckerClb
+ * @template TYPE
+ * @param {TYPE} data
+ * @returns {TYPE}
+ */
+
+/**
+ *
+ * @template TYPE
+ * @template TYPE_BUILDER
  */
 export class StoreTypeConfig {
   /**

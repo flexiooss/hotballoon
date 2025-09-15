@@ -102,7 +102,9 @@ export class ProxyStoreListenerThrottledBuilder {
 }
 
 /**
- * @template TYPE, TYPE_BUILDER
+ *
+ * @template TYPE
+ * @template TYPE_BUILDER
  * @implements {Listenable<TYPE>}
  * @implements {Component}
  */

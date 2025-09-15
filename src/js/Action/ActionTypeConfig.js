@@ -3,7 +3,9 @@ import {TypeCheck} from '@flexio-oss/js-commons-bundle/js-validator-helper/index
 
 
 /**
- * @template TYPE, TYPE_BUILDER
+ *
+ * @template TYPE
+ * @template TYPE_BUILDER
  */
 export class ActionTypeConfig {
   /**

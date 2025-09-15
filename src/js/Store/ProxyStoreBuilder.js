@@ -9,7 +9,10 @@ import {AbstractStoreBuilder} from "./AbstractStoreBuilder.js";
 
 /**
  *
- * @template  STORE_TYPE, STORE_TYPE_BUILDER,  TYPE, TYPE_BUILDER
+ * @template STORE_TYPE
+ * @template STORE_TYPE_BUILDER
+ * @template TYPE
+ * @template TYPE_BUILDER
  */
 export class ProxyStoreBuilder extends AbstractStoreBuilder {
   constructor() {
@@ -21,7 +24,7 @@ export class ProxyStoreBuilder extends AbstractStoreBuilder {
     this._store = null
 
     /**
-     * @type  {?ValueObjectValidator}
+     * @type {?ValueObjectValidator}
      * @protected
      */
     this._validator = null
@@ -98,7 +101,7 @@ export class ProxyStoreBuilder extends AbstractStoreBuilder {
   }
 
   /**
-   * @return {ProxyStoreConfig}
+   * @return {ProxyStoreConfig<STORE_TYPE, TYPE, TYPE_BUILDER>}
    * @protected
    */
   _buildProxyStoreConfig() {

@@ -4,10 +4,11 @@ import {listenableInterface} from "./Listenable.js";
 
 /**
  *
+ * @template TYPE
+ * @template TYPE_BUILDER
  * @implements {StoreInterface<TYPE, TYPE_BUILDER>}
  * @implements  {HasTagClassNameInterface}
  * @implements {GenericType<TYPE>}
- * @template TYPE, TYPE_BUILDER
  * @implements {Listenable<TYPE>}
  */
 export class PublicStoreHandler extends listenableInterface(){

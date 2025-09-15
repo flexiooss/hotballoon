@@ -7,7 +7,9 @@ import {JSStorageStore} from "./JSStorageStore.js";
 import {AbstractStoreBuilder} from "./AbstractStoreBuilder.js";
 
 /**
- * @template TYPE, TYPE_BUILDER
+ *
+ * @template TYPE
+ * @template TYPE_BUILDER
  */
 export class JsStorageStoreBuilder extends AbstractStoreBuilder{
 
@@ -16,7 +18,7 @@ export class JsStorageStoreBuilder extends AbstractStoreBuilder{
    */
   #initialData = null
   /**
-   * @type  {?ValueObjectValidator}
+   * @type {?ValueObjectValidator}
    */
   #validator = null
   /**

@@ -4,7 +4,8 @@ import {isImplement} from '@flexio-oss/js-commons-bundle/js-helpers/index.js'
 export const listenableInterface = (Base=class{}) => {
   /**
    * @interface
-   * @template TYPE, TYPE_BUILDER
+   * @template TYPE
+   * @template TYPE_BUILDER
    * @mixin
    */
   return class Listenable extends Base{

@@ -109,7 +109,7 @@ class ListenedAction extends listenedEventInterface(){
   #token
 
   /**
-   * @param  {ActionsHandler} handler
+   * @param {ActionsHandler} handler
    * @param {string} token
    */
   constructor(handler, token) {

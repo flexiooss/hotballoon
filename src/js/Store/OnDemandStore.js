@@ -1,7 +1,9 @@
 import {Store} from './Store.js'
 
 /**
- * @template TYPE, TYPE_BUILDER
+ *
+ * @template TYPE
+ * @template TYPE_BUILDER
  * @extends {Store<TYPE, TYPE_BUILDER>}
  * @implements {StoreInterface<TYPE, TYPE_BUILDER>}
  * @implements {GenericType<TYPE>}

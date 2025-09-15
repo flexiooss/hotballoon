@@ -9,7 +9,9 @@ import {SingleStateStore} from "./SingleStateStore.js";
 import {AbstractStoreBuilder} from "./AbstractStoreBuilder.js";
 
 /**
- * @template TYPE, TYPE_BUILDER
+ *
+ * @template TYPE
+ * @template TYPE_BUILDER
  */
 export class InMemoryStoreBuilder extends AbstractStoreBuilder{
   /**
@@ -17,7 +19,7 @@ export class InMemoryStoreBuilder extends AbstractStoreBuilder{
    */
   #initialData = null
   /**
-   * @type  {?ValueObjectValidator}
+   * @type {?ValueObjectValidator}
    */
   #validator = null
   /**
