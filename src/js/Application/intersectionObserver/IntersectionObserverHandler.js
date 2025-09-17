@@ -80,6 +80,20 @@ class Handler {
     )
     element.addEventListener('__HB_VISIBLE__', this.execVisible)
     element.addEventListener('__HB_HIDDEN__', this.execHidden)
+    if (this.#isVisible(element)) {
+      setTimeout(
+        () => {
+          element.dispatchEvent(new Event('__HB_VISIBLE__'))
+        }
+      )
+    } else {
+      setTimeout(
+        () => {
+          element.dispatchEvent(new Event('__HB_HIDDEN__'))
+        }
+      )
+    }
+    this.#observer.observe(element)
     return this
   }
 
@@ -91,7 +105,7 @@ class Handler {
    */
   observeOnce(group, element, clb) {
     TypeCheck.assertIsNode(element)
-    this.#observer.observe(element)
+
     if (isEmpty(element.id)) {
       throw new Error('Handler:IntersectionObserver: element should have an id')
     }
@@ -107,6 +121,15 @@ class Handler {
       })
     )
     element.addEventListener('__HB_VISIBLE__', this.execVisible)
+    if (this.#isVisible(element)) {
+      setTimeout(
+        () => {
+          element.dispatchEvent(new Event('__HB_VISIBLE__'))
+        }
+      )
+    } else {
+      this.#observer.observe(element)
+    }
     return this
   }
 
@@ -121,6 +144,21 @@ class Handler {
     element.removeEventListener('__HB_VISIBLE__', this.execVisible)
     element.removeEventListener('__HB_HIDDEN__', this.execHidden)
     return this
+  }
+
+  /**
+   * @param {HTMLElement} element
+   * @return {boolean}
+   */
+  #isVisible(element) {
+    const rect = element.getBoundingClientRect();
+    return (
+      rect.top <= (element.ownerDocument.defaultView.innerHeight || element.ownerDocument.documentElement.clientHeight) &&
+      rect.left <= (element.ownerDocument.defaultView.innerWidth || element.ownerDocument.documentElement.clientWidth) &&
+      rect.bottom >= 0 &&
+      rect.right >= 0
+    );
+
   }
 
   /**
