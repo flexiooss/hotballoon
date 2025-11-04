@@ -10,8 +10,16 @@ class Handler {
    * @type {Map<string, Observable>}
    */
   callBacks = new Map()
+  /**
+   * @type {(callback: function) => number}
+   */
+  requestIdleCallback
 
-  constructor() {
+  /**
+   * @param {function} requestIdleCallback
+   * */
+  constructor(requestIdleCallback) {
+
     this.#observer = new IntersectionObserver(function (entries, observer) {
       entries.forEach(function (entry) {
         let item = entry.target;
@@ -22,7 +30,12 @@ class Handler {
           item.dispatchEvent(new Event('__HB_HIDDEN__'))
         }
       });
+    }, {
+      rootMargin: '100px 0px 100px 0px',
+      threshold: 0
     })
+
+    this.requestIdleCallback = requestIdleCallback
   }
 
   /**
@@ -31,8 +44,8 @@ class Handler {
   execVisible(event) {
     let item = event.target
     let handler = getObserverHandler()
-    if (handler.callBacks.has(item.id)) {
-      setTimeout(() => {
+    if (handler && handler.callBacks.has(item.id)) {
+      handler.requestIdleCallback.call(handler, () => {
         if (handler.callBacks.has(item.id)) {
           handler.callBacks.get(item.id).callback().call(null, item, true)
         }
@@ -46,8 +59,8 @@ class Handler {
   execHidden(event) {
     let item = event.target
     let handler = getObserverHandler()
-    if (handler.callBacks.has(item.id)) {
-      setTimeout(() => {
+    if (handler && handler.callBacks.has(item.id)) {
+      handler.requestIdleCallback.call(handler, () => {
         if (handler.callBacks.has(item.id)) {
           handler.callBacks.get(item.id).callback().call(null, item, false)
         }
@@ -81,13 +94,13 @@ class Handler {
     element.addEventListener('__HB_VISIBLE__', this.execVisible)
     element.addEventListener('__HB_HIDDEN__', this.execHidden)
     if (this.#isVisible(element)) {
-      setTimeout(
+      this.requestIdleCallback.call(null,
         () => {
           element.dispatchEvent(new Event('__HB_VISIBLE__'))
         }
       )
     } else {
-      setTimeout(
+      this.requestIdleCallback.call(null,
         () => {
           element.dispatchEvent(new Event('__HB_HIDDEN__'))
         }
@@ -122,7 +135,7 @@ class Handler {
     )
     element.addEventListener('__HB_VISIBLE__', this.execVisible)
     if (this.#isVisible(element)) {
-      setTimeout(
+      this.requestIdleCallback.call(null,
         () => {
           element.dispatchEvent(new Event('__HB_VISIBLE__'))
         }
@@ -194,11 +207,21 @@ class Handler {
 let observerHandler = null
 
 /**
- * @return {Handler}
+ * @return {?Handler}
  */
 const getObserverHandler = () => {
+  // if (isNull(observerHandler)) {
+  //   observerHandler = new Handler()
+  // }
+  return observerHandler
+}
+/**
+ * @param {function} requestIdleCallback
+ * @return {Handler}
+ */
+const ensureObserverHandler = (requestIdleCallback) => {
   if (isNull(observerHandler)) {
-    observerHandler = new Handler()
+    observerHandler = new Handler(requestIdleCallback)
   }
   return observerHandler
 }
@@ -276,8 +299,12 @@ export class IntersectionObserverHandler {
    * @param {?Window} window
    */
   constructor(window) {
+    this.__requestIdleCallback = (clb) => setTimeout(clb)
     if (!isNull(window)) {
       this.#window = window
+      if ('requestIdleCallback' in window) {
+        this.__requestIdleCallback = (clb) => window.requestIdleCallback(clb)
+      }
     }
   }
 
@@ -286,7 +313,7 @@ export class IntersectionObserverHandler {
    */
   #ensureObserver() {
     if (isNull(this.#observer) && !isNull(this.#window) && 'IntersectionObserver' in this.#window) {
-      this.#observer = getObserverHandler()
+      this.#observer = ensureObserverHandler(this.__requestIdleCallback)
     }
     return this
   }
@@ -301,7 +328,7 @@ export class IntersectionObserverHandler {
     if (!isNull(this.#observer)) {
       this.#observer.observe(this.#id, element, clb)
     } else {
-      setTimeout(clb, 100)
+      this.__requestIdleCallback.call(null, clb)
     }
     return this
   }
@@ -316,7 +343,7 @@ export class IntersectionObserverHandler {
     if (!isNull(this.#observer)) {
       this.#observer.observeOnce(this.#id, element, clb)
     } else {
-      setTimeout(clb, 100)
+      this.__requestIdleCallback.call(null, clb)
     }
     return this
   }
