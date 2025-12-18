@@ -1,6 +1,7 @@
 import {TypeCheck, NotOverrideException, isUndefined, assertType} from '@flexio-oss/js-commons-bundle/assert/index.js'
 import {DOMError} from "../Exception/DOMError.js";
 import {Logger} from '@flexio-oss/js-commons-bundle/hot-log/index.js';
+import {isNull} from "@flexio-oss/js-commons-bundle/assert";
 
 /**
  * @interface
@@ -26,6 +27,13 @@ export class DomAccessor {
    * @return {this}
    */
   clear() {
+    throw NotOverrideException.FROM_INTERFACE('DomAccessor')
+  }
+
+  /**
+   * @return {RafThrottleBuilder}
+   */
+  rafThrottleBuilder() {
     throw NotOverrideException.FROM_INTERFACE('DomAccessor')
   }
 }
@@ -57,7 +65,7 @@ export class AsyncDomAccessor extends DomAccessor {
   /**
    * @type {Logger}
    */
-  #logger = Logger.getLogger(this.constructor.name,'AsyncDomAccessor' )
+  #logger = Logger.getLogger(this.constructor.name, 'AsyncDomAccessor')
 
   /**
    * @param {Window} window
@@ -73,6 +81,13 @@ export class AsyncDomAccessor extends DomAccessor {
       || function (cb) {
         return setTimeout(cb, 16)
       }
+  }
+
+  /**
+   * @return {RafThrottleBuilder}
+   */
+  rafThrottleBuilder() {
+    return new RafThrottleBuilder(this.#window)
   }
 
   /**
@@ -128,9 +143,9 @@ export class AsyncDomAccessor extends DomAccessor {
      */
     const start = Date.now()
     try {
-      this.#logger.debug('FLUSHING READS:'+this.#reads.length)
+      this.#logger.debug('FLUSHING READS:' + this.#reads.length)
       if (this.#runTasks(this.#reads, start)) {
-        this.#logger.debug('FLUSHING WRITES:'+this.#writes.length)
+        this.#logger.debug('FLUSHING WRITES:' + this.#writes.length)
         this.#runTasks(this.#writes, start)
       }
     } catch (e) {
@@ -182,4 +197,91 @@ export class SyncDomAccessor extends DomAccessor {
   clear() {
     return this
   }
+
+  /**
+   * @return {RafThrottleBuilder}
+   */
+  rafThrottleBuilder() {
+    return new RafThrottleBuilder(null)
+  }
+}
+
+class RafThrottleBuilder {
+  /**
+   * @type ?window
+   */
+  #window
+
+  constructor(window) {
+    this.#window = window;
+  }
+
+  /**
+   * @param {function} task
+   * @return {RafThrottle}
+   */
+  build(task) {
+    return new RafThrottle(this.#window, task)
+  }
+}
+
+class RafThrottle {
+  /**
+   * @type ?window
+   */
+  #window
+  /**
+   * @type function
+   */
+  #task
+  /**
+   * @type {?number}
+   */
+  #requestId = null
+  /**
+   * @type ?[]
+   */
+  #lastArgs
+
+  /**
+   * @param {?window} window
+   * @param {function} task
+   */
+  constructor(window, task) {
+    this.#window = window;
+    this.#task = task;
+  }
+
+  /**
+   * @param {Object} context
+   * @param {...Any} args
+   */
+  invoke(context, ...args) {
+    this.#lastArgs = args;
+    if (isNull(this.#requestId)) {
+      if (isNull(this.#window)) {
+        this.#requestId = setTimeout(this.#later.bind(this, context), 16)
+      } else {
+        this.#requestId = this.#window.requestAnimationFrame(this.#later.bind(this, context))
+      }
+    }
+  }
+
+  cancel() {
+    if (!isNull(this.#requestId)) {
+      if (isNull(this.#window)) {
+        clearTimeout(this.#requestId)
+      } else {
+        this.#window.cancelAnimationFrame(this.#requestId)
+      }
+      this.#requestId = null
+    }
+  }
+
+  #later(context) {
+    this.#requestId = null
+    this.#task.apply(context, this.#lastArgs)
+  }
+
+
 }
