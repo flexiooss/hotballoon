@@ -1,4 +1,4 @@
-import {assertInstanceOf,  isNull,  TypeCheck} from '@flexio-oss/js-commons-bundle/assert/index.js'
+import {assertInstanceOf, isNull, TypeCheck} from '@flexio-oss/js-commons-bundle/assert/index.js'
 import {Sequence} from '@flexio-oss/js-commons-bundle/js-helpers/index.js'
 import {WithID} from '../abstract/WithID.js'
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_COMPONENT} from '../Types/HasTagClassNameInterface.js'
@@ -8,9 +8,9 @@ import {StoresHandler} from '../Store/StoresHandler.js'
 import {ViewContainersHandler} from '../View/ViewContainersHandler.js'
 import {OrderedEventHandler} from '../Event/OrderedEventHandler.js'
 import {OrderedEventListenerConfigBuilder} from '@flexio-oss/js-commons-bundle/event-handler/index.js'
-import {Logger} from '@flexio-oss/js-commons-bundle/hot-log/index.js';
-import {IntersectionObserverHandler} from "../Application/intersectionObserver/IntersectionObserverHandler.js";
-import {SchedulerHandlerInterface} from "../Scheduler/SchedulerHandler.js";
+import {Logger} from '@flexio-oss/js-commons-bundle/hot-log/index.js'
+import {IntersectionObserverHandler} from '../Application/intersectionObserver/IntersectionObserverHandler.js'
+import {SchedulerHandlerInterface} from '../Scheduler/SchedulerHandler.js'
 
 const REMOVE = 'REMOVE'
 
@@ -135,6 +135,13 @@ export class ComponentContext extends WithID {
    * @return {EventHandler}
    */
   onRemove(clb) {
+    if (this.#removed) {
+      this.#logger.error('Invalid ComponentContext.onRemove call', {
+        error: new Error('ComponentContext.onRemove called after being removed')
+      })
+      clb.call(null)
+      return null
+    }
     this.#ensureEventHandler()
     return new EventHandler(this.#eventHandler.on(OrderedEventListenerConfigBuilder.listen(REMOVE).callback(clb).build()), this)
   }
@@ -155,14 +162,14 @@ export class ComponentContext extends WithID {
     if (isNull(this.#intersectionObserverHandler)) {
       this.#intersectionObserverHandler = new IntersectionObserverHandler(this.APP().viewRenderConfig().document()?.defaultView ?? null)
     }
-    return this.#intersectionObserverHandler;
+    return this.#intersectionObserverHandler
   }
 
   /**
    * @return {ComponentContext}
    */
-  #ensureEventHandler(){
-    if(isNull(this.#eventHandler)){
+  #ensureEventHandler() {
+    if (isNull(this.#eventHandler)) {
       this.#eventHandler = new OrderedEventHandler()
     }
     return this
@@ -207,8 +214,8 @@ class ComponentContextScheduler extends SchedulerHandlerInterface() {
    * @param {ComponentContext} componentContext
    */
   constructor(componentContext) {
-    super();
-    this.#componentContext = componentContext;
+    super()
+    this.#componentContext = componentContext
   }
 
   /**
@@ -221,7 +228,7 @@ class ComponentContextScheduler extends SchedulerHandlerInterface() {
         if (this.#componentContext.isRemoving()) return
         task.call(null)
       }
-    );
+    )
   }
 
   /**
