@@ -1,9 +1,6 @@
-import {Checksum, UID, UIDMini} from '@flexio-oss/js-commons-bundle/js-helpers/index.js'
+import {Checksum, UIDMini} from '@flexio-oss/js-commons-bundle/js-helpers/index.js'
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_VIEW} from '../Types/HasTagClassNameInterface.js'
-import {
-  assertType, formatType, isNode,
-  isNull, NotOverrideException, TypeCheck
-} from '@flexio-oss/js-commons-bundle/assert/index.js'
+import {assertType, isNull, NotOverrideException, TypeCheck} from '@flexio-oss/js-commons-bundle/assert/index.js'
 import {symbolToString} from '@flexio-oss/js-commons-bundle/js-type-helpers/index.js'
 import {$} from '../HotballoonNodeElement/HotBalloonAttributeHandler.js'
 import {startReconcile} from '../HotballoonNodeElement/HotballoonElementReconciliation.js'
@@ -13,19 +10,20 @@ import {TypeCheck as HBTypeCheck} from '../Types/TypeCheck.js'
 import {
   VIEW_MOUNT,
   VIEW_MOUNTED,
+  VIEW_REMOVE,
   VIEW_RENDER,
   VIEW_RENDERED,
   VIEW_STORE_CHANGED,
+  VIEW_UNMOUNT,
   VIEW_UPDATE,
   VIEW_UPDATED,
-  VIEW_REMOVE,
-  ViewPublicEventHandler, VIEW_UNMOUNT
+  ViewPublicEventHandler
 } from './ViewPublicEventHandler.js'
-import {RemovedException} from "../Exception/RemovedException.js";
-import {Logger} from '@flexio-oss/js-commons-bundle/hot-log/index.js';
-import {e} from "../HotballoonNodeElement/ElementDescription.js";
+import {RemovedException} from '../Exception/RemovedException.js'
+import {Logger} from '@flexio-oss/js-commons-bundle/hot-log/index.js'
+import {e} from '../HotballoonNodeElement/ElementDescription.js'
 import {DOMError} from '../Exception/DOMError.js'
-import {ViewPublicEventUnSubscriber} from "./ViewPublicEventUnSubscriber.js";
+import {ViewPublicEventUnSubscriber} from './ViewPublicEventUnSubscriber.js'
 
 export const ATTRIBUTE_NODEREF = '_hb_noderef'
 
@@ -115,7 +113,7 @@ export class View extends ViewContainerBase {
   /**
    * @return {Promise<void>}
    */
-  mounting(){
+  mounting() {
     return this.#montedPromise
   }
 
@@ -654,7 +652,7 @@ export class View extends ViewContainerBase {
 
   /**
    * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
-   * @return {Element}
+   * @return {HTMLCanvasElement}
    */
   __CANVAS__(elementBuilder = null) {
     return this.#buildElement(elementBuilder, e('canvas'))
@@ -662,7 +660,7 @@ export class View extends ViewContainerBase {
 
   /**
    * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
-   * @return {Element}
+   * @return {HTMLDivElement}
    */
   __DIV__(elementBuilder = null) {
     return this.#buildElement(elementBuilder, e('div'))
@@ -670,7 +668,7 @@ export class View extends ViewContainerBase {
 
   /**
    * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
-   * @return {Element}
+   * @return {HTMLDialogElement}
    */
   __DIALOG__(elementBuilder = null) {
     return this.#buildElement(elementBuilder, e('dialog'))
@@ -678,7 +676,7 @@ export class View extends ViewContainerBase {
 
   /**
    * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
-   * @return {Element}
+   * @return {HTMLSpanElement}
    */
   __SPAN__(elementBuilder = null) {
     return this.#buildElement(elementBuilder, e('span'))
@@ -686,7 +684,7 @@ export class View extends ViewContainerBase {
 
   /**
    * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
-   * @return {Element}
+   * @return {HTMLParagraphElement}
    */
   __P__(elementBuilder = null) {
     return this.#buildElement(elementBuilder, e('p'))
@@ -694,7 +692,7 @@ export class View extends ViewContainerBase {
 
   /**
    * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
-   * @return {Element}
+   * @return {HTMLElement}
    */
   __HEADER__(elementBuilder = null) {
     return this.#buildElement(elementBuilder, e('header'))
@@ -702,7 +700,7 @@ export class View extends ViewContainerBase {
 
   /**
    * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
-   * @return {Element}
+   * @return {HTMLElement}
    */
   __FOOTER__(elementBuilder = null) {
     return this.#buildElement(elementBuilder, e('footer'))
@@ -710,7 +708,7 @@ export class View extends ViewContainerBase {
 
   /**
    * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
-   * @return {Element}
+   * @return {HTMLElement}
    */
   __ASIDE__(elementBuilder = null) {
     return this.#buildElement(elementBuilder, e('aside'))
@@ -718,7 +716,7 @@ export class View extends ViewContainerBase {
 
   /**
    * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
-   * @return {Element}
+   * @return {HTMLElement}
    */
   __NAV__(elementBuilder = null) {
     return this.#buildElement(elementBuilder, e('nav'))
@@ -726,7 +724,7 @@ export class View extends ViewContainerBase {
 
   /**
    * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
-   * @return {Element}
+   * @return {HTMLElement}
    */
   __MAIN__(elementBuilder = null) {
     return this.#buildElement(elementBuilder, e('main'))
@@ -734,7 +732,7 @@ export class View extends ViewContainerBase {
 
   /**
    * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
-   * @return {Element}
+   * @return {HTMLElement}
    */
   __SECTION__(elementBuilder = null) {
     return this.#buildElement(elementBuilder, e('section'))
@@ -742,7 +740,7 @@ export class View extends ViewContainerBase {
 
   /**
    * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
-   * @return {Element}
+   * @return {HTMLElement}
    */
   __ARTICLE__(elementBuilder = null) {
     return this.#buildElement(elementBuilder, e('article'))
@@ -750,7 +748,7 @@ export class View extends ViewContainerBase {
 
   /**
    * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
-   * @return {Element}
+   * @return {HTMLUListElement}
    */
   __UL__(elementBuilder = null) {
     return this.#buildElement(elementBuilder, e('ul'))
@@ -758,7 +756,7 @@ export class View extends ViewContainerBase {
 
   /**
    * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
-   * @return {Element}
+   * @return {HTMLOListElement}
    */
   __OL__(elementBuilder = null) {
     return this.#buildElement(elementBuilder, e('ol'))
@@ -766,7 +764,7 @@ export class View extends ViewContainerBase {
 
   /**
    * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
-   * @return {Element}
+   * @return {HTMLLIElement}
    */
   __LI__(elementBuilder = null) {
     return this.#buildElement(elementBuilder, e('li'))
@@ -774,7 +772,7 @@ export class View extends ViewContainerBase {
 
   /**
    * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
-   * @return {Element}
+   * @return {HTMLAnchorElement}
    */
   __A__(elementBuilder = null) {
     return this.#buildElement(elementBuilder, e('a'))
@@ -782,7 +780,7 @@ export class View extends ViewContainerBase {
 
   /**
    * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
-   * @return {Element}
+   * @return {HTMLImageElement}
    */
   __IMG__(elementBuilder = null) {
     return this.#buildElement(elementBuilder, e('img'))
@@ -790,15 +788,7 @@ export class View extends ViewContainerBase {
 
   /**
    * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
-   * @return {Element}
-   */
-  __SVG__(elementBuilder = null) {
-    return this.#buildElement(elementBuilder, e('svg'))
-  }
-
-  /**
-   * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
-   * @return {Element}
+   * @return {HTMLElement}
    */
   __CODE__(elementBuilder = null) {
     return this.#buildElement(elementBuilder, e('code'))
@@ -806,7 +796,7 @@ export class View extends ViewContainerBase {
 
   /**
    * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
-   * @return {Element}
+   * @return {HTMLPreElement}
    */
   __PRE__(elementBuilder = null) {
     return this.#buildElement(elementBuilder, e('pre'))
@@ -814,7 +804,7 @@ export class View extends ViewContainerBase {
 
   /**
    * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
-   * @return {Element}
+   * @return {HTMLInputElement}
    */
   __INPUT__(elementBuilder = null) {
     return this.#buildElement(elementBuilder, e('input'))
@@ -822,7 +812,7 @@ export class View extends ViewContainerBase {
 
   /**
    * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
-   * @return {Element}
+   * @return {HTMLButtonElement}
    */
   __BUTTON__(elementBuilder = null) {
     return this.#buildElement(elementBuilder, e('button'))
@@ -830,7 +820,7 @@ export class View extends ViewContainerBase {
 
   /**
    * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
-   * @return {Element}
+   * @return {HTMLIFrameElement}
    */
   __IFRAME__(elementBuilder = null) {
     return this.#buildElement(elementBuilder, e('iframe'))
@@ -838,7 +828,7 @@ export class View extends ViewContainerBase {
 
   /**
    * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
-   * @return {Element}
+   * @return {HTMLElement}
    */
   __ICON__(elementBuilder = null) {
     return this.#buildElement(elementBuilder, e('i'))
@@ -846,7 +836,7 @@ export class View extends ViewContainerBase {
 
   /**
    * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
-   * @return {Element}
+   * @return {HTMLElement}
    */
   __I__(elementBuilder = null) {
     return this.#buildElement(elementBuilder, e('i'))
@@ -854,7 +844,7 @@ export class View extends ViewContainerBase {
 
   /**
    * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
-   * @return {Element}
+   * @return {HTMLLabelElement}
    */
   __LABEL__(elementBuilder = null) {
     return this.#buildElement(elementBuilder, e('label'))
@@ -862,7 +852,7 @@ export class View extends ViewContainerBase {
 
   /**
    * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
-   * @return {Element}
+   * @return {HTMLTableElement}
    */
   __TABLE__(elementBuilder = null) {
     return this.#buildElement(elementBuilder, e('table'))
@@ -870,7 +860,7 @@ export class View extends ViewContainerBase {
 
   /**
    * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
-   * @return {Element}
+   * @return {HTMLTableRowElement}
    */
   __TR__(elementBuilder = null) {
     return this.#buildElement(elementBuilder, e('tr'))
@@ -878,7 +868,7 @@ export class View extends ViewContainerBase {
 
   /**
    * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
-   * @return {Element}
+   * @return {HTMLTableCellElement}
    */
   __TD__(elementBuilder = null) {
     return this.#buildElement(elementBuilder, e('td'))
@@ -886,7 +876,7 @@ export class View extends ViewContainerBase {
 
   /**
    * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
-   * @return {Element}
+   * @return {HTMLTableSectionElement}
    */
   __TBODY__(elementBuilder = null) {
     return this.#buildElement(elementBuilder, e('tbody'))
@@ -894,7 +884,7 @@ export class View extends ViewContainerBase {
 
   /**
    * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
-   * @return {Element}
+   * @return {HTMLTableSectionElement}
    */
   __THEAD__(elementBuilder = null) {
     return this.#buildElement(elementBuilder, e('thead'))
@@ -902,7 +892,7 @@ export class View extends ViewContainerBase {
 
   /**
    * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
-   * @return {Element}
+   * @return {HTMLTableCellElement}
    */
   __TH__(elementBuilder = null) {
     return this.#buildElement(elementBuilder, e('th'))
@@ -910,7 +900,7 @@ export class View extends ViewContainerBase {
 
   /**
    * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
-   * @return {Element}
+   * @return {HTMLTableSectionElement}
    */
   __TFOOT__(elementBuilder = null) {
     return this.#buildElement(elementBuilder, e('tfoot'))
@@ -918,7 +908,7 @@ export class View extends ViewContainerBase {
 
   /**
    * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
-   * @return {Element}
+   * @return {HTMLVideoElement}
    */
   __VIDEO__(elementBuilder = null) {
     return this.#buildElement(elementBuilder, e('video'))
@@ -926,7 +916,7 @@ export class View extends ViewContainerBase {
 
   /**
    * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
-   * @return {Element}
+   * @return {HTMLHeadingElement}
    */
   __H1__(elementBuilder = null) {
     return this.#buildElement(elementBuilder, e('h1'))
@@ -934,7 +924,7 @@ export class View extends ViewContainerBase {
 
   /**
    * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
-   * @return {Element}
+   * @return {HTMLHeadingElement}
    */
   __H2__(elementBuilder = null) {
     return this.#buildElement(elementBuilder, e('h2'))
@@ -942,7 +932,7 @@ export class View extends ViewContainerBase {
 
   /**
    * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
-   * @return {Element}
+   * @return {HTMLHeadingElement}
    */
   __H3__(elementBuilder = null) {
     return this.#buildElement(elementBuilder, e('h3'))
@@ -950,7 +940,7 @@ export class View extends ViewContainerBase {
 
   /**
    * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
-   * @return {Element}
+   * @return {HTMLHeadingElement}
    */
   __H4__(elementBuilder = null) {
     return this.#buildElement(elementBuilder, e('h4'))
@@ -958,7 +948,7 @@ export class View extends ViewContainerBase {
 
   /**
    * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
-   * @return {Element}
+   * @return {HTMLHeadingElement}
    */
   __H5__(elementBuilder = null) {
     return this.#buildElement(elementBuilder, e('h5'))
@@ -966,7 +956,7 @@ export class View extends ViewContainerBase {
 
   /**
    * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
-   * @return {Element}
+   * @return {HTMLHeadingElement}
    */
   __H6__(elementBuilder = null) {
     return this.#buildElement(elementBuilder, e('h6'))
@@ -974,7 +964,7 @@ export class View extends ViewContainerBase {
 
   /**
    * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
-   * @return {Element}
+   * @return {HTMLElement}
    */
   __H7__(elementBuilder = null) {
     return this.#buildElement(elementBuilder, e('h7'))
@@ -982,26 +972,25 @@ export class View extends ViewContainerBase {
 
   /**
    * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
-   * @return {Element}
+   * @return {HTMLElement}
    */
   __H8__(elementBuilder = null) {
     return this.#buildElement(elementBuilder, e('h8'))
   }
+
   /**
    * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
-   * @return {Element}
+   * @return {HTMLDetailsElement}
    */
   __DETAILS__(elementBuilder = null) {
     return this.#buildElement(elementBuilder, e('details'))
   }
+
   /**
    * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
-   * @return {Element}
+   * @return {HTMLElement}
    */
   __SUMMARY__(elementBuilder = null) {
     return this.#buildElement(elementBuilder, e('summary'))
   }
-
-
 }
-
