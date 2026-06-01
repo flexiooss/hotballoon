@@ -1,6 +1,6 @@
 import {assert, isFunction, isNull, isNumber, TypeCheck} from '@flexio-oss/js-commons-bundle/assert/index.js'
-import {getParentNode} from '@flexio-oss/js-commons-bundle/js-type-helpers/index.js';
-import {UID} from '@flexio-oss/js-commons-bundle/js-helpers/index.js';
+import {getParentNode} from '@flexio-oss/js-commons-bundle/js-type-helpers/index.js'
+import {UID} from '@flexio-oss/js-commons-bundle/js-helpers/index.js'
 import {globalFlexioImport} from '@flexio-oss/js-commons-bundle/global-import-registry'
 
 /**
@@ -117,11 +117,11 @@ export class CustomEventHandler {
    * @param {HTMLElement} element
    */
   constructor(element) {
-    this._element = TypeCheck.assertIsNode(element);
+    this._element = TypeCheck.assertIsNode(element)
     this._element[__CustomEventHandler__] = this
     this._element.addEventListener('pointerdown', this._pointerdown, true)
     this._element.addEventListener('pointerup', this._pointerup, true)
-    this.#ensureAnimation();
+    this.#ensureAnimation()
   }
 
   /**
@@ -189,7 +189,7 @@ export class CustomEventHandler {
         handler = CustomEventHandler.getHandler(el)
       }
     }
-    return handler;
+    return handler
   }
 
   /**
@@ -209,7 +209,7 @@ export class CustomEventHandler {
     /**
      * @type {?CustomEventHandler}
      */
-    const handler = CustomEventHandler.findParentHandler(event.target);
+    const handler = CustomEventHandler.findParentHandler(event.target)
     if (!isNull(handler)) {
       if (this._hold_or_right) {
         if (event.pointerType === 'mouse' && event.button !== 0 && !CustomEventHandler.isRightClick(event)) return
@@ -287,21 +287,21 @@ export class CustomEventHandler {
    */
   static requestTimeout(fn, delay) {
 
-    const start = new Date().getTime();
-    let handle = {};
+    const start = new Date().getTime()
+    let handle = {}
 
     const loop = function () {
-      let current = new Date().getTime();
-      let delta = current - start;
+      let current = new Date().getTime()
+      let delta = current - start
       if (delta >= delay) {
-        fn.call(null);
+        fn.call(null)
       } else {
-        handle.value = CustomEventHandler.requestAnimationFrame(loop);
+        handle.value = CustomEventHandler.requestAnimationFrame(loop)
       }
-    };
-    handle.value = CustomEventHandler.requestAnimationFrame(loop);
+    }
+    handle.value = CustomEventHandler.requestAnimationFrame(loop)
 
-    return handle;
+    return handle
   }
 
   /**
@@ -319,7 +319,7 @@ export class CustomEventHandler {
    * @param {PointerEvent} event
    */
   pointermoveExe(event) {
-    this._captureEvent(event.pointerId);
+    this._captureEvent(event.pointerId)
     CustomEventHandler.requestAnimationFrame(() => {
       // try {
       //   this._captureEvent(event.pointerId);
@@ -329,7 +329,7 @@ export class CustomEventHandler {
       //   }
       // }
       if (!this._moving) {
-        this._moving = this.constructor.moved(this._startCoords, event);
+        this._moving = this.constructor.moved(this._startCoords, event)
       }
     })
   }
@@ -342,22 +342,22 @@ export class CustomEventHandler {
   static moved(startCoords, event) {
     if (!isNull(startCoords)) {
       if (event.movementX >= this._moveThreshold || Math.abs(startCoords.x - event.x) >= this._moveThreshold) {
-        return true;
+        return true
       }
       if (event.movementY >= this._moveThreshold || Math.abs(startCoords.y - event.y) >= this._moveThreshold) {
-        return true;
+        return true
       }
     }
-    return false;
+    return false
   }
 
   trigUp() {
     /**
      * @type {DOMRect}
      */
-    const RECT = this._element.getBoundingClientRect();
+    const RECT = this._element.getBoundingClientRect()
 
-    this.pointerupExe(new PointerEvent("pointerup", {
+    this.pointerupExe(new PointerEvent('pointerup', {
       pointerType: 'mouse',
       clientX: RECT.x,
       clientY: RECT.y
@@ -385,7 +385,10 @@ export class CustomEventHandler {
       this._timerHold = CustomEventHandler.requestTimeout(
         () => {
           this._element.removeEventListener('pointermove', this._pointermove)
-          if (isNull(this._timerHold) || this._up || this._moving || isNull(this._start)) return
+          if (
+            isNull(this._timerHold) || this._up || this._moving || isNull(this._start) ||
+            isNull(this._element) || !this._element.isConnected ||
+            !this._element.matches(':hover')) return
           if (this._hold_or_right) {
             this._dispatchEvent(CustomEventHandler.HOLD_OR_RIGHT, event)
           }
@@ -427,9 +430,9 @@ export class CustomEventHandler {
   pointerupExe(event) {
     this._up = true
     /**
-      * @type {boolean}
+     * @type {boolean}
      */
-    const moved = this.constructor.moved(this._startCoords, event);
+    const moved = this.constructor.moved(this._startCoords, event)
 
     /**
      * @type {Date}
@@ -448,7 +451,7 @@ export class CustomEventHandler {
     } else if (this._doubleTap && ((now - this._end) < this._doubleThreshold)) {
       this._clearTap()
       if (!moved) {
-        this._dispatchEvent(CustomEventHandler.DOUBLE_TAP, event);
+        this._dispatchEvent(CustomEventHandler.DOUBLE_TAP, event)
       }
     } else if ((this._tap || this._doubleTap) && !isNull(this._start) && isNull(this._timer)) {
       if (this._doubleTap) {
@@ -462,7 +465,7 @@ export class CustomEventHandler {
           this._clearTap()
         }, this._doubleThreshold)
       } else {
-        if ((now - this._start) > this._doubleThreshold) return;
+        if ((now - this._start) > this._doubleThreshold) return
         if (event.pointerType !== 'mouse') {
           event.target?.focus()
         }
@@ -548,17 +551,17 @@ export class CustomEventHandler {
   disable(event) {
     switch (event) {
       case CustomEventHandler.HOLD:
-        this.offHold();
-        break;
+        this.offHold()
+        break
       case CustomEventHandler.HOLD_OR_RIGHT:
-        this.offHoldOrRight();
-        break;
+        this.offHoldOrRight()
+        break
       case CustomEventHandler.DOUBLE_TAP:
-        this.offDoubleTap();
-        break;
+        this.offDoubleTap()
+        break
       case CustomEventHandler.TAP:
-        this.offTap();
-        break;
+        this.offTap()
+        break
     }
     return this
   }
@@ -570,17 +573,17 @@ export class CustomEventHandler {
   enable(event) {
     switch (event) {
       case CustomEventHandler.HOLD:
-        this.hold();
-        break;
+        this.hold()
+        break
       case CustomEventHandler.HOLD_OR_RIGHT:
         this.holdOrRight()
-        break;
+        break
       case CustomEventHandler.DOUBLE_TAP:
-        this.doubleTap();
-        break;
+        this.doubleTap()
+        break
       case CustomEventHandler.TAP:
-        this.tap();
-        break;
+        this.tap()
+        break
     }
     return this
   }
@@ -591,7 +594,7 @@ export class CustomEventHandler {
    * @return {CustomEventHandler}
    */
   _dispatchEvent(eventName, event) {
-    event.stopPropagation(); //TODO à supprimer après nettoyage du code sur EUIs
+    event.stopPropagation() //TODO à supprimer après nettoyage du code sur EUIs
     let x = Math.round(event.x)
     let y = Math.round(event.y)
 
@@ -615,16 +618,16 @@ export class CustomEventHandler {
     switch (eventName) {
       case CustomEventHandler.HOLD:
         if (isFunction(this._element?.onHold)) this._element.onHold.call(null, customEvent)
-        break;
+        break
       case CustomEventHandler.HOLD_OR_RIGHT:
         if (isFunction(this._element?.onHoldOrRight)) this._element.onHoldOrRight.call(null, customEvent)
-        break;
+        break
       case CustomEventHandler.DOUBLE_TAP:
         if (isFunction(this._element?.onDoubleTap)) this._element.onDoubleTap.call(null, customEvent)
-        break;
+        break
       case CustomEventHandler.TAP:
         if (isFunction(this._element?.onTap)) this._element.onTap.call(null, customEvent)
-        break;
+        break
     }
 
     return this
@@ -635,7 +638,7 @@ export class CustomEventHandler {
    * @private
    */
   _disableContextualMenu() {
-    this._element.addEventListener("contextmenu", e => e.preventDefault());
+    this._element.addEventListener('contextmenu', e => e.preventDefault())
     return this
   }
 
