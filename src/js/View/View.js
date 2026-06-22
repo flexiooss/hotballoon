@@ -993,4 +993,12 @@ export class View extends ViewContainerBase {
   __SUMMARY__(elementBuilder = null) {
     return this.#buildElement(elementBuilder, e('summary'))
   }
+
+  /**
+   * @param {?function(ElementDescription):ElementDescription} [elementBuilder=null]
+   * @return {HTMLElement}
+   */
+  __MENU__(elementBuilder = null) {
+    return this.#buildElement(elementBuilder, e('menu'))
+  }
 }
