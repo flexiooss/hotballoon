@@ -44,6 +44,10 @@
     "test": {
       "tester": "code-altimeter-js",
       "path": "src/test"
+    },
+    "browserTest": {
+      "tester": "playwright",
+      "path": "src/test-playwright"
     }
   },
   "peerDependencies": {
