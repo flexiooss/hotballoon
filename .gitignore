@@ -8,3 +8,5 @@ node_modules/
 *.iml
 generated/
 package-lock.json
+test-results/
+playwright-report/
