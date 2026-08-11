@@ -54,11 +54,11 @@ export class IntersectionObserverComponent {
    * @param {Event} event
    */
   execVisible(event) {
-    let item = event.target
-    if (this.#callBacks.has(item.id)) {
+    let targetId = event.target.id
+    if (this.#callBacks.has(targetId)) {
       this.#requestIdleCallback.call(this, () => {
-        if (this.#callBacks.has(item.id)) {
-          this.#callBacks.get(item.id).callback().call(null, item, true)
+        if (this.#callBacks.has(targetId)) {
+          this.#callBacks.get(targetId).callWithVisibility(true)
         }
       })
     }
@@ -68,11 +68,11 @@ export class IntersectionObserverComponent {
    * @param {Event} event
    */
   execHidden(event) {
-    let item = event.target
-    if (this.#callBacks.has(item.id)) {
+    let targetId = event.target.id
+    if (this.#callBacks.has(targetId)) {
       this.#requestIdleCallback.call(this, () => {
-        if (this.#callBacks.has(item.id)) {
-          this.#callBacks.get(item.id).callback().call(null, item, false)
+        if (this.#callBacks.has(targetId)) {
+          this.#callBacks.get(targetId).callWithVisibility(false)
         }
       })
     }
@@ -174,6 +174,9 @@ export class IntersectionObserverComponent {
    * @return {boolean}
    */
   #isVisible(element) {
+    if ('function' === typeof element.checkVisibility) {
+      if (!element.checkVisibility()) return false
+    }
     const rect = element.getBoundingClientRect()
     return (
       rect.top <= (element.ownerDocument.defaultView.innerHeight || element.ownerDocument.documentElement.clientHeight) &&
