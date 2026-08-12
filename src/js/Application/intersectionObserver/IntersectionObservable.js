@@ -22,6 +22,11 @@ export class IntersectionObservable {
   #callback
 
   /**
+   * @type {?boolean}
+   */
+  #lastCall = null
+
+  /**
    * @param {string} group
    * @param {HTMLElement} element
    * @param {IntersectionObservable~eventCallback} callback
@@ -44,6 +49,12 @@ export class IntersectionObservable {
    */
   element() {
     return this.#element
+  }
+
+  callWithVisibility(visibility) {
+    if (this.#lastCall === visibility) return
+    this.#lastCall = visibility
+    this.#callback.call(null, this.#element, visibility)
   }
 
   /**
