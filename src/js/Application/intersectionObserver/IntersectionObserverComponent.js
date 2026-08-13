@@ -28,11 +28,16 @@ export class IntersectionObserverComponent {
    * @type {(callback: function) => number}
    */
   #requestIdleCallback
+  /**
+   * @type {function(number)}
+   */
+  #cancelIdleCallback
 
   /**
    * @param {function} requestIdleCallback
-   * */
-  constructor(requestIdleCallback) {
+   * @param {function(number)} cancelIdleCallback
+   */
+  constructor(requestIdleCallback, cancelIdleCallback) {
     this.#observer = new IntersectionObserver(function (entries, observer) {
       entries.forEach(function (entry) {
         let item = entry.target
@@ -48,6 +53,7 @@ export class IntersectionObserverComponent {
     })
 
     this.#requestIdleCallback = requestIdleCallback
+    this.#cancelIdleCallback = cancelIdleCallback
   }
 
   /**
@@ -56,11 +62,7 @@ export class IntersectionObserverComponent {
   execVisible(event) {
     let targetId = event.target.id
     if (this.#callBacks.has(targetId)) {
-      this.#requestIdleCallback.call(this, () => {
-        if (this.#callBacks.has(targetId)) {
-          this.#callBacks.get(targetId).callWithVisibility(true)
-        }
-      })
+      this.#callBacks.get(targetId).callWithVisibility(true)
     }
   }
 
@@ -70,11 +72,7 @@ export class IntersectionObserverComponent {
   execHidden(event) {
     let targetId = event.target.id
     if (this.#callBacks.has(targetId)) {
-      this.#requestIdleCallback.call(this, () => {
-        if (this.#callBacks.has(targetId)) {
-          this.#callBacks.get(targetId).callWithVisibility(false)
-        }
-      })
+      this.#callBacks.get(targetId).callWithVisibility(false)
     }
   }
 
@@ -94,28 +92,19 @@ export class IntersectionObserverComponent {
     if (this.#callBacks.has(element.id)) {
       throw new Error('Handler:IntersectionObserver: element already observed id:' + element.id)
     }
-    this.#callBacks.set(element.id, new IntersectionObservable(
+    const observable = new IntersectionObservable(
       group,
       element,
       (item, visibility) => {
         TypeCheck.assertIsFunction(clb).call(null, item, visibility)
-      })
+      },
+      this.#requestIdleCallback,
+      this.#cancelIdleCallback,
     )
+    this.#callBacks.set(element.id, observable)
     element.addEventListener('__HB_VISIBLE__', this.execVisible.bind(this))
     element.addEventListener('__HB_HIDDEN__', this.execHidden.bind(this))
-    if (this.#isVisible(element)) {
-      this.#requestIdleCallback.call(null,
-        () => {
-          element.dispatchEvent(new Event('__HB_VISIBLE__'))
-        }
-      )
-    } else {
-      this.#requestIdleCallback.call(null,
-        () => {
-          element.dispatchEvent(new Event('__HB_HIDDEN__'))
-        }
-      )
-    }
+    observable.callWithVisibility(this.#isVisible(element))
     this.#observer.observe(element)
     return this
   }
@@ -135,22 +124,21 @@ export class IntersectionObserverComponent {
     if (this.#callBacks.has(element.id)) {
       throw new Error('Handler:IntersectionObserver: element already observed id:' + element.id)
     }
-    this.#callBacks.set(element.id, new IntersectionObservable(
+    let observable = new IntersectionObservable(
       group,
       element,
       (item) => {
         this.unObserve(item)
         TypeCheck.assertIsFunction(clb).call(null, item)
-      })
+      },
+      this.#requestIdleCallback,
+      this.#cancelIdleCallback,
     )
-    element.addEventListener('__HB_VISIBLE__', this.execVisible.bind(this))
     if (this.#isVisible(element)) {
-      this.#requestIdleCallback.call(null,
-        () => {
-          element.dispatchEvent(new Event('__HB_VISIBLE__'))
-        }
-      )
+      observable.callWithVisibility(true)
     } else {
+      this.#callBacks.set(element.id, observable)
+      element.addEventListener('__HB_VISIBLE__', this.execVisible.bind(this))
       this.#observer.observe(element)
     }
     return this
@@ -162,7 +150,11 @@ export class IntersectionObserverComponent {
    */
   unObserve(element) {
     TypeCheck.assertIsNode(element)
-    this.#callBacks.delete(element.id)
+    if (this.#callBacks.has(element.id)) {
+      const observable = this.#callBacks.get(element.id)
+      observable.remove()
+      this.#callBacks.delete(element.id)
+    }
     this.#observer.unobserve(element)
     element.removeEventListener('__HB_VISIBLE__', this.execVisible.bind(this))
     element.removeEventListener('__HB_HIDDEN__', this.execHidden.bind(this))

@@ -2,20 +2,13 @@ import {IntersectionObserverComponent} from '../js/Application/intersectionObser
 
 const GROUP = 'e2e'
 
-/**
- * Mirrors IntersectionObserverHandler's wiring: `requestIdleCallback` when the browser exposes
- * it, `setTimeout` otherwise. The 1.5s timeout matters here — a Playwright page under load may
- * never report an idle period, and without it the callbacks would simply never run.
- *
- * @param {function} clb
- */
-const requestIdleCallback = (clb) => {
-  if ('requestIdleCallback' in window) {
-    window.requestIdleCallback(clb, {timeout: 1_500})
-  } else {
-    setTimeout(clb)
-  }
-}
+const useIdleCallback = 'requestIdleCallback' in window && 'cancelIdleCallback' in window
+const requestIdleCallback = useIdleCallback
+  ? (clb) => window.requestIdleCallback(clb, {timeout: 500})
+  : (clb) => setTimeout(clb)
+const cancelIdleCallback = useIdleCallback
+  ? (id) => window.cancelIdleCallback(id)
+  : (id) => clearTimeout(id)
 
 /**
  * Bridges to the specs.
@@ -121,7 +114,7 @@ const displayToggle = (id, element) => {
  */
 const observer = () => {
   resetBridges()
-  return new IntersectionObserverComponent(requestIdleCallback)
+  return new IntersectionObserverComponent(requestIdleCallback, cancelIdleCallback)
 }
 
 // --- Features ----------------------------------------------------------------

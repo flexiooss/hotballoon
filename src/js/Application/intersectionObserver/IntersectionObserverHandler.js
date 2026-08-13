@@ -8,12 +8,13 @@ import {IntersectionObserverComponent} from './IntersectionObserverComponent'
 let observerHandler = null
 
 /**
- * @param {function} requestIdleCallback
+ * @param {function(function):number} requestIdleCallback
+ * @param {function(number)} cancelIdleCallback
  * @return {IntersectionObserverComponent}
  */
-const ensureObserverHandler = (requestIdleCallback) => {
+const ensureObserverHandler = (requestIdleCallback, cancelIdleCallback) => {
   if (isNull(observerHandler)) {
-    observerHandler = new IntersectionObserverComponent(requestIdleCallback)
+    observerHandler = new IntersectionObserverComponent(requestIdleCallback, cancelIdleCallback)
   }
   return observerHandler
 }
@@ -39,23 +40,33 @@ export class IntersectionObserverHandler {
    */
   #id = UIDMini()
   /**
-   * @type {function(function)}
+   * @type {function(function):number}
    */
   #requestIdleCallback
+  /**
+   * @type {function(number)}
+   */
+  #cancelIdleCallback
 
   /**
    * @param {?Window} window
    */
   constructor(window) {
     this.#requestIdleCallback = function (clb) {
-      setTimeout(clb)
+      return setTimeout(clb)
+    }
+    this.#cancelIdleCallback = function (id) {
+      clearTimeout(id)
     }
 
     if (!isNull(window)) {
       this.#window = window
-      if ('requestIdleCallback' in window) {
+      if ('requestIdleCallback' in window && 'cancelIdleCallback' in window) {
         this.#requestIdleCallback = function (clb) {
-          window.requestIdleCallback(clb, {timeout: 1_500})
+          return window.requestIdleCallback(clb, {timeout: 1_500})
+        }
+        this.#cancelIdleCallback = function (id) {
+          window.cancelIdleCallback(id)
         }
       }
     }
@@ -66,7 +77,7 @@ export class IntersectionObserverHandler {
    */
   #ensureObserver() {
     if (isNull(this.#observer) && !isNull(this.#window) && 'IntersectionObserver' in this.#window) {
-      this.#observer = ensureObserverHandler(this.#requestIdleCallback)
+      this.#observer = ensureObserverHandler(this.#requestIdleCallback, this.#cancelIdleCallback)
     }
     return this
   }
