@@ -1,4 +1,5 @@
 import {IntersectionObserverComponent} from '../js/Application/intersectionObserver/IntersectionObserverComponent.js'
+import {printFeatureError} from './fixture-helpers'
 
 const GROUP = 'e2e'
 
@@ -194,20 +195,6 @@ const features = {
 
     observer().observe(GROUP, observed, recordObserve)
   },
-}
-
-/**
- * @param {?string} selectedFeature
- * @param {Object} featuresMap
- */
-const printFeatureError = (selectedFeature, featuresMap) => {
-  const msg = document.createElement('div')
-  msg.id = 'fx-error'
-  msg.textContent = (selectedFeature === null
-      ? 'Missing required query parameter: ?feature=<name>'
-      : `Unknown feature: "${selectedFeature}"`)
-    + `. Known features: ${Object.keys(featuresMap).join(', ')}`
-  document.body.append(msg)
 }
 
 const feature = new URLSearchParams(window.location.search).get('feature')
