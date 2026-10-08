@@ -78,7 +78,7 @@ export class JsStorageImplStorage extends StorageInterface {
           .build()
       }
     } catch (e) {
-      if (!e instanceof BaseException) {
+      if (!(e instanceof BaseException)) {
         e = new BaseException(e.toString())
       }
 

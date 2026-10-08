@@ -324,7 +324,7 @@ export class CustomEventHandler {
       // try {
       //   this._captureEvent(event.pointerId);
       // } catch (e) {
-      //   if (!e instanceof DOMException) {
+      //   if (!(e instanceof DOMException)) {
       //     throw e
       //   }
       // }

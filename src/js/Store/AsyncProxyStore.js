@@ -163,10 +163,10 @@ export class AsyncProxyStore extends StoreBase {
       this.shouldUpdate()
 
     } catch (e) {
-      if (!e instanceof AbortedException) {
-        throw e
-      } else {
+      if (e instanceof AbortedException) {
         this.#logger.debug('mapping aborted')
+      } else {
+        throw e
       }
     }
   }
