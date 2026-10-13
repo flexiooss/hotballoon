@@ -26,6 +26,8 @@ import {DOMError} from '../Exception/DOMError.js'
 import {ViewPublicEventUnSubscriber} from './ViewPublicEventUnSubscriber.js'
 
 export const ATTRIBUTE_NODEREF = '_hb_noderef'
+const DEBUG_MODE = true
+const ID_FILTER = /[^a-zA-Z0-9_-]/g
 
 /**
  * @extends {ViewContainerBase}
@@ -354,6 +356,12 @@ export class View extends ViewContainerBase {
       return
     }
     if (!isNull(this.node())) {
+      if (DEBUG_MODE) {
+        const node = this.node()
+        if (node instanceof HTMLElement) {
+          node.dataset.hotballoonView = this.constructor.name
+        }
+      }
       this.parentNode.appendChild(this.node())
     }
     this._mounted = true
@@ -592,9 +600,16 @@ export class View extends ViewContainerBase {
    * @return {string}
    */
   elementIdFromRef(ref) {
+    if (DEBUG_MODE) {
+      return `${this.#debugSanitize(this.componentID())}___${this.#debugSanitize(this.containerID())}___${this.#debugSanitize(ref)}`
+    }
     return '_' + Checksum.number32bit(
       `${symbolToString(this.AppID())}-${symbolToString(this.componentID())}-${symbolToString(this.containerID())}-${symbolToString(ref)}`
     ).toString() + '_'
+  }
+
+  #debugSanitize(value) {
+    return symbolToString(value).replace(ID_FILTER, '-')
   }
 
   remove() {
