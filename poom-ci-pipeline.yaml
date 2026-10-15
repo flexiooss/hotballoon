@@ -2,4 +2,4 @@
 
 from:
   - url: git@github.com:Flexio-corp/pipeline-hotballoon-package.git
-    branch: develop
+    branch: feature/add-v2-branches-0.1.0-dev##74#2
