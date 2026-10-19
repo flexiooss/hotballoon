@@ -4,6 +4,7 @@ import {TypeCheck} from '../Types/TypeCheck.js'
 
 /**
  *
+ * @class
  * @template STORE_TYPE
  * @template TYPE
  * @template TYPE_BUILDER

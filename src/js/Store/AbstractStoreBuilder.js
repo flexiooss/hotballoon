@@ -1,6 +1,8 @@
 import {globalFlexioImport} from "@flexio-oss/js-commons-bundle/global-import-registry/index.js";
 
 /**
+ *
+ * @class
  * @abstract
  * @template TYPE
  */

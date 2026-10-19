@@ -4,8 +4,10 @@ import { TypeCheck as FlxTypeCheck} from '@flexio-oss/js-commons-bundle/flex-typ
 import {FlexDateTimeExtended} from "@flexio-oss/js-commons-bundle/extended-flex-types";
 
 /**
- * @implements {GenericType<TYPE>}
+ *
+ * @class
  * @template TYPE
+ * @implements {GenericType<TYPE>}
  */
 export class StoreState {
   /**

@@ -3,6 +3,7 @@ import {OnDemandProxyStore} from './OnDemandProxyStore.js'
 
 /**
  *
+ * @class
  * @template STORE_TYPE
  * @template STORE_TYPE_BUILDER
  * @template TYPE

@@ -131,6 +131,7 @@ class StoragesHandler {
 
 /**
  *
+ * @class
  * @template TYPE
  * @template TYPE_BUILDER
  * @extends {StoreBase<TYPE, TYPE_BUILDER>}
@@ -187,7 +188,6 @@ export class JSStorageStore extends Store {
 
   /**
    * @return {?string}
-   * @constructor
    */
   JSStorageKey() {
     return this.#key;

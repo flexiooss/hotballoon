@@ -1,20 +1,23 @@
 import {ListenedStoreMap} from './ListenedStoreMap.js'
 import {AlreadyRegisteredException} from '../Exception/AlreadyRegisteredException.js'
-import {TypeCheck} from '../Types/TypeCheck.js'
-import {listenedEventInterface} from "../Event/ListenedEvent.js";
-import {ListenedStore} from "./ListenedStore.js";
-import {assertImplementsListenable} from "./Listenable.js";
+import {listenedEventInterface} from '../Event/ListenedEvent.js'
+import {assertImplementsListenable} from './Listenable.js'
 import {FlexMap} from '@flexio-oss/js-commons-bundle/flex-types/index.js'
 
 /**
+ *
+ * @class
  * @extends {FlexMap<?Listenable>}
  */
- class StoreMap extends FlexMap {
+class StoreMap extends FlexMap {
   _validate(v) {
     assertImplementsListenable(v)
   }
 }
+
 /**
+ *
+ * @class
  * @template TYPE
  */
 export class StoresHandler {
@@ -105,6 +108,8 @@ export class StoresHandler {
 }
 
 /**
+ *
+ * @class
  * @implements {ListenedEvent}
  */
 class HandledListenedStore extends listenedEventInterface() {

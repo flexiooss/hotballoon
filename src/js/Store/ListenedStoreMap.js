@@ -3,6 +3,8 @@ import {assertInstanceOf} from '@flexio-oss/js-commons-bundle/assert/index.js'
 import {ListenedStore} from './ListenedStore.js'
 
 /**
+ *
+ * @class
  * @extends {FlexMap<?ListenedStore>}
  */
 export class ListenedStoreMap extends FlexMap {

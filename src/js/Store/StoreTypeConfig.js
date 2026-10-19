@@ -1,4 +1,4 @@
-import {assertType, isClass, isFunction, isNull, TypeCheck} from '@flexio-oss/js-commons-bundle/assert/index.js'
+import {assertType, isNull, TypeCheck} from '@flexio-oss/js-commons-bundle/assert/index.js'
 import {TypeCheck as TypeCheckValidator} from '@flexio-oss/js-commons-bundle/js-validator-helper/index.js'
 
 /**
@@ -11,6 +11,7 @@ import {TypeCheck as TypeCheckValidator} from '@flexio-oss/js-commons-bundle/js-
 
 /**
  *
+ * @class
  * @template TYPE
  * @template TYPE_BUILDER
  */

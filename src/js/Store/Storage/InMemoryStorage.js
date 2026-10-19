@@ -5,6 +5,8 @@ import {StorageInterface} from './StorageInterface.js'
 
 
 /**
+ *
+ * @class
  * @template TYPE
  * @implements {StorageInterface<TYPE>}
  * @implements {GenericType<TYPE>}

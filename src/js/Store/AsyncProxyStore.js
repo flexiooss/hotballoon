@@ -11,6 +11,7 @@ import {Logger} from "@flexio-oss/js-commons-bundle/hot-log/index.js";
 
 /**
  *
+ * @class
  * @template STORE_TYPE
  * @template TYPE
  * @template TYPE_BUILDER

@@ -3,6 +3,7 @@ import {TypeCheck as TypeTypeCheck} from '@flexio-oss/js-commons-bundle/assert/i
 
 /**
  *
+ * @class
  * @template TYPE
  * @template TYPE_BUILDER
  */

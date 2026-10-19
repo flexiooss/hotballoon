@@ -20,6 +20,7 @@ import {listenableInterface} from "./Listenable.js";
 
 /**
  *
+ * @class
  * @template TYPE
  * @template TYPE_BUILDER
  * @implements {GenericType<TYPE>}

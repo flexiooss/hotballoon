@@ -10,6 +10,7 @@ import {AbstractStoreBuilder} from "./AbstractStoreBuilder.js";
 
 /**
  *
+ * @class
  * @template TYPE
  * @template TYPE_BUILDER
  */

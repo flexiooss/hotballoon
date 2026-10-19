@@ -1,9 +1,9 @@
 import {Store} from './Store.js'
 import {SingleStateException} from "./SingleStateException.js";
 
-
 /**
  *
+ * @class
  * @template TYPE
  * @template TYPE_BUILDER
  * @extends {Store<TYPE, TYPE_BUILDER>}

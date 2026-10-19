@@ -4,6 +4,7 @@ import {StoreTypeConfig} from './StoreTypeConfig.js'
 
 /**
  *
+ * @class
  * @template TYPE
  * @template TYPE_BUILDER
  */

@@ -8,6 +8,8 @@ import {BaseException} from '@flexio-oss/js-commons-bundle/js-type-helpers/index
 import {Base64} from '@flexio-oss/js-commons-bundle/js-helpers/index.js';
 
 /**
+ *
+ * @class
  * @template TYPE
  * @implements {StorageInterface<TYPE>}
  * @implements {GenericType<TYPE>}
