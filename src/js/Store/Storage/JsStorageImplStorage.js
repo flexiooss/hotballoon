@@ -1,11 +1,9 @@
 import {isNull, TypeCheck} from '@flexio-oss/js-commons-bundle/assert/index.js'
-import {deepFreezeSeal} from '@flexio-oss/js-commons-bundle/js-generator-helpers/index.js'
-import {StoreState} from '../StoreState.js'
+import {StoreState, StoreStateBuilder} from '../StoreState.js'
 import {StorageInterface} from './StorageInterface.js'
-import {StoreStateBuilder} from '../StoreState.js'
-import {HotLog, Logger} from '@flexio-oss/js-commons-bundle/hot-log/index.js';
-import {BaseException} from '@flexio-oss/js-commons-bundle/js-type-helpers/index.js';
-import {Base64} from '@flexio-oss/js-commons-bundle/js-helpers/index.js';
+import {Logger} from '@flexio-oss/js-commons-bundle/hot-log/index.js'
+import {BaseException} from '@flexio-oss/js-commons-bundle/js-type-helpers/index.js'
+import {Base64} from '@flexio-oss/js-commons-bundle/js-helpers/index.js'
 
 /**
  *
@@ -17,7 +15,7 @@ import {Base64} from '@flexio-oss/js-commons-bundle/js-helpers/index.js';
  */
 export class JsStorageImplStorage extends StorageInterface {
   /**
-   * @type {?TYPE.}
+   * @type {?TYPE}
    */
   #type
   /**
@@ -34,6 +32,15 @@ export class JsStorageImplStorage extends StorageInterface {
   #storage
 
   /**
+   * @type {TYPE}
+   */
+  #storeData
+  /**
+   * @type {boolean}
+   */
+  #loadedData
+
+  /**
    * @param {?TYPE.} type
    * @param {string} storeID
    * @param {Storage} storage
@@ -45,7 +52,8 @@ export class JsStorageImplStorage extends StorageInterface {
     this.#key = TypeCheck.assertIsString(key)
     this.#storeID = TypeCheck.assertIsString(storeID)
     this.#storage = storage
-    deepFreezeSeal(this)
+
+    this.#loadedData = false
   }
 
   /**
@@ -61,7 +69,9 @@ export class JsStorageImplStorage extends StorageInterface {
    * @return {StorageInterface}
    */
   set(storeID, data) {
-    this.#storage.setItem(this.key(), Base64.encode(JSON.stringify(new StoreState(storeID, this.#type, data))))
+    this.#storeData = new StoreState(storeID, this.#type, data)
+    this.#loadedData = true
+    this.#storage.setItem(this.key(), Base64.encode(JSON.stringify(this.#storeData)))
     return this
   }
 
@@ -69,6 +79,10 @@ export class JsStorageImplStorage extends StorageInterface {
    * @returns {?StoreState<TYPE>}
    */
   get() {
+    if (this.#loadedData) {
+      return this.#storeData
+    }
+
     let ret = null
     try {
       let data = this.#storage.getItem(this.key())
@@ -79,16 +93,17 @@ export class JsStorageImplStorage extends StorageInterface {
           .storeID(this.#storeID)
           .build()
       }
+      this.#loadedData = true
+      this.#storeData = ret
     } catch (e) {
       if (!(e instanceof BaseException)) {
         e = new BaseException(e.toString())
       }
 
       Logger.getLogger(this.constructor.name, 'JsStorageImplStorage').error('error on retrieve storage data', e)
-    } finally {
-      return ret
     }
 
+    return ret
   }
 
   /**
