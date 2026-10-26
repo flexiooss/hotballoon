@@ -1,9 +1,10 @@
 import {CLASS_TAG_NAME, CLASS_TAG_NAME_PUBLIC_STORE_HANDLER} from '../Types/HasTagClassNameInterface.js'
 import {TypeCheck} from '../Types/TypeCheck.js'
-import {listenableInterface} from "./Listenable.js";
+import {listenableInterface} from './Listenable.js'
 
 /**
  *
+ * @class
  * @template TYPE
  * @template TYPE_BUILDER
  * @implements {StoreInterface<TYPE, TYPE_BUILDER>}
@@ -11,7 +12,7 @@ import {listenableInterface} from "./Listenable.js";
  * @implements {GenericType<TYPE>}
  * @implements {Listenable<TYPE>}
  */
-export class PublicStoreHandler extends listenableInterface(){
+export class PublicStoreHandler extends listenableInterface() {
 
   /**
    * @type {StoreInterface<TYPE, TYPE_BUILDER>}
@@ -47,14 +48,14 @@ export class PublicStoreHandler extends listenableInterface(){
    * @returns {StoreState<TYPE>} state frozen
    */
   state() {
-    return this.#store.state();
+    return this.#store.state()
   }
 
   /**
    * @returns {Promise<StoreState<TYPE>>} state frozen
    */
   async asyncState() {
-    return this.#store.asyncState();
+    return this.#store.asyncState()
   }
 
   /**

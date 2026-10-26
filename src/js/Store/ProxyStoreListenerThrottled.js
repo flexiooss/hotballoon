@@ -10,6 +10,12 @@ import {ListenedStore} from "./ListenedStore.js";
 import {WithID} from "../abstract/WithID.js";
 import {listenableInterface} from "./Listenable.js";
 
+/**
+ *
+ * @class
+ * @template TYPE
+ * @template TYPE_BUILDER
+ */
 export class ProxyStoreListenerThrottledBuilder {
   /**
    * @type {number}
@@ -103,8 +109,10 @@ export class ProxyStoreListenerThrottledBuilder {
 
 /**
  *
+ * @class
  * @template TYPE
  * @template TYPE_BUILDER
+ * @extends {WithID}
  * @implements {Listenable<TYPE>}
  * @implements {Component}
  */

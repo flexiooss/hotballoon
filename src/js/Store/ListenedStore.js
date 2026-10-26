@@ -1,7 +1,10 @@
 import {assertInstanceOf, TypeCheck} from '@flexio-oss/js-commons-bundle/assert/index.js'
 import {listenedEventInterface} from "../Event/ListenedEvent.js";
 import {OrderedEventHandler} from "../Event/OrderedEventHandler.js";
+
 /**
+ *
+ * @class
  * @implements {ListenedEvent}
  */
 export class ListenedStore extends listenedEventInterface(){

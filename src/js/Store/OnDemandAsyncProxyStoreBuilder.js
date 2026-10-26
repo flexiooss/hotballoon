@@ -3,6 +3,7 @@ import {AsyncProxyStoreBuilder} from './AsyncProxyStoreBuilder'
 
 /**
  *
+ * @class
  * @template STORE_TYPE
  * @template STORE_TYPE_BUILDER
  * @template TYPE

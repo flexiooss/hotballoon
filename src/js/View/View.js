@@ -26,7 +26,7 @@ import {DOMError} from '../Exception/DOMError.js'
 import {ViewPublicEventUnSubscriber} from './ViewPublicEventUnSubscriber.js'
 
 export const ATTRIBUTE_NODEREF = '_hb_noderef'
-const DEBUG_MODE = true
+const DEBUG_MODE = false
 const ID_FILTER = /[^a-zA-Z0-9_-]/g
 
 /**

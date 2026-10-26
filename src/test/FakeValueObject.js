@@ -4,16 +4,22 @@ export class FakeValueObject {
     this.__b = b
   }
 
+  static fromObject(object) {
+    return this.builder()
+      .a(object['__a'])
+      .b(object['__b'])
+  }
+
+  static builder() {
+    return new FakeValueObjectBuilder()
+  }
+
   a() {
     return this.__a
   }
 
   b() {
     return this.__b
-  }
-
-  static builder(){
-    return new FakeValueObjectBuilder()
   }
 }
 

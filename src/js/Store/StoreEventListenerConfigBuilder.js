@@ -1,6 +1,8 @@
 import {OrderedEventListenerConfigBuilder} from "@flexio-oss/js-commons-bundle/event-handler/index.js";
 
 /**
+ *
+ * @class
  * @template TYPE
  */
 export class StoreEventListenerConfigBuilder extends OrderedEventListenerConfigBuilder{

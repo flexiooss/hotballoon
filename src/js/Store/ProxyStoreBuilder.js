@@ -9,6 +9,7 @@ import {AbstractStoreBuilder} from "./AbstractStoreBuilder.js";
 
 /**
  *
+ * @class
  * @template STORE_TYPE
  * @template STORE_TYPE_BUILDER
  * @template TYPE

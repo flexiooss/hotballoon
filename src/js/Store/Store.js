@@ -5,6 +5,7 @@ export const STORE_INIT = Symbol('STORE.INIT')
 
 /**
  *
+ * @class
  * @template TYPE
  * @template TYPE_BUILDER
  * @extends {StoreBase<TYPE, TYPE_BUILDER>}

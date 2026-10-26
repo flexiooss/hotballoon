@@ -8,6 +8,7 @@ export const STORE_REMOVED = '__HB__.STORE.REMOVED'
 
 /**
  *
+ * @class
  * @template TYPE
  * @template TYPE_BUILDER
  * @interface

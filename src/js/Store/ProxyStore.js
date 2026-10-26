@@ -9,6 +9,7 @@ import {STORE_CHANGED} from "./StoreInterface.js";
 
 /**
  *
+ * @class
  * @template STORE_TYPE
  * @template TYPE
  * @template TYPE_BUILDER

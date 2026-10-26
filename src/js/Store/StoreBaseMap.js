@@ -3,6 +3,8 @@ import {FlexMap} from '@flexio-oss/js-commons-bundle/flex-types/index.js'
 import {TypeCheck} from '../Types/TypeCheck.js'
 
 /**
+ *
+ * @class
  * @extends {FlexMap<?StoreInterface>}
  */
 export class StoreBaseMap extends FlexMap {

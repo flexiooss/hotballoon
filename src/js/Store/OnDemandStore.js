@@ -2,6 +2,7 @@ import {Store} from './Store.js'
 
 /**
  *
+ * @class
  * @template TYPE
  * @template TYPE_BUILDER
  * @extends {Store<TYPE, TYPE_BUILDER>}
