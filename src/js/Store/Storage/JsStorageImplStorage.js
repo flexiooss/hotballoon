@@ -4,6 +4,7 @@ import {StorageInterface} from './StorageInterface.js'
 import {Logger} from '@flexio-oss/js-commons-bundle/hot-log/index.js'
 import {BaseException} from '@flexio-oss/js-commons-bundle/js-type-helpers/index.js'
 import {Base64} from '@flexio-oss/js-commons-bundle/js-helpers/index.js'
+import {assert} from '@flexio-oss/js-commons-bundle/assert'
 
 /**
  *
@@ -14,6 +15,13 @@ import {Base64} from '@flexio-oss/js-commons-bundle/js-helpers/index.js'
  * @extends {StorageInterface<TYPE>}
  */
 export class JsStorageImplStorage extends StorageInterface {
+  /**
+   * States shared by every instance, per backing storage then per key
+   * Not a WeakMap: invalidate() iterates it
+   * @type {Map<Storage, Map<string, ?StoreState>>}
+   */
+  static #cachesByStorage = new Map()
+
   /**
    * @type {?TYPE}
    */
@@ -30,15 +38,15 @@ export class JsStorageImplStorage extends StorageInterface {
    * @type {Storage}
    */
   #storage
-
   /**
-   * @type {TYPE}
+   * Shared state last seen by this instance, and its copy stamped with this instance's ID and type
+   * @type {?StoreState}
    */
-  #storeData
+  #lastSharedState = null
   /**
-   * @type {boolean}
+   * @type {?StoreState<TYPE>}
    */
-  #loadedData
+  #lastState = null
 
   /**
    * @param {?TYPE.} type
@@ -52,8 +60,42 @@ export class JsStorageImplStorage extends StorageInterface {
     this.#key = TypeCheck.assertIsString(key)
     this.#storeID = TypeCheck.assertIsString(storeID)
     this.#storage = storage
+  }
 
-    this.#loadedData = false
+  /**
+   * @param {string} key
+   */
+  static invalidate(key) {
+    JsStorageImplStorage.#cachesByStorage.forEach((cache) => cache.delete(key))
+  }
+
+  /**
+   * @return {Map<string, ?StoreState>}
+   */
+  #cache() {
+    if (!JsStorageImplStorage.#cachesByStorage.has(this.#storage)) {
+      JsStorageImplStorage.#cachesByStorage.set(this.#storage, new Map())
+    }
+    return JsStorageImplStorage.#cachesByStorage.get(this.#storage)
+  }
+
+  /**
+   * @param {?StoreState} sharedState
+   * @return {?StoreState<TYPE>}
+   */
+  #ownState(sharedState) {
+    if (sharedState !== this.#lastSharedState) {
+      this.#lastSharedState = sharedState
+      if (isNull(sharedState)
+        || (sharedState.storeID() === this.#storeID && sharedState.isTypeOf(this.#type))
+      ) {
+        this.#lastState = sharedState
+      } else {
+        assert(sharedState.isTypeOf(this.#type), 'JS Stores using the same key must use the same type')
+        this.#lastState = new StoreState(this.#storeID, this.#type, sharedState.data(), sharedState.time())
+      }
+    }
+    return this.#lastState
   }
 
   /**
@@ -69,9 +111,9 @@ export class JsStorageImplStorage extends StorageInterface {
    * @return {StorageInterface}
    */
   set(storeID, data) {
-    this.#storeData = new StoreState(storeID, this.#type, data)
-    this.#loadedData = true
-    this.#storage.setItem(this.key(), Base64.encode(JSON.stringify(this.#storeData)))
+    const newState = new StoreState(storeID, this.#type, data)
+    this.#cache().set(this.key(), newState)
+    this.#storage.setItem(this.key(), Base64.encode(JSON.stringify(newState)))
     return this
   }
 
@@ -79,8 +121,8 @@ export class JsStorageImplStorage extends StorageInterface {
    * @returns {?StoreState<TYPE>}
    */
   get() {
-    if (this.#loadedData) {
-      return this.#storeData
+    if (this.#cache().has(this.key())) {
+      return this.#ownState(this.#cache().get(this.key()))
     }
 
     let ret = null
@@ -93,8 +135,8 @@ export class JsStorageImplStorage extends StorageInterface {
           .storeID(this.#storeID)
           .build()
       }
-      this.#loadedData = true
-      this.#storeData = ret
+      this.#cache().set(this.key(), ret)
+      ret = this.#ownState(ret)
     } catch (e) {
       if (!(e instanceof BaseException)) {
         e = new BaseException(e.toString())
@@ -128,6 +170,7 @@ export class JsStorageImplStorage extends StorageInterface {
    * @param {string|Symbol} storeId
    */
   clean(storeId) {
+    this.#cache().delete(this.key())
     this.#storage.removeItem(this.key())
   }
 

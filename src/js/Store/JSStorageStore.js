@@ -1,7 +1,8 @@
-import {Store} from "./Store.js";
-import {assertInstanceOf, isNull} from '@flexio-oss/js-commons-bundle/assert/index.js';
-import {globalFlexioImport} from "@flexio-oss/js-commons-bundle/global-import-registry/index.js";
-import {UIDMini} from "@flexio-oss/js-commons-bundle/js-helpers/index.js";
+import {Store} from './Store.js'
+import {assertInstanceOf, isNull} from '@flexio-oss/js-commons-bundle/assert/index.js'
+import {globalFlexioImport} from '@flexio-oss/js-commons-bundle/global-import-registry/index.js'
+import {UIDMini} from '@flexio-oss/js-commons-bundle/js-helpers/index.js'
+import {JsStorageImplStorage} from './Storage/JsStorageImplStorage.js'
 
 /**
  * @type {?StoragesHandler}
@@ -25,19 +26,12 @@ class StoragesHandler {
   /**
    * @type {?BroadcastChannel}
    */
-  #bc=null
-
-
+  #bc = null
   /**
-   * @param {Window} window
-   * @return {StoragesHandler}
+   * IDs of the messages posted by this tab, which still have to come back to #bc
+   * @type {Set<string>}
    */
-  #init(window) {
-    this.#initialized = true
-    this.#bc = new BroadcastChannel(JSStorageStore.BC_KEY);
-    this.#bc.onmessage = this.__storageEventClb
-    return this
-  }
+  #sentMessageIds = new Set()
 
   /**
    * @param {?Window} [window=null]
@@ -54,26 +48,41 @@ class StoragesHandler {
   }
 
   /**
+   * @param {Window} window
+   * @return {StoragesHandler}
+   */
+  #init(window) {
+    this.#initialized = true
+    this.#bc = new BroadcastChannel(JSStorageStore.BC_KEY)
+    this.#bc.onmessage = this.__storageEventClb
+    return this
+  }
+
+  /**
    * @param {MessageEvent} message
    * @private
    */
   __storageEventClb(message) {
-    const data = message?.data ?? null;
+    const data = message?.data ?? null
     if (!isNull(data)) {
       /**
        * @type {StoreMessage}
        */
-      const storeMessage = globalFlexioImport.io.flexio.hotballoon.types.StoreMessage.fromObject(data).build();
+      const storeMessage = globalFlexioImport.io.flexio.hotballoon.types.StoreMessage.fromObject(data).build()
 
       /**
        * @type {StoragesHandler}
        */
       const handler = StoragesHandler.getInstance()
+      // This tab's own cache is already up to date
+      if (!handler.#sentMessageIds.delete(storeMessage.id())) {
+        JsStorageImplStorage.invalidate(storeMessage.storageKey())
+      }
       if (handler.#stores.has(storeMessage.storageKey())) {
         /**
          * @type {Set<JSStorageStore>}
          */
-        const stores = handler.#stores.get(storeMessage.storageKey());
+        const stores = handler.#stores.get(storeMessage.storageKey())
         stores.forEach((store) => {
           if (store.ID() !== storeMessage.storeId()) {
             store.dispatchStorageChange()
@@ -84,18 +93,29 @@ class StoragesHandler {
   }
 
   /**
+   * @param {string} messageId
+   * @return {StoragesHandler}
+   */
+  markSent(messageId) {
+    if (!isNull(this.#bc)) {
+      this.#sentMessageIds.add(messageId)
+    }
+    return this
+  }
+
+  /**
    * @param {JSStorageStore} store
    * @return {StoragesHandler}
    */
   register(store) {
     assertInstanceOf(store, JSStorageStore, 'JSStorageStore')
     if (!this.#stores.has(store.JSStorageKey())) {
-      this.#stores.set(store.JSStorageKey(), new Set());
+      this.#stores.set(store.JSStorageKey(), new Set())
     }
     /**
      * @type {Set<JSStorageStore>}
      */
-    const stores = this.#stores.get(store.JSStorageKey());
+    const stores = this.#stores.get(store.JSStorageKey())
 
     stores.add(store)
 
@@ -112,7 +132,7 @@ class StoragesHandler {
       /**
        * @type {Set<JSStorageStore>}
        */
-      const stores = this.#stores.get(store.JSStorageKey());
+      const stores = this.#stores.get(store.JSStorageKey())
       stores.delete(store)
     }
 
@@ -125,6 +145,7 @@ class StoragesHandler {
       this.#bc = null
     }
     this.#stores.clear()
+    this.#sentMessageIds.clear()
   }
 }
 
@@ -173,39 +194,51 @@ export class JSStorageStore extends Store {
    */
   set(dataStore = null) {
     super.set(dataStore)
-    let bc = new BroadcastChannel(this.constructor.BC_KEY);
+    this.#broadcastChange()
+  }
+
+  #broadcastChange() {
+    const messageId = UIDMini()
+    StoragesHandler.getInstance().markSent(messageId)
+    let bc = new BroadcastChannel(this.constructor.BC_KEY)
     bc.postMessage(
       globalFlexioImport.io.flexio.hotballoon.types.StoreMessage.builder()
-        .id(UIDMini())
+        .id(messageId)
         .storageKey(this.#key)
         .storeId(this.ID())
         .build()
         .toObject()
     )
     bc.close()
-    bc = null;
+    bc = null
   }
 
   /**
    * @return {?string}
    */
   JSStorageKey() {
-    return this.#key;
+    return this.#key
   }
 
   dispatchStorageChange() {
-    if (!this.isRemoving()) {
-      this._dispatch(this.changedEventName(), this.state())
+    if (this.isRemoving()) {
+      return
+    }
+    const state = this.state()
+    // No state to dispatch once the storage was cleaned
+    if (!isNull(state)) {
+      this._dispatch(this.changedEventName(), state)
     }
   }
 
   remove() {
     StoragesHandler.getInstance().unregister(this)
-    super.remove();
+    super.remove()
   }
 
-  clean(){
+  clean() {
     this._storage().clean(this.ID())
+    this.#broadcastChange()
   }
 }
 
